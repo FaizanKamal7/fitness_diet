@@ -53,6 +53,7 @@ dependencies:
   eva_icons_flutter: ^1.0.4
   fleva_icons:
   flutter_spinkit: ^4.1.2
+  sleek_circular_slider: ^1.1.0
   
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^5.0.2
