@@ -3,7 +3,8 @@ class User {
   User({this.uid});
 
   User.initial() : uid = '';
-  
+  String get getUid => this.uid;
+
   // User.fromJson(Map<String, dynamic> json) {
   //   uid = json['id'];
   //   name = json['name'];

@@ -7,8 +7,8 @@ class SkipBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: deviceSize.height * 0.036,
-      width: deviceSize.width * 0.23,
+      height: 22,
+      width: 80,
       decoration: BoxDecoration(
         color: Color(0xffe4d7cb),
         borderRadius: BorderRadius.circular(deviceSize.width * 0.07),
@@ -19,14 +19,14 @@ class SkipBtn extends StatelessWidget {
             "   " + passedText,
             style: TextStyle(
               fontFamily: "Montserrat",
-              fontSize: deviceSize.height * 0.022,
+              fontSize: 13,
               color: Color(0xff0c0101),
             ),
           ),
           Spacer(),
           Container(
-            height: deviceSize.height * 0.035,
-            width: deviceSize.height * 0.035,
+            height: 20,
+            width:24,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.white,

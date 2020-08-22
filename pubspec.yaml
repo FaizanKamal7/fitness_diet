@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   provider: ^4.0.4
-  flutter_spinkit: ^4.1.2
+  provider_architecture: ^1.1.1+1
   date_format: ^1.0.8
   shared_preferences: ^0.5.7+1
   firebase_storage:
@@ -33,8 +33,7 @@ dependencies:
   camera:
   path_provider:
   dcdg: ^2.0.1
-  eva_icons_flutter: ^1.0.4
-  fleva_icons:
+
   photo_view:
   image_cropper:
   flutter_swiper:
@@ -43,11 +42,17 @@ dependencies:
   timer_count_down: ^1.0.4+1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  device_preview: ^0.4.3
-  carousel_slider: ^1.0.1
+
   async_builder: ^1.2.0
   get_it:
   logger: ^0.7.0+2
+  
+  # For designing
+  device_preview: ^0.4.3
+  carousel_slider: ^1.0.1
+  eva_icons_flutter: ^1.0.4
+  fleva_icons:
+  flutter_spinkit: ^4.1.2
   
   # Add the dependency for the FlutterFire plugin for Google Analytics
   firebase_analytics: ^5.0.2

@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_diet/core/enums/dialogTypes.dart';
+import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
+import 'package:fitness_diet/core/services/dialogService.dart';
+import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
+import 'package:fitness_diet/locator.dart';
 
-class AuthService {
+class AuthService extends BaseViewModel {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // create user obj based on FirebaseUser
 
   User _userFormFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
@@ -26,24 +31,6 @@ class AuthService {
     }
   }
 
-  // Register with email and password
-  // Future registorWithEmailAndPassword(String email, String password) async {
-  //   try {
-  //     AuthResult result = await _auth.createUserWithEmailAndPassword(
-  //         email: email, password: password);
-  //     FirebaseUser user = result.user;
-
-  //     // Create a new document for the user with the uid
-  //     await DatabaseService(uid: user.uid)
-  //         .updateCustData("Default name", "Default residence");
-  //     return _userFormFirebaseUser(user);
-  //   } catch (e) {
-  //     print(e.toString());
-  //     return null;
-  //   }
-  // }
-  // Sign up
-
   Future signOut() async {
     try {
       return await _auth.signOut();
@@ -63,13 +50,6 @@ class AuthService {
       if (user != null) {
         print('AUTHENTICATONI SUCCESSFULL. Id: ' + user.uid);
 
-        //
-        // Storing user logged-in status for re-launch
-        //
-        // SharedPreferences prefs = await SharedPreferences.getInstance();
-        // prefs.setString('userID', _userFormFirebaseUser(user).uid);
-        // prefs.setBool('isLoggedIn', true);
-
         return _userFormFirebaseUser(user).uid;
       } else {
         print('Invalid code/invalid authentication');
@@ -81,100 +61,201 @@ class AuthService {
     }
   }
 
+  Future<dynamic> verifyPhone(phoneNo) async {
+    final DialogService _dialogService = locator<DialogService>();
+    var completer = Completer<dynamic>();
+    print("‎ Verify Phone reached __________________");
+    String smsCode;
+    dynamic newUserResult;
+
+    Future<String> getOTPresult() async {
+      print("Dialog shown");
+      setState(ViewState.Idle);
+      var dialogResult =
+          await _dialogService.showDialog(dialogType: Dialog_Types.OTP);
+
+      return dialogResult.userText;
+    }
+
+    //
+    //  >>>>>>>>>>>>> On verification complete
+    //
+    final PhoneVerificationCompleted verificationComplete =
+        (AuthCredential authCred) async {
+      newUserResult = await signInWithPhoneNumber(authCred);
+
+      print("Why the fuck are you running?");
+      if (newUserResult != null) {
+        print("Phone no is : " + phoneNo);
+        print("__Result: " + newUserResult.toString());
+        print("AuthCredential : _______ " + authCred.toString());
+
+        // --- Proceeding to screen 2 of chef registration
+      }
+      completer.complete(newUserResult);
+    };
+    //
+    ///  >>>>>>>>>>>>> On Timeout
+    //
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verID) {
+      print("\n2. Auto retrieval time out");
+      completer.complete(newUserResult);
+    };
+
+    // >>>>>>>>>>>>>  On manual code verification
+
+    final PhoneCodeSent smsCodeSent =
+        (String verID, [int forceCodeResend]) async {
+      print(" --------------> Code sent reached ");
+      // ignore: non_constant_identifier_names
+      var OTPDialogResult = await getOTPresult();
+
+      AuthCredential authCred = PhoneAuthProvider.getCredential(
+          verificationId: verID, smsCode: OTPDialogResult);
+      print("SMS code sent reached OTP is : " + OTPDialogResult.toString());
+
+      newUserResult = AuthService().signInWithPhoneNumber(authCred);
+      completer.complete(newUserResult);
+    };
+
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException authException) {
+      print('${AuthException(smsCode, "message")}');
+
+      if (authException.message.contains('not authorized'))
+        print('   App not authroized');
+      // UIHelper().showErrorButtomSheet(context, '   App not authroized');
+      else if (authException.message.contains('Network'))
+        print('   Please check your internet \n    connection and try again ');
+      else
+        print('Something has gone wrong, please try later ' +
+            authException.message);
+      setState(ViewState.Idle);
+      completer.complete(newUserResult);
+    };
+
+    await FirebaseAuth.instance
+        .verifyPhoneNumber(
+          phoneNumber: phoneNo,
+          timeout: Duration(seconds: 50),
+          verificationCompleted: verificationComplete,
+          verificationFailed: verificationFailed,
+          codeSent: smsCodeSent,
+          codeAutoRetrievalTimeout: autoRetrieve,
+        )
+        .then((value) =>
+            print("then newuser Reslut: " + newUserResult.toString()))
+        .catchError((error) {
+      print(error.toString());
+    });
+    print("New user result at the end : " + newUserResult.toString());
+    return completer.future;
+  }
+
   // signInWithOTP(smsCode, verId) {
   //   AuthCredential authCreds = PhoneAuthProvider.getCredential(
   //       verificationId: verId, smsCode: smsCode);
   //   signInWithPhoneNumber(authCreds);
   // }
+  // Future<dynamic> verifyPhone(phoneNo, context) async {
+  //   var updatedPhoneNo = phoneNo.replaceFirst(RegExp(r'0'), '+92');
+  //   print("‎ Verify Phone reached __________________");
+  //   String smsCode;
+
+  //   Future<String> getOTPresult() async {
+  //     var dialogResult =
+  //         await _dialogService.showDialog(dialogType: Dialog_Types.OTP);
+
+  //     return dialogResult.userText;
+  //   }
+
+  //   //
+  //   //  >>>>>>>>>>>>> On verification complete
+  //   //
+  //   final PhoneVerificationCompleted verificationComplete =
+  //       (AuthCredential authCred) async {
+  //     // AuthResult newUserResult =
+  //     //     await FirebaseAuth.instance.signInWithCredential(authCred);
+  //     // FirebaseUser user = newUserResult.user;
+  //     // User(uid: user.uid);
+
+  //     newUserResult = await signInWithPhoneNumber(authCred);
+  //     if (newUserResult != null) {
+  //       print("Phone no is : " + phoneNo);
+  //       print("__Result: " + newUserResult.toString());
+  //       print("AuthCredential : _______ " + authCred.toString());
+
+  //       // --- Proceeding to screen 2 of chef registration
+  //     }
+  //     await DatabaseService(uid: newUserResult).updateCustData({
+  //       'custPhNo': updatedPhoneNo,
+  //     });
+  //     Navigator.pushNamed(context, "foodMenu");
+  //   };
+  //   //
+  //   ///  >>>>>>>>>>>>> On Timeout
+  //   //
+  //   final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verID) {
+  //     print("\n2. Auto retrieval time out");
+  //   };
+
+  //   // >>>>>>>>>>>>>  On manual code verification
+
+  //   final PhoneCodeSent smsCodeSent =
+  //       (String verID, [int forceCodeResend]) async {
+  //     print(" --------------> Code sent reached ");
+  //     // ignore: non_constant_identifier_names
+  //     var OTPDialogResult = await getOTPresult();
+
+  //     AuthCredential authCred = PhoneAuthProvider.getCredential(
+  //         verificationId: verID, smsCode: OTPDialogResult);
+
+  //     newUserResult = await AuthService().signInWithPhoneNumber(authCred);
+  //     await DatabaseService(uid: newUserResult).updateCustData({
+  //       'custPhNo': updatedPhoneNo,
+  //     });
+  //     // Navigator.pushNamed(context, "foodMenu");
+  //     Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => FoodMenuView()));
+  //   };
+
+  //   final PhoneVerificationFailed verificationFailed =
+  //       (AuthException authException) {
+  //     print('${AuthException(smsCode, "message")}');
+
+  //     if (authException.message.contains('not authorized'))
+  //       UIHelper().showErrorButtomSheet(context, '   App not authroized');
+  //     else if (authException.message.contains('Network'))
+  //       UIHelper().showErrorButtomSheet(context,
+  //           '   Please check your internet \n    connection and try again ');
+  //     else
+  //       UIHelper().showErrorButtomSheet(
+  //           context, '   Something has gone wrong, \n    Please try later ');
+  //     print('Something has gone wrong, please try later ' +
+  //         authException.message);
+  //   };
+
+  //   await FirebaseAuth.instance
+  //       .verifyPhoneNumber(
+  //     phoneNumber: updatedPhoneNo,
+  //     timeout: Duration(seconds: 50),
+  //     verificationCompleted: verificationComplete,
+  //     verificationFailed: verificationFailed,
+  //     codeSent: smsCodeSent,
+  //     codeAutoRetrievalTimeout: autoRetrieve,
+  //   )
+  //       .catchError((error) {
+  //     print(error.toString());
+  //   });
+
+  //   // logger.wtf("New user result at the end : " + newUserResult.toString());
+  // }
+
 }
 
 // ----------------------:::::::|||||||| Useless Comments
 
-//   //
-//   // >>>>>>>>> S I G N   I N   W I T H   P H O M E  N U M B E R   P R O C E S S
-//   //
-//   Future<bool> verifyPhone(phNo, codeSent, verificationID, smsCode) async {
+// >>>>>>>>> S I G N   I N   W I T H   P H O M E  N U M B E R   P R O C E S S
 
-//     final PhoneVerificationCompleted verificationComplete =
-//         (AuthCredential authResult) {
-//       print('1. Auto retrieving verification code');
-//       AuthService().signInWithPhoneNumber(authResult);
-//     };
-
-//     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verID) {
-//       verificationID = verID;
-//       print("\n2. Auto retrieval time out");
-//       return false;
-//     };
-
-//     final PhoneCodeSent smsCodeSent =
-//         (String verID, [int forceCodeResend]) async {
-//       verificationID = verID;
-//       print("\n 3. Code Sent to " + phNo);
-//       codeSent = true;
-//       ChefRegisterScreen.getCodeSentStatus(codeSent);
-//     };
-
-//     final PhoneVerificationFailed verificationFailed =
-//         (AuthException authException) {
-//       print('${AuthException(smsCode, "message")}');
-//       if (authException.message.contains('not authorized'))
-//         print('App not authroized');
-//       else if (authException.message.contains('Network'))
-//         print('Please check your internet connection and try again');
-//       else
-//         print('Something has gone wrong, please try later ' +
-//             authException.message);
-//       return false;
-//     };
-
-//     await FirebaseAuth.instance
-//         .verifyPhoneNumber(
-//       phoneNumber: phNo,
-//       timeout: Duration(seconds: 50),
-//       verificationCompleted: verificationComplete,
-//       verificationFailed: verificationFailed,
-//       codeSent: smsCodeSent,
-//       codeAutoRetrievalTimeout: autoRetrieve,
-//     )
-//         .then((value) {
-//       print('PHONE VERIFIED. RETURNING TRUE');
-//       return true;
-//     }).catchError((error) {
-//       print(error.toString());
-//     });
-//     return false;
-//   }
-// }
-
-// Sign in anom
-// Future signInAnom() async {
-//   try {
-//     AuthResult result = await _auth.signInAnonymously();
-//     FirebaseUser user = result.user;
-//     return _userFormFirebaseUser(user);
-//   } catch (e) {
-//     print(e.toString());
-//     return null;
-//   }
-// }
-// Create a new document for the user with the uid
-// await DatabaseService(uid: user.uid)
-//     .updateChefData("chefName", "chefPhNo", "chefDateOfBirth");
-//   await DatabaseService(uid: user.uid).updateChefData(
-//     ChefRegisterScreen().getChefName(),
-//     ChefRegisterScreen().getChefPhNo(),
-//     ChefRegisterScreen().getChefDateOfBirth(),
-//  //   ChefData().chefName, ChefData().chefPhNo, ChefData().chefDateOfBirth,
-//   );
-// globals.isLoggedIn = true;
-// print("globals.isLoggedIn : " + globals.isLoggedIn.toString());
-// // Constants().getLoginStatus().then((result) => print(
-//     "Constants().setLoginStatus(true) in AUTH Before: " +
-//         result.toString()));
-
-// Constants().setLoginStatus(true);
-
-// Constants().getLoginStatus().then((result) => print(
-//     "Constants().setLoginStatus(true) in AUTH After: " +
-//         result.toString()));
+/// Below function will return the userID upon successfull phone verification
+// ignore: missing_return

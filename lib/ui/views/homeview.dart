@@ -1,11 +1,13 @@
+import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/auth.dart';
-import 'package:fitness_diet/core/services/database.dart';
 import 'package:fitness_diet/core/viewmodels/checkProfileViewModel.dart';
-import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
+import 'package:fitness_diet/ui/responsive/responsiveBuilder.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
+import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/skip_btn.dart';
+import 'package:fitness_diet/ui/widgets/splashWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,158 +15,217 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    final deviceSize = MediaQuery.of(context).size;
-    return BaseView<CheckProfileViewModel>(builder: (context, model, child) {
-      if (user == null) {
-        return ResponsiveSafeArea(
-          builder: (context, widgetSize) => Scaffold(
-            body: Stack(
-              children: [
-                Row(
+    return BaseView<CheckProfileViewModel>(
+        onModelReady: (model) => model.userTypeIs(user.uid) ?? null,
+        builder: (context, model, child) {
+          if (user == null) {
+            return ResponsiveBuilder(
+              builder: (context, sizingInformation) => Scaffold(
+                body: Stack(
                   children: [
-                    Expanded(child: custBgImage1Ftn()),
-                    Expanded(child: chefBgImage1Ftn()),
-                  ],
-                ),
+                    Row(
+                      children: [
+                        Expanded(child: custBgImage1Ftn()),
+                        Expanded(child: chefBgImage1Ftn()),
+                      ],
+                    ),
 //
-                // >>>>>>>>>> H E A D E R   T E X T
-                //
-                Container(
-                  margin: EdgeInsets.only(
-                    top: widgetSize.height * 0.22,
-                    left: widgetSize.width * 0.03,
-                  ),
-                  child: Text(
-                    "Fitness",
-                    style: TextStyle(
-                      fontFamily: "Montserrat",
-                      fontSize: widgetSize.height * 0.1,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: widgetSize.height * 0.3,
-                    left: widgetSize.width * 0.03,
-                  ),
-                  child: Text(
-                    "DIET",
-                    style: TextStyle(
-                      fontFamily: "Lemon-Milk",
-                      fontSize: widgetSize.height * 0.1,
-                      color: Color(0xff05355a),
-                    ),
-                  ),
-                ),
-
-                Container(
-                  margin: EdgeInsets.only(
-                    top: widgetSize.height * 0.3,
-                    left: widgetSize.width * 0.03,
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              startAsText(deviceSize),
-                              FlatButton(
-                                onPressed: () =>
-                                    Navigator.pushNamed(context, 'custHome'),
-                                child:
-                                    startAsButtonStyle("Customer", deviceSize),
-                              ),
-                            ],
-                          ),
-                        ),
+                    // >>>>>>>>>> H E A D E R   T E X T
+                    //
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 150,
+                        left: 19,
                       ),
-                      Expanded(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              startAsText(deviceSize),
-                              FlatButton(
-                                onPressed: () =>
-                                    Navigator.pushNamed(context, 'custHome'),
-                                child: startAsButtonStyle("Chef", deviceSize),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-
-                //
-                // >>>>>>>>>> "S T A R T   A S"   B U T T O N S  D E L I V E R Y
-                //
-                Container(
-                  alignment: Alignment.bottomLeft,
-                  margin: EdgeInsets.only(bottom: widgetSize.height * 0.07),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: widgetSize.width * 0.04),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        "Start as",
+                      child: Text(
+                        "Fitness",
                         style: TextStyle(
                           fontFamily: "Montserrat",
-                          fontSize: widgetSize.height * 0.02,
+                          fontSize: 55,
                           color: Colors.black,
                         ),
                       ),
-                      Text(
-                        " Delivery Guy",
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 200,
+                        left: 20,
+                      ),
+                      child: Text(
+                        "DIET",
                         style: TextStyle(
-                          fontFamily: "BigNoodle",
-                          fontSize: widgetSize.height * 0.026,
-                          color: Color(0xff7A400B),
+                          fontFamily: "Lemon-Milk",
+                          fontSize: 57,
+                          color: Color(0xff05355a),
                         ),
                       ),
-                      Spacer(),
-                      // >>>>>>>>>>>>>>>>>>>> S K I P
-                      InkWell(
-                        onTap: () => Navigator.pushNamed(context, 'foodMenu'),
-                        child: SkipBtn(
-                          passedText: "SKIP",
-                          deviceSize: deviceSize,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
-      } else {
-        dynamic _returnedUser = model.userTypeIs(user.uid);
-        if (_returnedUser.toString() == "cust") {
-          Navigator.pushNamed(context, "cust");
-        } else if (_returnedUser.toString() == "chef") {
-          Navigator.pushNamed(context, "chef");
-        } else {
-          return Container(
-            child: Center(
-              child: FlatButton(
-                onPressed: () => AuthService().signOut(),
-                child: Text("Signout"),
-              ),
-            ),
-          );
-        }
+                    ),
 
-        print(
-            "Returend user: " + _returnedUser + " and user id is: " + user.uid);
-        Navigator.pushNamed(context, _returnedUser.toString());
-      }
-    });
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 200,
+                        // left: sizingInformation.localWidgetSize.width * 0.03,
+                      ),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.end,
+                        // crossAxisAlignment:CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  startAsText(sizingInformation.screenSize),
+                                  FlatButton(
+                                    onPressed: () => Navigator.pushNamed(
+                                        context, 'custHome'),
+                                    child: startAsButtonStyle("Customer",
+                                        sizingInformation.screenSize),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  startAsText(sizingInformation.screenSize),
+                                  FlatButton(
+                                    onPressed: () => Navigator.pushNamed(
+                                        context, 'chefSignIn'),
+                                    child: startAsButtonStyle(
+                                        "Chef", sizingInformation.screenSize),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+
+                    //
+                    // >>>>>>>>>> "S T A R T   A S"   B U T T O N S  D E L I V E R Y
+                    //
+                    Container(
+                      alignment: Alignment.bottomLeft,
+                      margin: EdgeInsets.only(
+                          bottom:
+                              sizingInformation.localWidgetSize.height * 0.07),
+                      padding: EdgeInsets.symmetric(
+                          horizontal:
+                              sizingInformation.localWidgetSize.width * 0.04),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "Start as",
+                            style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontSize: 13,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            " Delivery Guy",
+                            style: TextStyle(
+                              fontFamily: "BigNoodle",
+                              fontSize:
+                                  sizingInformation.localWidgetSize.height *
+                                      0.026,
+                              color: Color(0xff7A400B),
+                            ),
+                          ),
+                          Spacer(),
+                          // >>>>>>>>>>>>>>>>>>>> S K I P
+                          InkWell(
+                            onTap: () =>
+                                Navigator.pushNamed(context, 'foodMenu'),
+                            child: SkipBtn(
+                              passedText: "SKIP",
+                              deviceSize: sizingInformation.screenSize,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          } else {
+            if (model.state == ViewState.Busy) {
+              return Loading();
+            } else {
+              // ----------- Proper way but below error is a bitch
+              // ----------- Flutter Provider setState() or markNeedsBuild() called during build
+              // ----------- https://stackoverflow.com/a/59378918/7290043
+              // String _returnedUser;
+
+              // model.userTypeIs(user.uid).then((_user) => _returnedUser = _user);
+
+              // if (_returnedUser == "cust") {
+              //   print("model.userTypeIs in cust: " + _returnedUser);
+              //   () => Navigator.pushNamed(context, "foodMenu");
+              // } else if (_returnedUser == "chef") {
+              //   print("model.userTypeIs in chef: " + _returnedUser);
+              //   Navigator.pushNamed(context, "chefProfile");
+              // } else {
+              //   print("model.userTypeIs  in else: " + _returnedUser);
+
+              //   return Container(
+              //     child: Center(
+              //       child: FlatButton(
+              //         onPressed: () => AuthService().signOut(),
+              //         child: Text(
+              //           "Signout",
+              //           style: TextStyle(color: Colors.white),
+              //         ),
+              //       ),
+              //     ),
+              //   );
+              // }
+              // ----------- J U G A R R  way
+              dynamic _returnedUser;
+              checkUser() async {
+                print("checkUserFucntionRan");
+                _returnedUser = await model.userTypeIs(user.uid);
+
+                if (_returnedUser.toString() == "cust") {
+                  print("_returnedUser: " + _returnedUser.toString());
+                  Navigator.pushNamed(context, "foodMenu");
+                } else if (_returnedUser.toString() == "chef") {
+                  print("_returnedUser: " + _returnedUser.toString());
+                  Navigator.pushNamed(context, "chefProfile");
+                } else {
+                  print("_returnedUser: " + _returnedUser.toString());
+
+                  return Container(
+                    child: Center(
+                      child: FlatButton(
+                        onPressed: () => AuthService().signOut(),
+                        child: Text("Signout"),
+                      ),
+                    ),
+                  );
+                }
+              }
+
+              //    _returnedUser == null ? Loading() : Container();
+
+              checkUser();
+
+              // print(
+              //     "Returend user: " + _returnedUser + " and user id is: " + user.uid);
+              // Navigator.pushNamed(context, _returnedUser.toString());
+            }
+            return SplashWidget(
+              deviceSize: MediaQuery.of(context).size,
+            );
+          }
+        });
   }
 
   Widget custBgImage1Ftn() {
@@ -201,7 +262,7 @@ class HomeView extends StatelessWidget {
       "Start as",
       style: TextStyle(
         fontFamily: "Montserrat",
-        fontSize: widgetSize.height * 0.02,
+        fontSize: 15,
         color: Color(0xffffffff),
         shadows: [
           Shadow(
@@ -216,8 +277,8 @@ class HomeView extends StatelessWidget {
 
   Widget startAsButtonStyle(String _passedText, Size widgetSize) {
     return Container(
-      height: widgetSize.height * 0.04,
-      width: widgetSize.width * 0.4,
+      height: 30,
+      width: 120,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -237,7 +298,7 @@ class HomeView extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: "Montserrat",
-            fontSize: widgetSize.height * 0.023,
+            fontSize: 15,
             color: Color(0xff020000),
           ),
         ),

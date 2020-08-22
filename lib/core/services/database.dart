@@ -1,4 +1,5 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_diet/core/models/user.dart';
 
@@ -26,7 +27,8 @@ class DatabaseService {
     //   //  'dateOfBirth': dateOfBirth
     // });
 
-    print("uid inside UPDATE CUST DATA  FUNCTION ----------------: " + uid);
+    print("uid inside UPDATE CUST DATA  FUNCTION ----------------: " +
+        uid.toString());
     // - Setting ID first in a document
     await custCollection.document(uid).setData(
       {
@@ -36,7 +38,7 @@ class DatabaseService {
       merge: true,
     );
 
-   // - Dynamically adding data in the db
+    // - Dynamically adding data in the db
     dataMap.forEach(
       (key, value) async {
         await custCollection.document(uid).setData(
@@ -179,6 +181,7 @@ class DatabaseService {
 
 // This function is just to check if the the passed user ID is of customer or chef
   Future<String> checkUserID(String userID) async {
+    var completer = Completer<String>();
     final custCheck =
         (await custCollection.where("custID", isEqualTo: userID).getDocuments())
             .documents;
@@ -196,11 +199,13 @@ class DatabaseService {
         chefCheck.toString());
 
     if (custCheck.length > 0) {
-      print("Cust check........");
-      return "cust";
+      completer.complete("cust");
+      print("Cust check........ true");
+      return completer.future;
     } else if (chefCheck.length > 0) {
-      print("Chef check........");
-      return "chef";
+      completer.complete("cust");
+      print("Chef check........true");
+      return completer.future;
     }
     print("Returning null from database.dart .................");
     return null;
@@ -210,13 +215,6 @@ class DatabaseService {
 
 // - This function is to check if phone no exist in either "chef" or "customer"
   Future<String> isPhoneNoAlreadyRegistered(String _phoneNo) async {
-    //bool x = chefCollection.where("chefPnNo", isEqualTo: _phoneNo);
-
-//  final custCheck = await custCollection.document("custId").get();
-//     final chefCheck = await chefCollection.document("chefId").get().;
-    // chefCollection.document('chefPhNo').snapshots().forEach((element) {
-    //   element.exists;
-    // });
     var chefResult = await chefCollection
         .where("chefPhNo", isEqualTo: _phoneNo)
         .getDocuments();
@@ -233,11 +231,33 @@ class DatabaseService {
     } else {
       return null;
     }
-
-    // * For further quering
-    // result.documents.forEach((fetchedPh) {
-    // });
   }
+// --------------------- Phone no check
+  Future<bool> isPhoneNoInChef(String _phoneNo) async {
+    var chefResult = await chefCollection
+        .where("chefPhNo", isEqualTo: _phoneNo)
+        .getDocuments();
+
+    return chefResult.documents.length > 0 ? true : false;
+  }
+
+  Future<bool> isPhoneNoInCust(String _phoneNo) async {
+    var custResult = await custCollection
+        .where("custPhNo", isEqualTo: _phoneNo)
+        .getDocuments();
+
+    return custResult.documents.length > 0 ? true : false;
+  }
+
+  // Future<bool> isPhoneNoInCust(String _phoneNo) async {
+  //   var custResult = await custCollection
+  //       .where("custPhNo", isEqualTo: _phoneNo)
+  //       .getDocuments();
+
+  //   return custResult.documents.length > 0 ? true : false;
+  // }
+
+
 
   Future getTotal(postID) async {
     int counter;
@@ -251,20 +271,9 @@ class DatabaseService {
     print("The total is $counter");
     return counter;
   }
+
+  //
+  // >>>>>>>> Sign-in Customer
+  //
+  Future signInCustomer(String phNo, String password) {}
 }
-
-// Get customers stream
-// Stream<List<CustData>> get customers {
-//   return custCollection.snapshots().map(_customerDataListFromSnapShot);
-// }
-
-// // Customers DataList from snapshot for our convinece
-// List<CustData> _customerDataListFromSnapShot(QuerySnapshot snapshot) {
-//   return snapshot.documents.map((i) {
-//     return CustData(
-//       username: i.data['username'] ?? '',
-//       residence: i.data['residence'] ?? '',
-//       dateOfBirth: i.data['dateOfBirth'] ?? DateTime.now(),
-//     );
-//   }).toList();
-// }

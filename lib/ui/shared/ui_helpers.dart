@@ -77,7 +77,7 @@ class UIHelper {
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: "Montserrat",
-                    fontSize: deviceSize.height * 0.02,
+                    fontSize: deviceSize.height * 0.012,
                   ),
                 ),
               ],
@@ -87,4 +87,5 @@ class UIHelper {
       ),
     );
   }
+
 }

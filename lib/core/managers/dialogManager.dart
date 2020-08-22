@@ -43,6 +43,8 @@ class _DialogManagerState extends State<DialogManager> {
           context: context,
           animType: AnimType.LEFTSLIDE,
           dialogType: DialogType.INFO,
+          dismissOnBackKeyPress: true,
+          dismissOnTouchOutside: true,
           body: Center(
             child: Column(
               children: [
@@ -52,10 +54,10 @@ class _DialogManagerState extends State<DialogManager> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: "BAHNSCHRIFT",
-                      fontSize: deviceSize.height * 0.025),
+                      fontSize: deviceSize.height * 0.015),
                 ),
                 SizedBox(
-                  height: deviceSize.height * 0.02,
+                  height: deviceSize.height * 0.017,
                 ),
                 // >>>>>>>>>>>>>>>>>>>>>>> O T P   T E X T   F E I L D
 
@@ -65,14 +67,14 @@ class _DialogManagerState extends State<DialogManager> {
                   child: Container(
                     padding: EdgeInsets.symmetric(
                         horizontal: deviceSize.width * 0.02),
-                    height: deviceSize.height * 0.05,
+                    height: deviceSize.height * 0.04,
                     width: deviceSize.width * 0.9,
                     // color: Colors.green.withOpacity(0.4),
                     child: Center(
                       child: TextField(
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
-                        style: TextStyle(fontSize: deviceSize.height * 0.025),
+                        style: TextStyle(fontSize: deviceSize.height * 0.018),
                         controller: otpController,
                         cursorColor: Colors.brown,
                         decoration: InputDecoration(
@@ -107,7 +109,7 @@ class _DialogManagerState extends State<DialogManager> {
                     Text(
                       "Resend OTP in ",
                       style: TextStyle(
-                        fontSize: deviceSize.height * 0.02,
+                        fontSize: deviceSize.height * 0.015,
                         fontFamily: "Montserrat",
                         color: Colors.brown.withOpacity(0.6),
                       ),
@@ -118,7 +120,7 @@ class _DialogManagerState extends State<DialogManager> {
                         time.toString(),
                         style: TextStyle(
                           fontFamily: "Lemon-Milk",
-                          fontSize: deviceSize.height * 0.02,
+                          fontSize: deviceSize.height * 0.015,
                         ),
                       ),
                       interval: Duration(milliseconds: 100),
@@ -141,7 +143,7 @@ class _DialogManagerState extends State<DialogManager> {
                 userText: otpController.text,
                 confirmed: true,
               ));
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
             }
           },
         )..show();

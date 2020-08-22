@@ -11,21 +11,28 @@ void main() {
   setupLocator();
   // runApp(MyApp());
   runApp(
-    DevicePreview(
-      enabled: true,
-      builder: (context) => MyApp(),
+    MaterialApp(
+      home: Scaffold(
+        body: DevicePreview(
+          enabled: true,
+          builder: (context) => MyApp(),
+        ),
+      ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  final GlobalKey<NavigatorState> navigatorKey =
+      new GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return StreamProvider<User>(
       initialData: User.initial(),
       create: (BuildContext context) => locator<AuthService>().user,
       child: MaterialApp(
-        locale: DevicePreview.of(context).locale, // <--- Add the locale
+       
         builder: (context, widget) => Navigator(
           onGenerateRoute: (settings) => MaterialPageRoute(
             builder: (context) => DialogManager(
@@ -33,10 +40,13 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        //  builder: DevicePreview.appBuilder, // To be commented
+        
+      //  builder: DevicePreview.appBuilder, 
+
         title: 'Fitness Diet',
         theme: ThemeData(),
         initialRoute: 'splash',
+        navigatorKey: navigatorKey,
         onGenerateRoute: Router.generateRoute,
       ),
     );

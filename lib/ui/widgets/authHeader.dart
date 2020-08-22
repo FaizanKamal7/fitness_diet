@@ -19,7 +19,7 @@ class AuthHeader extends StatelessWidget {
         Text(
           firstText.toUpperCase(),
           style: TextStyle(
-            fontSize: deviceSize.height * 0.075,
+            fontSize: deviceSize.height * 0.05,
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.bold,
             color: Color(0xffA6714E),
@@ -28,7 +28,7 @@ class AuthHeader extends StatelessWidget {
         Text(
           secondText.toUpperCase(),
           style: TextStyle(
-            fontSize: deviceSize.height * 0.075,
+            fontSize: deviceSize.height * 0.05,
             fontFamily: 'Uni-Sans',
             color: Colors.black,
           ),
@@ -36,7 +36,7 @@ class AuthHeader extends StatelessWidget {
         Text(
           "Please $processText to continue.",
           style: TextStyle(
-            fontSize: deviceSize.height * 0.03,
+            fontSize: deviceSize.height * 0.02,
             fontFamily: 'Uni-Sans',
             color: Colors.brown,
           ),

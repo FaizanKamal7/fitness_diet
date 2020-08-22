@@ -1,9 +1,11 @@
+import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_1.dart';
+import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_2.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefSignInView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_1.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_2.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custSignInView.dart';
-import 'package:fitness_diet/ui/views/foodMenuView.dart';
+import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuView.dart';
 import 'package:fitness_diet/ui/views/homeview.dart';
 import 'package:fitness_diet/ui/views/splashView.dart';
 import 'package:flutter/material.dart';
@@ -30,10 +32,18 @@ class Router {
         return MaterialPageRoute(builder: (_) => CustSigninView());
       case 'cust':
         return MaterialPageRoute(builder: (_) => FoodMenuView());
+      case 'foodMenu':
+        return MaterialPageRoute(builder: (_) => FoodMenuView());
 
       // Chef Routes
-      case 'chefHome':
+      case 'chefReg_1':
+        return MaterialPageRoute(builder: (_) => ChefRegView_1());
+      case 'chefReg_2':
+        return MaterialPageRoute(builder: (_) => ChefRegView_2());
+      case 'chefSignIn':
         return MaterialPageRoute(builder: (_) => ChefSignInView());
+      case 'chefProfile':
+        return MaterialPageRoute(builder: (_) => ChefProfile());
 
       // case 'post':
       //   var post = settings.arguments as Post;

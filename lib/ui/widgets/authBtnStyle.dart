@@ -9,8 +9,8 @@ class AuthBtnStyle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.bottomLeft,
-      width: deviceSize.width * 0.4,
-      height: deviceSize.height * 0.04,
+      width: deviceSize.width * 0.3,
+      height: deviceSize.height * 0.032,
       decoration: BoxDecoration(
         color: Colors.brown,
         borderRadius: BorderRadius.all(
@@ -32,9 +32,9 @@ class AuthBtnStyle extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          "Verify",
+          passedText,
           style: TextStyle(
-            fontSize: deviceSize.height * 0.02,
+            fontSize: deviceSize.height * 0.015,
             fontFamily: "Montserrat",
             color: Colors.white,
           ),
