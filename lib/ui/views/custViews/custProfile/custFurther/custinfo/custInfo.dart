@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 
 class CustInfo extends StatelessWidget {
   static List FoodCatgSectionItemList = [
-    {'Name': "Biryani", "Pic": "lib/assets/images/biryani.jpg"},
-    {'Name': "Nihari", "Pic": "lib/assets/images/nihari.jpg"},
-    {'Name': "Kebab", "Pic": "lib/assets/images/kebab.jpg"},
-    {'Name': "Chicken", "Pic": "lib/assets/images/cover.jpg"},
+    {'Name': "Biryani", "Pic": "assets/images/biryani.jpg"},
+    {'Name': "Nihari", "Pic": "assets/images/nihari.jpg"},
+    {'Name': "Kebab", "Pic": "assets/images/biryani.jpg"},
+    {'Name': "Chicken", "Pic": "assets/images/cover.jpg"},
   ];
   @override
   Widget build(BuildContext context) {
@@ -83,7 +83,7 @@ class CustInfo extends StatelessWidget {
                     margin: index == 0
                         ? EdgeInsets.only(left: deviceSize.width * 0.025)
                         : EdgeInsets.only(left: deviceSize.width * 0.015),
-                    child: foodSliderItem(FoodCatgSectionItemList[index]),
+                    child: FoodSliderItem(FoodCatgSectionItemList[index]),
                   );
                 },
               ),

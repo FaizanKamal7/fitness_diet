@@ -6,6 +6,7 @@ import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_1.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_2.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custSignInView.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuView.dart';
+import 'package:fitness_diet/ui/views/custViews/custProfile/custProfile.dart';
 import 'package:fitness_diet/ui/views/homeview.dart';
 import 'package:fitness_diet/ui/views/splashView.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,7 @@ class Router {
         return MaterialPageRoute(builder: (_) => SplashView());
 
       // Customer Routes
-      case 'custHome':
-        return MaterialPageRoute(builder: (_) => CustSigninView());
-      case 'custReg_1':
+       case 'custReg_1':
         return MaterialPageRoute(builder: (_) => CustRegView_1());
       case 'custReg_2':
         return MaterialPageRoute(builder: (_) => CustRegView_2());
@@ -34,6 +33,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => FoodMenuView());
       case 'foodMenu':
         return MaterialPageRoute(builder: (_) => FoodMenuView());
+      case 'custProfile':
+        return MaterialPageRoute(builder: (_) => CustProfile());
 
       // Chef Routes
       case 'chefReg_1':

@@ -12,7 +12,7 @@ class ChefSignInViewModel extends BaseViewModel {
     setState(ViewState.Busy);
     bool dataValidated;
     var updatedPhoneNo = phNo.replaceFirst(RegExp(r'0'), '+92');
-    String phoneNoAlreadyRegistered = await DatabaseService().isPhoneNoAlreadyRegistered(phNo);
+    String phoneNoAlreadyRegistered = await DatabaseService().isPhoneNoAlreadyRegistered(updatedPhoneNo);
     Validators().verifyPhoneNumber(phNo)
         ? dataValidated = true
         : dataValidated = false;

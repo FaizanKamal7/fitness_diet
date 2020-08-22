@@ -7,10 +7,13 @@ import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
+import 'package:logger/logger.dart';
+import 'package:otp/otp.dart';
+import 'package:flutter_otp/flutter_otp.dart';
 
 class AuthService extends BaseViewModel {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
+  Logger logger;
   User _userFormFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
   }
@@ -107,15 +110,25 @@ class AuthService extends BaseViewModel {
     final PhoneCodeSent smsCodeSent =
         (String verID, [int forceCodeResend]) async {
       print(" --------------> Code sent reached ");
+
       // ignore: non_constant_identifier_names
       var OTPDialogResult = await getOTPresult();
 
+      print("OTP entered by user: " + OTPDialogResult.toString());
+
+      // bool isCorrectOTP =
+      //     FlutterOtp().resultChecker(int.parse(OTPDialogResult));
+
+      //   print("Result of OTP verification: " + isCorrectOTP.toString());
+
+      // if (isCorrectOTP) {
       AuthCredential authCred = PhoneAuthProvider.getCredential(
           verificationId: verID, smsCode: OTPDialogResult);
       print("SMS code sent reached OTP is : " + OTPDialogResult.toString());
 
       newUserResult = AuthService().signInWithPhoneNumber(authCred);
       completer.complete(newUserResult);
+      // }
     };
 
     final PhoneVerificationFailed verificationFailed =

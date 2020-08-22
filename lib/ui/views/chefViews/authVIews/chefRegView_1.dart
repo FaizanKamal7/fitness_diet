@@ -100,7 +100,7 @@ class ChefRegView_1 extends StatelessWidget {
                             UIHelper().showErrorButtomSheet(
                                 context, model.errorMessage);
                           }
-                          //   Navigator.pushNamed(context, 'foodMenu');
+                        
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,

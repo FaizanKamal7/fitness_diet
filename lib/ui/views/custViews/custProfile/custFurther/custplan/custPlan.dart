@@ -99,16 +99,16 @@ class _CustPlanState extends State<CustPlan> {
             /// M  E  A  L  S -- W   I   D  G  E  T \\
             ///
             ///
-            Container(
-              height: widgetSize.height * 0.9,
-              width: widgetSize.width,
-              child: Swiper(
-                itemCount: 2,
-                itemBuilder: (BuildContext context, int index) {
-                  return mealsList[index];
-                },
-              ),
-            ),
+            // Container(
+            //   height: widgetSize.height * 0.9,
+            //   width: widgetSize.width,
+            //   child: Swiper(
+            //     itemCount: 2,
+            //     itemBuilder: (BuildContext context, int index) {
+            //       return mealsList[index];
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

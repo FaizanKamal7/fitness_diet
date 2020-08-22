@@ -1,6 +1,5 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefReg2ViewModel.dart';
-import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custReg2ViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/shared/ui_helpers.dart';
@@ -8,7 +7,6 @@ import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
 import 'package:fitness_diet/ui/widgets/chefAuthBg.dart';
-import 'package:fitness_diet/ui/widgets/custAuthBg.dart';
 import 'package:fitness_diet/ui/widgets/dateOfBirthSelector.dart';
 import 'package:fitness_diet/ui/widgets/stepHeaderWithBg.dart';
 import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
@@ -77,7 +75,6 @@ class ChefRegView_2 extends StatelessWidget {
                   ),
                   SizedBox(height: widgetSize.height * 0.01),
 
-
                   DateOfBirthSelector(
                     deviceSize: deviceSize,
                     onDateTimeChanged: (newDateTime) {
@@ -91,13 +88,15 @@ class ChefRegView_2 extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: FlatButton(
                       onPressed: () async {
-                        var isChefDataSuccess = await model.addChefData(
+                        bool isChefDataSuccess = await model.addChefData(
                           chefNameContr.text,
                           dateOfBirth,
                         );
-
+                        print("isChefDataSuccess: ---------------- " +
+                            isChefDataSuccess.toString());
                         isChefDataSuccess
-                            ? Navigator.pushReplacementNamed(context, 'chefProfile')
+                            ? Navigator.pushReplacementNamed(
+                                context, 'chefProfile')
                             : UIHelper().showErrorButtomSheet(
                                 context, model.errorMessage);
                       },

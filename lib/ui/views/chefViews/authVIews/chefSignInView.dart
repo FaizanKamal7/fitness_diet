@@ -122,7 +122,7 @@ class ChefSignInView extends StatelessWidget {
                           InkResponse(
                             onTap: () {
                               print("Tapped");
-                              Navigator.pushNamed(context, 'chefReg_1');
+                              Navigator.pushNamed(context, 'chefProfile');
                             },
                             child: Text(
                               "Register",

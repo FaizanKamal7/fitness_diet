@@ -27,7 +27,7 @@ class _CustRegView_1State extends State<CustRegView_1> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return BaseView<ChefRegViewModel>(
+    return BaseView<CustRegViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Scaffold(
           body: Material(
@@ -101,12 +101,12 @@ class _CustRegView_1State extends State<CustRegView_1> {
 
                           if (registerSuccess) {
                             print("sucessssssssssssssssssssssssssssssssss");
-                            Navigator.popAndPushNamed(context, 'custReg_2');
+                            Navigator.pushNamed(context, 'custReg_2');
                           } else {
                             UIHelper().showErrorButtomSheet(
                                 context, model.errorMessage);
                           }
-                          //   Navigator.pushNamed(context, 'foodMenu');
+                     
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,

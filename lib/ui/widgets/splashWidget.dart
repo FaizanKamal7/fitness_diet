@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+// ignore: must_be_immutable
 class SplashWidget extends StatelessWidget {
   Size _deviceSize;
   SplashWidget({Size deviceSize}) : _deviceSize = deviceSize;

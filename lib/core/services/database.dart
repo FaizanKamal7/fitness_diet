@@ -60,15 +60,15 @@ class DatabaseService {
       custId: uid,
       custPhNo: snapshot.data['custPhNo'] ?? "",
       custName: snapshot.data['custName'] ?? "",
-      custDateOfBirth:
-          (snapshot.data['custDateOfBirth'] as Timestamp).toDate() ?? "",
-      custAddDate: (snapshot.data['custAddDate'] as Timestamp).toDate() ?? "",
-      custGender: snapshot.data['custGender'] ?? "",
-      custWeight: snapshot.data['custWeight'] ?? "",
-      custHeight: snapshot.data['custHeight'] ?? "",
-      custfavs: snapshot.data['custfavs'] ?? "",
-      custLocation: snapshot.data['custLocation'] ?? "",
-      custOrders: snapshot.data['custOrders'] ?? "",
+      // custDateOfBirth:
+      //     (snapshot.data['custDateOfBirth'] as Timestamp).toDate() ?? "",
+      // custAddDate: (snapshot.data['custAddDate'] as Timestamp).toDate() ?? "",
+      // custGender: snapshot.data['custGender'] ?? "",
+      // custWeight: snapshot.data['custWeight'] ?? "",
+      // custHeight: snapshot.data['custHeight'] ?? "",
+      // custfavs: snapshot.data['custfavs'] ?? "",
+      // custLocation: snapshot.data['custLocation'] ?? "",
+      // custOrders: snapshot.data['custOrders'] ?? "",
     );
   }
 
@@ -229,9 +229,11 @@ class DatabaseService {
       print("Cust Case is true___________");
       return "cust";
     } else {
+      print("RESULT IS NULL> DON'T EXIST IN DB");
       return null;
     }
   }
+
 // --------------------- Phone no check
   Future<bool> isPhoneNoInChef(String _phoneNo) async {
     var chefResult = await chefCollection
@@ -256,8 +258,6 @@ class DatabaseService {
 
   //   return custResult.documents.length > 0 ? true : false;
   // }
-
-
 
   Future getTotal(postID) async {
     int counter;

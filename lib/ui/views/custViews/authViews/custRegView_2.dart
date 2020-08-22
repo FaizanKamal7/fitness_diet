@@ -97,13 +97,15 @@ class CustRegView_2 extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: FlatButton(
                       onPressed: () async {
-                        var isCustDataSuccess = await model.addCustData(
+                        bool isCustDataSuccess = await model.addCustData(
                           custNameContr.text,
                           dateOfBirth,
                         );
-
+                        print(
+                            "isCustDataSuccess ______________________________" +
+                                isCustDataSuccess.toString());
                         isCustDataSuccess
-                            ? Navigator.pushNamed(context, 'foodMenu')
+                            ? Navigator.pushNamed(context, 'custReg_2')
                             : UIHelper().showErrorButtomSheet(
                                 context, model.errorMessage);
                       },

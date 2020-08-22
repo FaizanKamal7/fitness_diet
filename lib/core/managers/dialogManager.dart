@@ -143,7 +143,6 @@ class _DialogManagerState extends State<DialogManager> {
                 userText: otpController.text,
                 confirmed: true,
               ));
-              // Navigator.of(context).pop();
             }
           },
         )..show();

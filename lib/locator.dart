@@ -11,6 +11,8 @@ import 'package:fitness_diet/core/viewmodels/homeViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/loginViewModel.dart';
 import 'package:get_it/get_it.dart';
 
+import 'core/viewmodels/custViewModels/custProfileViewModel/custProfileViewmodel.dart';
+
 GetIt locator = GetIt.instance;
 
 // * This is where we register all our services and models
@@ -31,6 +33,8 @@ void setupLocator() {
   locator.registerFactory(() => CustRegViewModel());
   locator.registerFactory(() => CustReg2ViewModel());
   locator.registerFactory(() => CustSignInViewModel());
+  locator.registerFactory(() => CustProfileViewModel());
+  
 
   // Chef
   locator.registerFactory(() => ChefRegViewModel());

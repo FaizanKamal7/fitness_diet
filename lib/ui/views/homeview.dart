@@ -16,7 +16,9 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     return BaseView<CheckProfileViewModel>(
-        onModelReady: (model) => model.userTypeIs(user.uid) ?? null,
+        onModelReady: (model) =>
+            user != null ? model.userTypeIs(user.uid) : null,
+        // onModelReady: (model) => model.userTypeIs(user.uid) ?? null,
         builder: (context, model, child) {
           if (user == null) {
             return ResponsiveBuilder(
@@ -78,7 +80,7 @@ class HomeView extends StatelessWidget {
                                   startAsText(sizingInformation.screenSize),
                                   FlatButton(
                                     onPressed: () => Navigator.pushNamed(
-                                        context, 'custHome'),
+                                        context, 'custSignIn'),
                                     child: startAsButtonStyle("Customer",
                                         sizingInformation.screenSize),
                                   ),
@@ -200,7 +202,10 @@ class HomeView extends StatelessWidget {
                   print("_returnedUser: " + _returnedUser.toString());
                   Navigator.pushNamed(context, "chefProfile");
                 } else {
-                  print("_returnedUser: " + _returnedUser.toString());
+                  print("_returnedUser: " +
+                      _returnedUser.toString() +
+                      " Provider user: " +
+                      user.toString());
 
                   return Container(
                     child: Center(

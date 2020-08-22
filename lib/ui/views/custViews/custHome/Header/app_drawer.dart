@@ -80,7 +80,7 @@ class AppDrawer extends StatelessWidget {
               color: Colors.black12,
             ),
             InkWell(
-              onTap: null,
+              onTap: () => Navigator.pushNamed(context, 'custProfile'),
               child: NavBarContent(
                 deviceSize: deviceSize,
                 passedText: "Profile",

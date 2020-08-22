@@ -13,7 +13,7 @@ class CustSignInViewModel extends BaseViewModel {
     bool dataValidated;
     var updatedPhoneNo = phNo.replaceFirst(RegExp(r'0'), '+92');
     String phoneNoAlreadyRegistered =
-        await DatabaseService().isPhoneNoAlreadyRegistered(phNo);
+        await DatabaseService().isPhoneNoAlreadyRegistered(updatedPhoneNo);
 
     Validators().verifyPhoneNumber(phNo)
         ? dataValidated = true
@@ -38,7 +38,8 @@ class CustSignInViewModel extends BaseViewModel {
       }
     } else {
       setState(ViewState.Idle);
-      errorMessage = "     Try again with different number\n   Not registered by any customer";
+      errorMessage =
+          "     Try again with different number\n   Not registered by any customer";
       return false;
     }
   }
