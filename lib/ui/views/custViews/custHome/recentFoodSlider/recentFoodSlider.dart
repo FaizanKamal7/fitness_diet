@@ -1,5 +1,5 @@
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
-import 'package:fitness_diet/ui/views/custViews/custHome/recentFoodSlider/recentFoodItem.dart';
+import 'package:fitness_diet/ui/widgets/foodSliderItem.dart';
 import 'package:flutter/material.dart';
 
 class RecentFoodSlider extends StatelessWidget {
@@ -25,7 +25,7 @@ class RecentFoodSlider extends StatelessWidget {
               margin: index == 0
                   ? EdgeInsets.only(left: widgetSize.width * 0.025)
                   : EdgeInsets.only(left: widgetSize.width * 0.015),
-              child: RecentFoodItem(FoodCatgSectionItemList[index]),
+              child: FoodSliderItem(FoodCatgSectionItemList[index]),
             );
           },
         ),
@@ -33,15 +33,3 @@ class RecentFoodSlider extends StatelessWidget {
     );
   }
 }
-
-//  height: widgetSize.height * 0.1,
-//  width: deviceSize.width,
-// color: Colors.amber,
-//   margin: EdgeInsets.symmetric(horizontal: deviceSize.height * 0.01),
-//   child: ListView.builder(
-//     scrollDirection: Axis.horizontal,
-//     itemCount: FoodCatgSectionItemList.length, // Total no of food items
-//     itemBuilder: (context, index) {
-//       return FoodCategorysectionItem(FoodCatgSectionItemList[index]);
-//     },
-//   ),

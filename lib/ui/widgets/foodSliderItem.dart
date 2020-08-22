@@ -1,8 +1,8 @@
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:flutter/material.dart';
 
-class RecentFoodItem extends StatelessWidget {
-  RecentFoodItem(this.foodCtgItem);
+class FoodSliderItem extends StatelessWidget {
+  FoodSliderItem(this.foodCtgItem);
   final Map
       foodCtgItem; // List of item categories. I used "Map" instead of "List" becuase I have category list in the form of map
   @override

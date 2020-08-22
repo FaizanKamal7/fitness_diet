@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class StandardHeadingNoBg extends StatelessWidget {
   Size deviceSize;
   String passedText;
-  StandardHeadingNoBg({this.deviceSize, this.passedText});
+  StandardHeadingNoBg({this.deviceSize, @required this.passedText});
   @override
   Widget build(BuildContext context) {
     return Text(
