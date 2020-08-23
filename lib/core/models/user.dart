@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 class User {
   String uid;
   User({this.uid});
@@ -30,8 +32,8 @@ class CustData {
   String custLocation;
   List custOrders;
   String custGender;
-  int custWeight;
-  int custHeight;
+  String custWeight;
+  String custHeight;
   List custFollowing;
   int pId;
 

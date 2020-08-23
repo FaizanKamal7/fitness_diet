@@ -1,6 +1,7 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/auth.dart';
+import 'package:fitness_diet/core/services/database.dart';
 import 'package:fitness_diet/core/viewmodels/checkProfileViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveBuilder.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
