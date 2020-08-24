@@ -55,20 +55,21 @@ class DatabaseService {
   //
   // >>>>>>>>>>>>>>>> G E T T I N G   D A T A
   //
+
   CustData _custDataFromSnapshot(DocumentSnapshot snapshot) {
     // print(" UiD DB TEST" + uid + " USerNAme: " + snapshot.data['username']);
     return CustData(
       custId: uid,
       custPhNo: snapshot.data['custPhNo'] ?? "",
       custName: snapshot.data['custName'] ?? "",
-      // custDateOfBirth:
-      //     (snapshot.data['custDateOfBirth'] as Timestamp).toDate() ?? "",
+      custDateOfBirth:
+          (snapshot.data['custDateOfBirth'] as Timestamp).toDate() ?? "",
       // custAddDate: (snapshot.data['custAddDate'] as Timestamp).toDate() ?? "",
-      // custGender: snapshot.data['custGender'] ?? "",
-      // custWeight: snapshot.data['custWeight'] ?? "",
-      // custHeight: snapshot.data['custHeight'] ?? "",
+      custGender: snapshot.data['custGender'] ?? "",
+      custWeight: snapshot.data['custWeight'] ?? "",
+      custHeight: snapshot.data['custHeight'] ?? "",
       // custfavs: snapshot.data['custfavs'] ?? "",
-      // custLocation: snapshot.data['custLocation'] ?? "",
+      custLocation: snapshot.data['custLocation'] ?? "",
       // custOrders: snapshot.data['custOrders'] ?? "",
     );
   }

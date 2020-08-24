@@ -25,7 +25,7 @@ class _SummaryCardState extends State<SummaryCard> {
             left: widget.widgetSize.width * 0.06,
             right: widget.widgetSize.width * 0.05,
             top: widget.widgetSize.height * 0.03),
-        height: widget.widgetSize.height * 0.5,
+        height: widget.widgetSize.height * 0.55,
         width: widget.widgetSize.width,
         decoration: BoxDecoration(
           color: Color(0xff800080),
@@ -168,119 +168,61 @@ class _SummaryCardState extends State<SummaryCard> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  height: widget.widgetSize.height * 0.15,
-                  width: widget.widgetSize.width * 0.2,
-                  child: Column(
-                    children: [
-                      //
-                      // C A R B S -- C O N T A I N E R
-                      //
-                      Text(
-                        "Carbs",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widget.widgetSize.height * 0.040,
-                          color: Color(0xffd6d8ff),
-                        ),
-                      ),
-                      LinearProgressIndicator(
-                        value: 0.33,
-                        backgroundColor: Color(0xffd6d8ff),
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Color(0xffffffff),
-                        ),
-                      ),
-                      Text(
-                        "33 / 100g",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widget.widgetSize.height * 0.035,
-                          color: Color(0xffe4d7cb),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                ///
+                //C  A  R  B  S -- C O N T A I N E R
                 //
+                ///
+                caloriesContainer('Carbs', 20, widget.widgetSize),
                 //
-                Container(
-                  height: widget.widgetSize.height * 0.15,
-                  width: widget.widgetSize.width * 0.2,
-                  child: Column(
-                    children: [
-                      //
-                      // P R O T E I  N -- C O N T A I N E R
-                      //
-                      Text(
-                        "Protein",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widget.widgetSize.height * 0.040,
-                          color: Color(0xffd6d8ff),
-                        ),
-                      ),
-                      LinearProgressIndicator(
-                        value: 0.33,
-                        backgroundColor: Color(0xffd6d8ff),
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Color(0xffffffff),
-                        ),
-                      ),
-                      Text(
-                        "33 / 100g",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widget.widgetSize.height * 0.035,
-                          color: Color(0xffe4d7cb),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                //P R  O  T  E  I  N -- C O N T A I N E R
+                //
+                caloriesContainer('Protein', 33, widget.widgetSize),
                 //
                 // F A T S -- C O N T A I N E R
                 //
-                Container(
-                  height: widget.widgetSize.height * 0.15,
-                  width: widget.widgetSize.width * 0.2,
-                  child: Column(
-                    children: [
-                      Text(
-                        "Fats",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widget.widgetSize.height * 0.040,
-                          color: Color(0xffd6d8ff),
-                        ),
-                      ),
-                      LinearProgressIndicator(
-                        value: 0.33,
-                        backgroundColor: Color(0xffd6d8ff),
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Color(0xffffffff),
-                        ),
-                      ),
-                      Text(
-                        "33 / 100g",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widget.widgetSize.height * 0.035,
-                          color: Color(0xffe4d7cb),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                caloriesContainer('Fats', 45, widget.widgetSize),
               ],
             ),
           ],
         ));
   }
+}
+
+Widget caloriesContainer(String heading, int value, Size widgetSize) {
+  return Container(
+    height: widgetSize.height * 0.18,
+    width: widgetSize.width * 0.2,
+    child: Column(
+      children: [
+        //
+        // C A R B S -- C O N T A I N E R
+        //
+        Text(
+          heading,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: "Montserrat",
+            fontSize: widgetSize.height * 0.040,
+            color: Color(0xffd6d8ff),
+          ),
+        ),
+        LinearProgressIndicator(
+          value: value / 100,
+          backgroundColor: Color(0xffd6d8ff),
+          valueColor: AlwaysStoppedAnimation<Color>(
+            Color(0xffffffff),
+          ),
+        ),
+        Text(
+          "$value / 100g",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontFamily: "Montserrat",
+            fontSize: widgetSize.height * 0.035,
+            color: Color(0xffe4d7cb),
+          ),
+        )
+      ],
+    ),
+  );
 }

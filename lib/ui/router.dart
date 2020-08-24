@@ -10,6 +10,7 @@ import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custProfile.dart';
 import 'package:fitness_diet/ui/views/homeview.dart';
 import 'package:fitness_diet/ui/views/splashView.dart';
+import 'package:fitness_diet/ui/views/custViews/custProfile/custProfileMain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -44,7 +45,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => ChefSignInView());
       case routes.ChefProfileRoute:
         return MaterialPageRoute(builder: (_) => ChefProfile());
-
+      case 'parent':
+        return MaterialPageRoute(builder: (_) => CustProfileMain());
       // case 'post':
       //   var post = settings.arguments as Post;
       //   return MaterialPageRoute(builder: (_) => PostView(post: post));

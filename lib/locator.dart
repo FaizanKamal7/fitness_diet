@@ -8,11 +8,11 @@ import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custReg2ViewMod
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custRegViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custSignInViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custAppDrawerViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custInfoViewModel/custInfoViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custProfileViewmodel.dart';
 import 'package:fitness_diet/core/viewmodels/homeViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/loginViewModel.dart';
 import 'package:get_it/get_it.dart';
-
-import 'core/viewmodels/custViewModels/custProfileViewModel/custProfileViewmodel.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -36,6 +36,7 @@ void setupLocator() {
   locator.registerFactory(() => CustSignInViewModel());
   locator.registerFactory(() => CustProfileViewModel());
   locator.registerFactory(() => CustAppDrawerViewModel());
+  locator.registerFactory(() => CustInfoViewModel());
 
   // Chef
   locator.registerFactory(() => ChefRegViewModel());

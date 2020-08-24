@@ -1,6 +1,9 @@
 import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/services/auth.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custAppDrawerViewModel.dart';
+import 'package:fitness_diet/core/models/user.dart';
+import 'package:fitness_diet/core/services/auth.dart';
+import 'package:fitness_diet/core/services/database.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
@@ -9,13 +12,23 @@ import 'package:fitness_diet/ui/widgets/navBarContent.dart';
 import 'package:fitness_diet/ui/widgets/subNavContent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return BaseView<CustAppDrawerViewModel>(
-      builder: (context, model, child) => ResponsiveSafeArea(
+    return
+        // MultiProvider(
+        //   providers: [
+        //     StreamProvider<CustData>.value(
+        //       value: DatabaseService().getCustData,
+        //     ),
+        //   ],
+        //   child:
+
+        BaseView<CustAppDrawerViewModel>(
+      builder: (model, context, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Container(
           width: widgetSize.width * 0.65,
           // margin: EdgeInsets.only(left: widgetSize.width * 0.03),
@@ -106,7 +119,7 @@ class AppDrawer extends StatelessWidget {
 
               FlatButton(
                 onPressed: () => {
-                  model.signOut(),
+                  model.s,
                 },
                 child: AuthBtnStyle(
                     deviceSize: deviceSize, passedText: "Sign out"),
