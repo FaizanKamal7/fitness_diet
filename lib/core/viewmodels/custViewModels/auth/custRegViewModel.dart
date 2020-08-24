@@ -1,24 +1,25 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/services/auth.dart';
 import 'package:fitness_diet/core/services/database.dart';
-import 'package:fitness_diet/core/services/dialogService.dart';
+import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
+import 'package:flutter/cupertino.dart';
 
 class CustRegViewModel extends BaseViewModel {
-  String errorMessage;
+  final NavigationService _navigationService = locator<NavigationService>();
 
   dynamic verifiedUserID;
-  dynamic newUserResult;
 
-  Future<bool> register(String phoneNo) async {
+  Future register(String phoneNo) async {
+    print("---------> CustRegViewModel reached");
     var updatedPhoneNo = phoneNo.replaceFirst(RegExp(r'0'), '+92');
-    print("Registered reached __________________");
+
     setState(ViewState.Busy);
     String phoneNoAlreadyRegistered =
         await DatabaseService().isPhoneNoAlreadyRegistered(phoneNo);
@@ -26,10 +27,8 @@ class CustRegViewModel extends BaseViewModel {
     // >>>>>>>>>>>>> Validate phone no
     //
     if (Validators().verifyPhoneNumber(phoneNo) == false) {
-      errorMessage = '  Enter valid phone no i.e 03xxxxxxxxx';
-      print("Error: " + errorMessage);
+      setErrorMessage('  Enter valid phone no i.e 03xxxxxxxxx');
       setState(ViewState.Idle);
-      return false;
     }
     //
     // >>>>>>>>>>>>> Check if user already registered
@@ -42,8 +41,8 @@ class CustRegViewModel extends BaseViewModel {
           DatabaseService()
               .isPhoneNoAlreadyRegistered(updatedPhoneNo)
               .toString());
-      errorMessage =
-          '  This phone no is already registered. \n  Try again with new number';
+      setErrorMessage(
+          '  This phone no is already registered. \n  Try again with new number');
       setState(ViewState.Idle);
       return false;
     } else {
@@ -52,43 +51,40 @@ class CustRegViewModel extends BaseViewModel {
       //
       if (phoneNoAlreadyRegistered == null) {
         verifiedUserID = await AuthService().verifyPhone(updatedPhoneNo);
+
         print("New user result at the end : " + verifiedUserID.toString());
 
-        print("Why the fuck are you running_?");
         if (verifiedUserID != null) {
-          //print(
-          // "Updated the data in databse - IF ___________________________________" +
-          //     newUserResult.toString());
-
           await DatabaseService(uid: verifiedUserID).updateCustData({
             'custPhNo': updatedPhoneNo,
           });
+          print(
+              "PhoneNo verified and added to DB (Message from within 'CustRegViewmodel')");
+          _navigationService.navigateTo(routes.CustReg2Route);
+
           setState(ViewState.Idle);
-          return true;
         } else {
           print(
               "Updated the data in databse - ELSE ___________________________________" +
-                  newUserResult.toString());
-          errorMessage =
-              "   Something went wrong while\n   verification. Please try again";
+                  verifiedUserID.toString());
+          setErrorMessage(
+              "   Something went wrong while\n   verification. Please try again");
           setState(ViewState.Idle);
-          return false;
         }
       } else {
-        errorMessage =
-            "   Phone no is already registered\n   Please try again with new number";
+        setErrorMessage(
+            "   Phone no is already registered\n   Please try again with new number");
         setState(ViewState.Idle);
-        return false;
       }
     }
   }
 
-  /// Below function will return the userID upon successfull phone verification
-  // ignore: missing_return
   // Future<dynamic> verifyPhone(phoneNo) async {
-  //   var completer = Completer<bool>();
+  //   final DialogService _dialogService = locator<DialogService>();
+  //   var completer = Completer<dynamic>();
   //   print("‎ Verify Phone reached __________________");
   //   String smsCode;
+  //   dynamic newUserResult;
 
   //   Future<String> getOTPresult() async {
   //     print("Dialog shown");
@@ -104,7 +100,7 @@ class CustRegViewModel extends BaseViewModel {
   //   //
   //   final PhoneVerificationCompleted verificationComplete =
   //       (AuthCredential authCred) async {
-  //     newUserResult = await _authService.signInWithPhoneNumber(authCred);
+  //     newUserResult = await AuthService().signInWithPhoneNumber(authCred);
 
   //     print("Why the fuck are you running?");
   //     if (newUserResult != null) {
@@ -114,14 +110,14 @@ class CustRegViewModel extends BaseViewModel {
 
   //       // --- Proceeding to screen 2 of chef registration
   //     }
-  //     completer.complete(true);
+  //     completer.complete(newUserResult);
   //   };
   //   //
   //   ///  >>>>>>>>>>>>> On Timeout
   //   //
   //   final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verID) {
   //     print("\n2. Auto retrieval time out");
-  //     completer.complete(false);
+  //     completer.complete(newUserResult);
   //   };
 
   //   // >>>>>>>>>>>>>  On manual code verification
@@ -129,33 +125,33 @@ class CustRegViewModel extends BaseViewModel {
   //   final PhoneCodeSent smsCodeSent =
   //       (String verID, [int forceCodeResend]) async {
   //     print(" --------------> Code sent reached ");
+
   //     // ignore: non_constant_identifier_names
   //     var OTPDialogResult = await getOTPresult();
 
+  //     print("OTP entered by user: " + OTPDialogResult.toString());
   //     AuthCredential authCred = PhoneAuthProvider.getCredential(
   //         verificationId: verID, smsCode: OTPDialogResult);
   //     print("SMS code sent reached OTP is : " + OTPDialogResult.toString());
 
   //     newUserResult = AuthService().signInWithPhoneNumber(authCred);
-  //     completer.complete(true);
+  //     completer.complete(newUserResult);
   //   };
 
   //   final PhoneVerificationFailed verificationFailed =
   //       (AuthException authException) {
   //     print('${AuthException(smsCode, "message")}');
 
-  //     // if (authException.message.contains('not authorized'))
-  //     //   UIHelper().showErrorButtomSheet(context, '   App not authroized');
-  //     // else if (authException.message.contains('Network'))
-  //     //   UIHelper().showErrorButtomSheet(context,
-  //     //       '   Please check your internet \n    connection and try again ');
-  //     // else
-  //     //   UIHelper().showErrorButtomSheet(
-  //     //       context, '   Something has gone wrong, \n    Please try later ');
-  //     // print('Something has gone wrong, please try later ' +
-  //     //     authException.message);
-  //     // setState(ViewState.Idle);
-  //     // completer.complete(false);
+  //     if (authException.message.contains('not authorized'))
+  //       print('   App not authroized');
+  //     // UIHelper().showErrorButtomSheet(context, '   App not authroized');
+  //     else if (authException.message.contains('Network'))
+  //       print('   Please check your internet \n    connection and try again ');
+  //     else
+  //       print('Something has gone wrong, please try later ' +
+  //           authException.message);
+  //     setState(ViewState.Idle);
+  //     completer.complete(newUserResult);
   //   };
 
   //   await FirebaseAuth.instance

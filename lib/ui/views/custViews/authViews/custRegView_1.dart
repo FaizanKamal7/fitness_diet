@@ -27,8 +27,9 @@ class _CustRegView_1State extends State<CustRegView_1> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    print("---------> CustRegView1 reached");
     return BaseView<CustRegViewModel>(
-      builder: (context, model, child) => ResponsiveSafeArea(
+      builder: (ontext, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Scaffold(
           body: Material(
             type: MaterialType.card,
@@ -88,25 +89,10 @@ class _CustRegView_1State extends State<CustRegView_1> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: FlatButton(
-                        onPressed: () async {
-                          bool registerSuccess =
-                              await model.register(_controller.text);
-                          print("--------------------> Build context: " +
-                              context.toString());
-                          // await PhoneVer(context: context)
-                          //     .verifyPhone(_controller.text);
-
-                          // print("------> Register success : " +
-                          //     registerSuccess.toString());
-
-                          if (registerSuccess) {
-                            print("sucessssssssssssssssssssssssssssssssss");
-                            Navigator.pushNamed(context, 'custReg_2');
-                          } else {
-                            UIHelper().showErrorButtomSheet(
-                                context, model.errorMessage);
-                          }
-                     
+                        onPressed: () {
+                          print(
+                              "Register button is pressed. Redirecting to 'CustReg1Viewmodel' (Message from inside CustRegView1)");
+                          model.register(_controller.text);
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
@@ -148,6 +134,15 @@ class _CustRegView_1State extends State<CustRegView_1> {
                     ),
                   ],
                 ),
+                //    model.hasErrorMessage
+                // ? UIHelper()
+                //     .showErrorButtomSheet(context, model.errorMessage)
+                // : Container(),
+                model.hasErrorMessage
+                    ? Container(
+                        child: Text(model.errorMessage),
+                      )
+                    : Container(),
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),

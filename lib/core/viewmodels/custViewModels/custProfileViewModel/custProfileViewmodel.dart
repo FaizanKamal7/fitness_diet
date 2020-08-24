@@ -1,9 +1,7 @@
-import 'package:fitness_diet/core/enums/viewstate.dart';
+
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/services/database.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+
 
 class CustProfileViewModel extends BaseViewModel {
   CustData _custData;

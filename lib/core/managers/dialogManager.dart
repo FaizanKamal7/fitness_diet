@@ -54,10 +54,10 @@ class _DialogManagerState extends State<DialogManager> {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontFamily: "BAHNSCHRIFT",
-                      fontSize: deviceSize.height * 0.015),
+                      fontSize: deviceSize.height * 0.017),
                 ),
                 SizedBox(
-                  height: deviceSize.height * 0.017,
+                  height: deviceSize.height * 0.0185,
                 ),
                 // >>>>>>>>>>>>>>>>>>>>>>> O T P   T E X T   F E I L D
 
@@ -143,6 +143,7 @@ class _DialogManagerState extends State<DialogManager> {
                 userText: otpController.text,
                 confirmed: true,
               ));
+            //  Navigator.pop(context);
             }
           },
         )..show();

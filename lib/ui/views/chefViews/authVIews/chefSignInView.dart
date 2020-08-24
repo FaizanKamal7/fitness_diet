@@ -13,7 +13,13 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 // ignore: mhef_be_immutable
-class ChefSignInView extends StatelessWidget {
+
+class ChefSignInView extends StatefulWidget {
+  @override
+  _ChefSignInViewState createState() => _ChefSignInViewState();
+}
+
+class _ChefSignInViewState extends State<ChefSignInView> {
   Logger logger;
   final TextEditingController _phNocontroller = TextEditingController();
   @override
@@ -79,24 +85,26 @@ class ChefSignInView extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: FlatButton(
                         onPressed: () async {
-                          bool signInSuccess =
-                              await model.signInChef(_phNocontroller.text);
-                          print("--------------------> Build context: " +
-                              context.toString());
-                          // await PhoneVer(context: context)
-                          //     .verifyPhone(_controller.text);
+                          model.signInChef(_phNocontroller.text);
 
-                          // print("------> Register success : " +
-                          //     signInSuccess.toString());
+                          // bool signInSuccess =
+                          //     await model.signInChef(_phNocontroller.text);
+                          // print("--------------------> Build context: " +
+                          //     context.toString());
+                          // // await PhoneVer(context: context)
+                          // //     .verifyPhone(_controller.text);
 
-                          if (signInSuccess) {
-                            print("sucessssssssssssssssssssssssssssssssss");
-                            Navigator.pushReplacementNamed(
-                                context, 'chefProfile');
-                          } else {
-                            UIHelper().showErrorButtomSheet(
-                                context, model.errorMessage);
-                          }
+                          // // print("------> Register success : " +
+                          // //     signInSuccess.toString());
+
+                          // if (signInSuccess) {
+                          //   print("sucessssssssssssssssssssssssssssssssss");
+                          //   Navigator.pushReplacementNamed(
+                          //       context, 'chefProfile');
+                          // } else {
+                          //   UIHelper().showErrorButtomSheet(
+                          //       context, model.errorMessage);
+                          // }
                           //   Navigator.pushNamed(context, 'foodMenu');
                         },
                         child: AuthBtnStyle(
@@ -122,7 +130,7 @@ class ChefSignInView extends StatelessWidget {
                           InkResponse(
                             onTap: () {
                               print("Tapped");
-                              Navigator.pushNamed(context, 'chefProfile');
+                              Navigator.pushNamed(context, 'chefReg_1');
                             },
                             child: Text(
                               "Register",
@@ -139,6 +147,11 @@ class ChefSignInView extends StatelessWidget {
                     ),
                   ],
                 ),
+                model.hasErrorMessage
+                    ? Container(
+                        child: Text(model.errorMessage),
+                      )
+                    : Container(),
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),

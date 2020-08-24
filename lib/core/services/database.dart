@@ -20,14 +20,14 @@ class DatabaseService {
   //
   // >>>>>>>>>>>>>>>> S E T T I N G   D A T A
   //
-  Future updateCustData(Map<String, dynamic> dataMap) async {
+  Future<bool> updateCustData(Map<String, dynamic> dataMap) async {
     // await custCollection.document(uid).setData({
     //   'username': username,
     //   'residence': residence,
     //   //  'dateOfBirth': dateOfBirth
     // });
 
-    print("uid inside UPDATE CUST DATA  FUNCTION ----------------: " +
+    print("---------> DataBase services class reached. Updating user for uid" +
         uid.toString());
     // - Setting ID first in a document
     await custCollection.document(uid).setData(
@@ -49,6 +49,7 @@ class DatabaseService {
         );
       },
     );
+    return true;
   }
 
   //
@@ -181,31 +182,26 @@ class DatabaseService {
 
 // This function is just to check if the the passed user ID is of customer or chef
   Future<String> checkUserID(String userID) async {
-    var completer = Completer<String>();
+    // var completer = Completer<String>();
     final custCheck =
         (await custCollection.where("custID", isEqualTo: userID).getDocuments())
             .documents;
     final chefCheck =
         (await chefCollection.where("chefID", isEqualTo: userID).getDocuments())
             .documents;
-
-    print("cust.documents.exist in custUserFuctnion for " +
-        userID +
-        " : ____________ " +
-        custCheck.toString());
-    print("chef.documents.exist in chefUserFuctnion for " +
-        userID +
-        " : ____________ " +
-        chefCheck.toString());
+    print("---------> DataBase services class reached. ");
+    print(
+        "Checking if userID is in database or not? (Message from 'DatabaseServices' class)" +
+            userID +
+            " : Cust Check " +
+            custCheck.toString() +
+            " Chef Check : " +
+            chefCheck.toString());
 
     if (custCheck.length > 0) {
-      completer.complete("cust");
-      print("Cust check........ true");
-      return completer.future;
+      return "cust";
     } else if (chefCheck.length > 0) {
-      completer.complete("cust");
-      print("Chef check........true");
-      return completer.future;
+      return "chef";
     }
     print("Returning null from database.dart .................");
     return null;

@@ -57,35 +57,37 @@ class UIHelper {
   }
 
   /// Returns a Error Do4ialog
-  Future showErrorButtomSheet(BuildContext context, String errorText) {
+  Widget showErrorButtomSheet(BuildContext context, String errorText) {
     Size deviceSize = MediaQuery.of(context).size;
-    return showModalBottomSheet(
-      context: context,
-      builder: (context) => Container(
-        color: Colors.red.withOpacity(0.7),
-        padding: EdgeInsets.all(deviceSize.width * 0.04),
-        child: StatefulBuilder(
-          builder: (BuildContext context, StateSetter stateSetter) {
-            return Row(
-              children: <Widget>[
-                Icon(
-                  Icons.error,
+    return
+        // showModalBottomSheet(
+        //   context: context,
+        //   builder: (context) =>
+
+        Container(
+      color: Colors.red.withOpacity(0.7),
+      padding: EdgeInsets.all(deviceSize.width * 0.04),
+      child: StatefulBuilder(
+        builder: (BuildContext context, StateSetter stateSetter) {
+          return Row(
+            children: <Widget>[
+              Icon(
+                Icons.error,
+                color: Colors.white,
+              ),
+              Text(
+                errorText,
+                style: TextStyle(
                   color: Colors.white,
+                  fontFamily: "Montserrat",
+                  fontSize: deviceSize.height * 0.012,
                 ),
-                Text(
-                  errorText,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: "Montserrat",
-                    fontSize: deviceSize.height * 0.012,
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+              ),
+            ],
+          );
+        },
       ),
+      // ),
     );
   }
-
 }

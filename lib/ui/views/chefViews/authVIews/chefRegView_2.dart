@@ -2,7 +2,6 @@ import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefReg2ViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
-import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
@@ -13,10 +12,16 @@ import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
-class ChefRegView_2 extends StatelessWidget {
+class ChefRegView_2 extends StatefulWidget {
+  @override
+  _ChefRegView_2State createState() => _ChefRegView_2State();
+}
+
+// ignore: camel_case_types
+class _ChefRegView_2State extends State<ChefRegView_2> {
   DateTime dateOfBirth;
-  final TextEditingController chefPassContr = TextEditingController();
   final TextEditingController chefNameContr = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +78,7 @@ class ChefRegView_2 extends StatelessWidget {
                     isObscureText: false,
                     hintText: "Enter your name",
                   ),
-                  SizedBox(height: widgetSize.height * 0.01),
+                  SizedBox(height: deviceSize.height * 0.01),
 
                   DateOfBirthSelector(
                     deviceSize: deviceSize,
@@ -82,23 +87,28 @@ class ChefRegView_2 extends StatelessWidget {
                     },
                   ),
 
-                  SizedBox(height: widgetSize.height * 0.01),
+                  SizedBox(height: deviceSize.height * 0.01),
 
                   Align(
                     alignment: Alignment.centerLeft,
                     child: FlatButton(
-                      onPressed: () async {
-                        bool isChefDataSuccess = await model.addChefData(
+                      onPressed: () {
+                        model.addChefData(
                           chefNameContr.text,
                           dateOfBirth,
                         );
-                        print("isChefDataSuccess: ---------------- " +
-                            isChefDataSuccess.toString());
-                        isChefDataSuccess
-                            ? Navigator.pushReplacementNamed(
-                                context, 'chefProfile')
-                            : UIHelper().showErrorButtomSheet(
-                                context, model.errorMessage);
+
+                        // bool isChefDataSuccess = await model.addChefData(
+                        //   chefNameContr.text,
+                        //   dateOfBirth,
+                        // );
+                        // print("isChefDataSuccess: ---------------- " +
+                        //     isChefDataSuccess.toString());
+                        // isChefDataSuccess
+                        //     ? Navigator.pushReplacementNamed(
+                        //         context, 'chefProfile')
+                        //     : UIHelper().showErrorButtomSheet(
+                        //         context, model.errorMessage);
                       },
                       child: AuthBtnStyle(
                         deviceSize: deviceSize,
@@ -140,6 +150,11 @@ class ChefRegView_2 extends StatelessWidget {
                   ),
                 ],
               ),
+              model.hasErrorMessage
+                  ? Container(
+                      child: Text(model.errorMessage),
+                    )
+                  : Container(),
               model.state == ViewState.Busy ? Loading() : Container(),
             ],
           ),

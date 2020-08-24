@@ -1,12 +1,13 @@
 import 'package:fitness_diet/core/services/auth.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
-import 'package:fitness_diet/core/viewmodels/checkProfileViewModel.dart';
+import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefReg2ViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefRegViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefSignInViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custReg2ViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custRegViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custSignInViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/custAppDrawerViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/homeViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/loginViewModel.dart';
 import 'package:get_it/get_it.dart';
@@ -22,19 +23,19 @@ void setupLocator() {
 
   locator.registerLazySingleton(() => AuthService());
   locator.registerLazySingleton(() => DialogService());
+  locator.registerLazySingleton(() => NavigationService());
   // locator.registerLazySingleton(() => Api());
 
   locator.registerFactory(() => LoginViewModel());
 
   locator.registerFactory(() => HomeViewModel());
-  locator.registerFactory(() => CheckProfileViewModel());
 
   // Customer
   locator.registerFactory(() => CustRegViewModel());
   locator.registerFactory(() => CustReg2ViewModel());
   locator.registerFactory(() => CustSignInViewModel());
   locator.registerFactory(() => CustProfileViewModel());
-  
+  locator.registerFactory(() => CustAppDrawerViewModel());
 
   // Chef
   locator.registerFactory(() => ChefRegViewModel());

@@ -1,3 +1,4 @@
+import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custReg2ViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
@@ -13,18 +14,24 @@ import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
-class CustRegView_2 extends StatelessWidget {
+class CustRegView_2 extends StatefulWidget {
+  @override
+  _CustRegView_2State createState() => _CustRegView_2State();
+}
+
+// ignore: camel_case_types
+class _CustRegView_2State extends State<CustRegView_2> {
   DateTime dateOfBirth;
-  final TextEditingController custPassContr = TextEditingController();
   final TextEditingController custNameContr = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    print("---------> CustReg2VIew Reached ");
     return BaseView<CustReg2ViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
-        builder: (context, widgetSize) => Material(
-          child: Stack(
+        builder: (context, widgetSize) => Scaffold(
+          body: Stack(
             children: <Widget>[
               //
               // >>>>>>>>> Registor background image
@@ -96,18 +103,14 @@ class CustRegView_2 extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: FlatButton(
-                      onPressed: () async {
-                        bool isCustDataSuccess = await model.addCustData(
-                          custNameContr.text,
-                          dateOfBirth,
-                        );
+                      onPressed: () {
                         print(
-                            "isCustDataSuccess ______________________________" +
-                                isCustDataSuccess.toString());
-                        isCustDataSuccess
-                            ? Navigator.pushNamed(context, 'custReg_2')
-                            : UIHelper().showErrorButtomSheet(
-                                context, model.errorMessage);
+                            "Register button is pressed. Redirecting to 'CustReg2Viewmodel' to add 'CustData' (Message from inside CustRegView1)");
+                        model.addCustData(custNameContr.text, dateOfBirth);
+                        // bool isCustDataSuccess = await model.addCustData(
+                        //   custNameContr.text,
+                        //   dateOfBirth,
+                        // );
                       },
                       child: AuthBtnStyle(
                         deviceSize: deviceSize,
@@ -131,8 +134,7 @@ class CustRegView_2 extends StatelessWidget {
                         ),
                         InkResponse(
                           onTap: () {
-                            print("Tapped");
-                            Navigator.pushNamed(context, 'custSignIn');
+                            model.goToCustSignin();
                           },
                           child: Text(
                             "Sign-in",
@@ -149,6 +151,15 @@ class CustRegView_2 extends StatelessWidget {
                   ),
                 ],
               ),
+              //           model.hasErrorMessage
+              // ? UIHelper().showErrorButtomSheet(context, model.errorMessage)
+              // : Container(),
+
+              model.hasErrorMessage
+                  ? Container(
+                      child: Text(model.errorMessage),
+                    )
+                  : Container(),
               model.state == ViewState.Busy ? Loading() : Container(),
             ],
           ),

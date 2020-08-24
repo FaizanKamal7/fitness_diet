@@ -1,6 +1,5 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefRegViewModel.dart';
-import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custRegViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/shared/ui_helpers.dart';
@@ -13,9 +12,15 @@ import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-// ignore: must_be_immutable
+
 // ignore: camel_case_types
-class ChefRegView_1 extends StatelessWidget {
+class ChefRegView_1 extends StatefulWidget {
+  @override
+  _ChefRegView_1State createState() => _ChefRegView_1State();
+}
+
+// ignore: camel_case_types
+class _ChefRegView_1State extends State<ChefRegView_1> {
   Logger logger;
   final TextEditingController _phNocontroller = TextEditingController();
   @override
@@ -82,25 +87,26 @@ class ChefRegView_1 extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: FlatButton(
-                        onPressed: () async {
-                          bool registerSuccess =
-                              await model.register(_phNocontroller.text);
-                          print("--------------------> Build context: " +
-                              context.toString());
+                        onPressed: () {
+                          model.register(_phNocontroller.text);
+
+                          // bool registerSuccess =
+                          //     await model.register(_phNocontroller.text);
+                          // print("--------------------> Build context: " +
+                          //     context.toString());
                           // await PhoneVer(context: context)
                           //     .verifyPhone(_controller.text);
 
                           // print("------> Register success : " +
                           //     registerSuccess.toString());
 
-                          if (registerSuccess) {
-                            print("sucessssssssssssssssssssssssssssssssss");
-                            Navigator.popAndPushNamed(context, 'chefReg_2');
-                          } else {
-                            UIHelper().showErrorButtomSheet(
-                                context, model.errorMessage);
-                          }
-                        
+                          // if (registerSuccess) {
+                          //   print("sucessssssssssssssssssssssssssssssssss");
+                          //   Navigator.popAndPushNamed(context, 'chefReg_2');
+                          // } else {
+                          //   UIHelper().showErrorButtomSheet(
+                          //       context, model.errorMessage);
+                          // }
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
@@ -124,8 +130,10 @@ class ChefRegView_1 extends StatelessWidget {
                           ),
                           InkResponse(
                             onTap: () {
-                              print("Tapped");
-                              Navigator.pushNamed(context, 'chefSignIn');
+                              model.goToChefSignIn();
+
+                              // print("Tapped");
+                              // Navigator.pushNamed(context, 'chefSignIn');
                             },
                             child: Text(
                               "Sign-in",
@@ -142,6 +150,15 @@ class ChefRegView_1 extends StatelessWidget {
                     ),
                   ],
                 ),
+                model.hasErrorMessage
+                    ? Container(
+                        child: Text(model.errorMessage),
+                      )
+                    : Container(),
+                // model.hasErrorMessage
+                //     ? UIHelper()
+                //         .showErrorButtomSheet(context, model.errorMessage)
+                //     : Container(),
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),

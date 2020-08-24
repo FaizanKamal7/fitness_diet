@@ -1,7 +1,8 @@
+import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_1.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_2.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefSignInView.dart';
-import 'package:fitness_diet/ui/views/chefViews/chefProfile.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfile.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_1.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_2.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custSignInView.dart';
@@ -12,38 +13,36 @@ import 'package:fitness_diet/ui/views/splashView.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-const String initialRoute = "splash";
+const String initialRoute = routes.SplashRoute;
 
 class Router {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case 'home':
+      case routes.HomeRoute:
         return MaterialPageRoute(builder: (_) => HomeView());
-      case 'splash':
+      case routes.SplashRoute:
         return MaterialPageRoute(builder: (_) => SplashView());
 
       // Customer Routes
-       case 'custReg_1':
+      case routes.CustReg1Route:
         return MaterialPageRoute(builder: (_) => CustRegView_1());
-      case 'custReg_2':
+      case routes.CustReg2Route:
         return MaterialPageRoute(builder: (_) => CustRegView_2());
-      case 'custSignIn':
+      case routes.CustSignRoute:
         return MaterialPageRoute(builder: (_) => CustSigninView());
-      case 'cust':
+      case routes.FoodMenuRoute:
         return MaterialPageRoute(builder: (_) => FoodMenuView());
-      case 'foodMenu':
-        return MaterialPageRoute(builder: (_) => FoodMenuView());
-      case 'custProfile':
+      case routes.CusProfileRoute:
         return MaterialPageRoute(builder: (_) => CustProfile());
 
       // Chef Routes
-      case 'chefReg_1':
+      case routes.ChefReg1Route:
         return MaterialPageRoute(builder: (_) => ChefRegView_1());
-      case 'chefReg_2':
+      case routes.ChefReg2Route:
         return MaterialPageRoute(builder: (_) => ChefRegView_2());
-      case 'chefSignIn':
+      case routes.ChefSignRoute:
         return MaterialPageRoute(builder: (_) => ChefSignInView());
-      case 'chefProfile':
+      case routes.ChefProfileRoute:
         return MaterialPageRoute(builder: (_) => ChefProfile());
 
       // case 'post':

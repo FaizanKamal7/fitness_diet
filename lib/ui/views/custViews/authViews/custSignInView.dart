@@ -1,3 +1,4 @@
+import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custSignInViewModel.dart';
@@ -21,10 +22,11 @@ class CustSigninView extends StatefulWidget {
 
 class _CustSigninViewState extends State<CustSigninView> {
   final TextEditingController _phNoController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+
+    bool tempBool = true;
     return BaseView<CustSignInViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Scaffold(
@@ -84,13 +86,15 @@ class _CustSigninViewState extends State<CustSigninView> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: FlatButton(
-                        onPressed: () async {
-                          bool signInResult =
-                              await model.signInCust(_phNoController.text);
-                          signInResult
-                              ? Navigator.popAndPushNamed(context, "foodMenu")
-                              : UIHelper().showErrorButtomSheet(
-                                  context, model.errorMessage);
+                        onPressed: () {
+                          model.signInCust(_phNoController.text);
+                          // bool signInResult =
+                          //     await model.signInCust(_phNoController.text);
+                          // signInResult
+                          //     ? Navigator.popAndPushNamed(
+                          //         context, FoodMenuRoute)
+                          //     : UIHelper().showErrorButtomSheet(
+                          //         context, model.errorMessage);
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
@@ -114,8 +118,7 @@ class _CustSigninViewState extends State<CustSigninView> {
                           ),
                           InkResponse(
                             onTap: () {
-                              print("Tapped");
-                              Navigator.pushNamed(context, 'custReg_1');
+                              model.goToCustReg1();
                             },
                             child: Text(
                               "Register",
@@ -132,6 +135,19 @@ class _CustSigninViewState extends State<CustSigninView> {
                     ),
                   ],
                 ),
+
+                // tempBool
+                //     ? showBottomSheet(
+                //         context: context,
+                //         builder: (context) => UIHelper()
+                //             .showErrorButtomSheet(context, "errorText"))
+//                    : Container(),
+                model.hasErrorMessage
+                    ? Container(
+                        child: Text(model.errorMessage),
+                      )
+                    : Container(),
+
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),

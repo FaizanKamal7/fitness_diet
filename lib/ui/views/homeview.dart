@@ -1,7 +1,6 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/services/auth.dart';
-import 'package:fitness_diet/core/viewmodels/checkProfileViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/homeViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveBuilder.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
@@ -14,11 +13,11 @@ import 'package:provider/provider.dart';
 class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("----> 'HomeView' reached");
     final user = Provider.of<User>(context);
-    return BaseView<CheckProfileViewModel>(
+    return BaseView<HomeViewModel>(
         onModelReady: (model) =>
-            user != null ? model.userTypeIs(user.uid) : null,
-        // onModelReady: (model) => model.userTypeIs(user.uid) ?? null,
+            user != null ? model.redirectSignedInUser(user.uid) : null,
         builder: (context, model, child) {
           if (user == null) {
             return ResponsiveBuilder(
@@ -79,8 +78,7 @@ class HomeView extends StatelessWidget {
                                 children: [
                                   startAsText(sizingInformation.screenSize),
                                   FlatButton(
-                                    onPressed: () => Navigator.pushNamed(
-                                        context, 'custSignIn'),
+                                    onPressed: () => model.gotToCustSignIn(),
                                     child: startAsButtonStyle("Customer",
                                         sizingInformation.screenSize),
                                   ),
@@ -95,8 +93,7 @@ class HomeView extends StatelessWidget {
                                 children: [
                                   startAsText(sizingInformation.screenSize),
                                   FlatButton(
-                                    onPressed: () => Navigator.pushNamed(
-                                        context, 'chefSignIn'),
+                                    onPressed: () => model.gotToChefSignIn(),
                                     child: startAsButtonStyle(
                                         "Chef", sizingInformation.screenSize),
                                   ),
@@ -143,8 +140,7 @@ class HomeView extends StatelessWidget {
                           Spacer(),
                           // >>>>>>>>>>>>>>>>>>>> S K I P
                           InkWell(
-                            onTap: () =>
-                                Navigator.pushNamed(context, 'foodMenu'),
+                            onTap: () => model.gotToFoodMenu(),
                             child: SkipBtn(
                               passedText: "SKIP",
                               deviceSize: sizingInformation.screenSize,
@@ -161,74 +157,14 @@ class HomeView extends StatelessWidget {
             if (model.state == ViewState.Busy) {
               return Loading();
             } else {
-              // ----------- Proper way but below error is a bitch
-              // ----------- Flutter Provider setState() or markNeedsBuild() called during build
-              // ----------- https://stackoverflow.com/a/59378918/7290043
-              // String _returnedUser;
-
-              // model.userTypeIs(user.uid).then((_user) => _returnedUser = _user);
-
-              // if (_returnedUser == "cust") {
-              //   print("model.userTypeIs in cust: " + _returnedUser);
-              //   () => Navigator.pushNamed(context, "foodMenu");
-              // } else if (_returnedUser == "chef") {
-              //   print("model.userTypeIs in chef: " + _returnedUser);
-              //   Navigator.pushNamed(context, "chefProfile");
-              // } else {
-              //   print("model.userTypeIs  in else: " + _returnedUser);
-
-              //   return Container(
-              //     child: Center(
-              //       child: FlatButton(
-              //         onPressed: () => AuthService().signOut(),
-              //         child: Text(
-              //           "Signout",
-              //           style: TextStyle(color: Colors.white),
-              //         ),
-              //       ),
-              //     ),
-              //   );
-              // }
-              // ----------- J U G A R R  way
-              dynamic _returnedUser;
-              checkUser() async {
-                print("checkUserFucntionRan");
-                _returnedUser = await model.userTypeIs(user.uid);
-
-                if (_returnedUser.toString() == "cust") {
-                  print("_returnedUser: " + _returnedUser.toString());
-                  Navigator.pushNamed(context, "foodMenu");
-                } else if (_returnedUser.toString() == "chef") {
-                  print("_returnedUser: " + _returnedUser.toString());
-                  Navigator.pushNamed(context, "chefProfile");
-                } else {
-                  print("_returnedUser: " +
-                      _returnedUser.toString() +
-                      " Provider user: " +
-                      user.toString());
-
-                  return Container(
-                    child: Center(
-                      child: FlatButton(
-                        onPressed: () => AuthService().signOut(),
-                        child: Text("Signout"),
-                      ),
-                    ),
-                  );
-                }
-              }
-
-              //    _returnedUser == null ? Loading() : Container();
-
-              checkUser();
-
-              // print(
-              //     "Returend user: " + _returnedUser + " and user id is: " + user.uid);
-              // Navigator.pushNamed(context, _returnedUser.toString());
+              print(
+                  "User is already signed in hence redirecting control to respective user - (Message from within 'HomeView')");
+              model.redirectSignedInUser(user.uid);
             }
-            return SplashWidget(
-              deviceSize: MediaQuery.of(context).size,
-            );
+            // return SplashWidget(
+            //   deviceSize: MediaQuery.of(context).size,
+            // );
+            return Loading();
           }
         });
   }

@@ -8,10 +8,8 @@ import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
 import 'package:logger/logger.dart';
-import 'package:otp/otp.dart';
-import 'package:flutter_otp/flutter_otp.dart';
 
-class AuthService extends BaseViewModel {
+class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Logger logger;
   User _userFormFirebaseUser(FirebaseUser user) {
@@ -73,7 +71,7 @@ class AuthService extends BaseViewModel {
 
     Future<String> getOTPresult() async {
       print("Dialog shown");
-      setState(ViewState.Idle);
+      // setState(ViewState.Idle);
       var dialogResult =
           await _dialogService.showDialog(dialogType: Dialog_Types.OTP);
 
@@ -143,7 +141,7 @@ class AuthService extends BaseViewModel {
       else
         print('Something has gone wrong, please try later ' +
             authException.message);
-      setState(ViewState.Idle);
+    //  setState(ViewState.Idle);
       completer.complete(newUserResult);
     };
 
