@@ -1,5 +1,5 @@
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
-import 'package:fitness_diet/ui/views/custViews/custHome/Header/app_drawer.dart';
+import 'package:fitness_diet/ui/views/custViews/custHome/Header/custAppDrawer.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/homeAppBarDelegate.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/locationHeader.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/avalaibleDishes/AvaliableDishesList.dart';
@@ -86,7 +86,7 @@ class FoodMenuView extends StatelessWidget {
     return ResponsiveSafeArea(
       builder: (context, widgetSize) => Scaffold(
         key: _scaffoldKey,
-        endDrawer: AppDrawer(),
+        endDrawer: CustAppDrawer(),
         body: Stack(
           fit: StackFit.loose,
           children: <Widget>[
@@ -117,7 +117,6 @@ class FoodMenuView extends StatelessWidget {
                         padding: EdgeInsets.all(widgetSize.width * 0.022),
 
                         child: StandardHeadingNoBg(
-                          deviceSize: deviceSize,
                           passedText: "Recent",
                         ),
                       ),
@@ -144,7 +143,6 @@ class FoodMenuView extends StatelessWidget {
                     padding: EdgeInsets.all(widgetSize.width * 0.022),
 
                     child: StandardHeadingNoBg(
-                      deviceSize: deviceSize,
                       passedText: "Available dishes",
                     ),
                   ),

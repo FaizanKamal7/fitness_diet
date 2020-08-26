@@ -11,11 +11,12 @@ class SubNavBarContent extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(deviceSize.height * 0.003),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             passedIcon,
-            size: deviceSize.height * 0.015,
+            size: deviceSize.height * 0.021,
             color: Colors.brown,
           ),
           Text(

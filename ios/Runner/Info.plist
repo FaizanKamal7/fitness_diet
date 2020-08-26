@@ -8,7 +8,7 @@
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
-	<key>CFBundleInfoDictionaryVersion</key>
+	<key>CFBundleInfoDictionaryVersion</key>	
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>fitness_diet</string>
@@ -27,12 +27,18 @@
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
+
+		
+	<!-- <key>NSPhotoLibraryUsageDescription</key>
+	<key>NSCameraUsageDescription</key>
+	<key>NSMicrophoneUsageDescription</key> -->
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
+	
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>

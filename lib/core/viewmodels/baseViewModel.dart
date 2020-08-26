@@ -10,7 +10,7 @@ class BaseViewModel extends ChangeNotifier {
   ViewState _state = ViewState.Idle;
   String _errorMessage;
   ViewState get state => _state;
- // final NavigationService navigationService = locator<NavigationService>();
+  // final NavigationService navigationService = locator<NavigationService>();
 
   void setState(ViewState viewState) {
     _state = viewState;

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
 
 class DatabaseService {
@@ -9,8 +10,13 @@ class DatabaseService {
       Firestore.instance.collection('customer');
   final CollectionReference chefCollection =
       Firestore.instance.collection('chef');
+
   final CollectionReference dishCollection =
       Firestore.instance.collection('dish');
+  final CollectionReference dishCtgCollection =
+      Firestore.instance.collection('dishCategory');
+  final CollectionReference dishAttrCollection =
+      Firestore.instance.collection('dishAttributes');
 
   final String uid;
   DatabaseService({this.uid});
@@ -55,7 +61,6 @@ class DatabaseService {
   //
   // >>>>>>>>>>>>>>>> G E T T I N G   D A T A
   //
-
   CustData _custDataFromSnapshot(DocumentSnapshot snapshot) {
     // print(" UiD DB TEST" + uid + " USerNAme: " + snapshot.data['username']);
     return CustData(
@@ -79,7 +84,7 @@ class DatabaseService {
     return custCollection.document(uid).snapshots().map(_custDataFromSnapshot);
   }
 
-  // ------------------------------- UPDATION AND RETRIVAL OF CHEF DATA
+  // ------------------------------- U P D A T I O N   A N D   R E T R I V A L   O F   C H E F  D A T A
 
   Future updateChefData(Map<String, dynamic> dataMap) async {
     // });
@@ -129,56 +134,121 @@ class DatabaseService {
     return chefCollection.document(uid).snapshots().map(_chefDataFromSnapshot);
   }
 
-// ------------------------------- UPDATION AND RETRIVAL OF DISH DATA
+// ------------------------------- U P D A T I O N   A N D   R E T R I V A L   O F   D I S H   D A T A
 
   Future updateDishData(Map<String, dynamic> dataMap) async {
-    final dishLength = dishCollection.snapshots().length;
+    print(
+        "---------> UpdateDishData function reached in DatabaseServies class");
+    // print("DishLength: " + dishLength.toString());
+    print("DataMap : " + dataMap.toString());
+    final dishLength = await countDishDocuments();
+    // final dishLength =
+    //     await Firestore.instance.collection('dish').snapshots().length;
 
-    print("DishLength: " + dishLength.toString());
-    await dishCollection.document(dishLength.toString()).setData(
-      {
-        'dishID': dishLength,
-        'dishAddDate': DateTime.now(),
+    int dishID = dishLength + 1;
+    if (dishLength == 0) {
+      await dishCollection.document(dishID.toString()).setData(
+        {
+          'dishID': dishLength,
+          'dishAddDate': DateTime.now(),
+        },
+        merge: true,
+      );
+    }
+
+    //- Dynamically adding data in the db
+    dataMap.forEach(
+      (key, value) async {
+        print("Adding dynamic dish data - DatabaseService");
+        await dishCollection.document(dishID.toString()).setData(
+          {
+            key: value,
+          },
+          merge: true,
+        );
       },
-      merge: true,
     );
-
-    // - Dynamically adding data in the db
-    // dataMap.forEach(
-    //   (key, value) async {
-    //     await dishCollection.document(uid).setData(
-    //       {
-    //         key: value,
-    //       },
-    //       merge: true,
-    //     );
-    //   },
-    // );
   }
 
-// Cust data from snapshot (For retrival)
-//   ChefData _chefDataFromSnapshot(DocumentSnapshot snapshot) {
-//     return ChefData(
-//       chefId: uid,
-//       chefName: snapshot.data['chefName'] ?? "",
-//       chefPhNo: snapshot.data['chefPhNo'] ?? "",
-//       chefDateOfBirth:
-//           (snapshot.data['chefDateOfBirth'] as Timestamp).toDate() ?? "",
-//       chefAddDate: (snapshot.data['chefAddDate'] as Timestamp).toDate(),
-//       chefLocation: snapshot.data['chefLocation'] ?? "",
-//       chefRatings: snapshot.data['chefLocation'] ?? null,
-//       chefFollowers: snapshot.data['chefFollowers'] ?? [],
-//       chefDishes: snapshot.data['chefDishes'] ?? [],
-//       chefPicture: snapshot.data['chefPicture'] ?? "",
-//       chefBio: snapshot.data['chefBio'] ?? "",
-//     );
-//   }
+//Cust data from snapshot (For retrival)
+  Dish _dishDataFromSnapshot(DocumentSnapshot snapshot) {
+    print("-------> Snapshot data (from within _dishDataFromSnapshot) : " +
+        snapshot.data.toString());
+    return Dish(
+      dishID: snapshot.data['dishID'] ?? "",
+      dishName: snapshot.data['dishName'] ?? "",
+      dishPrice: snapshot.data['dishPrice'] ?? 0,
+      dishRatings: snapshot.data['dishRatings'] ?? 0.0,
+      dishPic: snapshot.data['dishPic'] ?? null,
+      dishAval: snapshot.data['dishAval'] ?? false,
+      dishPrepTime: snapshot.data['dishPrepTime'] ?? 0,
+      dishKcal: snapshot.data['dishKcal'] ?? 0.0,
+      dishFat: snapshot.data['dishFat'] ?? 0.0,
+      dishCarbs: snapshot.data['dishCarbs'] ?? 0.0,
+      dishProtein: snapshot.data['dishProtein'] ?? 0.0,
+      dishAddDate: snapshot.data['dishAddDate'] ?? null,
+      dishUpdateDate: snapshot.data['dishUpdateDate'] ?? null,
+      // chefID: snapshot.data['chefID'] ?? "",
+      // ctgID: fetchDishCtgName(snapshot.data['ctgID']) ?? 0,
+      // attrID: fetchDishAttrName(snapshot.data['attrID']) ?? 0,
+    );
+  }
 
-// // Get user doc stream
-//   Stream<ChefData> get getChefData {
-//     return chefCollection.document(uid).snapshots().map(_chefDataFromSnapshot);
-//   }
+// Get user doc stream
+  Stream<Dish> get getDishData {
+    print("----> Getting DishData from inside DatabaseService class");
+    var chefDishes;
+    try {
+      chefDishes = dishCollection
+          .document(1.toString())
+          .snapshots()
+          .map(_dishDataFromSnapshot);
+      // chefDishes =
+      //     dishCollection.where("chefID", isEqualTo: uid).getDocuments();
+    } catch (error) {
+      print("----> ERROR in getDishData: " + error.toString());
+    }
 
+    return chefDishes;
+  }
+
+  Future<Map<String, dynamic>> getChefDishList() async {
+    Map<String, dynamic> chefDishes;
+    var result =
+        await dishCollection.where("chefID", isEqualTo: uid).getDocuments();
+
+    result.documents.forEach((eachResult) {
+      // chefDishes = eachResult.data;
+      dishCollection.document().snapshots().map(_dishDataFromSnapshot);
+      print("_______GetDIsheachResult: " + eachResult.data.toString());
+    });
+
+    return chefDishes;
+  }
+
+  Future<int> countDishDocuments() async {
+    QuerySnapshot _myDoc = await dishCollection.getDocuments();
+    List<DocumentSnapshot> _myDocCount = _myDoc.documents;
+    return _myDocCount.length;
+  }
+
+// -------- Fetching category name using ctg-ID
+  Future<String> fetchDishCtgName(DocumentSnapshot passedCtgID) async {
+    QuerySnapshot ctgName = await dishCtgCollection
+        .where("ctgID", isEqualTo: passedCtgID)
+        .getDocuments();
+    print("------> ctgName from fetchDishCtgName" + ctgName.toString());
+    return ctgName.toString();
+  }
+
+// -------- Fetching Attribute name using ctg-ID
+  Future<String> fetchDishAttrName(DocumentSnapshot passedAttrID) async {
+    QuerySnapshot attrName = await dishAttrCollection
+        .where("attrID", isEqualTo: passedAttrID)
+        .getDocuments();
+    print("------> attrName from fetchDishattrName" + attrName.toString());
+    return attrName.toString();
+  }
 // -------------------------------------------------------------------- Custom queries functions
 
 // This function is just to check if the the passed user ID is of customer or chef

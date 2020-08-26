@@ -1,6 +1,8 @@
 import 'package:fitness_diet/core/services/auth.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
+import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefAppDrawerViewmodel.dart';
+import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/addDishViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefReg2ViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefRegViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefSignInViewModel.dart';
@@ -42,4 +44,6 @@ void setupLocator() {
   locator.registerFactory(() => ChefRegViewModel());
   locator.registerFactory(() => ChefReg2ViewModel());
   locator.registerFactory(() => ChefSignInViewModel());
+  locator.registerFactory(() => ChefAppDrawerViewModel());
+  locator.registerFactory(() => AddDishViewModel());
 }

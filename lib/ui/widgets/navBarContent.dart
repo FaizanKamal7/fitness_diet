@@ -11,18 +11,19 @@ class NavBarContent extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(deviceSize.height * 0.004),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             passedIcon,
-            size: deviceSize.height * 0.015,
+            size: deviceSize.height * 0.02,
             color: Colors.brown,
           ),
           Text(
             "  " + passedText,
             style: TextStyle(
               color: Colors.brown,
-              fontSize: deviceSize.height * 0.016,
+              fontSize: deviceSize.height * 0.021,
               fontFamily: "Uni-Sans",
             ),
           ),

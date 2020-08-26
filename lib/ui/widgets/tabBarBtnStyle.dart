@@ -9,7 +9,7 @@ class TabBarBtnStyle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: deviceSize.width,
-      height: deviceSize.height * 0.06,
+      height: deviceSize.height * 0.04,
       decoration: BoxDecoration(
         color: Color(0xffD6D8FF),
         border: Border.all(

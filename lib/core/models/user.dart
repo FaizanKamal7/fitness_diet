@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class User {
   String uid;
   User({this.uid});
@@ -54,7 +52,7 @@ class CustData {
   });
 }
 
-class ChefData extends User {
+class ChefData {
   String chefId;
   String chefName;
   String chefPhNo;

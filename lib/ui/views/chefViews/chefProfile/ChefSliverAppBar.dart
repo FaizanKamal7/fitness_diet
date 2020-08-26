@@ -4,8 +4,10 @@ import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/auth.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/constants.dart';
+import 'package:fitness_diet/ui/widgets/standardBtnWhitishRound.dart';
 import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
   ChefSliverAppBar(
@@ -18,6 +20,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final deviceSize = MediaQuery.of(context).size;
+    final _chefData = Provider.of<ChefData>(context);
 
     void _showEditBottomSheet() {
       showModalBottomSheet(
@@ -68,83 +71,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
               ),
             ),
 // ---------------------------------------------------- H E A D E R   T E X T
-            Container(
-              margin: EdgeInsets.only(
-                  left: deviceSize.height * 0.03,
-                  top: deviceSize.height * 0.017),
-              child: Row(
-                children: <Widget>[
-                  //
-                  // >>>>>>>>> B A C K   I C O N
-                  //
-                  ClipOval(
-                    child: Container(
-                      color: Colors.white, // button color
-                      child: InkWell(
-                        splashColor: Colors.red, // inkwell color
-                        child: SizedBox(
-                          width: widgetSize.height * 0.1,
-                          height: widgetSize.height * 0.1,
-                          child: Icon(
-                            Icons.arrow_back_ios,
-                            size: widgetSize.height * 0.06,
-                          ),
-                        ),
-                        onTap: () {},
-                      ),
-                    ),
-                  ),
-                  // InkWell(
-                  //     onTap: () {
-                  //       Navigator.push(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //           builder: (context) => AppCore(),
-                  //         ),
-                  //       );
-                  //     },
-                  //     child: Icon()
-                  //     // Image.asset(
-                  //     //   "assets/images/AppIcons/back_white.png",
-                  //     //   height: deviceSize.height * 0.03,
-                  //     //   width: deviceSize.height * 0.03,
-                  //     // ),
-                  //     ),
-                  // //
-                  // >>>>>>>>> P R O F I L E   T E X T
-                  //
-                  Container(
-                    margin: EdgeInsets.only(left: 10),
-                    child: Text(
-                      "Profile",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: MediaQuery.of(context).size.height * 0.03,
-                        fontFamily: "Montserrat",
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Container(
-                    margin: EdgeInsets.only(right: deviceSize.width * 0.03),
-                    child: FlatButton(
-                      onPressed: () {
-                        AuthService().signOut();
 
-                        //      ChefSignInScreen();
-                      },
-                      child: Text(
-                        "Sign out",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: MediaQuery.of(context).size.height * 0.02,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
 // ---------------------------------------------------- C H E F   I N F O
 
             Column(
@@ -188,7 +115,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                     //     : 1
                   ),
                   child: Text(
-                    chefData.chefName,
+                    "_chefData.chefName",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: animationVal > 7.2
@@ -213,7 +140,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                 ),
               ],
             ),
-// ---------------------------------------------------- F O L L O W I N G    A N D   C H A T
+// ---------------------------------------------------- E D I T   A N D   C H A T
             Container(
               margin: EdgeInsets.only(
                   top: widgetSize.height * 0.84, left: widgetSize.width * 0.06),
@@ -221,10 +148,9 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   FlatButton(
-                    onPressed: () => _showEditBottomSheet(),
-                    child: Constants()
-                        .standardBtnStyle2("Edit Profile", deviceSize),
-                  ),
+                      onPressed: () => _showEditBottomSheet(),
+                      child:
+                          StandardBtnWhitishRound(passedText: "Edit Profile")),
                   Spacer(),
                   //
                   // >>>>>>>>> M E S S A G E   I C O N
@@ -233,7 +159,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                     onPressed: null,
                     child: Container(
                         margin: EdgeInsets.only(right: widgetSize.width * 0.06),
-                        height: widgetSize.height * 0.18,
+                        height: deviceSize.height * 0.18,
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
