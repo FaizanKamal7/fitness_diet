@@ -177,7 +177,6 @@ class DatabaseService {
       chefDishes: snapshot.data['chefDishes'] ?? [],
       chefPicture: snapshot.data['chefPicture'] ?? "",
       chefBio: snapshot.data['chefBio'] ?? "",
-
     );
   }
 
@@ -261,6 +260,10 @@ class DatabaseService {
 
 //Get user doc stream
   Stream<List<Dish>> get getDishData {
+    return dishCollection.getDocuments().asStream().map(_dishDataFromSnapshot);
+  }
+
+  Stream<List<Dish>> get getChefDishData {
     return dishCollection
         .where("chefID", isEqualTo: uid)
         .getDocuments()
