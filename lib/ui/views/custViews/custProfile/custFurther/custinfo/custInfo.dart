@@ -21,7 +21,7 @@ class CustInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final _custData = Provider.of<CustData>(context);
+    // final _custData = Provider.of<CustData>(context);
     return BaseView<CustInfoViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Container(
@@ -46,10 +46,12 @@ class CustInfo extends StatelessWidget {
                 margin: EdgeInsets.only(left: widgetSize.width * 0.1),
                 child: Column(
                   children: <Widget>[
-                    standardInfDisplaywithBullets('Data of birth :',
-                        model.parseDate(_custData.custDateOfBirth), deviceSize),
-                    standardInfDisplaywithBullets(
-                        'Location :', _custData.custLocation, deviceSize),
+                    // standardInfDisplaywithBullets('Data of birth :',
+                    //     model.parseDate(_custData.custDateOfBirth), deviceSize),
+                    //  standardInfDisplaywithBullets('Data of birth :',
+                    //         model.parseDate(_custData.custDateOfBirth), deviceSize),
+                    // standardInfDisplaywithBullets(
+                    //     'Location :', _custData.custLocation, deviceSize),
                   ],
                 ),
               ),
@@ -65,10 +67,10 @@ class CustInfo extends StatelessWidget {
                 margin: EdgeInsets.only(left: widgetSize.width * 0.1),
                 child: Column(
                   children: <Widget>[
-                    standardInfDisplaywithBullets(
-                        'Weight :', _custData.custWeight + "  Kg", deviceSize),
-                    standardInfDisplaywithBullets('Height :',
-                        _custData.custHeight + '  inch', deviceSize),
+                    // standardInfDisplaywithBullets(
+                    //     'Weight :', _custData.custWeight + "  Kg", deviceSize),
+                    // standardInfDisplaywithBullets('Height :',
+                    //     _custData.custHeight + '  inch', deviceSize),
                   ],
                 ),
               ),

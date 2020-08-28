@@ -56,7 +56,7 @@ class UIHelper {
     return Container(width: width);
   }
 
-  /// Returns a Error Do4ialog
+  /// Returns a Error Dialog
   Widget showErrorButtomSheet(BuildContext context, String errorText) {
     Size deviceSize = MediaQuery.of(context).size;
     return

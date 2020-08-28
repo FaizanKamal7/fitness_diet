@@ -1,6 +1,9 @@
 import 'dart:io';
 // import 'package:image_cropper/image_cropper.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/dish.dart';
+import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/addDishViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
@@ -18,7 +21,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart'; // For Image Picker
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart'; // For Image Picker
 
 class AddDish extends StatefulWidget {
   @override
@@ -40,10 +45,29 @@ class _AddDishState extends State<AddDish> {
   int pageIndex;
   List screenList;
   // SwiperController _swipeController = SwiperController();
-
+  List<DishCategory> _dishCatgList;
+  List<Dish> _chefdishTemp;
+  List<String> _CtgNames = List<String>();
   @override
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;
+    _chefdishTemp = Provider.of<List<Dish>>(context);
+    _dishCatgList = Provider.of<List<DishCategory>>(context);
+
+    print(">>>>>>>>>>> Dish Category list : " + _dishCatgList.toString());
+    print(">>>>>>>>>>> Dish  list : " + _chefdishTemp.toString());
+
+    // for (int i = 0; i < _dishCatgList.length; i++) {
+    //   _CtgNames.add(_dishCatgList[i].ctgName);
+    //   print(_dishCatgList[i].ctgName);
+    // }
+
+    // _chefdishTemp.map((value) {
+    //   _CtgNames.add(value.dishName);
+    //   print("Val $value : " + value.dishName);
+    // }).toList();
+
+    print(">>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Dish Names list : " + _CtgNames.toString());
 
     screenList = [screen1View(deviceSize), screen2View(deviceSize)];
     return BaseView<AddDishViewModel>(
@@ -69,15 +93,29 @@ class _AddDishState extends State<AddDish> {
                                 ListTile(
                                   title: Text("Pick from Gallery"),
                                   onTap: () async {
-                                    _dishPic = await model.getImgFile(
-                                        ImageSource.gallery, deviceSize);
+                                    File dishPicTemp = await ConstantFtns()
+                                        .getImgFile(
+                                            ImageSource.gallery, deviceSize);
+                                    print(
+                                        "------- dishPicTemp inside AddDishVIew:" +
+                                            dishPicTemp.toString());
+                                    setState(() {
+                                      _dishPic = dishPicTemp;
+                                      print("------- _dishPic AddDishVIew:" +
+                                          dishPicTemp.toString());
+                                    });
                                   },
                                 ),
                                 ListTile(
                                   title: Text("Take a Picture"),
                                   onTap: () async {
-                                    _dishPic = await model.getImgFile(
-                                        ImageSource.camera, deviceSize);
+                                    File dishPicTemp = await ConstantFtns()
+                                        .getImgFile(
+                                            ImageSource.camera, deviceSize);
+
+                                    setState(() {
+                                      _dishPic = dishPicTemp;
+                                    });
                                   },
                                 ),
                               ],
@@ -85,6 +123,7 @@ class _AddDishState extends State<AddDish> {
                           ),
                         );
                       },
+                      // ---- Setting dish pic if not null
                       child: Stack(
                         children: <Widget>[
                           _dishPic != null
@@ -177,7 +216,10 @@ class _AddDishState extends State<AddDish> {
                           margin:
                               EdgeInsets.only(bottom: deviceSize.height * 0.02),
                           child: FlatButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                print(
+                                    "------ _dishPic inside onPressed  of addDishView.dart : " +
+                                        _dishPic.toString());
                                 model.uploadDishInfo(
                                   _dishNameContr.text,
                                   _priceContr.text,
@@ -186,25 +228,6 @@ class _AddDishState extends State<AddDish> {
                                   _dishCatg,
                                   _attrContr.text,
                                 );
-
-                                // if (Validators().verifyNameInputFeild(
-                                //         _dishNameContr.text) &&
-                                //     Validators()
-                                //         .verifyNameInputFeild(dishCatg) &&
-                                //     Validators().verifyNameInputFeild(
-                                //         _priceContr.toString()) &&
-                                //     prepTimeMin != null &&
-                                //     _dishPic != null) {
-                                //   print("uploaded yahooooooo");
-                                // await DatabaseService(uid: user.uid)
-                                //     .updateDishData({
-                                //   'chefDishName': _dishNameContr,
-                                //   'chefdishCatg': dishCatg,
-                                // });
-                                // } else {
-                                //   // Constants().showFillInfoErrorDialog(
-                                //   //     context, deviceSize);
-                                // }
                               },
                               child:
                                   StandardBtnBlueRound(passedText: "Upload")),
@@ -212,6 +235,11 @@ class _AddDishState extends State<AddDish> {
                       )
                     : Container(),
 
+                model.hasErrorMessage
+                    ? Container(
+                        child: Text(model.errorMessage),
+                      )
+                    : Container(),
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),
@@ -221,15 +249,15 @@ class _AddDishState extends State<AddDish> {
     );
   }
 
-  Widget showDropDown(dynamic _passedInfo, Size widgetSize) {
+  Widget showDropDown(dynamic _passedInfo, Size deviceSize) {
     return ClipRRect(
       borderRadius: BorderRadius.all(
-        Radius.circular(widgetSize.height * 0.15),
+        Radius.circular(deviceSize.height * 0.15),
       ),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: widgetSize.width * 0.05),
-        height: widgetSize.height * 0.05,
-        width: widgetSize.width * 0.9,
+        padding: EdgeInsets.symmetric(horizontal: deviceSize.width * 0.05),
+        height: deviceSize.height * 0.05,
+        width: deviceSize.width * 0.9,
         color: Colors.white.withOpacity(0.7),
         child: Center(
           child: DropdownButton<String>(
@@ -239,7 +267,7 @@ class _AddDishState extends State<AddDish> {
             elevation: 16,
             style: TextStyle(
                 color: Colors.brown.withOpacity(0.8),
-                fontSize: widgetSize.height * 0.02),
+                fontSize: deviceSize.height * 0.02),
 
             underline: Container(height: 0),
             isExpanded: true,
@@ -313,6 +341,17 @@ class _AddDishState extends State<AddDish> {
   }
 
   Widget screen1View(Size deviceSize) {
+    var _currencies = [
+      "Food",
+      "Transport",
+      "Personal",
+      "Shopping",
+      "Medical",
+      "Rent",
+      "Movie",
+      "Salary"
+    ];
+    String _currentSelectedValue;
     return Container(
       padding: EdgeInsets.only(
         left: deviceSize.width * 0.04,
@@ -461,12 +500,87 @@ class _AddDishState extends State<AddDish> {
                 )
               ],
             ),
-            TextFeildBigWhiteBG(
-                controller: _attrContr,
-                deviceSize: deviceSize,
-                isTypeInt: false,
-                hintText: '',
-                isObscureText: false),
+
+            ClipRRect(
+              borderRadius: BorderRadius.all(
+                Radius.circular(deviceSize.height * 0.15),
+              ),
+              child: Container(
+                padding:
+                    EdgeInsets.symmetric(horizontal: deviceSize.width * 0.05),
+                height: deviceSize.height * 0.06,
+                width: deviceSize.width * 0.9,
+                color: Colors.white.withOpacity(0.7),
+                alignment: Alignment.topCenter,
+                // color: Colors.red,
+                child: Column(
+                  children: [
+                    Row(
+                      children: <Widget>[
+                        Expanded(child: TextField(controller: _attrContr)),
+                        PopupMenuButton<String>(
+                          icon: const Icon(Icons.arrow_drop_down),
+                          onSelected: (String value) {
+                            _attrContr.text = value;
+                            print("_attrContr [[[[[[[[[[[[[[[[[[[[[[[[[[[[[ " +
+                                _attrContr.text);
+                          },
+                          itemBuilder: (BuildContext context) {
+                            return <String>[
+                              'Select Category',
+                              'Two',
+                              'Free',
+                              'Four'
+                            ].map<PopupMenuItem<String>>((String value) {
+                              return PopupMenuItem(
+                                  child: Text(value), value: value);
+                            }).toList();
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // DropdownSearch<String>(
+            //   mode: Mode.MENU,
+            //   showSelectedItem: true,
+            //   items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
+            //   label: "Menu mode",
+            //   hint: "country in menu mode",
+            //   popupItemDisabled: (String s) => s.startsWith('I'),
+            //   onChanged: print,
+            //   selectedItem: "Brazil",
+            // ),
+            // TextFeildBigWhiteBG(
+            //   controller: _attrContr,
+            //   deviceSize: deviceSize,
+            //   isTypeInt: false,
+            //   hintText: '',
+            //   isObscureText: false,
+            // ),
+
+            // SearchableDropdown.single(
+            //   items: <String>['Select Category', 'Two', 'Free', 'Four']
+            //       .map<DropdownMenuItem<String>>((String value) {
+            //     return DropdownMenuItem<String>(
+            //       value: value,
+            //       child: Text(value),
+            //     );
+            //   }).toList(),
+            //   value: "selectedValue",
+            //   hint: "Select one",
+            //   searchHint: "Select one",
+            //   onChanged: (value) {
+            //     setState(() {
+            //       _currentSelectedValue = value;
+            //     });
+            //   },
+            //   isExpanded: true,
+            // ),
+
             SizedBox(
               height: deviceSize.height * 0.02,
             ),

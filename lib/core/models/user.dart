@@ -33,7 +33,7 @@ class CustData {
   String custWeight;
   String custHeight;
   List custFollowing;
-  int pId;
+  String pId;
 
   CustData({
     this.custId,

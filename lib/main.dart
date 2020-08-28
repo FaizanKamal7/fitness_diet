@@ -16,7 +16,7 @@ void main() {
     MaterialApp(
       home: Scaffold(
         body: DevicePreview(
-          enabled: true,
+          enabled: false,
           builder: (context) => MyApp(),
         ),
       ),

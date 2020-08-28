@@ -9,15 +9,20 @@ class ChefProfileMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    var dishStreamProvider;
-    var chefDataStreamProvider;
+    var dishStreamProvider, chefDataStreamProvider, dishCatgStreamProvider;
     try {
-      dishStreamProvider = StreamProvider<Dish>.value(
-        value: DatabaseService(uid: user.uid).getDishData,
-      );
+      
       chefDataStreamProvider = StreamProvider<ChefData>.value(
-        value: DatabaseService(uid: user.uid).getChefData,
-      );
+          value: DatabaseService(uid: user.uid).getChefData);
+      
+      dishStreamProvider = StreamProvider<List<Dish>>.value(
+          value: DatabaseService().getDishData);
+      
+      dishCatgStreamProvider = StreamProvider<List<DishCategory>>.value(
+          value: DatabaseService().getDishCatgData);
+      
+      print("========= chefDataStreamProvider : " +
+          dishStreamProvider.toString());
     } catch (error) {
       print("-----> Error in ChefProfileMain : " + error.toString());
     }
@@ -26,6 +31,7 @@ class ChefProfileMain extends StatelessWidget {
       providers: [
         chefDataStreamProvider,
         dishStreamProvider,
+        dishCatgStreamProvider
       ],
       child: MaterialApp(home: ChefProfileView()),
     );

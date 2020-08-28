@@ -115,7 +115,8 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                     //     : 1
                   ),
                   child: Text(
-                    "_chefData.chefName",
+                    // _chefData != null ? _chefData.chefName : "",
+                    "Chef",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: animationVal > 7.2

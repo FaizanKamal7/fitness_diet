@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -7,7 +6,7 @@ class Dish {
   String dishName;
   int dishPrice;
   double dishRatings;
-  FileImage dishPic;
+  String dishPic;
   bool dishAval;
   int dishPrepTime;
   double dishKcal;

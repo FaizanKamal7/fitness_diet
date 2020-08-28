@@ -5,6 +5,20 @@ class Validators {
         : false;
   }
 
+  bool verifyNumInputFeild(int inputText) {
+    return inputText != null && inputText < 10000 ? true : false;
+  }
+
+  bool verifySmallNumberField(String inputNumber) {
+    return inputNumber.length != 0 && inputNumber.length < 7 ? true : false;
+  }
+
+  bool verifyLargeNumberField(String inputNumber) {
+    return inputNumber != null && inputNumber.length < 8 && inputNumber != ""
+        ? true
+        : false;
+  }
+
   bool verifyPhoneNumber(String phoneNumber) {
     if (phoneNumber != "") {
       if (phoneNumber[0] == "0" &&

@@ -2,6 +2,7 @@ import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_1.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_2.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefSignInView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/soleDishView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileMain.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileView.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_1.dart';
@@ -34,8 +35,10 @@ class Router {
         return MaterialPageRoute(builder: (_) => CustSigninView());
       case routes.FoodMenuRoute:
         return MaterialPageRoute(builder: (_) => FoodMenuView());
-      case routes.CusProfileRoute:
-        return MaterialPageRoute(builder: (_) => CustProfile());
+      // case routes.CusProfileRoute:
+      //   return MaterialPageRoute(builder: (_) => CustProfile());
+      case routes.CustProfileRoute:
+        return MaterialPageRoute(builder: (_) => CustProfileMain());
 
       // Chef Routes
       case routes.ChefReg1Route:
@@ -46,8 +49,9 @@ class Router {
         return MaterialPageRoute(builder: (_) => ChefSignInView());
       case routes.ChefProfileRoute:
         return MaterialPageRoute(builder: (_) => ChefProfileMain());
-      
-      
+      case routes.SoleDishRoute:
+        return MaterialPageRoute(builder: (_) => SoleDishView());
+
       case 'parent':
         return MaterialPageRoute(builder: (_) => CustProfileMain());
       // case 'post':

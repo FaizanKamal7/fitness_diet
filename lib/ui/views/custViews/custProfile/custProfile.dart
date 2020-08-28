@@ -63,7 +63,12 @@ class _CustProfileState extends State<CustProfile>
 
   @override
   Widget build(BuildContext context) {
+    // final user = Provider.of<User>(context);
+    // // StreamProvider<CustData>.value(
+    //     value: DatabaseService(uid: user.uid).getCustData);
     final _custData = Provider.of<CustData>(context);
+
+    // final _custData = Provider.of<CustData>(context);
     // final deviceSize = MediaQuery.of(context).size;
 
     // return StreamBuilder<CustData>(
@@ -79,7 +84,7 @@ class _CustProfileState extends State<CustProfile>
 
     return Material(
       child: ResponsiveSafeArea(
-        builder: (context, deviceSize) => DefaultTabController(
+        builder: (newContext, deviceSize) => DefaultTabController(
           length: 2,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,12 +101,12 @@ class _CustProfileState extends State<CustProfile>
                       height: deviceSize.height * 0.26,
                       decoration: BoxDecoration(
                         color: Colors.red,
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/cust2.JPG",
-                          ),
-                          fit: BoxFit.cover,
-                        ),
+                        // image: DecorationImage(
+                        //   image: AssetImage(
+                        //  //   "assets/images/cust2.JPG",
+                        //   ),
+                        //   fit: BoxFit.cover,
+                        // ),
                       ),
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 6.0, sigmaY: 6.0),
@@ -122,11 +127,11 @@ class _CustProfileState extends State<CustProfile>
                         //
                         // >>>>>>>>> B A C K   I C O N
                         //
-                        Image.asset(
-                          backIcon,
-                          height: 25,
-                          width: 25,
-                        ),
+                        // Image.asset(
+                        //   backIcon,
+                        //   height: 25,
+                        //   width: 25,
+                        // ),
 
                         // >>>>>>>>> P R O F I L E   T E X T
                         //
@@ -177,13 +182,13 @@ class _CustProfileState extends State<CustProfile>
                         // >>>>>>>>> U S E R   I M A G E
                         //
                         ClipOval(
-                          child: Image.asset(
-                            "assets/images/chef2.JPG",
-                            height: deviceSize.height * 0.1,
-                            width: deviceSize.height * 0.1,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                            // child: Image.asset(
+                            //   "assets/images/chef2.JPG",
+                            //   height: deviceSize.height * 0.1,
+                            //   width: deviceSize.height * 0.1,
+                            //   fit: BoxFit.cover,
+                            // ),
+                            ),
                         // >>>>>>>>> U S E R   N A M E --A N D -- L O C A T I O N
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -218,7 +223,7 @@ class _CustProfileState extends State<CustProfile>
 
                                 //
                                 child: new Text(
-                                  _custData.custLocation,
+                                  "_custData.custLocation",
                                   style: TextStyle(
                                     fontFamily: "UniSansRegular",
                                     fontSize: 20,
@@ -271,9 +276,9 @@ class _CustProfileState extends State<CustProfile>
                           child: Container(
                             // margin: EdgeInsets.only(right: deviceSize.width * 0.003),
                             height: deviceSize.height * 0.055,
-                            child: Image.asset(
-                              "assets/images/AppIcons/message.png",
-                            ),
+                            // child: Image.asset(
+                            //   "assets/images/AppIcons/message.png",
+                            // ),
                           ),
                         ),
                       ],
