@@ -1,8 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/services/navigationService.dart';
-import 'package:fitness_diet/locator.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

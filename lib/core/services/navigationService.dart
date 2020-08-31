@@ -10,6 +10,12 @@ class NavigationService {
     return navigatorKey.currentState.pushReplacementNamed(routeName);
   }
 
+  Future<dynamic> navigateToWithoutReplacement(String routeName) {
+    print("---------> Navigation Service reached and navigating to  : " +
+        routeName.toString());
+    return navigatorKey.currentState.pushNamed(routeName);
+  }
+
   void goBack() {
     return navigatorKey.currentState.pop();
   }

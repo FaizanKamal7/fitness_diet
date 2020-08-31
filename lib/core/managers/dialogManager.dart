@@ -143,11 +143,56 @@ class _DialogManagerState extends State<DialogManager> {
                 userText: otpController.text,
                 confirmed: true,
               ));
-            //  Navigator.pop(context);
+              //  Navigator.pop(context);
             }
           },
         )..show();
+        break;
+      case Dialog_Types.PLAN_SUCCESS:
+        AwesomeDialog(
+          context: context,
+          animType: AnimType.LEFTSLIDE,
+          dialogType: DialogType.SUCCES,
+          dismissOnBackKeyPress: true,
+          dismissOnTouchOutside: true,
+          body: Center(
+            child: Column(
+              children: [
+                // >>>>>>>>>>>>>>>>>>>>>>> O T P   H E A D E R
+                Text(
+                  request.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: "Lemon-Milk",
+                      fontSize: deviceSize.height * 0.021),
+                ),
+                SizedBox(
+                  height: deviceSize.height * 0.0185,
+                ),
 
+                // >>>>>>>>>>>>>>>>>>>>>>> O T P   T E X T   F E I L D
+                Text(
+                  request.description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: "BAHNSCHRIFT",
+                      fontSize: deviceSize.height * 0.016),
+                ),
+                // >>>>>>>>>>>>>>>>>>>>>>> R E S E N D    A N D   T I M E R
+                SizedBox(
+                  height: deviceSize.height * 0.015,
+                ),
+              ],
+            ),
+          ),
+          btnOkText: request.buttonTitle,
+          btnOkOnPress: () async {
+            _dialogService.dialogComplete(AlertResponse(
+              confirmed: true,
+            ));
+            //  Navigator.pop(context);
+          },
+        )..show();
         break;
 
       default:

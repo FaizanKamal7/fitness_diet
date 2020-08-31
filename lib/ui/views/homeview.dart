@@ -6,7 +6,6 @@ import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/skip_btn.dart';
-import 'package:fitness_diet/ui/widgets/splashWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,6 +19,7 @@ class HomeView extends StatelessWidget {
             user != null ? model.redirectSignedInUser(user.uid) : null,
         builder: (context, model, child) {
           if (user == null) {
+            print("----------> User is null inside the 'HomeView'");
             return ResponsiveBuilder(
               builder: (context, sizingInformation) => Scaffold(
                 body: Stack(

@@ -1,4 +1,3 @@
-import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -27,6 +26,7 @@ class DishViewSingleDesign extends StatelessWidget {
       height: _deviceSize.height * 0.13,
       width: _deviceSize.width,
       margin: EdgeInsets.symmetric(horizontal: _deviceSize.width * 0.017),
+
       //color: Colors.amber,
       child: Stack(
         children: <Widget>[
@@ -58,9 +58,8 @@ class DishViewSingleDesign extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(
                 top: _deviceSize.height * 0.002,
-                left: _deviceSize.width * 0.265 -
-                    _deviceSize.width *
-                        0.08, // Food Image width - BG conatiner left margin
+                left: (_deviceSize.width * 0.265 - _deviceSize.width * 0.08) +
+                    10, // Food Image width - BG conatiner left margin
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +76,7 @@ class DishViewSingleDesign extends StatelessWidget {
                   ),
                   // >>>>>>>>>>>>>> Chef Name
                   Text(
-                    " By Ali Khan",
+                    chefName.toString(),
                     style: TextStyle(
                       fontFamily: "UniSansRegular",
                       fontSize: _deviceSize.height * 0.015,
@@ -146,7 +145,7 @@ class DishViewSingleDesign extends StatelessWidget {
                 right: _deviceSize.width * 0.05,
                 bottom: _deviceSize.height * 0.018),
             child: Text(
-              "Rs100",
+              price.toString() + "Rs",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: "Lemon-Milk",

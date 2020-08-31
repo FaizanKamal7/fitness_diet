@@ -1,21 +1,11 @@
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
-import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/services/auth.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
 
-class CustAppDrawerViewModel extends BaseViewModel {
+class ChefProfileMainViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
-
-  Future signOut() async {
-    setState(ViewState.Busy);
-    AuthService().signOut();
+  Future goBackToHome() {
     _navigationService.navigateTo(routes.HomeRoute);
-    setState(ViewState.Idle);
-  }
-
-  goToProfile() {
-    _navigationService.navigateToWithoutReplacement(routes.CustProfileRoute);
   }
 }

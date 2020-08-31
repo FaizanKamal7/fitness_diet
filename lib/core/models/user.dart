@@ -25,7 +25,7 @@ class CustData {
   String custName;
   String custPhNo;
   DateTime custDateOfBirth;
-  DateTime custAddDate;
+  String custPic;
   List custfavs;
   String custLocation;
   List custOrders;
@@ -33,27 +33,31 @@ class CustData {
   String custWeight;
   String custHeight;
   List custFollowing;
-  String pId;
+  DateTime custAddDate;
+  DateTime custUpdateDate;
 
-  CustData({
-    this.custId,
-    this.custName,
-    this.custPhNo,
-    this.custDateOfBirth,
-    this.custAddDate,
-    this.custGender,
-    this.custWeight,
-    this.custHeight,
-    this.custfavs,
-    this.custLocation,
-    this.custOrders,
-    this.custFollowing,
-    this.pId,
-  });
+  String planID;
+
+  CustData(
+      {this.custId,
+      this.custName,
+      this.custPhNo,
+      this.custDateOfBirth,
+      this.custAddDate,
+      this.custGender,
+      this.custWeight,
+      this.custHeight,
+      this.custfavs,
+      this.custLocation,
+      this.custOrders,
+      this.custFollowing,
+      this.custPic,
+      this.planID,
+      this.custUpdateDate});
 }
 
 class ChefData {
-  String chefId;
+  String chefID;
   String chefName;
   String chefPhNo;
   DateTime chefDateOfBirth;
@@ -62,13 +66,15 @@ class ChefData {
   int chefRatings;
   List chefFollowers;
   List chefDishes;
-  String chefPicture;
+  String chefPic;
   String chefBio;
+  DateTime chefUpdateDate;
+  bool hasDish;
   // Map<String, dynamic> keyValuesPairs;
 //  ChefData(this.keyValuesPairs);
 
   ChefData({
-    this.chefId,
+    this.chefID,
     this.chefName,
     this.chefPhNo,
     this.chefDateOfBirth,
@@ -76,8 +82,10 @@ class ChefData {
     this.chefDishes,
     this.chefFollowers,
     this.chefLocation,
-    this.chefPicture,
+    this.chefPic,
     this.chefRatings,
     this.chefBio,
+    this.chefUpdateDate,
+    this.hasDish,
   });
 }

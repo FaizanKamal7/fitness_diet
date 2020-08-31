@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 
 class Dish {
   String dishID;
   String dishName;
-  int dishPrice;
   double dishRatings;
   String dishPic;
   bool dishAval;
   int dishPrepTime;
   double dishKcal;
   double dishFat;
+  int dishPrice;
   double dishCarbs;
   double dishProtein;
   Timestamp dishAddDate;
   Timestamp dishUpdateDate;
+  String chefName; // Jugar
   String chefID; // - Foreign Key
-  int attrID; // - Foreign Key
-  int ctgID; // - Foreign Key
+  String attrID; // - Foreign Key
+  String ctgID; // - Foreign Key
 
   Dish({
     this.dishID,
@@ -33,6 +33,7 @@ class Dish {
     this.dishProtein,
     this.dishAddDate,
     this.dishUpdateDate,
+    this.chefName,
     this.chefID,
     this.attrID,
     this.ctgID,
@@ -42,7 +43,7 @@ class Dish {
 class Attribute {
   String attrID;
   String attrName;
-  String attrAddDate;
+  Timestamp attrAddDate;
 
   Attribute({
     this.attrID,
@@ -54,7 +55,7 @@ class Attribute {
 class DishCategory {
   String ctgID;
   String ctgName;
-  String ctgAddDate;
+  Timestamp ctgAddDate;
 
   DishCategory({
     this.ctgID,

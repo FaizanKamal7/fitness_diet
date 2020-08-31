@@ -1,6 +1,6 @@
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/services/database.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
@@ -21,7 +21,7 @@ class CustReg2ViewModel extends BaseViewModel {
 
     if (dataValidated) {
       print("--------------User().getUid: " + userID);
-      bool check = await DatabaseService(uid: userID).updateCustData({
+      bool check = await DatabaseService(uid: userID).addNewCustData({
         'custName': custName,
         'custDateOfBirth': dateOfBirth,
       });

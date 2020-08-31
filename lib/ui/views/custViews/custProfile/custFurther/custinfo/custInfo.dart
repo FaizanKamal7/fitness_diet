@@ -1,9 +1,9 @@
+import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custInfoViewModel/custInfoViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/foodSliderItem.dart';
-import 'package:fitness_diet/ui/widgets/standardHeadingNoBg.dart';
 import 'package:fitness_diet/ui/widgets/standardHeadingwithBGandRoundCorner.dart';
 import 'package:fitness_diet/ui/widgets/standardInfoDisplayWithBullets.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,8 @@ class CustInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    // final _custData = Provider.of<CustData>(context);
+    final _custData = Provider.of<CustData>(context);
+    final _planData = Provider.of<Plan>(context);
     return BaseView<CustInfoViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Container(
@@ -30,7 +31,7 @@ class CustInfo extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: widgetSize.width * 0.02),
                 child: Text(
-                  "Following 23 chefs",
+                  "Following " + _custData.custFollowing.toString() + " chefs",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "UniSansSemiBold",
@@ -40,42 +41,22 @@ class CustInfo extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: widgetSize.height * 0.06,
+                height: widgetSize.height * 0.03,
               ),
               Container(
                 margin: EdgeInsets.only(left: widgetSize.width * 0.1),
                 child: Column(
                   children: <Widget>[
-                    // standardInfDisplaywithBullets('Data of birth :',
-                    //     model.parseDate(_custData.custDateOfBirth), deviceSize),
-                    //  standardInfDisplaywithBullets('Data of birth :',
-                    //         model.parseDate(_custData.custDateOfBirth), deviceSize),
-                    // standardInfDisplaywithBullets(
-                    //     'Location :', _custData.custLocation, deviceSize),
+                    standardInfDisplaywithBullets('Data of birth : ',
+                        model.parseDate(_custData.custDateOfBirth), deviceSize),
+                    standardInfDisplaywithBullets(
+                        'Location :', '_custData.custLocation', deviceSize),
                   ],
                 ),
               ),
-              SizedBox(
-                height: widgetSize.height * 0.02,
-              ),
-              standardHeadingWithBGAndRoundCorner(
-                  'Body Measurement', deviceSize),
-              SizedBox(
-                height: widgetSize.height * 0.02,
-              ),
-              Container(
-                margin: EdgeInsets.only(left: widgetSize.width * 0.1),
-                child: Column(
-                  children: <Widget>[
-                    // standardInfDisplaywithBullets(
-                    //     'Weight :', _custData.custWeight + "  Kg", deviceSize),
-                    // standardInfDisplaywithBullets('Height :',
-                    //     _custData.custHeight + '  inch', deviceSize),
-                  ],
-                ),
-              ),
+
               SizedBox(height: widgetSize.height * 0.06),
-              standardHeadingWithBGAndRoundCorner('Favourites', deviceSize),
+              standardHeadingWithBGAndRoundCorner(passedText: "Favourites"),
 
               SizedBox(
                 height: widgetSize.height * 0.02,

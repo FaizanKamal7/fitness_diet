@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 Widget standardInfDisplaywithBullets(
     String text1, String text2, Size deviceSize) {
   return Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.start,
     children: <Widget>[
       Container(
-        margin: EdgeInsets.only(top: deviceSize.height * 0.015),
-        height: deviceSize.height * 0.02,
-        width: deviceSize.width * 0.02,
+        height: deviceSize.height * 0.015,
+        width: deviceSize.width * 0.015,
         decoration: BoxDecoration(
           color: Color(0xff000000),
           border: Border.all(
@@ -23,7 +23,7 @@ Widget standardInfDisplaywithBullets(
         text1,
         style: TextStyle(
           fontFamily: "Montserrat",
-          fontSize: deviceSize.height * 0.030,
+          fontSize: deviceSize.height * 0.020,
           color: Color(0xff4D3814),
           shadows: [
             Shadow(
@@ -35,19 +35,21 @@ Widget standardInfDisplaywithBullets(
         ),
       ),
       Container(
-        child: Text(
-          text2,
-          style: TextStyle(
-            fontFamily: "Montserrat",
-            fontSize: deviceSize.height * 0.030,
-            color: Color(0xff2A6427),
-            shadows: [
-              Shadow(
-                offset: Offset(0.00, 3.00),
-                color: Color(0xff000000).withOpacity(0.16),
-                blurRadius: 6,
-              ),
-            ],
+        child: Flexible(
+          child: Text(
+            text2,
+            style: TextStyle(
+              fontFamily: "Montserrat",
+              fontSize: deviceSize.height * 0.020,
+              color: Color(0xff2A6427),
+              shadows: [
+                Shadow(
+                  offset: Offset(0.00, 3.00),
+                  color: Color(0xff000000).withOpacity(0.16),
+                  blurRadius: 6,
+                ),
+              ],
+            ),
           ),
         ),
       ),

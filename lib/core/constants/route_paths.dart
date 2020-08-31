@@ -5,6 +5,7 @@ const String CustReg1Route = 'custReg_1';
 const String CustReg2Route = 'custReg_2';
 const String CustSignRoute = 'custSignIn';
 const String FoodMenuRoute = 'foodMenu';
+const String FoodMenuMainRoute = 'foodMenuMain';
 const String CustProfileRoute = 'custProfileMain';
 const String CustStartPlanRoute = 'custStartPlan';
 

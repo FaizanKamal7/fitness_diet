@@ -1,15 +1,14 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
-import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ConstantFtns extends BaseViewModel {
+  // ------------------------------------------- I M A G E   F U N C T I O N S
   Future<File> cropImgFile(PickedFile picked) async {
     File croppedImg = await ImageCropper.cropImage(
       sourcePath: picked.path,
@@ -30,7 +29,7 @@ class ConstantFtns extends BaseViewModel {
         source: source,
         maxWidth: deviceSize.width,
         // maxHeight: deviceSize.height * 0.1,
-        preferredCameraDevice: CameraDevice.rear);
+        preferredCameraDevice: CameraDevice.front);
     if (picked != null) {
       croppedImageFile = await cropImgFile(picked);
     }
@@ -56,6 +55,20 @@ class ConstantFtns extends BaseViewModel {
       print("completer.future 'uploadFtns inside ConstantFtns'= " +
           completer.future.toString());
     });
-    return completer.future;
+    String _imgURl = await completer.future;
+    return _imgURl;
   }
+
+  // ------------------------------------------- L O G I C    H E L P E R    F U N C T I O N S
+
+  // List<dynamic> extractSingleFeildListFromProviderList(
+  //     List<dynamic> _providerList, dynamic feildName) {
+  //   print("+++++++++++ Feild name: " + feildName);
+  //   List<dynamic> _newExtractedList = List<dynamic>();
+  //   for (int i = 0; i < _providerList.length; i++) {
+  //     print("_providerList[i].ctgName " + _providerList[i].);
+  //     _newExtractedList.add(_providerList[i].ctgName);
+  //   }
+  //   return _newExtractedList;
+  // }
 }

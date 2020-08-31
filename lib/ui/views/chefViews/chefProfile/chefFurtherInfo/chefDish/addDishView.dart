@@ -1,29 +1,20 @@
 import 'dart:io';
-// import 'package:image_cropper/image_cropper.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
-
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/addDishViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/standardBtnBlueRound.dart';
 import 'package:fitness_diet/ui/widgets/standardHeaderWithWhiteBG.dart';
-
 import 'package:fitness_diet/ui/widgets/standardHeadingNoBgUniSan.dart';
 import 'package:fitness_diet/ui/widgets/textFeildBigWhiteBG.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:firebase_storage/firebase_storage.dart'; // For File Upload To Firestore
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart'; // For Image Picker
 
 class AddDish extends StatefulWidget {
   @override
@@ -39,36 +30,52 @@ class _AddDishState extends State<AddDish> {
   TextEditingController _attrContr = TextEditingController();
 
   String uploadedFileURL;
-  String dropdownValue = 'Select Category';
+  String dropdownInititalValue = 'Select Category';
   Size deviceSize;
   bool isNextPressed = false;
   int pageIndex;
   List screenList;
-  // SwiperController _swipeController = SwiperController();
+
+// For extracting ctg and attrib listnames
   List<DishCategory> _dishCatgList;
-  List<Dish> _chefdishTemp;
-  List<String> _CtgNames = List<String>();
+  List<String> ctgNamesList = List<String>();
+  List<Attribute> _dishAttrList;
+  List<String> attrNamesList = List<String>();
+
   @override
   Widget build(BuildContext context) {
     deviceSize = MediaQuery.of(context).size;
-    _chefdishTemp = Provider.of<List<Dish>>(context);
     _dishCatgList = Provider.of<List<DishCategory>>(context);
+    _dishAttrList = Provider.of<List<Attribute>>(context);
 
     print(">>>>>>>>>>> Dish Category list : " + _dishCatgList.toString());
-    print(">>>>>>>>>>> Dish  list : " + _chefdishTemp.toString());
+// ====================================================================================
+// --- The below workaround is to extract feild values from the provider list
+// --- ('If' resist feild list to rebuild on build)
+// * For DishCategoryList
 
-    // for (int i = 0; i < _dishCatgList.length; i++) {
-    //   _CtgNames.add(_dishCatgList[i].ctgName);
-    //   print(_dishCatgList[i].ctgName);
-    // }
+    if (_dishCatgList != null && ctgNamesList.length == 0) {
+      for (int i = 0; i < _dishCatgList.length; i++) {
+        print("_dishCatgList[i].ctgName " + _dishCatgList[i].ctgName);
+        ctgNamesList.add(_dishCatgList[i].ctgName);
+      }
+      ctgNamesList.insert(0, 'Select Category');
+    }
 
-    // _chefdishTemp.map((value) {
-    //   _CtgNames.add(value.dishName);
-    //   print("Val $value : " + value.dishName);
-    // }).toList();
+//    if (ctgNamesList != null && ctgNamesList.length < _dishCatgList.length) {}
 
-    print(">>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Dish Names list : " + _CtgNames.toString());
+    print("``````````````````` _dishAttrList: " + _dishAttrList.toString());
+// * For DishAttributeList
+    if (_dishAttrList != null && attrNamesList.length == 0) {
+      for (int i = 0; i < _dishAttrList.length; i++) {
+        print("_dishAttrList[i].ctgName " + _dishAttrList[i].attrName);
+        attrNamesList.add(_dishAttrList[i].attrName);
+      }
+      //  attrNamesList.insert(0, 'Select Attribute');
+    }
+    print("``````````````````` ctgNamesList: " + ctgNamesList.toString());
 
+// =====================================================================================
     screenList = [screen1View(deviceSize), screen2View(deviceSize)];
     return BaseView<AddDishViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
@@ -222,7 +229,7 @@ class _AddDishState extends State<AddDish> {
                                         _dishPic.toString());
                                 model.uploadDishInfo(
                                   _dishNameContr.text,
-                                  _priceContr.text,
+                                  int.parse(_priceContr.text),
                                   _totalPrepTime,
                                   _dishPic,
                                   _dishCatg,
@@ -248,20 +255,21 @@ class _AddDishState extends State<AddDish> {
       ),
     );
   }
+// ==================================================================================
 
-  Widget showDropDown(dynamic _passedInfo, Size deviceSize) {
+  Widget showDropDown() {
     return ClipRRect(
       borderRadius: BorderRadius.all(
         Radius.circular(deviceSize.height * 0.15),
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: deviceSize.width * 0.05),
-        height: deviceSize.height * 0.05,
+        height: deviceSize.height * 0.04,
         width: deviceSize.width * 0.9,
         color: Colors.white.withOpacity(0.7),
         child: Center(
           child: DropdownButton<String>(
-            value: dropdownValue,
+            value: dropdownInititalValue,
             // icon: Icon(Icons.arrow_downward),
             //iconSize: 24,
             elevation: 16,
@@ -276,12 +284,11 @@ class _AddDishState extends State<AddDish> {
                 newValue != "Select Category"
                     ? _dishCatg = newValue
                     : _dishCatg = null;
-                dropdownValue = newValue;
-                print("Changed value: " + _passedInfo.toString());
+                dropdownInititalValue = newValue;
               });
             },
-            items: <String>['Select Category', 'Two', 'Free', 'Four']
-                .map<DropdownMenuItem<String>>((String value) {
+
+            items: ctgNamesList.map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
@@ -293,6 +300,7 @@ class _AddDishState extends State<AddDish> {
     );
   }
 
+// ==================================================================================
   void hoursButtomSheet(context) {
     showModalBottomSheet(
       context: context,
@@ -318,6 +326,7 @@ class _AddDishState extends State<AddDish> {
       },
     );
   }
+// ==================================================================================
 
   Widget screen2View(Size deviceSize) {
     return Container(
@@ -332,26 +341,16 @@ class _AddDishState extends State<AddDish> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             StandardHeadingNoBgUniSans(passedText: "Ingredients:"),
-            showDropDown("sa", deviceSize),
+            showDropDown(),
             //     SingleChildScrollView(child: children,)
           ],
         ),
       ),
     );
   }
+// ==================================================================================
 
   Widget screen1View(Size deviceSize) {
-    var _currencies = [
-      "Food",
-      "Transport",
-      "Personal",
-      "Shopping",
-      "Medical",
-      "Rent",
-      "Movie",
-      "Salary"
-    ];
-    String _currentSelectedValue;
     return Container(
       padding: EdgeInsets.only(
         left: deviceSize.width * 0.04,
@@ -477,7 +476,7 @@ class _AddDishState extends State<AddDish> {
             // >>>>>>>>>>>> C A T E G O R Y <<<<<<<<<<<<<<<
             //
             StandardHeadingNoBgUniSans(passedText: "Category: "),
-            showDropDown(_dishCatg, deviceSize),
+            showDropDown(),
             SizedBox(
               height: deviceSize.height * 0.03,
             ),
@@ -508,16 +507,23 @@ class _AddDishState extends State<AddDish> {
               child: Container(
                 padding:
                     EdgeInsets.symmetric(horizontal: deviceSize.width * 0.05),
-                height: deviceSize.height * 0.06,
+                height: deviceSize.height * 0.07,
                 width: deviceSize.width * 0.9,
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.white.withOpacity(0.5),
                 alignment: Alignment.topCenter,
                 // color: Colors.red,
                 child: Column(
                   children: [
                     Row(
                       children: <Widget>[
-                        Expanded(child: TextField(controller: _attrContr)),
+                        Expanded(
+                          child: TextFeildBigWhiteBG(
+                              controller: _attrContr,
+                              deviceSize: deviceSize,
+                              isTypeInt: false,
+                              hintText: "",
+                              isObscureText: false),
+                        ),
                         PopupMenuButton<String>(
                           icon: const Icon(Icons.arrow_drop_down),
                           onSelected: (String value) {
@@ -526,12 +532,8 @@ class _AddDishState extends State<AddDish> {
                                 _attrContr.text);
                           },
                           itemBuilder: (BuildContext context) {
-                            return <String>[
-                              'Select Category',
-                              'Two',
-                              'Free',
-                              'Four'
-                            ].map<PopupMenuItem<String>>((String value) {
+                            return attrNamesList
+                                .map<PopupMenuItem<String>>((String value) {
                               return PopupMenuItem(
                                   child: Text(value), value: value);
                             }).toList();

@@ -1,5 +1,6 @@
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
-import 'package:fitness_diet/core/services/database.dart';
+import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
@@ -16,7 +17,7 @@ class HomeViewModel extends BaseViewModel {
   }
 
   gotToFoodMenu() {
-    _navigationService.navigateTo(routes.FoodMenuRoute);
+    _navigationService.navigateTo(routes.FoodMenuMainRoute);
   }
 
   Future redirectSignedInUser(String userID) async {
@@ -24,14 +25,20 @@ class HomeViewModel extends BaseViewModel {
     String user = await DatabaseService().checkUserID(userID);
 
     if (user.toString() == "cust") {
-      print("user form inside the HomeViewModel: " + user.toString());
-      _navigationService.navigateTo(routes.FoodMenuRoute);
+      print("user and ID form inside the HomeViewModel: " +
+          user.toString() +
+          " - " +
+          userID);
+      _navigationService.navigateTo(routes.FoodMenuMainRoute);
+      // setState(ViewState.Idle);
     } else if (user.toString() == "chef") {
-      print("user form inside the HomeViewModel: " + user.toString());
+      print("user and ID form inside the HomeViewModel: " +
+          user.toString() +
+          " - " +
+          userID);
       _navigationService.navigateTo(routes.ChefProfileRoute);
-
+      // setState(ViewState.Idle);
       print("Check User ID result: " + user.toString());
     }
-    // setState(ViewState.Idle);
   }
 }

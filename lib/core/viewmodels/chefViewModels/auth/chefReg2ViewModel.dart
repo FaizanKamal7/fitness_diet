@@ -1,6 +1,6 @@
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/services/database.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
@@ -23,7 +23,7 @@ class ChefReg2ViewModel extends BaseViewModel {
 
     if (dataValidated) {
       print("--------------User().getUid in CustReg2ViewModel: " + userID);
-      await DatabaseService(uid: userID).updateChefData({
+      await DatabaseService(uid: userID).addNewChefData({
         'chefName': chefName,
         'chefDateOfBirth': dateOfBirth,
       });

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/services/auth.dart';
-import 'package:fitness_diet/core/services/database.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
@@ -50,7 +50,7 @@ class ChefRegViewModel extends BaseViewModel {
         print("New user result at the end : " + verifiedUserID.toString());
 
         if (verifiedUserID != null) {
-          await DatabaseService(uid: verifiedUserID).updateChefData({
+          await DatabaseService(uid: verifiedUserID).addNewChefData({
             'chefPhNo': updatedPhoneNo,
           });
           print("---------> Navigating to chefReg2Route ");

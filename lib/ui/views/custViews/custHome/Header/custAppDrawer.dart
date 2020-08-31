@@ -1,16 +1,13 @@
-import 'package:fitness_diet/core/constants/route_paths.dart';
-import 'package:fitness_diet/core/services/auth.dart';
+
 import 'package:fitness_diet/core/viewmodels/custViewModels/custAppDrawerViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/views/custViews/custProfile/custProfileMain.dart';
 import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/navBarContent.dart';
 import 'package:fitness_diet/ui/widgets/subNavContent.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CustAppDrawer extends StatelessWidget {
   @override

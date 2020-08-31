@@ -11,8 +11,8 @@ class ChefAppDrawerViewModel extends BaseViewModel {
   Future signOut() async {
     setState(ViewState.Busy);
     AuthService().signOut();
-    _navigationService.navigateTo(routes.HomeRoute);
     setState(ViewState.Idle);
+    _navigationService.navigateTo(routes.HomeRoute);
   }
 
   goToProfile() {

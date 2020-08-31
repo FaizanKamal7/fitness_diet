@@ -4,12 +4,11 @@ import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_2.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefSignInView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/soleDishView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileMain.dart';
-import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileView.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_1.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_2.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custSignInView.dart';
-import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuView.dart';
-import 'package:fitness_diet/ui/views/custViews/custProfile/custProfile.dart';
+import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuMain.dart';
+import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custStartPlan.dart';
 import 'package:fitness_diet/ui/views/homeview.dart';
 import 'package:fitness_diet/ui/views/splashView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custProfileMain.dart';
@@ -33,12 +32,12 @@ class Router {
         return MaterialPageRoute(builder: (_) => CustRegView_2());
       case routes.CustSignRoute:
         return MaterialPageRoute(builder: (_) => CustSigninView());
-      case routes.FoodMenuRoute:
-        return MaterialPageRoute(builder: (_) => FoodMenuView());
-      // case routes.CusProfileRoute:
-      //   return MaterialPageRoute(builder: (_) => CustProfile());
+      case routes.FoodMenuMainRoute:
+        return MaterialPageRoute(builder: (_) => FoodMenuMain());
       case routes.CustProfileRoute:
         return MaterialPageRoute(builder: (_) => CustProfileMain());
+      case routes.CustStartPlanRoute:
+        return MaterialPageRoute(builder: (_) => CustStartPlan());
 
       // Chef Routes
       case routes.ChefReg1Route:

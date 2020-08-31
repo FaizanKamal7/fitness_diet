@@ -1,21 +1,20 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/services/auth.dart';
-import 'package:fitness_diet/core/services/database.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
 import 'package:fitness_diet/ui/shared/ui_helpers.dart';
-import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
 class PhoneVer extends BaseViewModel {
   BuildContext context;
   PhoneVer({this.context});
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  //final FirebaseAuth _auth = FirebaseAuth.instance;
   // String newUserResult;
-  final DialogService _dialogService = locator<DialogService>();
+  //final DialogService _dialogService = locator<DialogService>();
 
   Future<void> verifyPhone(phoneNo) async {
     var updatedPhoneNo = phoneNo.replaceFirst(RegExp(r'0'), '+92');
@@ -23,7 +22,9 @@ class PhoneVer extends BaseViewModel {
     String smsCode;
     final AuthService _authService = locator<AuthService>();
     dynamic newUserResult;
+    
     final DialogService _dialogService = locator<DialogService>();
+    
     Future<String> getOTPresult() async {
       var dialogResult =
           await _dialogService.showDialog(dialogType: Dialog_Types.OTP);
@@ -49,7 +50,7 @@ class PhoneVer extends BaseViewModel {
 
         // --- Proceeding to screen 2 of chef registration
       }
-      await DatabaseService(uid: newUserResult).updateCustData({
+      await DatabaseService(uid: newUserResult).addNewCustData({
         'custPhNo': updatedPhoneNo,
       });
       //  Navigator.popAndPushNamed(context, "foodMenu");
@@ -79,7 +80,7 @@ class PhoneVer extends BaseViewModel {
           verificationId: verID, smsCode: OTPDialogResult);
 
       newUserResult = await AuthService().signInWithPhoneNumber(authCred);
-      await DatabaseService(uid: newUserResult).updateCustData({
+      await DatabaseService(uid: newUserResult).addNewCustData({
         'custPhNo': updatedPhoneNo,
       });
       // Navigator.popAndPushNamed(context, "foodMenu");

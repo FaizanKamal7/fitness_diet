@@ -1,16 +1,15 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
-import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
-import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
 import 'package:logger/logger.dart';
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
 class AuthService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+//  final FirebaseAuth _auth = FirebaseAuth.instance;
   Logger logger;
   User _userFormFirebaseUser(FirebaseUser user) {
     return user != null ? User(uid: user.uid) : null;
@@ -141,7 +140,7 @@ class AuthService {
       else
         print('Something has gone wrong, please try later ' +
             authException.message);
-    //  setState(ViewState.Idle);
+      //  setState(ViewState.Idle);
       completer.complete(newUserResult);
     };
 

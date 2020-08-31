@@ -1,5 +1,7 @@
+import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CustMeals extends StatefulWidget {
   @override
@@ -9,6 +11,7 @@ class CustMeals extends StatefulWidget {
 class _CustMealsState extends State<CustMeals> {
   @override
   Widget build(BuildContext context) {
+    final _custData = Provider.of<CustData>(context);
     return ResponsiveSafeArea(
       builder: (context, widgetSize) => Container(
         height: widgetSize.height * 0.8,
@@ -33,10 +36,14 @@ class _CustMealsState extends State<CustMeals> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset(
-                    "lib/assets/images/AppIcons/left-arrow.png",
-                    height: widgetSize.height * 0.05,
-                    width: widgetSize.height * 0.05,
+                  // Image.asset(
+                  //   "assets/images/AppIcons/left-arrow.png",
+                  //   height: widgetSize.height * 0.05,
+                  //   width: widgetSize.height * 0.05,
+                  // ),
+                  FlatButton(
+                    onPressed: null,
+                    child: Icon(Icons.arrow_back_ios),
                   ),
                   Text(
                     "TODAY, AUGUST 8",
@@ -46,10 +53,9 @@ class _CustMealsState extends State<CustMeals> {
                       color: Color(0xff4d3814).withOpacity(0.71),
                     ),
                   ),
-                  Image.asset(
-                    "lib/assets/images/AppIcons/right-arrow.png",
-                    height: widgetSize.height * 0.05,
-                    width: widgetSize.height * 0.05,
+                  FlatButton(
+                    onPressed: null,
+                    child: Icon(Icons.arrow_forward_ios),
                   ),
                 ],
               ),
@@ -74,7 +80,7 @@ class _CustMealsState extends State<CustMeals> {
               child: Row(
                 children: [
                   Image.asset(
-                    "lib/assets/images/AppIcons/breakfast.png",
+                    "assets/images/AppIcons/breakfast.png",
                     height: widgetSize.height * 0.20,
                     width: widgetSize.height * 0.20,
                   ),
@@ -124,7 +130,7 @@ class _CustMealsState extends State<CustMeals> {
               child: Row(
                 children: [
                   Image.asset(
-                    "lib/assets/images/AppIcons/lunch.png",
+                    "assets/images/AppIcons/lunch.png",
                     height: widgetSize.height * 0.20,
                     width: widgetSize.height * 0.20,
                   ),
@@ -175,7 +181,7 @@ class _CustMealsState extends State<CustMeals> {
               child: Row(
                 children: [
                   Image.asset(
-                    "lib/assets/images/AppIcons/snacks.png",
+                    "assets/images/AppIcons/snacks.png",
                     height: widgetSize.height * 0.20,
                     width: widgetSize.height * 0.20,
                   ),

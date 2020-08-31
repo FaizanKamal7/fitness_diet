@@ -105,6 +105,7 @@ class ChefAppDrawer extends StatelessWidget {
 
               FlatButton(
                 onPressed: () => {
+                  print("----------> Signout ppressed inside chefAppDrawer"),
                   model.signOut(),
                 },
                 child: AuthBtnStyle(

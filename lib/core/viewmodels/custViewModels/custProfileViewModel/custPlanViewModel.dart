@@ -1,16 +1,24 @@
 import 'dart:ffi';
 
 import 'package:age/age.dart';
+import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
+import 'package:fitness_diet/core/datamodel/alert_response.dart';
+import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/services/database.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
+import 'package:fitness_diet/core/services/dialogService.dart';
+import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
+import 'package:fitness_diet/locator.dart';
 
 class CustPlanViewModel extends BaseViewModel {
+  final DialogService _dialogService = locator<DialogService>();
+  double _weightDifference;
   String errorMessage;
-
+  final NavigationService _navigationService = locator<NavigationService>();
   startPlan(String gender, String custheight, String custWeight,
-      String custgoalWeight, DateTime dateOfBirth, double activityLevel) {
+      String custgoalWeight, DateTime dateOfBirth, double activityLevel) async {
     print('function reached........................');
     print('gender........................' + gender);
     print('height........................' + custheight);
@@ -37,10 +45,10 @@ class CustPlanViewModel extends BaseViewModel {
       // B   M  R  CALCULATED  ***********
       // TDEE IS TOTAL DAILY ENERGY EXPENDACTURE
       //
-
+    
       double tdee = calculateBMR(age, gender, convertToPounds(weight),
           convertToInches(height), activityLevel);
-
+    int currentTdee=tdee.round();
       int check = checkGoal(weight, goalWeight);
       print('TDEE calculated is *********************:' + tdee.toString());
 
@@ -83,8 +91,28 @@ class CustPlanViewModel extends BaseViewModel {
       uploadData(gender, height, weight, goalWeight, tdee, reqmacroNutrients);
       //
       //
+      String _custGoal;
+      if (check == 0) _custGoal = " maintain ";
+      if (check == 1) _custGoal = " gain "+_weightDifference.toString() + ' Kg';
+      if (check == -1) _custGoal = " loss "+_weightDifference.toString() + 'Kg';
 
+      var dialogResult = await _dialogService.showDialog(
+          title: "You've set a new goal! ",
+          description: "Your current Calories consumption is $currentTdee \n You need to consume " +
+              tdee.round().toString() +
+              " calories daily  to $_custGoal weight in " +
+              timeToAchiveGoal(weight, goalWeight) +
+              " Weeks. \n Best of Luck ",
+          buttonTitle: "Lets go",
+          dialogType: Dialog_Types.PLAN_SUCCESS);
+
+      print("--------> AlertResponse().confirmed inside CustPlanViewModel : " +
+          AlertResponse().confirmed.toString());
+
+      if (dialogResult.confirmed == true)
+        _navigationService.navigateTo(routes.CustProfileRoute);
     } else {
+      setErrorMessage(' Invalid data in height and weight ');
       print('invalid data in height and weight *****************************');
     }
   }
@@ -103,10 +131,13 @@ class CustPlanViewModel extends BaseViewModel {
         'custHeight': height,
         'custWeight': weight,
         'custGoalWeight': goalWeight,
-        'custReqKcl': reqkcal.toStringAsFixed(3),
-        'custReqProtein': regMacroNutrients.elementAt(0).toStringAsFixed(3),
-        'custReqFats': regMacroNutrients.elementAt(1).toStringAsFixed(3),
-        'custReqCarbs': regMacroNutrients.elementAt(2).toStringAsFixed(3),
+        'custReqKcl': double.parse(reqkcal.toStringAsFixed(3)),
+        'custReqProtein':
+            double.parse(regMacroNutrients.elementAt(0).toStringAsFixed(3)),
+        'custReqFats':
+            double.parse(regMacroNutrients.elementAt(1).toStringAsFixed(3)),
+        'custReqCarbs':
+            double.parse(regMacroNutrients.elementAt(2).toStringAsFixed(3)),
       }),
     );
 
@@ -170,20 +201,24 @@ class CustPlanViewModel extends BaseViewModel {
 
   int checkGoal(double currentWeight, double goalweight) {
     if (goalweight == currentWeight) {
+    
       return 0;
     } else if (goalweight > currentWeight) {
+        _weightDifference = goalweight - currentWeight;
       return 1;
     } else {
+      _weightDifference =   currentWeight - goalweight;
       return -1;
     }
   }
 
 // CALCULATE TIME TO ACHIVE GOAL
 
-  double timeToAchiveGoal(double currentweight, double goalWEight) {
-    double goalDifference = goalWEight = currentweight;
-
-    return goalDifference / 0.4;
+  String timeToAchiveGoal(double currentweight, double goalWEight) {
+    double goalDifference = goalWEight - currentweight;
+    double _timeToAcheive = goalDifference / 0.4;
+    _timeToAcheive < 0 ? _timeToAcheive *= -1 : _timeToAcheive = _timeToAcheive;
+    return _timeToAcheive.toStringAsFixed(1);
   }
 
 // W E I G H T --- L  O  S  S  -- C   A   L  C  U  L  A  T  I  O  N
@@ -215,40 +250,8 @@ class CustPlanViewModel extends BaseViewModel {
 
     return macronutrients;
   }
+
+  goToStartPlan() {
+    _navigationService.navigateTo(routes.CustStartPlanRoute);
+  }
 }
-
-// String userID = await getUser;
-// bool dataValidated;
-// print("height " + height.toString());
-
-// print("weight " + weight.toString());
-
-// print("goalweight " + goalweight.toString());
-// setState(ViewState.Busy);
-// Validators().verifySmallNumberField(height) &&
-//         Validators().verifySmallNumberField(weight) &&
-//         Validators().verifySmallNumberField(goalweight)
-//     ? dataValidated = true
-//     : dataValidated = false;
-
-// if (dataValidated) {
-//   print(
-//       "data is validated and is about to upload --------------User().getUid: " +
-//           userID);
-//   DatabaseService(uid: userID).addPlanData(
-//     ({
-//       'custGender': gender,
-//       'custHeight': height,
-//       'custWeight': height,
-//       'custGoalWeight': height,
-//     }),
-//   );
-//   setState(ViewState.Idle);
-//   return true;
-// } else {
-//   errorMessage = "   Registration failed\n   Add valid info";
-//   print(errorMessage);
-//   setState(ViewState.Idle);
-
-//   return false;
-// }

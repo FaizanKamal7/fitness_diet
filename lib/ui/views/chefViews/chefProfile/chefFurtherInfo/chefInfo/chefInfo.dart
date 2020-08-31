@@ -1,6 +1,6 @@
 import 'package:date_format/date_format.dart';
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/services/database.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/ui/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

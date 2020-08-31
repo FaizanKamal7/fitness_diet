@@ -1,7 +1,10 @@
+import 'package:fitness_diet/core/models/plan.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
+// ignore: must_be_immutable
 class SummaryCard extends StatefulWidget {
   Size widgetSize;
 
@@ -20,6 +23,8 @@ class _SummaryCardState extends State<SummaryCard> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
+    final _planData = Provider.of<Plan>(context);
+
     return Container(
         padding: EdgeInsets.only(
             left: widget.widgetSize.width * 0.06,
@@ -90,8 +95,8 @@ class _SummaryCardState extends State<SummaryCard> {
                   width: widget.widgetSize.width * 0.4,
                   height: widget.widgetSize.height * 0.3,
                   child: SleekCircularSlider(
-                    initialValue: 2550,
-                    max: 5000,
+                    initialValue: _planData.custReqKcal,
+                    max: _planData.custReqKcal,
 
                     appearance: CircularSliderAppearance(
                       angleRange: 180,
@@ -172,15 +177,18 @@ class _SummaryCardState extends State<SummaryCard> {
                 //C  A  R  B  S -- C O N T A I N E R
                 //
                 ///
-                caloriesContainer('Carbs', 20, widget.widgetSize),
+                caloriesContainer(
+                    'Carbs', _planData.custReqCarbs.round(), widget.widgetSize),
                 //
                 //P R  O  T  E  I  N -- C O N T A I N E R
                 //
-                caloriesContainer('Protein', 33, widget.widgetSize),
+                caloriesContainer('Protein', _planData.custReqProtein.round(),
+                    widget.widgetSize),
                 //
                 // F A T S -- C O N T A I N E R
                 //
-                caloriesContainer('Fats', 45, widget.widgetSize),
+                caloriesContainer(
+                    'Fats', _planData.custReqFats.round(), widget.widgetSize),
               ],
             ),
           ],
@@ -207,14 +215,14 @@ Widget caloriesContainer(String heading, int value, Size widgetSize) {
           ),
         ),
         LinearProgressIndicator(
-          value: value / 100,
+          value: (value * 0.5) / value,
           backgroundColor: Color(0xffd6d8ff),
           valueColor: AlwaysStoppedAnimation<Color>(
             Color(0xffffffff),
           ),
         ),
         Text(
-          "$value / 100g",
+          "123 / $value g",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: "Montserrat",

@@ -1,15 +1,12 @@
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
-import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/services/auth.dart';
-import 'package:fitness_diet/core/services/database.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
-import 'package:flutter/cupertino.dart';
 
 class CustRegViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
@@ -55,7 +52,7 @@ class CustRegViewModel extends BaseViewModel {
         print("New user result at the end : " + verifiedUserID.toString());
 
         if (verifiedUserID != null) {
-          await DatabaseService(uid: verifiedUserID).updateCustData({
+          await DatabaseService(uid: verifiedUserID).addNewCustData({
             'custPhNo': updatedPhoneNo,
           });
           print(

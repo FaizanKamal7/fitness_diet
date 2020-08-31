@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/services/auth.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
-import 'package:fitness_diet/ui/shared/constants.dart';
+import 'package:fitness_diet/ui/shared/imagesURLs.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileEditView.dart';
 import 'package:fitness_diet/ui/widgets/standardBtnWhitishRound.dart';
 import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
@@ -12,26 +12,30 @@ import 'package:provider/provider.dart';
 class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
   ChefSliverAppBar(
       {@required this.maxExtent, @required this.minExtent, this.chefData});
+
   final double maxExtent;
   final double minExtent;
   double animationVal = 0;
   ChefData chefData;
+
+  void _showEditBottomSheet(BuildContext _context) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: _context,
+      isScrollControlled: true,
+      elevation: 20,
+      builder: (context) {
+        return ChefProfileEditView();
+      },
+    );
+  }
+
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final deviceSize = MediaQuery.of(context).size;
-    final _chefData = Provider.of<ChefData>(context);
-
-    void _showEditBottomSheet() {
-      showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        elevation: 20,
-        builder: (context) {
-          //  return ChefProfileEdit();
-        },
-      );
-    }
+    // final _chefData = Provider.of<ChefData>(context);
+    print("----> _chefData inside ChefSliverAppBar : " + chefData.toString());
 
     animationVal = 10.0 - max(10.0, shrinkOffset * 10) / maxExtent;
     // debugPrint("-=-=-==-=-=--=-= SHRINK OFF: " +
@@ -56,9 +60,10 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                 height: widgetSize.height * 0.94,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(
-                      "assets/images/chef2.JPG",
-                    ),
+                    image: AssetImage(chefBGImage_1),
+                    //  _chefData.chefPic != ""
+                    //     ? NetworkImage(_chefData.chefPic)
+                    //     : AssetImage(defaultChefImg),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -91,16 +96,36 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                   //   alignment: animationVal > 9.5 ? Alignment.center : null,
                   alignment: Alignment.center,
 
-                  child: ClipOval(
-                    child: Image.asset(
-                      "assets/images/chef2.JPG",
-                      height: animationVal > 7.2
-                          ? widgetSize.height * 0.08 * animationVal / 2
-                          : widgetSize.height * 0.08 * 7.2 / 2,
-                      width: animationVal > 7.2
-                          ? widgetSize.height * 0.08 * animationVal / 2
-                          : widgetSize.height * 0.08 * 7.2 / 2,
-                      fit: BoxFit.cover,
+                  // child: ClipOval(
+                  //   child: Image.asset(
+                  //     "assets/images/chef2.JPG",
+                  // height: animationVal > 7.2
+                  //     ? widgetSize.height * 0.08 * animationVal / 2
+                  //     : widgetSize.height * 0.08 * 7.2 / 2,
+                  // width: animationVal > 7.2
+                  //     ? widgetSize.height * 0.08 * animationVal / 2
+                  //     : widgetSize.height * 0.08 * 7.2 / 2,
+                  //     fit: BoxFit.cover,
+                  //   ),
+                  // ),
+                  child: Container(
+                    height: animationVal > 7.2
+                        ? widgetSize.height * 0.08 * animationVal / 2
+                        : widgetSize.height * 0.08 * 7.2 / 2,
+                    width: animationVal > 7.2
+                        ? widgetSize.height * 0.08 * animationVal / 2
+                        : widgetSize.height * 0.08 * 7.2 / 2,
+                    decoration: BoxDecoration(
+                      //color: Colors.yellow,
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(custBGImage_1),
+                        // image: _chefData.chefPic != ""
+                        //     ? NetworkImage(_chefData.chefPic)
+                        //     : AssetImage(custBGImage_1),
+                        // image:  AssetImage(custBGImage_1),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -115,8 +140,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                     //     : 1
                   ),
                   child: Text(
-                    // _chefData != null ? _chefData.chefName : "",
-                    "Chef",
+                    chefData == null ? "" : chefData.chefName,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: animationVal > 7.2
@@ -149,7 +173,8 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   FlatButton(
-                      onPressed: () => _showEditBottomSheet(),
+                      //   onPressed: () => _showEditBottomSheet(),
+                      onPressed: () => _showEditBottomSheet(context),
                       child:
                           StandardBtnWhitishRound(passedText: "Edit Profile")),
                   Spacer(),

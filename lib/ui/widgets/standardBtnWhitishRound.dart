@@ -32,7 +32,7 @@ class StandardBtnWhitishRound extends StatelessWidget {
         child: Text(
           passedText,
           style: TextStyle(
-            fontSize: _deviceSize.height * 0.015,
+            fontSize: _deviceSize.height * 0.016,
             fontFamily: "Uni-Sans",
             color: Color(0xff5f2424),
           ),

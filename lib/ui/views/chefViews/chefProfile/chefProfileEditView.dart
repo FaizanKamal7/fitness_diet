@@ -1,7 +1,8 @@
 import 'dart:io';
+
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custProfileEditViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefProfileEditViewModel.dart';
 import 'package:fitness_diet/ui/shared/constants.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
@@ -12,26 +13,26 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-class CustProfileEdit extends StatefulWidget {
+class ChefProfileEditView extends StatefulWidget {
   @override
-  _CustProfileEditState createState() => _CustProfileEditState();
+  _ChefProfileEditViewState createState() => _ChefProfileEditViewState();
 }
 
-class _CustProfileEditState extends State<CustProfileEdit> {
+class _ChefProfileEditViewState extends State<ChefProfileEditView> {
   DateTime _dateOfBirth;
   // ignore: unused_field
-  TextEditingController _custResdController = TextEditingController();
-  TextEditingController _custNameController = TextEditingController();
+  TextEditingController _chefResdController = TextEditingController();
+  TextEditingController _chefNameController = TextEditingController();
 
-  File _custPic;
+  File _chefPic;
   // DateTime _dateOfBirth;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final _custData = Provider.of<CustData>(context);
+    final _chefData = Provider.of<ChefData>(context);
     final deviceSize = MediaQuery.of(context).size;
 
-    return BaseView<CustProfileEditViewModel>(
+    return BaseView<ChefProfileEditViewModel>(
       builder: (context, model, child) => Form(
         key: _formKey,
         child: Container(
@@ -59,31 +60,33 @@ class _CustProfileEditState extends State<CustProfileEdit> {
               Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
-                  _custPic != null
-                      ? Container(
-                          height: deviceSize.height * 0.12,
-                          width: deviceSize.height * 0.12,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: FileImage(File(_custPic.path)),
-                              //   image: AssetImage(custBGImage_1),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        )
-                      : Container(
-                          height: deviceSize.height * 0.12,
-                          width: deviceSize.height * 0.12,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: AssetImage(chefBGImage_1),
-                              //   image: AssetImage(custBGImage_1),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
+                  // _chefPic != null
+                  //     ?
+                  Container(
+                    height: deviceSize.height * 0.12,
+                    width: deviceSize.height * 0.12,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: _chefPic != null
+                            ? FileImage(File(_chefPic.path))
+                            : AssetImage(defaultUserImg),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  // : Container(
+                  //     height: deviceSize.height * 0.12,
+                  //     width: deviceSize.height * 0.12,
+                  //     decoration: BoxDecoration(
+                  //       shape: BoxShape.circle,
+                  //       image: DecorationImage(
+                  //         image: AssetImage(chefBGImage_1),
+                  //         //   image: AssetImage(custBGImage_1),
+                  //         fit: BoxFit.cover,
+                  //       ),
+                  //     ),
+                  //   ),
                   Container(
                     margin: EdgeInsets.only(
                         top: deviceSize.height * 0.09,
@@ -106,7 +109,7 @@ class _CustProfileEditState extends State<CustProfileEdit> {
                               //   print("------- custPic inside AddDishVIew:" +
                               //       custPic.toString());
                               //   setState(() {
-                              //     _custPic = custPic;
+                              //     _chefPic = custPic;
                               //     print("------- _dishPic AddDishVIew:" +
                               //         custPic.toString());
                               //   });
@@ -120,7 +123,7 @@ class _CustProfileEditState extends State<CustProfileEdit> {
                                   print("------- custPic inside AddDishVIew:" +
                                       custPic.toString());
                                   setState(() {
-                                    _custPic = custPic;
+                                    _chefPic = custPic;
                                     print("------- _dishPic AddDishVIew:" +
                                         custPic.toString());
                                   });
@@ -135,7 +138,7 @@ class _CustProfileEditState extends State<CustProfileEdit> {
                                   print("------- custPic inside AddDishVIew:" +
                                       custPic.toString());
                                   setState(() {
-                                    _custPic = custPic;
+                                    _chefPic = custPic;
                                     print("------- _dishPic AddDishVIew:" +
                                         custPic.toString());
                                   });
@@ -175,11 +178,11 @@ class _CustProfileEditState extends State<CustProfileEdit> {
                   // >>>>>>>>> U S E R N A M E   T E X T F E I L D
                   //
                   TextFeildWithPrefix(
-                    controller: _custNameController,
+                    controller: _chefNameController,
                     deviceSize: deviceSize,
                     isTypeInt: false,
                     preIcon: Icons.account_circle,
-                    hintText: _custData.custName,
+                    hintText: _chefData.chefName,
                     isObscureText: false,
                   ),
                   //
@@ -199,11 +202,11 @@ class _CustProfileEditState extends State<CustProfileEdit> {
                   // >>>>>>>>> R E S I D E N C E   T E X T F E I L D
                   //
                   TextFeildWithPrefix(
-                    controller: _custResdController,
+                    controller: _chefResdController,
                     deviceSize: deviceSize,
                     isTypeInt: false,
                     preIcon: Icons.map,
-                    hintText: _custData.custLocation,
+                    hintText: _chefData.chefLocation,
                     isObscureText: false,
                   ),
                   //
@@ -251,8 +254,8 @@ class _CustProfileEditState extends State<CustProfileEdit> {
               // ---------------------------------------------------- D O N E   B U T T O N
 
               FlatButton(
-                onPressed: () => model.updateCustData(_custNameController.text,
-                    _custResdController.text, _dateOfBirth, _custPic),
+                onPressed: () => model.updateChefData(_chefNameController.text,
+                    _chefResdController.text, _dateOfBirth, _chefPic),
                 child: AuthBtnStyle(deviceSize: deviceSize, passedText: "Done"),
               ),
 
@@ -260,9 +263,9 @@ class _CustProfileEditState extends State<CustProfileEdit> {
               //   onPressed: () async {
               //     // if (_formKey.currentState.validate()) {
               //     //   await DatabaseService(uid: user.uid).updateCustData({
-              //     //     'custName': _custNameController ?? _custData.custName,
-              //     //     //      _custResdController ?? _custData.residence,
-              //     //     //  _dateOfBirth ?? _custData.dateOfBirth,
+              //     //     'custName': _chefNameController ?? _chefData.custName,
+              //     //     //      _chefResdController ?? _chefData.residence,
+              //     //     //  _dateOfBirth ?? _chefData.dateOfBirth,
               //     //   });
               //     //   Navigator.pop(context);
               //     // }
@@ -292,5 +295,4 @@ class _CustProfileEditState extends State<CustProfileEdit> {
       ),
     );
   }
-
 }

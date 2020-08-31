@@ -1,9 +1,11 @@
 import 'package:fitness_diet/core/services/auth.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
+import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefAppDrawerViewmodel.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/addDishViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/chefDishesViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefProfileEditViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefReg2ViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefRegViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefSignInViewModel.dart';
@@ -12,6 +14,8 @@ import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custRegViewMode
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custSignInViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custAppDrawerViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custInfoViewModel/custInfoViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custProfileEditViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custProfileViewmodel.dart';
 import 'package:fitness_diet/core/viewmodels/homeViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/loginViewModel.dart';
@@ -32,6 +36,7 @@ void setupLocator() {
   locator.registerFactory(() => LoginViewModel());
 
   locator.registerFactory(() => HomeViewModel());
+  locator.registerFactory(() => BaseViewModel());
 
   // Customer
   locator.registerFactory(() => CustRegViewModel());
@@ -40,6 +45,8 @@ void setupLocator() {
   locator.registerFactory(() => CustProfileViewModel());
   locator.registerFactory(() => CustAppDrawerViewModel());
   locator.registerFactory(() => CustInfoViewModel());
+  locator.registerFactory(() => CustPlanViewModel());
+  locator.registerFactory(() => CustProfileEditViewModel());
 
   // Chef
   locator.registerFactory(() => ChefRegViewModel());
@@ -48,4 +55,5 @@ void setupLocator() {
   locator.registerFactory(() => ChefAppDrawerViewModel());
   locator.registerFactory(() => AddDishViewModel());
   locator.registerFactory(() => ChefDishesViewmodel());
+  locator.registerFactory(() => ChefProfileEditViewModel());
 }
