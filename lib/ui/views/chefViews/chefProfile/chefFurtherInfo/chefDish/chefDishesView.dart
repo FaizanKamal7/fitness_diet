@@ -54,7 +54,7 @@ class _ChefDishesState extends State<ChefDishes> {
                       ),
                     ),
                     // -----------
-                    _chefData == null
+                    _chefData == null && _chefDish == null
                         ? Loading()
                         : _chefData.hasDish
                             ? Column(

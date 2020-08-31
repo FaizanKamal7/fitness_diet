@@ -15,7 +15,11 @@ class NavigationService {
         routeName.toString());
     return navigatorKey.currentState.pushNamed(routeName);
   }
-
+Future<dynamic> navigateToWithPopandPushName(String routeName) {
+    print("---------> Navigation Service reached and navigating to  : " +
+        routeName.toString());
+    return navigatorKey.currentState.popAndPushNamed(routeName);
+  }
   void goBack() {
     return navigatorKey.currentState.pop();
   }

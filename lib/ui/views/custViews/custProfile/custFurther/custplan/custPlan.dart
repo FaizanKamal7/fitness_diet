@@ -144,11 +144,16 @@ class _CustPlanState extends State<CustPlan> {
                 ],
               ),
             ),
-            model.state == ViewState.Busy
-                ? Loading()
-                : Container(
-                    height: 0.0,
-                  ),
+            model.hasErrorMessage
+                ? Container(
+                    color: Colors.red,
+                    child: Text(
+                      model.errorMessage,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                : Container(),
+            model.state == ViewState.Busy ? Loading() : Container(),
           ],
         ),
       ),

@@ -11,11 +11,14 @@ class CustAppDrawerViewModel extends BaseViewModel {
   Future signOut() async {
     setState(ViewState.Busy);
     AuthService().signOut();
-    _navigationService.navigateTo(routes.HomeRoute);
+    _navigationService.navigateToWithPopandPushName(routes.HomeRoute);
     setState(ViewState.Idle);
   }
 
   goToProfile() {
     _navigationService.navigateToWithoutReplacement(routes.CustProfileRoute);
+  }
+  goToHome() {
+    _navigationService.navigateToWithoutReplacement(routes.FoodMenuMainRoute);
   }
 }

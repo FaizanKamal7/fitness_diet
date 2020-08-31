@@ -1,3 +1,4 @@
+import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
@@ -7,10 +8,12 @@ import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/custAppDrawer.dart';
+import 'package:fitness_diet/ui/views/custViews/custHome/Header/guestappdrawer.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/homeAppBarDelegate.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/locationHeader.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/recentFoodSlider/recentFoodSlider.dart';
 import 'package:fitness_diet/ui/widgets/dishViewSingleDesign.dart';
+import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
 import 'package:fitness_diet/ui/widgets/standardHeadingNoBg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -100,7 +103,7 @@ class FoodMenuView extends StatelessWidget {
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Scaffold(
           key: _scaffoldKey,
-          endDrawer: CustAppDrawer(),
+          endDrawer: _user != null ? CustAppDrawer() : GuestAppDrawer(),
           body: Stack(
             fit: StackFit.loose,
             children: <Widget>[
@@ -234,12 +237,16 @@ class FoodMenuView extends StatelessWidget {
                 ),
               ),
 
+              model.state == ViewState.Busy ? Loading() : Container(),
               model.hasErrorMessage
                   ? Container(
-                      child: Text(model.errorMessage),
+                      color: Colors.red,
+                      child: Text(
+                        model.errorMessage,
+                        style: TextStyle(color: Colors.white),
+                      ),
                     )
                   : Container(),
-              model.state == ViewState.Busy ? Loading() : Container(),
             ],
           ),
         ),

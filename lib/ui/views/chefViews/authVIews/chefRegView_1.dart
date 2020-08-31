@@ -1,3 +1,4 @@
+import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefRegViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
@@ -6,11 +7,11 @@ import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
 import 'package:fitness_diet/ui/widgets/chefAuthBg.dart';
+import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
 import 'package:fitness_diet/ui/widgets/stepHeaderWithBg.dart';
 import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-
 
 // ignore: camel_case_types
 class ChefRegView_1 extends StatefulWidget {
@@ -149,15 +150,17 @@ class _ChefRegView_1State extends State<ChefRegView_1> {
                     ),
                   ],
                 ),
-                model.hasErrorMessage
-                    ? Container(
-                        child: Text(model.errorMessage),
-                      )
-                    : Container(),
-                // model.hasErrorMessage
-                //     ? UIHelper()
-                //         .showErrorButtomSheet(context, model.errorMessage)
-                //     : Container(),
+                 model.hasErrorMessage
+                      ? Container(
+                          color: Colors.red,
+                          child: Text(
+                            model.errorMessage,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      : Container(),
+
+
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),

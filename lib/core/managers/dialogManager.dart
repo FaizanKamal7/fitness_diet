@@ -44,7 +44,7 @@ class _DialogManagerState extends State<DialogManager> {
           animType: AnimType.LEFTSLIDE,
           dialogType: DialogType.INFO,
           dismissOnBackKeyPress: true,
-          dismissOnTouchOutside: true,
+          dismissOnTouchOutside: false,
           body: Center(
             child: Column(
               children: [

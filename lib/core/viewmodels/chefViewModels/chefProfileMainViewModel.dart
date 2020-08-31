@@ -5,7 +5,7 @@ import 'package:fitness_diet/locator.dart';
 
 class ChefProfileMainViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
-  Future goBackToHome() {
+  goBackToHome() {
     _navigationService.navigateTo(routes.HomeRoute);
   }
 }

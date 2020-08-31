@@ -59,6 +59,8 @@ class ConstantFtns extends BaseViewModel {
     return _imgURl;
   }
 
+
+
   // ------------------------------------------- L O G I C    H E L P E R    F U N C T I O N S
 
   // List<dynamic> extractSingleFeildListFromProviderList(

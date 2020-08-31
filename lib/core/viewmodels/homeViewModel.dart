@@ -9,15 +9,15 @@ class HomeViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
 
   gotToCustSignIn() {
-    _navigationService.navigateTo(routes.CustSignRoute);
+    _navigationService.navigateToWithoutReplacement(routes.CustSignRoute);
   }
 
   gotToChefSignIn() {
-    _navigationService.navigateTo(routes.ChefSignRoute);
+    _navigationService.navigateToWithoutReplacement(routes.ChefSignRoute);
   }
 
   gotToFoodMenu() {
-    _navigationService.navigateTo(routes.FoodMenuMainRoute);
+    _navigationService.navigateToWithoutReplacement(routes.FoodMenuMainRoute);
   }
 
   Future redirectSignedInUser(String userID) async {

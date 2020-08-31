@@ -242,11 +242,15 @@ class _AddDishState extends State<AddDish> {
                       )
                     : Container(),
 
-                model.hasErrorMessage
-                    ? Container(
-                        child: Text(model.errorMessage),
-                      )
-                    : Container(),
+               model.hasErrorMessage
+                      ? Container(
+                          color: Colors.red,
+                          child: Text(
+                            model.errorMessage,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      : Container(),
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),

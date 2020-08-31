@@ -1,4 +1,5 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
@@ -38,6 +39,8 @@ class _ChefProfileViewState extends State<ChefProfileView>
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final _chefData = Provider.of<ChefData>(context);
+    final _dishData = Provider.of<List<Dish>>(context);
+
     print("----> _chefData inside chefProfileView : " + _chefData.toString());
     return BaseView(
       builder: (context, model, child) => ResponsiveSafeArea(
@@ -95,7 +98,9 @@ class _ChefProfileViewState extends State<ChefProfileView>
                 //
                 body: TabBarView(
                   children: [
-                    ChefDishes(),
+                    _dishData == null && _chefData == null
+                        ? Loading()
+                        : ChefDishes(),
                     ChefInfo(),
                   ],
                   controller: _tabController,

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
+import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/custAppDrawer.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custinfo/custInfo.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custNoplan.dart';
@@ -382,8 +383,9 @@ class _CustProfileState extends State<CustProfile>
                     margin: EdgeInsets.only(top: deviceSize.height * 0.02),
                     child: TabBarView(
                       children: [
+                      _custData != null ?  _custData.planID != '' ? CustPlan() : CustNoPlan() :Loading(),
                         CustInfo(),
-                        _custData.planID != '' ? CustPlan() : CustNoPlan(),
+                       
                       ],
                       controller: _tabController,
                     ),

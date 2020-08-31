@@ -1,14 +1,13 @@
+import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefRegViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custRegViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
-import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
-import 'package:fitness_diet/ui/widgets/chefAuthBg.dart';
 import 'package:fitness_diet/ui/widgets/custAuthBg.dart';
+import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
 import 'package:fitness_diet/ui/widgets/stepHeaderWithBg.dart';
 import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
@@ -138,11 +137,17 @@ class _CustRegView_1State extends State<CustRegView_1> {
                 // ? UIHelper()
                 //     .showErrorButtomSheet(context, model.errorMessage)
                 // : Container(),
-                model.hasErrorMessage
-                    ? Container(
-                        child: Text(model.errorMessage),
-                      )
-                    : Container(),
+             model.hasErrorMessage
+                      ? Container(
+                          color: Colors.red,
+                          child: Text(
+                            model.errorMessage,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      : Container(),
+
+
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),

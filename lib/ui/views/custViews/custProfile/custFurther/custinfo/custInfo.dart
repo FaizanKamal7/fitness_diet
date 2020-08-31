@@ -31,11 +31,11 @@ class CustInfo extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: widgetSize.width * 0.02),
                 child: Text(
-                  "Following " + _custData.custFollowing.toString() + " chefs",
+                  "Following  0  chefs",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "UniSansSemiBold",
-                    fontSize: widgetSize.height * 0.044,
+                    fontSize: widgetSize.height * 0.04,
                     color: Color(0xff2a6427).withOpacity(0.75),
                   ),
                 ),
@@ -50,7 +50,7 @@ class CustInfo extends StatelessWidget {
                     standardInfDisplaywithBullets('Data of birth : ',
                         model.parseDate(_custData.custDateOfBirth), deviceSize),
                     standardInfDisplaywithBullets(
-                        'Location :', '_custData.custLocation', deviceSize),
+                        'Location :', _custData.custLocation, deviceSize),
                   ],
                 ),
               ),

@@ -15,6 +15,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.36.4"
+  animated_widgets:
+    dependency: "direct main"
+    description:
+      name: animated_widgets
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
+  animator:
+    dependency: "direct main"
+    description:
+      name: animator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
   args:
     dependency: transitive
     description:
@@ -293,6 +307,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_animator:
+    dependency: "direct main"
+    description:
+      name: flutter_animator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   flutter_custom_dialog:
     dependency: "direct main"
     description:
@@ -742,6 +763,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.9.5"
+  states_rebuilder:
+    dependency: transitive
+    description:
+      name: states_rebuilder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.1"
   stream_channel:
     dependency: transitive
     description:

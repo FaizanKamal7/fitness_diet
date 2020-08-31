@@ -8,6 +8,7 @@ import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
 import 'package:fitness_diet/ui/widgets/custAuthBg.dart';
 import 'package:fitness_diet/ui/widgets/dateOfBirthSelector.dart';
+import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
 import 'package:fitness_diet/ui/widgets/stepHeaderWithBg.dart';
 import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
@@ -28,139 +29,147 @@ class _CustRegView_2State extends State<CustRegView_2> {
     final deviceSize = MediaQuery.of(context).size;
     print("---------> CustReg2VIew Reached ");
     return BaseView<CustReg2ViewModel>(
-      builder: (context, model, child) => ResponsiveSafeArea(
-        builder: (context, widgetSize) => Scaffold(
-          body: Stack(
-            children: <Widget>[
-              //
-              // >>>>>>>>> Registor background image
-              //
-              CustAuthBg(),
-              ListView(
-                shrinkWrap: true,
-                children: <Widget>[
-                  // ------------------------------------------------------   T I T L E
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: widgetSize.width * 0.05,
-                        top: widgetSize.height * 0.25),
-                    child: AuthHeader(
-                      firstText: "Hello",
-                      secondText: "There.",
-                      processText: "register",
-                      deviceSize: deviceSize,
-                    ),
-                  ),
-                  SizedBox(height: widgetSize.height * 0.02),
-                  StepHeaderWithBG(
-                      stepsText: "Step 2 of 2", deviceSize: deviceSize),
-                  SizedBox(height: widgetSize.height * 0.02),
-
-                  // ------------------------------------------------------   T E X T   F E I L D S   A N D   B U T T O N S
-                  Container(
-                    margin: EdgeInsets.only(left: widgetSize.width * 0.05),
-                    child: Text(
-                      "Add info ",
-                      style: TextStyle(
-                        fontSize: widgetSize.height * 0.02,
-                        fontFamily: 'Montserrat',
-                        color: Colors.brown,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: widgetSize.height * 0.01),
-                  // :::::::>>>||||--------------------------------------------------   Phone verification initiated
-
-                  TextFeildWithPrefix(
-                    controller: custNameContr,
-                    deviceSize: deviceSize,
-                    isTypeInt: false,
-                    preIcon: Icons.person,
-                    isObscureText: false,
-                    hintText: "Enter your name",
-                  ),
-                  SizedBox(height: widgetSize.height * 0.01),
-                  // TextFeildWithPrefix(
-                  //   controller: custPassContr,
-                  //   deviceSize: deviceSize,
-                  //   isTypeInt: false,
-                  //   isObscureText: true,
-                  //   preIcon: Icons.lock,
-                  //   hintText: "Enter your password",
-                  // ),
-                  // SizedBox(height: widgetSize.height * 0.01),
-
-                  DateOfBirthSelector(
-                    deviceSize: deviceSize,
-                    onDateTimeChanged: (newDateTime) {
-                      dateOfBirth = newDateTime;
-                    },
-                  ),
-
-                  SizedBox(height: widgetSize.height * 0.01),
-
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: FlatButton(
-                      onPressed: () {
-                        print(
-                            "Register button is pressed. Redirecting to 'CustReg2Viewmodel' to add 'CustData' (Message from inside CustRegView1)");
-                        model.addCustData(custNameContr.text, dateOfBirth);
-                        // bool isCustDataSuccess = await model.addCustData(
-                        //   custNameContr.text,
-                        //   dateOfBirth,
-                        // );
-                      },
-                      child: AuthBtnStyle(
+      builder: (context, model, child) => WillPopScope(
+        onWillPop: ()async=>false ,
+              child: ResponsiveSafeArea(
+          builder: (context, widgetSize) => Scaffold(
+            body: Stack(
+              children: <Widget>[
+                //
+                // >>>>>>>>> Registor background image
+                //
+                CustAuthBg(),
+                ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    // ------------------------------------------------------   T I T L E
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: widgetSize.width * 0.05,
+                          top: widgetSize.height * 0.25),
+                      child: AuthHeader(
+                        firstText: "Hello",
+                        secondText: "There.",
+                        processText: "register",
                         deviceSize: deviceSize,
-                        passedText: "Register",
                       ),
                     ),
-                  ),
-                  SizedBox(height: widgetSize.height * 0.04),
-                  // ------------------------------------------------------    T E X T    W I T H    R E G I S T E R    B U T T O N
-                  Container(
-                    margin: EdgeInsets.only(left: widgetSize.width * 0.05),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          "Already have an account? ",
-                          style: TextStyle(
-                            fontSize: widgetSize.height * 0.02,
-                            fontFamily: 'Uni-Sans',
-                            color: Colors.brown,
-                          ),
+                    SizedBox(height: widgetSize.height * 0.02),
+                    StepHeaderWithBG(
+                        stepsText: "Step 2 of 2", deviceSize: deviceSize),
+                    SizedBox(height: widgetSize.height * 0.02),
+
+                    // ------------------------------------------------------   T E X T   F E I L D S   A N D   B U T T O N S
+                    Container(
+                      margin: EdgeInsets.only(left: widgetSize.width * 0.05),
+                      child: Text(
+                        "Add info ",
+                        style: TextStyle(
+                          fontSize: widgetSize.height * 0.02,
+                          fontFamily: 'Montserrat',
+                          color: Colors.brown,
                         ),
-                        InkResponse(
-                          onTap: () {
-                            model.goToCustSignin();
-                          },
-                          child: Text(
-                            "Sign-in",
+                      ),
+                    ),
+                    SizedBox(height: widgetSize.height * 0.01),
+                    // :::::::>>>||||--------------------------------------------------   Phone verification initiated
+
+                    TextFeildWithPrefix(
+                      controller: custNameContr,
+                      deviceSize: deviceSize,
+                      isTypeInt: false,
+                      preIcon: Icons.person,
+                      isObscureText: false,
+                      hintText: "Enter your name",
+                    ),
+                    SizedBox(height: widgetSize.height * 0.01),
+                    // TextFeildWithPrefix(
+                    //   controller: custPassContr,
+                    //   deviceSize: deviceSize,
+                    //   isTypeInt: false,
+                    //   isObscureText: true,
+                    //   preIcon: Icons.lock,
+                    //   hintText: "Enter your password",
+                    // ),
+                    // SizedBox(height: widgetSize.height * 0.01),
+
+                    DateOfBirthSelector(
+                      deviceSize: deviceSize,
+                      onDateTimeChanged: (newDateTime) {
+                        dateOfBirth = newDateTime;
+                      },
+                    ),
+
+                    SizedBox(height: widgetSize.height * 0.01),
+
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: FlatButton(
+                        onPressed: () {
+                          print(
+                              "Register button is pressed. Redirecting to 'CustReg2Viewmodel' to add 'CustData' (Message from inside CustRegView1)");
+                          model.addCustData(custNameContr.text, dateOfBirth);
+                          // bool isCustDataSuccess = await model.addCustData(
+                          //   custNameContr.text,
+                          //   dateOfBirth,
+                          // );
+                        },
+                        child: AuthBtnStyle(
+                          deviceSize: deviceSize,
+                          passedText: "Register",
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: widgetSize.height * 0.04),
+                    // ------------------------------------------------------    T E X T    W I T H    R E G I S T E R    B U T T O N
+                    Container(
+                      margin: EdgeInsets.only(left: widgetSize.width * 0.05),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            "Already have an account? ",
                             style: TextStyle(
                               fontSize: widgetSize.height * 0.02,
                               fontFamily: 'Uni-Sans',
-                              fontWeight: FontWeight.bold,
                               color: Colors.brown,
                             ),
                           ),
-                        ),
-                      ],
+                          InkResponse(
+                            onTap: () {
+                              model.goToCustSignin();
+                            },
+                            child: Text(
+                              "Sign-in",
+                              style: TextStyle(
+                                fontSize: widgetSize.height * 0.02,
+                                fontFamily: 'Uni-Sans',
+                                fontWeight: FontWeight.bold,
+                                color: Colors.brown,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              //           model.hasErrorMessage
-              // ? UIHelper().showErrorButtomSheet(context, model.errorMessage)
-              // : Container(),
+                  ],
+                ),
+                //           model.hasErrorMessage
+                // ? UIHelper().showErrorButtomSheet(context, model.errorMessage)
+                // : Container(),
 
-              model.hasErrorMessage
-                  ? Container(
-                      child: Text(model.errorMessage),
-                    )
-                  : Container(),
-              model.state == ViewState.Busy ? Loading() : Container(),
-            ],
+               model.hasErrorMessage
+                      ? Container(
+                          color: Colors.red,
+                          child: Text(
+                            model.errorMessage,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      : Container(),
+
+                model.state == ViewState.Busy ? Loading() : Container(),
+              ],
+            ),
           ),
         ),
       ),

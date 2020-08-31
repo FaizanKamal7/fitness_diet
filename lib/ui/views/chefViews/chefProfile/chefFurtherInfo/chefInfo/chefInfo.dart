@@ -2,6 +2,7 @@ import 'package:date_format/date_format.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/ui/shared/constants.dart';
+import 'package:fitness_diet/ui/widgets/standardInfoDisplayWithBullets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,32 +25,35 @@ class ChefInfo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Constants().standardTextStyle1("Bio: "),
-                    Constants().standardTextStyle2(_chefData.chefBio != null
+                standardInfDisplaywithBullets("Bio: ", _chefData.chefBio != null
                         ? _chefData.chefBio.toString()
-                        : ""),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Constants().standardTextStyle1("Phone no: "),
-                    Constants().standardTextStyle2(_chefData.chefPhNo != null
-                        ? _chefData.chefPhNo.toString()
-                        : ""),
-                  ],
-                ),
-                Row(
-                  children: <Widget>[
-                    Constants().standardTextStyle1("Date of Birth: "),
-                    Constants().standardTextStyle2(_chefData.chefDateOfBirth !=
+                        : "", deviceSize),
+               standardInfDisplaywithBullets("Phone no:  ", _chefData.chefPhNo != null
+                        ? _chefData.chefBio.toString()
+                        : "", deviceSize),
+                           standardInfDisplaywithBullets("Date of Birth:  ", _chefData.chefDateOfBirth !=
                             null
                         ? formatDate(
                             _chefData.chefDateOfBirth, [dd, '-', mm, '-', yyyy])
-                        : ""),
-                  ],
-                ),
+                        : "", deviceSize),
+                // Row(
+                //   children: <Widget>[
+                //     Constants().standardTextStyle1("Phone no: "),
+                //     Constants().standardTextStyle2(_chefData.chefPhNo != null
+                //         ? _chefData.chefPhNo.toString()
+                //         : ""),
+                //   ],
+                // ),
+                // Row(
+                //   children: <Widget>[
+                //     Constants().standardTextStyle1("Date of Birth: "),
+                //     Constants().standardTextStyle2(_chefData.chefDateOfBirth !=
+                //             null
+                //         ? formatDate(
+                //             _chefData.chefDateOfBirth, [dd, '-', mm, '-', yyyy])
+                //         : ""),
+                //   ],
+                // ),
               ],
             ),
           );

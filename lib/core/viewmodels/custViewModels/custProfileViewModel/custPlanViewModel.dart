@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:age/age.dart';
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/core/datamodel/alert_response.dart';
@@ -45,10 +43,10 @@ class CustPlanViewModel extends BaseViewModel {
       // B   M  R  CALCULATED  ***********
       // TDEE IS TOTAL DAILY ENERGY EXPENDACTURE
       //
-    
+
       double tdee = calculateBMR(age, gender, convertToPounds(weight),
           convertToInches(height), activityLevel);
-    int currentTdee=tdee.round();
+      int currentTdee = tdee.round();
       int check = checkGoal(weight, goalWeight);
       print('TDEE calculated is *********************:' + tdee.toString());
 
@@ -93,16 +91,19 @@ class CustPlanViewModel extends BaseViewModel {
       //
       String _custGoal;
       if (check == 0) _custGoal = " maintain ";
-      if (check == 1) _custGoal = " gain "+_weightDifference.toString() + ' Kg';
-      if (check == -1) _custGoal = " loss "+_weightDifference.toString() + 'Kg';
+      if (check == 1)
+        _custGoal = " gain " + _weightDifference.toString() + ' Kg';
+      if (check == -1)
+        _custGoal = " loss " + _weightDifference.toString() + 'Kg';
 
       var dialogResult = await _dialogService.showDialog(
           title: "You've set a new goal! ",
-          description: "Your current Calories consumption is $currentTdee \n You need to consume " +
-              tdee.round().toString() +
-              " calories daily  to $_custGoal weight in " +
-              timeToAchiveGoal(weight, goalWeight) +
-              " Weeks. \n Best of Luck ",
+          description:
+              "Your current Calories consumption is $currentTdee \n You need to consume " +
+                  tdee.round().toString() +
+                  " calories daily  to $_custGoal weight in " +
+                  timeToAchiveGoal(weight, goalWeight) +
+                  " Weeks. \n Best of Luck ",
           buttonTitle: "Lets go",
           dialogType: Dialog_Types.PLAN_SUCCESS);
 
@@ -201,13 +202,12 @@ class CustPlanViewModel extends BaseViewModel {
 
   int checkGoal(double currentWeight, double goalweight) {
     if (goalweight == currentWeight) {
-    
       return 0;
     } else if (goalweight > currentWeight) {
-        _weightDifference = goalweight - currentWeight;
+      _weightDifference = goalweight - currentWeight;
       return 1;
     } else {
-      _weightDifference =   currentWeight - goalweight;
+      _weightDifference = currentWeight - goalweight;
       return -1;
     }
   }

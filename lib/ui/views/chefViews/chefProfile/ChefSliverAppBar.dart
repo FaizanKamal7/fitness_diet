@@ -34,7 +34,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final deviceSize = MediaQuery.of(context).size;
-    // final _chefData = Provider.of<ChefData>(context);
+    final _chefData = Provider.of<ChefData>(context);
     print("----> _chefData inside ChefSliverAppBar : " + chefData.toString());
 
     animationVal = 10.0 - max(10.0, shrinkOffset * 10) / maxExtent;
@@ -60,10 +60,12 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                 height: widgetSize.height * 0.94,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(chefBGImage_1),
-                    //  _chefData.chefPic != ""
-                    //     ? NetworkImage(_chefData.chefPic)
-                    //     : AssetImage(defaultChefImg),
+                    //image: AssetImage(chefBGImage_1),
+                    image: _chefData != null
+                        ? _chefData.chefPic != ""
+                            ? NetworkImage(_chefData.chefPic)
+                            : AssetImage(defaultUserImg)
+                        : AssetImage(defaultUserImg),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -119,10 +121,12 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                       //color: Colors.yellow,
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: AssetImage(custBGImage_1),
-                        // image: _chefData.chefPic != ""
-                        //     ? NetworkImage(_chefData.chefPic)
-                        //     : AssetImage(custBGImage_1),
+                        //    image: AssetImage(custBGImage_1),
+                        image: _chefData != null
+                            ? _chefData.chefPic != ""
+                                ? NetworkImage(_chefData.chefPic)
+                                : AssetImage(defaultUserImg)
+                            : AssetImage(defaultUserImg),
                         // image:  AssetImage(custBGImage_1),
                         fit: BoxFit.cover,
                       ),

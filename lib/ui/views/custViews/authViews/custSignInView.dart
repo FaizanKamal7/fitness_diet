@@ -1,18 +1,23 @@
-
+import 'package:animated_widgets/widgets/translation_animated.dart';
+import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custSignInViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
+import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
 import 'package:fitness_diet/ui/widgets/custAuthBg.dart';
+import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
 import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:animator/animator.dart';
+import 'package:timer_count_down/timer_count_down.dart';
 
 class CustSigninView extends StatefulWidget {
   @override
@@ -20,15 +25,27 @@ class CustSigninView extends StatefulWidget {
 }
 
 class _CustSigninViewState extends State<CustSigninView> {
+  bool timeComplete = true;
   final TextEditingController _phNoController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    bool tempBool = true;
+    Countdown(
+      seconds: 2,
+      build: (BuildContext context, double time) => Text(time.toString()),
+      interval: Duration(milliseconds: 100),
+      onFinished: () {
+        setState(() {
+          timeComplete = false;
+        });
+      },
+    );
+
     return BaseView<CustSignInViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Scaffold(
+          resizeToAvoidBottomPadding: false,
           body: StreamProvider<CustData>.value(
             value: DatabaseService().getCustData,
             child: Material(
@@ -89,6 +106,7 @@ class _CustSigninViewState extends State<CustSigninView> {
                         child: FlatButton(
                           onPressed: () {
                             model.signInCust(_phNoController.text);
+
                             // bool signInResult =
                             //     await model.signInCust(_phNoController.text);
                             // signInResult
@@ -155,10 +173,44 @@ class _CustSigninViewState extends State<CustSigninView> {
                   //         context: context,
                   //         builder: (context) => UIHelper()
                   //             .showErrorButtomSheet(context, "errorText"))
-//                    : Container(),
+                  // Animator<double>(
+                  //       tween: Tween<double>(begin: 0, end: 300),
+                  //       cycles: 0,
+                  //       builder: (context, animatorState, child) => Center(
+                  //         child: Container(
+                  //           margin: EdgeInsets.symmetric(vertical: 10),
+                  //           height: animatorState.value,
+                  //           width: animatorState.value,
+                  //           child: FlutterLogo(),
+                  //         ),
+                  //       ),
+                  //     )
+                  //  : Container(),
+
+                  // Countdown(
+                  //     seconds: 10,
+                  //     build: (BuildContext context, double time) =>
+                  //         TranslationAnimatedWidget(
+                  //             enabled:
+                  //                 timeComplete, //update this boolean to forward/reverse the animation
+                  //             values: [
+                  //               Offset(0, -40), // disabled value value
+                  //               Offset(0, 400), //intermediate value
+                  //               Offset(0, -40) //enabled value
+                  //             ],
+                  //             child: Text("feds")),
+                  //     interval: Duration(milliseconds: 1000),
+                  //     onFinished: () {
+                  //       //timeComplete= false;
+                  //     },
+                  //   )
                   model.hasErrorMessage
                       ? Container(
-                          child: Text(model.errorMessage),
+                          color: Colors.red,
+                          child: Text(
+                            model.errorMessage,
+                            style: TextStyle(color: Colors.white),
+                          ),
                         )
                       : Container(),
 
