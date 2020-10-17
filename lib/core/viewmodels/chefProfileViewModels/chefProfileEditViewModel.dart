@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/services/validators.dart';
@@ -15,15 +16,18 @@ class ChefProfileEditViewModel extends BaseViewModel {
   Future updateChefData(String chefName, String chefLocation,
       DateTime chefdateOfBirth, File chefProfilePic) async {
     setState(ViewState.Busy);
-    String _currentUserID = await getUser;
+    String _currentUserID = getUser;
     Map<String, dynamic> chefdataMap = {};
 
     if (Validators().verifyNameInputFeild(chefName))
       chefdataMap.addAll({"chefName": chefName});
+
     if (Validators().verifyNameInputFeild(chefLocation))
       chefdataMap.addAll({"chefLocation": chefLocation});
+
     if (chefdateOfBirth != null)
       chefdataMap.addAll({"chefDateOfBirth": chefdateOfBirth});
+
     if (chefProfilePic != null) {
       String _uploadedImgURL = await ConstantFtns().uploadFile(chefProfilePic);
       chefdataMap.addAll({"chefPic": _uploadedImgURL});
@@ -37,4 +41,6 @@ class ChefProfileEditViewModel extends BaseViewModel {
     setState(ViewState.Idle);
     _navigationService.navigateTo(ChefProfileRoute);
   }
+
+
 }

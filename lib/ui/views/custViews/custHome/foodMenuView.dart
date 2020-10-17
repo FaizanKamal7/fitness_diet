@@ -12,9 +12,9 @@ import 'package:fitness_diet/ui/views/custViews/custHome/Header/guestappdrawer.d
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/homeAppBarDelegate.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/locationHeader.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/recentFoodSlider/recentFoodSlider.dart';
-import 'package:fitness_diet/ui/widgets/dishViewSingleDesign.dart';
+import 'package:fitness_diet/ui/widgets/dishViewSingleListItemDesign.dart';
 import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
-import 'package:fitness_diet/ui/widgets/standardHeadingNoBg.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -95,7 +95,7 @@ class FoodMenuView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _dishData = Provider.of<List<Dish>>(context);
-    final _user = Provider.of<User>(context);
+    final _user = Provider.of<CurrentUser>(context);
 
     final deviceSize = MediaQuery.of(context).size;
     String _chefName;
@@ -188,7 +188,7 @@ class FoodMenuView extends StatelessWidget {
                                   margin: EdgeInsets.symmetric(
                                     vertical: widgetSize.height * 0.002,
                                   ),
-                                  child: DishViewSingleDesign(
+                                  child: DishViewSingleListItemDesign(
                                     dishName: dish.dishName,
                                     chefName: dish.chefName,
                                     kcal: 250.5,

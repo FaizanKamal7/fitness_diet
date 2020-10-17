@@ -1,6 +1,7 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
+import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefProfileViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
@@ -8,8 +9,8 @@ import 'package:fitness_diet/ui/views/chefViews/chefProfile/ChefSliverAppBar.dar
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefAppDrawer.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/chefDishesView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/chefInfo.dart';
-import 'package:fitness_diet/ui/widgets/ProfileHeaderText.dart';
-import 'package:fitness_diet/ui/widgets/tabBarBtnStyle.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/tabBarBtnStyle.dart';
+import 'package:fitness_diet/ui/widgets/Texts/ProfileHeaderText.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -38,153 +39,181 @@ class _ChefProfileViewState extends State<ChefProfileView>
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    final _chefData = Provider.of<ChefData>(context);
     final _dishData = Provider.of<List<Dish>>(context);
+    Stream<List<ChefData>> _chefData;
+    print("----> __chefData inside chefProfileView : " + _chefData.toString());
+    return BaseView<ChefProfileViewModel>(
+      onModelReady: (model) async {
+        String currentChefID = model.getUser;
+        print("currentChefID: " + currentChefID.toString());
+        _chefData = model.getSingleChefData(currentChefID);
+        print("inOnModelReady : " + _chefData.first.toString());
+      },
+      builder: (context, model, child) => model.state == ViewState.Busy
+          ? Loading()
+          : ResponsiveSafeArea(
+              builder: (context, widgetSize) => StreamBuilder<List<ChefData>>(
+                stream: _chefData,
+                builder: (context, snapshot) {
+                  // print("snapshot " +
+                  //     snapshot.toString() +
+                  //     ",  _chefData: " +
+                  //     _chefData.toString() +
+                  //     "   snapSHot error " +
+                  //     snapshot.error.toString());
+                  if (snapshot.hasData) {
+                    ChefData chefData = snapshot.data[0];
+                    return Scaffold(
+                      key: _scaffoldKey,
+                      endDrawer: ChefAppDrawer(),
+                      body: Stack(
+                        fit: StackFit.loose,
+                        children: [
+                          NestedScrollView(
+                            controller: _scrollController,
+                            headerSliverBuilder: (BuildContext context,
+                                bool innerBoxIsScrolled) {
+                              return [
+                                //
+                                // >>>>>>>>>>> Header content
+                                //
 
-    print("----> _chefData inside chefProfileView : " + _chefData.toString());
-    return BaseView(
-      builder: (context, model, child) => ResponsiveSafeArea(
-        builder: (context, widgetSize) => Scaffold(
-          key: _scaffoldKey,
-          endDrawer: ChefAppDrawer(),
-          body: Stack(
-            fit: StackFit.loose,
-            children: [
-              NestedScrollView(
-                controller: _scrollController,
-                headerSliverBuilder:
-                    (BuildContext context, bool innerBoxIsScrolled) {
-                  return [
-                    //
-                    // >>>>>>>>>>> Header content
-                    //
+                                SliverPersistentHeader(
+                                  delegate: ChefSliverAppBar(
+                                    maxExtent: deviceSize.height * 0.3,
+                                    minExtent: deviceSize.height * 0.26,
+                                    // chefName: chefData.chefName,
+                                    // chefPic: chefData.chefPic,
+                                    chefData:chefData,
+                                  ),
+                                  pinned: true,
+                                  floating: false,
+                                ),
+                                //
+                                // >>>>>>>>>>> Space between tabbar and header
+                                //
+                                SliverToBoxAdapter(
+                                  child: SizedBox(
+                                    height: deviceSize.height * 0.02,
+                                  ),
+                                ),
+                                //
+                                // >>>>>>>>>>> Tabbars
+                                //
 
-                    SliverPersistentHeader(
-                      delegate: ChefSliverAppBar(
-                        maxExtent: deviceSize.height * 0.3,
-                        minExtent: deviceSize.height * 0.26,
-                        chefData: _chefData,
-                      ),
-                      pinned: true,
-                      floating: false,
-                    ),
-                    //
-                    // >>>>>>>>>>> Space between tabbar and header
-                    //
-                    SliverToBoxAdapter(
-                      child: Container(
-                        child: SizedBox(
-                          height: deviceSize.height * 0.02,
-                        ),
-                      ),
-                    ),
-                    //
-                    // >>>>>>>>>>> Tabbars
-                    //
+                                SliverPersistentHeader(
+                                  delegate: tabsDelegate(
+                                    _tabController,
+                                    deviceSize.height * 0.051, // MaxExtent
+                                    deviceSize.height * 0.050, // MinExtent
+                                  ),
+                                  pinned: true,
+                                  floating: false,
+                                ),
+                              ];
+                            },
+                            //
+                            // >>>>>>>>>>> Tabbars display
+                            //
+                            body: TabBarView(
+                              children: [
+                                _dishData == null && chefData == null
+                                    ? Loading()
+                                    : ChefDishes(),
+                                ChefInfo(),
+                              ],
+                              controller: _tabController,
+                            ),
+                          ),
 
-                    SliverPersistentHeader(
-                      delegate: tabsDelegate(
-                        _tabController,
-                        deviceSize.height * 0.051, // MaxExtent
-                        deviceSize.height * 0.050, // MinExtent
+                          //  ----------------------------------------------------   D R A W E R
+
+                          Container(
+                            margin: EdgeInsets.only(
+                                left: deviceSize.height * 0.03,
+                                top: deviceSize.height * 0.018),
+                            //   color: Colors.red,
+                            child: Row(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                //
+                                // >>>>>>>>> B A C K   I C O N
+                                //
+
+                                // RawMaterialButton(
+                                //   onPressed: () {},
+                                //   elevation: 2.0,
+                                //   fillColor: Colors.white,
+                                //   child: Icon(
+                                //     Icons.arrow_back_ios,
+                                //     size: deviceSize.height * 0.025,
+                                //   ),
+                                //   //    padding: EdgeInsets.all(deviceSize.height * 0.0),
+                                //   shape: CircleBorder(),
+                                // ),
+
+                                //
+                                // >>>>>>>>> P R O F I L E   T E X T
+                                //
+                                ProfielHeaderText(),
+
+                                Spacer(),
+                                // FlatButton(
+                                //   onPressed: () {
+                                //     AuthService().signOut();
+                                //   },
+                                //   child: Text(
+                                //     "Sign out",
+                                //     style: TextStyle(
+                                //       color: Colors.white,
+                                //       fontSize: MediaQuery.of(context).size.height * 0.02,
+                                //     ),
+                                //   ),
+                                // ),
+                                IconButton(
+                                  // color: Colors.white,
+                                  icon: Icon(
+                                    Icons.menu,
+                                    size: widgetSize.height * 0.033,
+                                    color: Colors.white.withOpacity(0.7),
+                                  ),
+                                  onPressed: () {
+                                    _scaffoldKey.currentState.openEndDrawer();
+                                  },
+                                ),
+                                // Container(
+                                //   //color: Colors.amber,
+                                //   alignment: Alignment.topRight,
+                                //   margin: EdgeInsets.only(
+                                //     top: widgetSize.height * 0.0001,
+                                //     left: widgetSize.width * 0.09,
+                                //     bottom: widgetSize.height * 0.93,
+                                //   ),
+                                //   child:
+                                // ),
+                              ],
+                            ),
+                          ),
+                          model.hasErrorMessage
+                              ? Container(
+                                  child: Text(model.errorMessage),
+                                )
+                              : Container(),
+                          model.state == ViewState.Busy
+                              ? Loading()
+                              : Container(),
+                        ],
                       ),
-                      pinned: true,
-                      floating: false,
-                    ),
-                  ];
+                    );
+                  } else {
+                    return Scaffold(
+                      body: Center(child: Text("No data for selected user")),
+                    );
+                  }
                 },
-                //
-                // >>>>>>>>>>> Tabbars display
-                //
-                body: TabBarView(
-                  children: [
-                    _dishData == null && _chefData == null
-                        ? Loading()
-                        : ChefDishes(),
-                    ChefInfo(),
-                  ],
-                  controller: _tabController,
-                ),
               ),
-              //  ----------------------------------------------------   D R A W E R
-
-              Container(
-                margin: EdgeInsets.only(
-                    left: deviceSize.height * 0.03,
-                    top: deviceSize.height * 0.018),
-                //   color: Colors.red,
-                child: Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    //
-                    // >>>>>>>>> B A C K   I C O N
-                    //
-
-                    // RawMaterialButton(
-                    //   onPressed: () {},
-                    //   elevation: 2.0,
-                    //   fillColor: Colors.white,
-                    //   child: Icon(
-                    //     Icons.arrow_back_ios,
-                    //     size: deviceSize.height * 0.025,
-                    //   ),
-                    //   //    padding: EdgeInsets.all(deviceSize.height * 0.0),
-                    //   shape: CircleBorder(),
-                    // ),
-
-                    //
-                    // >>>>>>>>> P R O F I L E   T E X T
-                    //
-                    ProfielHeaderText(),
-
-                    Spacer(),
-                    // FlatButton(
-                    //   onPressed: () {
-                    //     AuthService().signOut();
-                    //   },
-                    //   child: Text(
-                    //     "Sign out",
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //       fontSize: MediaQuery.of(context).size.height * 0.02,
-                    //     ),
-                    //   ),
-                    // ),
-                    IconButton(
-                      // color: Colors.white,
-                      icon: Icon(
-                        Icons.menu,
-                        size: widgetSize.height * 0.033,
-                        color: Colors.white.withOpacity(0.7),
-                      ),
-                      onPressed: () {
-                        _scaffoldKey.currentState.openEndDrawer();
-                      },
-                    ),
-                    // Container(
-                    //   //color: Colors.amber,
-                    //   alignment: Alignment.topRight,
-                    //   margin: EdgeInsets.only(
-                    //     top: widgetSize.height * 0.0001,
-                    //     left: widgetSize.width * 0.09,
-                    //     bottom: widgetSize.height * 0.93,
-                    //   ),
-                    //   child:
-                    // ),
-                  ],
-                ),
-              ),
-              model.hasErrorMessage
-                  ? Container(
-                      child: Text(model.errorMessage),
-                    )
-                  : Container(),
-              model.state == ViewState.Busy ? Loading() : Container(),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

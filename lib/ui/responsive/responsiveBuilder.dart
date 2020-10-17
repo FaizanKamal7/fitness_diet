@@ -7,6 +7,9 @@ class ResponsiveBuilder extends StatelessWidget {
       BuildContext context, SizingInformation sizingInformation) builder;
   const ResponsiveBuilder({Key key, this.builder}) : super(key: key);
 
+
+  
+
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);

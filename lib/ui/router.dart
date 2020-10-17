@@ -48,8 +48,8 @@ class Router {
         return MaterialPageRoute(builder: (_) => ChefSignInView());
       case routes.ChefProfileRoute:
         return MaterialPageRoute(builder: (_) => ChefProfileMain());
-      case routes.SoleDishRoute:
-        return MaterialPageRoute(builder: (_) => SoleDishView());
+      // case routes.SoleDishRoute:
+      //   return MaterialPageRoute(builder: (_) => SoleDishView());
 
       case 'parent':
         return MaterialPageRoute(builder: (_) => CustProfileMain());

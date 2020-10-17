@@ -11,25 +11,26 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 class AuthService {
 //  final FirebaseAuth _auth = FirebaseAuth.instance;
   Logger logger;
-  User _userFormFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+  CurrentUser _userFormFirebaseUser(User user) {
+    return user != null ? CurrentUser(uid: user.uid) : null;
   }
 
   // auth change user stream
-  Stream<User> get user => _auth.onAuthStateChanged.map(_userFormFirebaseUser);
+  Stream<CurrentUser> get user =>
+      _auth.authStateChanges().map(_userFormFirebaseUser);
 
   // Sign in with email and password
-  Future signInWithEmailAndPassword(String email, String password) async {
-    try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      FirebaseUser user = result.user;
-      return _userFormFirebaseUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }
+  // Future signInWithEmailAndPassword(String email, String password) async {
+  //   try {
+  //     AuthResult result = await _auth.signInWithEmailAndPassword(
+  //         email: email, password: password);
+  //     FirebaseUser user = result.user;
+  //     return _userFormFirebaseUser(user);
+  //   } catch (e) {
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
 
   Future signOut() async {
     try {
@@ -44,13 +45,13 @@ class AuthService {
 
   Future signInWithPhoneNumber(AuthCredential authCreds) async {
     try {
-      AuthResult result = await _auth.signInWithCredential(authCreds);
-      FirebaseUser user = result.user;
+      UserCredential result = await _auth.signInWithCredential(authCreds);
+      User customUser = result.user;
 
       if (user != null) {
-        print('AUTHENTICATONI SUCCESSFULL. Id: ' + user.uid);
+        print('AUTHENTICATONI SUCCESSFULL. Id: ' + customUser.uid);
 
-        return _userFormFirebaseUser(user).uid;
+        return _userFormFirebaseUser(customUser).uid;
       } else {
         print('Invalid code/invalid authentication');
         return null;
@@ -113,11 +114,6 @@ class AuthService {
 
       print("OTP entered by user: " + OTPDialogResult.toString());
 
-      // bool isCorrectOTP =
-      //     FlutterOtp().resultChecker(int.parse(OTPDialogResult));
-
-      //   print("Result of OTP verification: " + isCorrectOTP.toString());
-
       // if (isCorrectOTP) {
       AuthCredential authCred = PhoneAuthProvider.getCredential(
           verificationId: verID, smsCode: OTPDialogResult);
@@ -129,19 +125,19 @@ class AuthService {
     };
 
     final PhoneVerificationFailed verificationFailed =
-        (AuthException authException) {
-      print('${AuthException(smsCode, "message")}');
+        (Exception authException) {
+      // print('${AuthException(smsCode, "message")}');
 
-      if (authException.message.contains('not authorized'))
-        print('   App not authroized');
-      // UIHelper().showErrorButtomSheet(context, '   App not authroized');
-      else if (authException.message.contains('Network'))
-        print('   Please check your internet \n    connection and try again ');
-      else
-        print('Something has gone wrong, please try later ' +
-            authException.message);
-      //  setState(ViewState.Idle);
-      completer.complete(newUserResult);
+      // if (authException.message.contains('not authorized'))
+      //   print('   App not authroized');
+      // // UIHelper().showErrorButtomSheet(context, '   App not authroized');
+      // else if (authException.message.contains('Network'))
+      //   print('   Please check your internet \n    connection and try again ');
+      // else
+      //   print('Something has gone wrong, please try later ' +
+      //       authException.message);
+      // //  setState(ViewState.Idle);
+      // completer.complete(newUserResult);
     };
 
     await FirebaseAuth.instance

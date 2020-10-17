@@ -4,7 +4,7 @@ import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/foodSliderItem.dart';
-import 'package:fitness_diet/ui/widgets/standardHeadingwithBGandRoundCorner.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardHeadingwithBGandRoundCorner.dart';
 import 'package:fitness_diet/ui/widgets/standardInfoDisplayWithBullets.dart';
 import 'package:flutter/material.dart';
 

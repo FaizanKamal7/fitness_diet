@@ -6,7 +6,7 @@ import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custMeals.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/summaryCard.dart';
-import 'package:fitness_diet/ui/widgets/standardHeadingwithBGandRoundCorner.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardHeadingwithBGandRoundCorner.dart';
 import 'package:fitness_diet/ui/widgets/standardInfoDisplayWithBullets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';

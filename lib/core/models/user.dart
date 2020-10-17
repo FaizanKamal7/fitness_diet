@@ -1,8 +1,8 @@
-class User {
+class CurrentUser {
   String uid;
-  User({this.uid});
+  CurrentUser({this.uid});
 
-  User.initial() : uid = '';
+  CurrentUser.initial() : uid = '';
   String get getUid => this.uid;
 
   // User.fromJson(Map<String, dynamic> json) {

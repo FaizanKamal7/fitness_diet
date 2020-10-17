@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class RecentFoodSlider extends StatelessWidget {
   // List for testing
+  // ignore: non_constant_identifier_names
   static List FoodCatgSectionItemList = [
     {'Name': "Biryani", "Pic": "assets/images/biryani.jpg"},
     {'Name': "Nihari", "Pic": "assets/images/nihari.jpg"},

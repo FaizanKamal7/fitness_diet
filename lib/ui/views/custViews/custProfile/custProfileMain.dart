@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class CustProfileMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<CurrentUser>(context);
 
     var custStreamProvider;
     var planStreamProvider;

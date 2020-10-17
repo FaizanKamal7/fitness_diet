@@ -4,12 +4,12 @@ import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custRegViewMode
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
-import 'package:fitness_diet/ui/widgets/custAuthBg.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/custAuthBg.dart';
 import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
-import 'package:fitness_diet/ui/widgets/stepHeaderWithBg.dart';
-import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
+import 'package:fitness_diet/ui/widgets/Texts/stepHeaderWithBg.dart';
+import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 

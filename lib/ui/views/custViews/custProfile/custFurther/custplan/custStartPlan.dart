@@ -6,7 +6,7 @@ import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuView.dart';
-import 'package:fitness_diet/ui/widgets/textFeildWithWhiteBGSmall.dart';
+import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithWhiteBGSmall.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

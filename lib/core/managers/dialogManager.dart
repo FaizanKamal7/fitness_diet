@@ -193,6 +193,7 @@ class _DialogManagerState extends State<DialogManager> {
             //  Navigator.pop(context);
           },
         )..show();
+     
         break;
 
       default:

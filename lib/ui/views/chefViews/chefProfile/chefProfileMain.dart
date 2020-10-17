@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class ChefProfileMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<CurrentUser>(context);
 
     var dishStreamProvider,
         chefDataStreamProvider,
@@ -17,8 +17,8 @@ class ChefProfileMain extends StatelessWidget {
 
     try {
       // - Chef data stream
-      chefDataStreamProvider = StreamProvider<ChefData>.value(
-          value: DatabaseService(uid: user.uid).getChefData);
+      chefDataStreamProvider = StreamProvider<List<ChefData>>.value(
+          value: DatabaseService().getAllChefData);
       // - Dish data stream
       dishStreamProvider = StreamProvider<List<Dish>>.value(
           value: DatabaseService().getChefDishData);

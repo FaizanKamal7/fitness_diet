@@ -3,7 +3,7 @@ import 'package:fitness_diet/core/viewmodels/custViewModels/custAppDrawerViewMod
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/navBarContent.dart';
 import 'package:fitness_diet/ui/widgets/subNavContent.dart';
 import 'package:flutter/cupertino.dart';

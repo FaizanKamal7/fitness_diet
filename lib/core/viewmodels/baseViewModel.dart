@@ -21,10 +21,13 @@ class BaseViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  FirebaseUser baseUser;
-
-  Future<String> get getUser async {
-    baseUser = await FirebaseAuth.instance.currentUser();
+  // FirebaseUser baseUser;
+  String get getUser {
+    setState(ViewState.Busy);
+    User baseUser;
+    baseUser = FirebaseAuth.instance.currentUser;
+    // print('current user in baseview model ' + baseUser.toString());
+    setState(ViewState.Idle);
     return baseUser.uid;
   }
 

@@ -5,9 +5,9 @@ import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel
 import 'package:fitness_diet/ui/shared/constants.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/widgets/authBtnStyle.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/dateOfBirthSelector.dart';
-import 'package:fitness_diet/ui/widgets/textFeildWithPrefix.dart';
+import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';

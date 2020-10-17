@@ -4,20 +4,23 @@ import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileEditView.dart';
-import 'package:fitness_diet/ui/widgets/standardBtnWhitishRound.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/standardBtnWhitishRound.dart';
 import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
-  ChefSliverAppBar(
-      {@required this.maxExtent, @required this.minExtent, this.chefData});
-
   final double maxExtent;
   final double minExtent;
   double animationVal = 0;
   ChefData chefData;
-
+  // String chefName, chefPic;
+  ChefSliverAppBar({
+    @required this.maxExtent,
+    @required this.minExtent,
+    // @required this.chefName,
+    // @required this.chefPic,
+    @required this.chefData,
+  });
   void _showEditBottomSheet(BuildContext _context) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
@@ -34,16 +37,15 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final deviceSize = MediaQuery.of(context).size;
-    final _chefData = Provider.of<ChefData>(context);
-    print("----> _chefData inside ChefSliverAppBar : " + chefData.toString());
-
+    // final _chefData = Provider.of<ChefData>(context);
+    // print("----> _chefData inside ChefSliverAppBar : " + chefData.toString());
+    print("chefPic in SliverAppBar: " +
+        chefData.chefPic.toString() +
+        " Name: " +
+        chefData.chefName.toString() +
+        " Phone: " +
+        chefData.chefPhNo.toString());
     animationVal = 10.0 - max(10.0, shrinkOffset * 10) / maxExtent;
-    // debugPrint("-=-=-==-=-=--=-= SHRINK OFF: " +
-    //     shrinkOffset.toString() +
-    //     " ---- " +
-    //     animationVal.toString() +
-    //     " --- Calculations :  " +
-    //     (animationVal * deviceSize.width / 30).toString());
     return ResponsiveSafeArea(
       builder: (context, widgetSize) => Container(
         color: Colors.white,
@@ -61,9 +63,9 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     //image: AssetImage(chefBGImage_1),
-                    image: _chefData != null
-                        ? _chefData.chefPic != ""
-                            ? NetworkImage(_chefData.chefPic)
+                    image: chefData.chefPic != null
+                        ? chefData.chefPic != ""
+                            ? NetworkImage(chefData.chefPic)
                             : AssetImage(defaultUserImg)
                         : AssetImage(defaultUserImg),
                     fit: BoxFit.cover,
@@ -122,9 +124,9 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         //    image: AssetImage(custBGImage_1),
-                        image: _chefData != null
-                            ? _chefData.chefPic != ""
-                                ? NetworkImage(_chefData.chefPic)
+                        image: chefData.chefPic != null
+                            ? chefData.chefPic != ""
+                                ? NetworkImage(chefData.chefPic)
                                 : AssetImage(defaultUserImg)
                             : AssetImage(defaultUserImg),
                         // image:  AssetImage(custBGImage_1),
@@ -144,7 +146,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                     //     : 1
                   ),
                   child: Text(
-                    chefData == null ? "" : chefData.chefName,
+                    chefData.chefName == null ? "" : chefData.chefName,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: animationVal > 7.2

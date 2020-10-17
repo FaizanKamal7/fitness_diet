@@ -22,9 +22,9 @@ class PhoneVer extends BaseViewModel {
     String smsCode;
     final AuthService _authService = locator<AuthService>();
     dynamic newUserResult;
-    
+
     final DialogService _dialogService = locator<DialogService>();
-    
+
     Future<String> getOTPresult() async {
       var dialogResult =
           await _dialogService.showDialog(dialogType: Dialog_Types.OTP);
@@ -93,19 +93,19 @@ class PhoneVer extends BaseViewModel {
     };
 
     final PhoneVerificationFailed verificationFailed =
-        (AuthException authException) {
-      print('${AuthException(smsCode, "message")}');
+        (Exception authException) {
+      // print('${Exception(smsCode, "message")}');
 
-      if (authException.message.contains('not authorized'))
-        UIHelper().showErrorButtomSheet(context, '   App not authroized');
-      else if (authException.message.contains('Network'))
-        UIHelper().showErrorButtomSheet(context,
-            '   Please check your internet \n    connection and try again ');
-      else
-        UIHelper().showErrorButtomSheet(
-            context, '   Something has gone wrong, \n    Please try later ');
-      print('Something has gone wrong, please try later ' +
-          authException.message);
+      // if (authException.message.contains('not authorized'))
+      //   UIHelper().showErrorButtomSheet(context, '   App not authroized');
+      // else if (authException.message.contains('Network'))
+      //   UIHelper().showErrorButtomSheet(context,
+      //       '   Please check your internet \n    connection and try again ');
+      // else
+      //   UIHelper().showErrorButtomSheet(
+      //       context, '   Something has gone wrong, \n    Please try later ');
+      // print('Something has gone wrong, please try later ' +
+      //     authException.message);
     };
 
     await FirebaseAuth.instance

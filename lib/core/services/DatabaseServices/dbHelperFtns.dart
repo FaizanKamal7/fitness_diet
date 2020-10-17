@@ -5,9 +5,9 @@ import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 
 class DBHelperFtns extends DatabaseService {
 // -------- Counting total number of dishes
-  Future<int> countDishDocuments() async {
-    QuerySnapshot _myDoc = await dishCollection.getDocuments();
-    List<DocumentSnapshot> _myDocCount = _myDoc.documents;
+  Future<int> countDishdocs() async {
+    QuerySnapshot _myDoc = await dishCollection.get();
+    List<QueryDocumentSnapshot> _myDocCount = _myDoc.docs;
     return _myDocCount.length;
   }
 
@@ -15,12 +15,12 @@ class DBHelperFtns extends DatabaseService {
   Future<int> lastDocumentIdNumber(
       CollectionReference collection, String fieldName) async {
     print('last document function.********');
-    QuerySnapshot _myDoc = await collection.getDocuments();
-    List<DocumentSnapshot> _myDocCount = _myDoc.documents;
+    QuerySnapshot _myDoc = await collection.get();
+    List<QueryDocumentSnapshot> _myDocCount = _myDoc.docs;
     if (_myDocCount.length == 0) {
       return 0;
     } else {
-      dynamic value = _myDocCount[_myDocCount.length - 1].data[fieldName];
+      dynamic value = _myDocCount[_myDocCount.length - 1].data()[fieldName];
 
       final intRegex = RegExp(r'[0-9]');
 
@@ -38,28 +38,25 @@ class DBHelperFtns extends DatabaseService {
   }
 
 // -------- Fetching category name using ctg-ID
-  Future<String> ctgIDToName(DocumentSnapshot passedID) async {
-    QuerySnapshot ctgName = await dishCtgCollection
-        .where("ctgID", isEqualTo: passedID)
-        .getDocuments();
-    print("------> ctgName from fetchDishCtgName" + ctgName.documents .toString());
+  Future<String> ctgIDToName(QueryDocumentSnapshot passedID) async {
+    QuerySnapshot ctgName =
+        await dishCtgCollection.where("ctgID", isEqualTo: passedID).get();
+    print("------> ctgName from fetchDishCtgName" + ctgName.docs.toString());
     return ctgName.toString();
   }
 
 // -------- Fetching category name using ctg-ID
-  Future<String> ctgNameToID(DocumentSnapshot passedName) async {
-    QuerySnapshot ctgName = await dishCtgCollection
-        .where("ctgName", isEqualTo: passedName)
-        .getDocuments();
+  Future<String> ctgNameToID(QueryDocumentSnapshot passedName) async {
+    QuerySnapshot ctgName =
+        await dishCtgCollection.where("ctgName", isEqualTo: passedName).get();
     print("------> ctgName from fetchDishCtgName" + ctgName.toString());
     return ctgName.toString();
   }
 
 // -------- Fetching Attribute name using ctg-ID
   Future<String> attrIDToName(String passedID) async {
-    QuerySnapshot attrName = await dishAttrCollection
-        .where("attrID", isEqualTo: passedID)
-        .getDocuments();
+    QuerySnapshot attrName =
+        await dishAttrCollection.where("attrID", isEqualTo: passedID).get();
     print("------> attrName from fetchDishattrName" + attrName.toString());
     return attrName.toString();
   }
@@ -70,10 +67,10 @@ class DBHelperFtns extends DatabaseService {
     var _completer = Completer<dynamic>();
     await dishAttrCollection
         .where("attrName", isEqualTo: passedName)
-        .getDocuments()
+        .get()
         .then((data) {
-      if (data.documents.length > 0) {
-        extractedID = data.documents[0].data['attrID'].toString();
+      if (data.docs.length > 0) {
+        extractedID = data.docs[0].data()['attrID'].toString();
       }
       print("------> attrID from fetchDishattrID: " + extractedID);
       //  String _attrID = extractedID.toString();
@@ -94,10 +91,10 @@ class DBHelperFtns extends DatabaseService {
     var _completer = Completer<dynamic>();
     await passedCollection
         .where(dbKeyNamOfID, isEqualTo: passedID)
-        .getDocuments()
+        .get()
         .then((data) {
-      if (data.documents.length > 0) {
-        _extractedName = data.documents[0].data[dbKeyNamOfName].toString();
+      if (data.docs.length > 0) {
+        _extractedName = data.docs[0].data()[dbKeyNamOfName].toString();
       }
       print(
           "------> _extractedCHEFName from fetchDishattrID: " + _extractedName);
@@ -120,33 +117,32 @@ class DBHelperFtns extends DatabaseService {
   ) async {
     String _extractedID;
     var _completer = Completer<dynamic>();
-   
+
     await passedCollection
         .where(dbKeyNamOfName, isEqualTo: passedName)
-        .getDocuments()
+        .get()
         .then((data) {
-      if (data.documents.length > 0) {
-        _extractedID = data.documents[0].data[dbKeyNamOfID].toString();
+      if (data.docs.length > 0) {
+        _extractedID = data.docs[0].data()[dbKeyNamOfID].toString();
       }
-      print("------> attrID from fetchDishattrID: " + _extractedID);
 
       _completer.complete(_extractedID);
     });
     String _result = await _completer.future;
     print(
         "----------> Value of completer inside documentNameToID DBHelperFtns  : " +
-            _result);
+            _result.toString());
     return _result;
   }
   // // -------- Extracting ID using name
   // Future<dynamic> documentNameToID(CollectionReference passedCollection,
-  //     String dbKeyNamOfName, DocumentSnapshot passedName) async {
+  //     String dbKeyNamOfName, QueryDocumentSnapshot passedName) async {
   //   QuerySnapshot _extractedID = await passedCollection
   //       .where(dbKeyNamOfName, isEqualTo: passedName)
-  //       .getDocuments();
+  //       .get();
   //   print("------> _extractedID from within DBHELPER FUNCTION" +
   //       _extractedID.toString());
-  //   return _extractedID.documents.length > 0 ? _extractedID.toString() : null;
+  //   return _extractedID.docs.length > 0 ? _extractedID.toString() : null;
   // }
 
   Future<bool> feildExistInCollection(CollectionReference passedCollection,
@@ -155,16 +151,16 @@ class DBHelperFtns extends DatabaseService {
     var _completer = Completer<bool>();
     await passedCollection
         .where(dbKeyNamOfFeild, isEqualTo: passedFeild)
-        .getDocuments()
+        .get()
         .then((data) {
-      if (data.documents.length > 0) {
+      if (data.docs.length > 0) {
         _completer.complete(true);
       } else {
         _completer.complete(false);
       }
     });
-    print("-------> _completer.future inside DBHelper " +
-        _completer.future.toString());
-    return _completer.future;
+    bool result = await _completer.future;
+    print("-------> _completer.future inside DBHelper " + result.toString());
+    return result;
   }
 }

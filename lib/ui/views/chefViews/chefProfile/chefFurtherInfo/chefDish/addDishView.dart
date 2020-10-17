@@ -6,10 +6,10 @@ import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewM
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/widgets/standardBtnBlueRound.dart';
-import 'package:fitness_diet/ui/widgets/standardHeaderWithWhiteBG.dart';
-import 'package:fitness_diet/ui/widgets/standardHeadingNoBgUniSan.dart';
-import 'package:fitness_diet/ui/widgets/textFeildBigWhiteBG.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/standardBtnBlueRound.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardHeaderWithWhiteBG.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBgUniSan.dart';
+import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildBigWhiteBG.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';

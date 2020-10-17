@@ -61,11 +61,13 @@ class AddDishViewModel extends BaseViewModel {
         Validators().verifyNumInputFeild(totalPrepTime) &&
         dishPic != null) {
       print("uploaded yahooooooo");
-      String userId = await getUser;
+      String userId =  getUser;
 // ---------- Check if attribute name already exists then add accordingly
-      bool attrNameAlreadyExist = await DBHelperFtns().feildExistInCollection(
-          DatabaseService().dishAttrCollection, 'attrID', dishAttr);
-      if (attrNameAlreadyExist) await DatabaseService().addAttrData(dishAttr);
+      if (dishAttr != null) {
+        bool attrNameAlreadyExist = await DBHelperFtns().feildExistInCollection(
+            DatabaseService().dishAttrCollection, 'attrID', dishAttr);
+        if (attrNameAlreadyExist) await DatabaseService().addAttrData(dishAttr);
+      }
 
 // ---------- Converting attrName to ID
       String attrID = await DBHelperFtns().documentNameToID(

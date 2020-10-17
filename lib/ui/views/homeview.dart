@@ -5,7 +5,7 @@ import 'package:fitness_diet/ui/responsive/responsiveBuilder.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/widgets/skip_btn.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/skip_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,7 +13,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("----> 'HomeView' reached");
-    final user = Provider.of<User>(context);
+    final user = Provider.of<CurrentUser>(context);
     return BaseView<HomeViewModel>(
         onModelReady: (model) =>
             user != null ? model.redirectSignedInUser(user.uid) : null,

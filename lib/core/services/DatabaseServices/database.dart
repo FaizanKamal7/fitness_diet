@@ -10,18 +10,18 @@ class DatabaseService {
   // collection reference is just reference for certain collection
 
   final CollectionReference chefCollection =
-      Firestore.instance.collection('chef');
+      FirebaseFirestore.instance.collection('chef');
   final CollectionReference dishCollection =
-      Firestore.instance.collection('dish');
+      FirebaseFirestore.instance.collection('dish');
   final CollectionReference dishCtgCollection =
-      Firestore.instance.collection('dishCategory');
+      FirebaseFirestore.instance.collection('dishCategory');
   final CollectionReference dishAttrCollection =
-      Firestore.instance.collection('attribute');
+      FirebaseFirestore.instance.collection('attribute');
 
   final CollectionReference custCollection =
-      Firestore.instance.collection('customer');
+      FirebaseFirestore.instance.collection('customer');
   final CollectionReference planCollection =
-      Firestore.instance.collection('plan');
+      FirebaseFirestore.instance.collection('plan');
 
   final String uid;
   DatabaseService({this.uid});
@@ -34,23 +34,23 @@ class DatabaseService {
   Future<bool> addNewCustData(Map<String, dynamic> dataMap) async {
     print("---------> DataBase services class reached. Updating user for uid" +
         uid.toString());
-    // - Setting ID first in a document
-    await custCollection.document(uid).setData(
+    // - Setting ID first in a doc
+    await custCollection.doc(uid).set(
       {
         'custID': uid,
         'custAddDate': DateTime.now(),
       },
-      merge: true,
+      SetOptions(merge: true),
     );
 
     // - Dynamically adding data in the db
     dataMap.forEach(
       (key, value) async {
-        await custCollection.document(uid).setData(
+        await custCollection.doc(uid).set(
           {
             key: value,
           },
-          merge: true,
+          SetOptions(merge: true),
         );
       },
     );
@@ -63,22 +63,22 @@ class DatabaseService {
         "---------> DataBase services class reached. Updating user for uid : " +
             uid.toString());
 
-    // - Setting ID first in a document
-    await custCollection.document(custID).setData(
+    // - Setting ID first in a doc
+    await custCollection.doc(custID).set(
       {
         'custUpdateDate': DateTime.now(),
       },
-      merge: true,
+      SetOptions(merge: true),
     );
 
     // - Dynamically adding data in the db
     dataMap.forEach(
       (key, value) async {
-        await custCollection.document(custID).setData(
+        await custCollection.doc(custID).set(
           {
             key: value,
           },
-          merge: true,
+          SetOptions(merge: true),
         );
       },
     );
@@ -95,23 +95,23 @@ class DatabaseService {
 
     return CustData(
       custId: uid,
-      custPhNo: snapshot.data['custPhNo'] ?? "load",
-      custName: snapshot.data['custName'] ?? "load",
+      custPhNo: snapshot.data()['custPhNo'] ?? "load",
+      custName: snapshot.data()['custName'] ?? "load",
       custDateOfBirth:
-          (snapshot.data['custDateOfBirth'] as Timestamp).toDate() ?? "",
-      // custfavs: snapshot.data['custfavs'] ?? "",
-      custLocation: snapshot.data['custLocation'] ?? "",
-      // custFollowing: snapshot.data['custFollowing'] ?? "",
-      planID: snapshot.data['planID'] ?? "",
-      custPic: snapshot.data['custPic'] ?? "",
-      // custOrders: snapshot.data['custOrders'] ?? "",
+          (snapshot.data()['custDateOfBirth'] as Timestamp).toDate() ?? "",
+      // custfavs: snapshot.data()['custfavs'] ?? "",
+      custLocation: snapshot.data()['custLocation'] ?? "",
+      // custFollowing: snapshot.data()['custFollowing'] ?? "",
+      planID: snapshot.data()['planID'] ?? "",
+      custPic: snapshot.data()['custPic'] ?? "",
+      // custOrders: snapshot.data()['custOrders'] ?? "",
     );
   }
 
   // Get user doc stream
   Stream<CustData> get getCustData {
     print(" UiD DB TEST function reached in getcust data******************** ");
-    return custCollection.document(uid).snapshots().map(_custDataFromSnapshot);
+    return custCollection.doc(uid).snapshots().map(_custDataFromSnapshot);
   }
 // ===========================================================================================================
 // ------------------------------- U P D A T I O N   A N D   R E T R I V A L   O F   C H E F  D A T A
@@ -122,23 +122,23 @@ class DatabaseService {
     print("UID in Database class_+_+__+_+_+_++_+: " + uid.toString());
 
     // - Statically adding date in the db
-    await chefCollection.document(uid).setData(
+    await chefCollection.doc(uid).set(
       {
         'chefID': uid,
         'chefAddDate': DateTime.now(),
         'hasDish': false, // Jugar
       },
-      merge: true,
+      SetOptions(merge: true),
     );
 
     // - Dynamically adding data in the db
     dataMap.forEach(
       (key, value) async {
-        await chefCollection.document(uid).setData(
+        await chefCollection.doc(uid).set(
           {
             key: value,
           },
-          merge: true,
+          SetOptions(merge: true),
         );
       },
     );
@@ -152,65 +152,107 @@ class DatabaseService {
     // -------------- NOT A RELAIBLE SOLUTION, PLEASE CHANGE IN FUTURE ------------------------------------
     String _chefName = dataMap["chefName"];
     String _extracteddishID;
-    await dishCollection
-        .where("chefID", isEqualTo: chefID)
-        .getDocuments()
-        .then((data) {
-      for (int i = 0; i < data.documents.length; i++) {
-        _extracteddishID = data.documents[i].data["dishID"].toString();
+    await dishCollection.where("chefID", isEqualTo: chefID).get().then((data) {
+      for (int i = 0; i < data.docs.length; i++) {
+        _extracteddishID = data.docs[i].data()["dishID"].toString();
         updateDishData({"chefName": _chefName}, _extracteddishID);
       }
-      // if (data.documents.length > 0) {
-      //   _extracteddishID = data.documents[0].data["dishID"].toString();
+      // if (data.docs.length > 0) {
+      //   _extracteddishID = data.docs[0].data()["dishID"].toString();
       // }
     });
 
     // ----------------- WORKAROUND ENDS HERE -----------------------------
 
-    await chefCollection.document(chefID).setData(
+    await chefCollection.doc(chefID).set(
       {
         'chefUpdateDate': DateTime.now(),
       },
-      merge: true,
+      SetOptions(merge: true),
     );
 
     // - Dynamically adding data in the db
     dataMap.forEach(
       (key, value) async {
-        await chefCollection.document(chefID).setData(
+        await chefCollection.doc(chefID).set(
           {
             key: value,
           },
-          merge: true,
+          SetOptions(merge: true),
         );
       },
     );
   }
 
+//   // Cust data from snapshot (For retrival)
+//   ChefData _chefDataFromSnapshot(docSnapshot snapshot) {
+//     print("------> _chefDataFromSnapshot(docSnapshot snapshot) INVOKED");
+//     return ChefData(
+//       chefID: uid,
+//       chefName: snapshot.data()['chefName'] ?? "",
+//       chefPhNo: snapshot.data()['chefPhNo'] ?? "",
+//       chefDateOfBirth:
+//           (snapshot.data()['chefDateOfBirth'] as Timestamp).toDate() ?? "",
+//       // //  chefAddDate: (snapshot.data()['chefAddDate'] as Timestamp).toDate() ??,
+//       chefLocation: snapshot.data()['chefLocation'] ?? "",
+//       chefRatings: snapshot.data()['chefRatings'] ?? 0,
+//       chefFollowers: snapshot.data()['chefFollowers'] ?? [],
+//       chefDishes: snapshot.data()['chefDishes'] ?? [],
+//       chefPic: snapshot.data()['chefPic'] ?? "",
+//       chefBio: snapshot.data()['chefBio'] ?? "",
+//       hasDish: snapshot.data()['hasDish'] ?? false,
+//     );
+//   }
+
+// // Get user doc stream
+//   Stream<ChefData> getChefData(String chefID) {
+//     print(
+//         " ---------> UID inside the getChefData in database.dart : " + chefID);
+//     return chefCollection.doc().snapshots().map(_chefDataFromSnapshot);
+//   }
+
   // Cust data from snapshot (For retrival)
-  ChefData _chefDataFromSnapshot(DocumentSnapshot snapshot) {
-    print("------> _chefDataFromSnapshot(DocumentSnapshot snapshot) INVOKED");
-    return ChefData(
-      chefID: uid,
-      chefName: snapshot.data['chefName'] ?? "",
-      chefPhNo: snapshot.data['chefPhNo'] ?? "",
-      chefDateOfBirth:
-          (snapshot.data['chefDateOfBirth'] as Timestamp).toDate() ?? "",
-      // //  chefAddDate: (snapshot.data['chefAddDate'] as Timestamp).toDate() ??,
-      chefLocation: snapshot.data['chefLocation'] ?? "",
-      chefRatings: snapshot.data['chefRatings'] ?? 0,
-      chefFollowers: snapshot.data['chefFollowers'] ?? [],
-      chefDishes: snapshot.data['chefDishes'] ?? [],
-      chefPic: snapshot.data['chefPic'] ?? "",
-      chefBio: snapshot.data['chefBio'] ?? "",
-      hasDish: snapshot.data['hasDish'] ?? false,
-    );
+  List<ChefData> _allChefDataFromSnapshot(QuerySnapshot snapshot) {
+    print("------> _allChefDataFromSnapshot(docSnapshot snapshot) INVOKED");
+
+    List<ChefData> _chefsList = List<ChefData>();
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      _chefsList.add(ChefData(
+        chefID: snapshot.docs[i].data()['chefID'],
+        chefName: snapshot.docs[i].data()['chefName'] ?? "",
+        chefPhNo: snapshot.docs[i].data()['chefPhNo'] ?? "",
+        chefDateOfBirth:
+            (snapshot.docs[i].data()['chefDateOfBirth'] as Timestamp)
+                    .toDate() ??
+                "",
+        // //  chefAddDate: (snapshot.docs[i].data()['chefAddDate'] as Timestamp).toDate() ??,
+        chefLocation: snapshot.docs[i].data()['chefLocation'] ?? "",
+        chefRatings: snapshot.docs[i].data()['chefRatings'] ?? 0,
+        chefFollowers: snapshot.docs[i].data()['chefFollowers'] ?? [],
+        chefDishes: snapshot.docs[i].data()['chefDishes'] ?? [],
+        chefPic: snapshot.docs[i].data()['chefPic'] ?? "",
+        chefBio: snapshot.docs[i].data()['chefBio'] ?? "",
+        hasDish: snapshot.docs[i].data()['hasDish'] ?? false,
+      ));
+      print("snapshot.docs[i].data()['chefName'] inside Database: " +
+          snapshot.docs[i].data()['chefName'].toString());
+    }
+    return _chefsList;
   }
 
-// Get user doc stream
-  Stream<ChefData> get getChefData {
-    print(" ---------> UID inside the getChefData in database.dart : " + uid);
-    return chefCollection.document(uid).snapshots().map(_chefDataFromSnapshot);
+  Stream<List<ChefData>> getSingleChefData(String chefID) {
+    print(" ---------> UID inside the getSingleChefData in database.dart : " +
+        chefID.toString());
+    return chefCollection
+        .where("chefID", isEqualTo: chefID)
+        .snapshots()
+        .map(_allChefDataFromSnapshot);
+  }
+  // Get user doc stream
+
+  Stream<List<ChefData>> get getAllChefData {
+    print(" ---------> Inside the getAllChefData in database.dart ");
+    return chefCollection.snapshots().map(_allChefDataFromSnapshot);
   }
 
 // ===============================================================================================================
@@ -229,23 +271,23 @@ class DatabaseService {
     updateChefData({"hasDish": true}, dataMap["chefID"]);
     print("---------> chefID passed inside addNewDish in database: " +
         dataMap["chefID"]);
-    await dishCollection.document(newDishID).setData(
+    await dishCollection.doc(newDishID).set(
       {
         'dishID': newDishID,
         'dishAddDate': DateTime.now(),
       },
-      merge: true,
+      SetOptions(merge: true),
     );
     //- Dynamically adding data in the db
     dataMap.forEach(
       (key, value) async {
         print("Adding dynamic dish data - DatabaseService");
         print("Key: $key ,  Value: $value");
-        await dishCollection.document(newDishID).setData(
+        await dishCollection.doc(newDishID).set(
           {
             key: value,
           },
-          merge: true,
+          SetOptions(merge: true),
         );
       },
     );
@@ -260,11 +302,11 @@ class DatabaseService {
     dataMap.forEach(
       (key, value) async {
         print("Adding dynamic dish data - DatabaseService");
-        await dishCollection.document(dishID).setData(
+        await dishCollection.doc(dishID).set(
           {
             key: value,
           },
-          merge: true,
+          SetOptions(merge: true),
         );
       },
     );
@@ -275,25 +317,25 @@ class DatabaseService {
   List<Dish> _dishDataFromSnapshot(QuerySnapshot snapshot) {
     print(
         ">>>>>>>>>>> _dishDataFromSnapshot inside database INVOKED and snapshot legth is : " +
-            snapshot.documents.length.toString());
+            snapshot.docs.length.toString());
     // Map<Dish,dynamic> chefDishes;
     List<Dish> chefDishes = List<Dish>();
 
-    for (int i = 0; i < snapshot.documents.length; i++) {
+    for (int i = 0; i < snapshot.docs.length; i++) {
       chefDishes.add(Dish(
-        dishID: snapshot.documents[i].data['dishID'] ?? "",
-        dishName: snapshot.documents[i].data['dishName'] ?? "",
-        dishPrice: snapshot.documents[i].data['dishPrice'] ?? 0,
-        dishRatings: snapshot.documents[i].data['dishRatings'] ?? 0.0,
-        dishPic: snapshot.documents[i].data['dishPic'] ?? "",
-        dishAval: snapshot.documents[i].data['dishAval'] ?? false,
-        dishPrepTime: snapshot.documents[i].data['dishPrepTime'] ?? 0,
-        //  dishAddDate: snapshot.documents[i].data['dishAddDate'],
-        //  dishUpdateDate: snapshot.documents[i].data['dishUpdateDate'],
-        chefID: snapshot.documents[i].data['chefID'] ?? "",
-        attrID: snapshot.documents[i].data['attrID'] ?? "",
-        chefName: snapshot.documents[i].data['chefName'] ?? "",
-        ctgID: snapshot.documents[i].data['ctgID'] ?? "",
+        dishID: snapshot.docs[i].data()['dishID'] ?? "",
+        dishName: snapshot.docs[i].data()['dishName'] ?? "",
+        dishPrice: snapshot.docs[i].data()['dishPrice'] ?? 0,
+        dishRatings: snapshot.docs[i].data()['dishRatings'] ?? 0.0,
+        dishPic: snapshot.docs[i].data()['dishPic'] ?? "",
+        dishAval: snapshot.docs[i].data()['dishAval'] ?? false,
+        dishPrepTime: snapshot.docs[i].data()['dishPrepTime'] ?? 0,
+        //  dishAddDate: snapshot.docs[i].data()['dishAddDate'],
+        //  dishUpdateDate: snapshot.docs[i].data()['dishUpdateDate'],
+        chefID: snapshot.docs[i].data()['chefID'] ?? "",
+        attrID: snapshot.docs[i].data()['attrID'] ?? "",
+        chefName: snapshot.docs[i].data()['chefName'] ?? "",
+        ctgID: snapshot.docs[i].data()['ctgID'] ?? "",
       ));
       // print("ALL THE DISHES: " + chefDishes.elementAt(i).dishName.toString());
     }
@@ -302,20 +344,20 @@ class DatabaseService {
 
 // //Get user doc stream
 //   Stream<List<Dish>> get getDishData {
-//     return dishCollection.getDocuments().asStream().map(_dishDataFromSnapshot);
+//     return dishCollection.get().asStream().map(_dishDataFromSnapshot);
 //   }
 
   Stream<List<Dish>> get getChefDishData {
     print("-------> getChefDishData inside DATABASE INVOKED");
     return dishCollection
         .where("chefID", isEqualTo: uid)
-        .getDocuments()
+        .get()
         .asStream()
         .map(_dishDataFromSnapshot);
   }
 
   Stream<List<Dish>> get getAllDishData {
-    return dishCollection.getDocuments().asStream().map(_dishDataFromSnapshot);
+    return dishCollection.get().asStream().map(_dishDataFromSnapshot);
   }
 
 // ==================================================================================================================
@@ -325,11 +367,11 @@ class DatabaseService {
   List<DishCategory> _dishCatgFromSnapshot(QuerySnapshot snapshot) {
     List<DishCategory> chefDishCategories = List<DishCategory>();
 
-    for (int i = 0; i < snapshot.documents.length; i++) {
+    for (int i = 0; i < snapshot.docs.length; i++) {
       chefDishCategories.add(DishCategory(
-        ctgID: snapshot.documents[i].data['ctgID'] ?? "",
-        ctgName: snapshot.documents[i].data['ctgName'] ?? "",
-        ctgAddDate: snapshot.documents[i].data['ctgAddDate'] ?? "",
+        ctgID: snapshot.docs[i].data()['ctgID'] ?? "",
+        ctgName: snapshot.docs[i].data()['ctgName'] ?? "",
+        ctgAddDate: snapshot.docs[i].data()['ctgAddDate'] ?? "",
       ));
     }
     return chefDishCategories;
@@ -337,12 +379,9 @@ class DatabaseService {
 
 //Get user doc stream
   Stream<List<DishCategory>> get getDishCatgData {
-    print("============== dishCtgCollection.getDocuments():       " +
-        dishCtgCollection.getDocuments().toString());
-    return dishCtgCollection
-        .getDocuments()
-        .asStream()
-        .map(_dishCatgFromSnapshot);
+    print("============== dishCtgCollection.get():       " +
+        dishCtgCollection.get().toString());
+    return dishCtgCollection.get().asStream().map(_dishCatgFromSnapshot);
   }
 
 // ==================================================================================================================
@@ -358,24 +397,24 @@ class DatabaseService {
         await DBHelperFtns().lastDocumentIdNumber(dishAttrCollection, 'attrID');
     String newAttrID = "attr" + (lastIndexOfattr + 1).toString();
 
-    await dishAttrCollection.document(newAttrID).setData(
+    await dishAttrCollection.doc(newAttrID).set(
       {
         'attrID': newAttrID,
         'attrName': attrName,
         'attrAddDate': DateTime.now(),
       },
-      merge: true,
+      SetOptions(merge: true),
     );
     //- Dynamically adding data in the db
     // dataMap.forEach(
     //   (key, value) async {
     //     print("Adding dynamic attr data - DatabaseService");
     //     print("Key: $key ,  Value: $value");
-    //     await dishAttrCollection.document(newAttrID).setData(
+    //     await dishAttrCollection.doc(newAttrID).set(
     //       {
     //         key: value,
     //       },
-    //       merge: true,
+    //       SetOptions(merge: true),
     //     );
     //   },
     // );
@@ -385,27 +424,24 @@ class DatabaseService {
   List<Attribute> _dishAttrFromSnapshot(QuerySnapshot snapshot) {
     List<Attribute> chefDishCategories = List<Attribute>();
 
-    for (int i = 0; i < snapshot.documents.length; i++) {
+    for (int i = 0; i < snapshot.docs.length; i++) {
       chefDishCategories.add(Attribute(
-        attrID: snapshot.documents[i].data['attrID'] ?? "",
-        attrName: snapshot.documents[i].data['attrName'] ?? "",
-        attrAddDate: snapshot.documents[i].data['attrAddDate'] ?? "",
+        attrID: snapshot.docs[i].data()['attrID'] ?? "",
+        attrName: snapshot.docs[i].data()['attrName'] ?? "",
+        attrAddDate: snapshot.docs[i].data()['attrAddDate'] ?? "",
       ));
       print(
-          "snapshot.documents[i].data['attrAddDate' INSIDE _dishAttrFromSnapshot: " +
-              snapshot.documents[i].data['attrAddDate'].toString());
+          "snapshot.docs[i].data()['attrAddDate' INSIDE _dishAttrFromSnapshot: " +
+              snapshot.docs[i].data()['attrAddDate'].toString());
     }
     return chefDishCategories;
   }
 
 //Get user doc stream
   Stream<List<Attribute>> get getDishAttrData {
-    print("dishAttrCollection.getDocuments():       " +
-        dishAttrCollection.getDocuments().toString());
-    return dishAttrCollection
-        .getDocuments()
-        .asStream()
-        .map(_dishAttrFromSnapshot);
+    print("dishAttrCollection.get():       " +
+        dishAttrCollection.get().toString());
+    return dishAttrCollection.get().asStream().map(_dishAttrFromSnapshot);
   }
 
 // ====================================================================================================================
@@ -422,20 +458,20 @@ class DatabaseService {
     print("-------> add dish function reached in database calass...");
     print("DataMap : " + dataMap.toString());
 
-    await planCollection.document(planID).setData({
+    await planCollection.doc(planID).set({
       'planID': planID,
       'custID': uid,
-    }, merge: true);
+    }, SetOptions(merge: true));
 
     dataMap.forEach(
       (key, value) async {
         print(
             "----------------------- adding dynamic Plan data.. datbase service ");
-        await planCollection.document(planID).setData(
+        await planCollection.doc(planID).set(
           {
             key: value,
           },
-          merge: true,
+          SetOptions(merge: true),
         );
       },
     );
@@ -443,39 +479,39 @@ class DatabaseService {
 
   Plan _planDataFromSnapshot(QuerySnapshot snapshot) {
     return Plan(
-      planID: snapshot.documents[0].data['planID'] ?? "",
-      custId: snapshot.documents[0].data['custID'] ?? "",
-      custGender: snapshot.documents[0].data['custGender'] ?? "",
-      custHeight: snapshot.documents[0].data['custHeight'] ?? "",
-      custWeight: snapshot.documents[0].data['custWeight'] ?? "",
-      custGoalWeight: snapshot.documents[0].data['custGoalWeight'] ?? "",
-      custReqKcal: snapshot.documents[0].data['custReqKcl'] ?? "",
-      custReqProtein: snapshot.documents[0].data['custReqProtein'] ?? "",
-      custReqFats: snapshot.documents[0].data['custReqFats'] ?? "",
-      custReqCarbs: snapshot.documents[0].data['custReqCarbs'] ?? "",
+      planID: snapshot.docs[0].data()['planID'] ?? "",
+      custId: snapshot.docs[0].data()['custID'] ?? "",
+      custGender: snapshot.docs[0].data()['custGender'] ?? "",
+      custHeight: snapshot.docs[0].data()['custHeight'] ?? "",
+      custWeight: snapshot.docs[0].data()['custWeight'] ?? "",
+      custGoalWeight: snapshot.docs[0].data()['custGoalWeight'] ?? "",
+      custReqKcal: snapshot.docs[0].data()['custReqKcl'] ?? "",
+      custReqProtein: snapshot.docs[0].data()['custReqProtein'] ?? "",
+      custReqFats: snapshot.docs[0].data()['custReqFats'] ?? "",
+      custReqCarbs: snapshot.docs[0].data()['custReqCarbs'] ?? "",
 
-      //  custGender: snapshot.data['custGender'] ?? "",
-      // custHeight: snapshot.data['custID'] ?? "",
+      //  custGender: snapshot.data()['custGender'] ?? "",
+      // custHeight: snapshot.data()['custID'] ?? "",
     );
   }
 
-  // Future<DocumentSnapshot > getresult() async {
+  // Future<docSnapshot > getresult() async {
   //   var result =
-  //       await planCollection.where("custID", isEqualTo: uid).getDocuments();
-  //   return result.documents[0].data;
+  //       await planCollection.where("custID", isEqualTo: uid).get();
+  //   return result.docs[0].data();
   // }
 
   Stream<Plan> get getPlanData {
     return planCollection
         .where('custID', isEqualTo: uid)
-        .getDocuments()
+        .get()
         .asStream()
         .map(_planDataFromSnapshot);
   }
 
-  Future<int> countDocuments(CollectionReference collection) async {
-    QuerySnapshot _myDoc = await collection.getDocuments();
-    List<DocumentSnapshot> _myDocCount = _myDoc.documents;
+  Future<int> countdocs(CollectionReference collection) async {
+    QuerySnapshot _myDoc = await collection.get();
+    List<DocumentSnapshot> _myDocCount = _myDoc.docs;
     return _myDocCount.length;
   }
 
@@ -487,26 +523,20 @@ class DatabaseService {
   Future<dynamic> checkUserID(String userID) async {
     var _completer = Completer<dynamic>();
 
-    await custCollection
-        .where("custID", isEqualTo: userID)
-        .getDocuments()
-        .then((data) {
-      if (data.documents.length > 0) {
+    await custCollection.where("custID", isEqualTo: userID).get().then((data) {
+      if (data.docs.length > 0) {
         print(
-            "-----> data.documents inside custCollection completer check of 'checkUserID' : " +
-                data.documents.length.toString());
+            "-----> data.docs inside custCollection completer check of 'checkUserID' : " +
+                data.docs.length.toString());
         _completer.complete("cust");
       }
     });
 
-    await chefCollection
-        .where("chefID", isEqualTo: userID)
-        .getDocuments()
-        .then((data) {
-      if (data.documents.length > 0) {
+    await chefCollection.where("chefID", isEqualTo: userID).get().then((data) {
+      if (data.docs.length > 0) {
         print(
-            "-----> data.documents inside chefCollection completer check of 'checkUserID' : " +
-                data.documents.length.toString());
+            "-----> data.docs inside chefCollection completer check of 'checkUserID' : " +
+                data.docs.length.toString());
         _completer.complete("chef");
       }
     });
@@ -526,9 +556,9 @@ class DatabaseService {
 
   // Future<String> checkUserID(String userID) async {
   //   final custCheck =
-  //       await custCollection.where("custID", isEqualTo: userID).getDocuments();
+  //       await custCollection.where("custID", isEqualTo: userID).get();
   //   final chefCheck =
-  //       await chefCollection.where("chefID", isEqualTo: userID).getDocuments();
+  //       await chefCollection.where("chefID", isEqualTo: userID).get();
   //   print("---------> DataBase services class reached. ");
   //   print(
   //       "Checking if userID is in database or not? (Message from 'DatabaseServices' class)" +
@@ -538,9 +568,9 @@ class DatabaseService {
   //           " Chef Check : " +
   //           chefCheck.toString());
 
-  //   if (custCheck.documents.length > 0) {
+  //   if (custCheck.docs.length > 0) {
   //     return "cust";
-  //   } else if (chefCheck.documents.length > 0) {
+  //   } else if (chefCheck.docs.length > 0) {
   //     return "chef";
   //   } else {
   //     print("Returning null from database.dart .................");
@@ -552,25 +582,23 @@ class DatabaseService {
 
 // - This function is to check if phone no exist in either "chef" or "customer"
   Future<String> isPhoneNoAlreadyRegistered(String _phoneNo) async {
-    var chefResult = await chefCollection
-        .where("chefPhNo", isEqualTo: _phoneNo)
-        .getDocuments();
-    var custResult = await custCollection
-        .where("custPhNo", isEqualTo: _phoneNo)
-        .getDocuments();
+    var chefResult =
+        await chefCollection.where("chefPhNo", isEqualTo: _phoneNo).get();
+    var custResult =
+        await custCollection.where("custPhNo", isEqualTo: _phoneNo).get();
     print("chefResult==============" + chefResult.toString() + _phoneNo);
 
-    if (chefResult.documents.length > 0) {
+    if (chefResult.docs.length > 0) {
       print("Chef Case is true___________");
       return "chef";
-    } else if (custResult.documents.length > 0) {
+    } else if (custResult.docs.length > 0) {
       print("Cust Case is true___________");
       return "cust";
     } else {
-      print("chefResult.documents.length============== " +
-          chefResult.documents.length.toString());
-      print("custResult.documents.length============== " +
-          custResult.documents.length.toString());
+      print("chefResult.docs.length============== " +
+          chefResult.docs.length.toString());
+      print("custResult.docs.length============== " +
+          custResult.docs.length.toString());
       print("RESULT IS NULL> DON'T EXIST IN DB");
       return null;
     }
@@ -578,38 +606,36 @@ class DatabaseService {
 
 // --------------------- Phone no check
   Future<bool> isPhoneNoInChef(String _phoneNo) async {
-    var chefResult = await chefCollection
-        .where("chefPhNo", isEqualTo: _phoneNo)
-        .getDocuments();
+    var chefResult =
+        await chefCollection.where("chefPhNo", isEqualTo: _phoneNo).get();
 
-    return chefResult.documents.length > 0 ? true : false;
+    return chefResult.docs.length > 0 ? true : false;
   }
 
   Future<bool> isPhoneNoInCust(String _phoneNo) async {
-    var custResult = await custCollection
-        .where("custPhNo", isEqualTo: _phoneNo)
-        .getDocuments();
+    var custResult =
+        await custCollection.where("custPhNo", isEqualTo: _phoneNo).get();
 
-    return custResult.documents.length > 0 ? true : false;
+    return custResult.docs.length > 0 ? true : false;
   }
 
   // Future<bool> isPhoneNoInCust(String _phoneNo) async {
   //   var custResult = await custCollection
   //       .where("custPhNo", isEqualTo: _phoneNo)
-  //       .getDocuments();
+  //       .get();
 
-  //   return custResult.documents.length > 0 ? true : false;
+  //   return custResult.docs.length > 0 ? true : false;
   // }
 
   // Future getTotal(postID) async {
   //   int counter;
   //   await Firestore.instance // <<<== changed
   //       .collection('post')
-  //       .document(postID)
+  //       .doc(postID)
   //       .collection('count_shrads')
   //       .snapshots()
   //       .listen((data) =>
-  //           data.documents.forEach((doc) => counter += (doc["count"])));
+  //           data.docs.forEach((doc) => counter += (doc["count"])));
   //   print("The total is $counter");
   //   return counter;
   // }
