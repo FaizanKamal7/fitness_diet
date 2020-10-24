@@ -40,7 +40,8 @@ class _TextFeildWitouthPrefixState extends State<TextFeildWitouthPrefix> {
             obscureText: widget.isObscureText ? true : false,
             cursorColor: Colors.brown,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(0),
+              
+              contentPadding: EdgeInsets.only(left: 20),
               hintText: widget.hintText,
               hintStyle: TextStyle(
                 color: Colors.brown.withOpacity(0.8),

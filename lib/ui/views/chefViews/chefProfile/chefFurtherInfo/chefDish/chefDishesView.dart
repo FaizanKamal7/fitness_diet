@@ -9,7 +9,7 @@ import 'package:fitness_diet/ui/widgets/dishViewSingleListItemDesign.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'addDishView.dart';
+import 'addDish/addDishInfoView.dart';
 
 class ChefDishes extends StatefulWidget {
   @override
@@ -40,7 +40,7 @@ class _ChefDishesState extends State<ChefDishes> {
                     // ----------- A D D   D I S H   B T N
                     FlatButton(
                       onPressed: () => Navigator.push((context),
-                          MaterialPageRoute(builder: (context) => AddDish())),
+                          MaterialPageRoute(builder: (context) => AddDishInfo())),
                       child: Text("Add new dish"),
                     ),
                     // ----------- A V A L A I B L E   D I S H E S   H E A D I N G

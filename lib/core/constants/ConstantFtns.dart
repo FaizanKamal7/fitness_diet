@@ -59,7 +59,10 @@ class ConstantFtns extends BaseViewModel {
     return _imgURl;
   }
 
-
+  String getStringAfterCharacter(String _completeString, String _char) {
+    return _completeString.substring(
+        _completeString.indexOf(_char) + 1, _completeString.length);
+  }
 
   // ------------------------------------------- L O G I C    H E L P E R    F U N C T I O N S
 

@@ -1,11 +1,15 @@
 import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
+import 'package:fitness_diet/core/viewmodels/chefViewModels/apiIngrViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/addDishViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/addDish/addDishIngrView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/standardBtnBlueRound.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeaderWithWhiteBG.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBgUniSan.dart';
@@ -15,19 +19,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:searchable_dropdown/searchable_dropdown.dart';
 
-class AddDish extends StatefulWidget {
+class AddDishInfo extends StatefulWidget {
   @override
-  _AddDishState createState() => _AddDishState();
+  _AddDishInfoState createState() => _AddDishInfoState();
 }
 
-class _AddDishState extends State<AddDish> {
-  String _dishCatg;
-  int _prepTimeHrs, _prepTimeMin, _totalPrepTime;
-  File _dishPic;
-  TextEditingController _dishNameContr = TextEditingController();
-  TextEditingController _priceContr = TextEditingController();
-  TextEditingController _attrContr = TextEditingController();
+class _AddDishInfoState extends State<AddDishInfo> {
+  String dishCatg;
+  int _prepTimeHrs, _prepTimeMin, totalPrepTime;
+  File dishPic;
+  TextEditingController dishNameContr = TextEditingController();
+  TextEditingController priceContr = TextEditingController();
+  TextEditingController attrContr = TextEditingController();
 
   String uploadedFileURL;
   String dropdownInititalValue = 'Select Category';
@@ -44,10 +49,12 @@ class _AddDishState extends State<AddDish> {
 
   @override
   Widget build(BuildContext context) {
+    // getCountries();
+
     deviceSize = MediaQuery.of(context).size;
     _dishCatgList = Provider.of<List<DishCategory>>(context);
     _dishAttrList = Provider.of<List<Attribute>>(context);
-
+    // print("_foodNutrient : " + _foodNutrient.toString());
     print(">>>>>>>>>>> Dish Category list : " + _dishCatgList.toString());
 // ====================================================================================
 // --- The below workaround is to extract feild values from the provider list
@@ -76,7 +83,17 @@ class _AddDishState extends State<AddDish> {
     print("``````````````````` ctgNamesList: " + ctgNamesList.toString());
 
 // =====================================================================================
-    screenList = [screen1View(deviceSize), screen2View(deviceSize)];
+    screenList = [
+      screen1View(deviceSize),
+      AddDishIngrView.withDishInfo(
+        dishPic: dishPic,
+        dishNameContr: dishNameContr,
+        priceContr: priceContr,
+        totalPrepTime: totalPrepTime,
+        dishCatg: dishCatg,
+        attrContr: attrContr,
+      )
+    ];
     return BaseView<AddDishViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) {
@@ -107,8 +124,8 @@ class _AddDishState extends State<AddDish> {
                                         "------- dishPicTemp inside AddDishVIew:" +
                                             dishPicTemp.toString());
                                     setState(() {
-                                      _dishPic = dishPicTemp;
-                                      print("------- _dishPic AddDishVIew:" +
+                                      dishPic = dishPicTemp;
+                                      print("------- dishPic AddDishVIew:" +
                                           dishPicTemp.toString());
                                     });
                                   },
@@ -121,7 +138,7 @@ class _AddDishState extends State<AddDish> {
                                             ImageSource.camera, deviceSize);
 
                                     setState(() {
-                                      _dishPic = dishPicTemp;
+                                      dishPic = dishPicTemp;
                                     });
                                   },
                                 ),
@@ -133,11 +150,11 @@ class _AddDishState extends State<AddDish> {
                       // ---- Setting dish pic if not null
                       child: Stack(
                         children: <Widget>[
-                          _dishPic != null
+                          dishPic != null
                               ? Container(
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: FileImage(File(_dishPic.path)),
+                                      image: FileImage(File(dishPic.path)),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -198,12 +215,14 @@ class _AddDishState extends State<AddDish> {
                     loop: false,
                     pagination: SwiperPagination(
                       alignment: Alignment.bottomCenter,
-                      margin: EdgeInsets.only(bottom: deviceSize.height * 0.05),
-                      builder: DotSwiperPaginationBuilder(
+                      margin: EdgeInsets.only(bottom: deviceSize.height * 0.1),
+                      builder: RectSwiperPaginationBuilder(
                         color: Colors.grey,
                         activeColor: Colors.black,
-                        size: widgetSize.height * 0.012,
-                        activeSize: widgetSize.height * 0.015,
+                        activeSize: Size(50, 10),
+                        size: Size(40, 8),
+                        // size: widgetSize.height * 0.012,
+                        // activeSize: widgetSize.height * 0.015,
                       ),
                     ),
                     itemCount: 2,
@@ -225,15 +244,15 @@ class _AddDishState extends State<AddDish> {
                           child: FlatButton(
                               onPressed: () async {
                                 print(
-                                    "------ _dishPic inside onPressed  of addDishView.dart : " +
-                                        _dishPic.toString());
+                                    "------ dishPic inside onPressed  of addDishView.dart : " +
+                                        dishPic.toString());
                                 model.uploadDishInfo(
-                                  _dishNameContr.text,
-                                  int.parse(_priceContr.text),
-                                  _totalPrepTime,
-                                  _dishPic,
-                                  _dishCatg,
-                                  _attrContr.text,
+                                  dishNameContr.text,
+                                  int.parse(priceContr.text),
+                                  totalPrepTime,
+                                  dishPic,
+                                  dishCatg,
+                                  attrContr.text,
                                 );
                               },
                               child:
@@ -242,15 +261,15 @@ class _AddDishState extends State<AddDish> {
                       )
                     : Container(),
 
-               model.hasErrorMessage
-                      ? Container(
-                          color: Colors.red,
-                          child: Text(
-                            model.errorMessage,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
-                      : Container(),
+                model.hasErrorMessage
+                    ? Container(
+                        color: Colors.red,
+                        child: Text(
+                          model.errorMessage,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    : Container(),
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),
@@ -263,9 +282,7 @@ class _AddDishState extends State<AddDish> {
 
   Widget showDropDown() {
     return ClipRRect(
-      borderRadius: BorderRadius.all(
-        Radius.circular(deviceSize.height * 0.15),
-      ),
+      borderRadius: BorderRadius.all(Radius.circular(deviceSize.height * 0.15)),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: deviceSize.width * 0.05),
         height: deviceSize.height * 0.04,
@@ -286,8 +303,8 @@ class _AddDishState extends State<AddDish> {
             onChanged: (String newValue) {
               setState(() {
                 newValue != "Select Category"
-                    ? _dishCatg = newValue
-                    : _dishCatg = null;
+                    ? dishCatg = newValue
+                    : dishCatg = null;
                 dropdownInititalValue = newValue;
               });
             },
@@ -320,7 +337,7 @@ class _AddDishState extends State<AddDish> {
               setState(
                 () {
                   _prepTimeHrs = changedtimer.inHours;
-                  _totalPrepTime = changedtimer.inMinutes;
+                  totalPrepTime = changedtimer.inMinutes;
                   _prepTimeMin = changedtimer.inMinutes - _prepTimeHrs * 60;
                 },
               );
@@ -345,7 +362,8 @@ class _AddDishState extends State<AddDish> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             StandardHeadingNoBgUniSans(passedText: "Ingredients:"),
-            showDropDown(),
+            // SearchableDropdown.multiple(items: null, onChanged: null)
+            // showDropDown(),
             //     SingleChildScrollView(child: children,)
           ],
         ),
@@ -372,7 +390,7 @@ class _AddDishState extends State<AddDish> {
 
             StandardHeadingNoBgUniSans(passedText: "Dish name: "),
             TextFeildBigWhiteBG(
-                controller: _dishNameContr,
+                controller: dishNameContr,
                 deviceSize: deviceSize,
                 isTypeInt: false,
                 hintText: '',
@@ -397,7 +415,7 @@ class _AddDishState extends State<AddDish> {
               ],
             ),
             TextFeildBigWhiteBG(
-                controller: _priceContr,
+                controller: priceContr,
                 deviceSize: deviceSize,
                 isTypeInt: true,
                 hintText: '',
@@ -522,7 +540,7 @@ class _AddDishState extends State<AddDish> {
                       children: <Widget>[
                         Expanded(
                           child: TextFeildBigWhiteBG(
-                              controller: _attrContr,
+                              controller: attrContr,
                               deviceSize: deviceSize,
                               isTypeInt: false,
                               hintText: "",
@@ -531,9 +549,9 @@ class _AddDishState extends State<AddDish> {
                         PopupMenuButton<String>(
                           icon: const Icon(Icons.arrow_drop_down),
                           onSelected: (String value) {
-                            _attrContr.text = value;
-                            print("_attrContr [[[[[[[[[[[[[[[[[[[[[[[[[[[[[ " +
-                                _attrContr.text);
+                            attrContr.text = value;
+                            print("attrContr [[[[[[[[[[[[[[[[[[[[[[[[[[[[[ " +
+                                attrContr.text);
                           },
                           itemBuilder: (BuildContext context) {
                             return attrNamesList
@@ -549,43 +567,6 @@ class _AddDishState extends State<AddDish> {
                 ),
               ),
             ),
-
-            // DropdownSearch<String>(
-            //   mode: Mode.MENU,
-            //   showSelectedItem: true,
-            //   items: ["Brazil", "Italia (Disabled)", "Tunisia", 'Canada'],
-            //   label: "Menu mode",
-            //   hint: "country in menu mode",
-            //   popupItemDisabled: (String s) => s.startsWith('I'),
-            //   onChanged: print,
-            //   selectedItem: "Brazil",
-            // ),
-            // TextFeildBigWhiteBG(
-            //   controller: _attrContr,
-            //   deviceSize: deviceSize,
-            //   isTypeInt: false,
-            //   hintText: '',
-            //   isObscureText: false,
-            // ),
-
-            // SearchableDropdown.single(
-            //   items: <String>['Select Category', 'Two', 'Free', 'Four']
-            //       .map<DropdownMenuItem<String>>((String value) {
-            //     return DropdownMenuItem<String>(
-            //       value: value,
-            //       child: Text(value),
-            //     );
-            //   }).toList(),
-            //   value: "selectedValue",
-            //   hint: "Select one",
-            //   searchHint: "Select one",
-            //   onChanged: (value) {
-            //     setState(() {
-            //       _currentSelectedValue = value;
-            //     });
-            //   },
-            //   isExpanded: true,
-            // ),
 
             SizedBox(
               height: deviceSize.height * 0.02,
