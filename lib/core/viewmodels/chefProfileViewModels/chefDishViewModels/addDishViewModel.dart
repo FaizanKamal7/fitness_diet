@@ -89,10 +89,29 @@ class AddDishViewModel extends BaseViewModel {
   }
 
   List<FoodInfo> get getCurrentFoodIngr {
-  
     print(" ---> INSIDE getCurrentFoodIngr and  returning  = " +
         _currentFoodIngr.toString());
     return _currentFoodIngr;
+  }
+
+  List<double> convertNutrientsBackToOriginal(
+      FoodInfo _singleFood, int _count) {
+    // Indexes => Protien - 0, Fats - 1, Carbs - 2, Kcal - 3
+    List<double> _convertedNutrients = [];
+    _singleFood.foodNutrients[0].amount = double.parse(
+        (_singleFood.foodNutrients[0].amount / _count).toStringAsFixed(2));
+    _singleFood.foodNutrients[1].amount = double.parse(
+        (_singleFood.foodNutrients[1].amount / _count).toStringAsFixed(2));
+    _singleFood.foodNutrients[2].amount = double.parse(
+        (_singleFood.foodNutrients[2].amount / _count).toStringAsFixed(2));
+    _singleFood.foodNutrients[3].amount = double.parse(
+        (_singleFood.foodNutrients[3].amount / _count).toStringAsFixed(2));
+    _convertedNutrients.add(_singleFood.foodNutrients[0].amount);
+    _convertedNutrients.add(_singleFood.foodNutrients[1].amount);
+    _convertedNutrients.add(_singleFood.foodNutrients[2].amount);
+    _convertedNutrients.add(_singleFood.foodNutrients[3].amount);
+    print("--- Fat: " + _singleFood.foodNutrients[1].amount.toString());
+    return _convertedNutrients;
   }
 
 // ---------------------------------------- U P L O A D I N G    D I S H

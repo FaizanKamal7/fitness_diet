@@ -131,70 +131,17 @@ class _IngredientsSearchViewState extends State<IngredientsSearchView> {
                                                   _proteinAmount +
                                                   " " +
                                                   _proteinUnit +
-                                                  ", Carbs " +
+                                                  ", Carbs: " +
                                                   _carbsAmount +
                                                   " " +
                                                   _carbsUnit +
-                                                  ", Fats " +
+                                                  ", Fats: " +
                                                   _fatsAmount +
                                                   " " +
                                                   _fatsUnit +
                                                   " \nper 100g",
                                             ),
-                                            // Flexible(
-                                            //   child:
-                                            //   // Row(
-                                            //   //   children: [
-                                            //   //     Text(
-                                            //   //       _caloriesUnit + ": ",
-                                            //   //       style: TextStyle(
-                                            //   //         fontWeight:
-                                            //   //             FontWeight.bold,
-                                            //   //       ),
-                                            //   //     ),
-                                            //   //     Text(_caloriesAmount + ", "),
-                                            //   //     Text(
-                                            //   //       "Prot: ",
-                                            //   //       style: TextStyle(
-                                            //   //         fontWeight:
-                                            //   //             FontWeight.bold,
-                                            //   //       ),
-                                            //   //     ),
-                                            //   //     Text(
-                                            //   //       _proteinAmount +
-                                            //   //           " " +
-                                            //   //           _proteinUnit,
-                                            //   //     ),
-                                            //   //     // * C A R B S
-                                            //   //     Text(
-                                            //   //       "Carbs: ",
-                                            //   //       style: TextStyle(
-                                            //   //         fontWeight:
-                                            //   //             FontWeight.bold,
-                                            //   //       ),
-                                            //   //     ),
-                                            //   //     Text(
-                                            //   //       _carbsAmount +
-                                            //   //           " " +
-                                            //   //           _carbsUnit,
-                                            //   //     ),
-                                            //   //     // * F A T S
-                                            //   //     Text(
-                                            //   //       "Fats: ",
-                                            //   //       style: TextStyle(
-                                            //   //         fontWeight:
-                                            //   //             FontWeight.bold,
-                                            //   //       ),
-                                            //   //     ),
-                                            //   //     Text(
-                                            //   //       _fatsAmount +
-                                            //   //           " " +
-                                            //   //           _fatsUnit,
-                                            //   //     ),
-                                            //   //   ],
-                                            //   // ),
-
-                                            // ),
+                                           
 
                                             value: selectionStatus[
                                                 singleFood.fdcId],

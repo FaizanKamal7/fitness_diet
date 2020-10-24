@@ -126,17 +126,23 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
                             itemBuilder: (context, index) {
                               FoodInfo _singleFood = _currentIngrList[index];
                               print(
+                                  "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " +
+                                      _singleFood.description.toString());
+                              print(
                                   "##################### ADDING IN _currentIngrList. _singleFood : " +
                                       _singleFood.fdcId.toString());
                               // _currentIngrList.add(
                               //     _singleFood); // Transferring API list data to class level list
                               // * G E T T I N G   N U T R I E N T S   V A L U E S
-                              // >>>>>>>>>>>>>>>>> Removing unnessecary title
+                              // >>>>>>>>>>>>>>>>> Removing unnessecary title of an attribute
                               String _caloriesOriginalAmount = ConstantFtns()
                                   .getStringAfterCharacter(
                                       _singleFood.foodNutrients[3].amount
                                           .toString(),
                                       " ");
+                              print(
+                                  "=============================  ORIGINAL KCAL: " +
+                                      _caloriesOriginalAmount);
                               String _proteinOriginalAmount = ConstantFtns()
                                   .getStringAfterCharacter(
                                       _singleFood.foodNutrients[0].amount
@@ -153,11 +159,16 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
                                           .toString(),
                                       " ");
                               // >>>>>>>>>>>>>>>>> Assigning Actual values
-                              // --- Calories data
+                              // // --- Calories data
                               double _caloriesAmount =
                                   double.parse(_caloriesOriginalAmount) *
                                       countValues[_singleFood.fdcId];
-
+                              print(
+                                  "=============================  AFTER MULTIPLE   K C A L   AND    C O U N T : " +
+                                      _caloriesAmount.toString() +
+                                      " ---------- count: " +
+                                      countValues[_singleFood.fdcId]
+                                          .toString());
                               _currentIngrList[index].foodNutrients[3].amount =
                                   _caloriesAmount; // Updating nutrient data in class level list on selecting multiples
 
@@ -251,23 +262,61 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        // --- Remove button
+                                        //* >>>>>>>>>>>>>>>>>  Remove button
                                         InkWell(
                                           onTap: () {
                                             setState(() {
+                                              // * Converting nutrient values back to orginal
+                                              List<double>
+                                                  _originalConvertedList = model
+                                                      .convertNutrientsBackToOriginal(
+                                                          _singleFood,
+                                                          countValues[
+                                                              _singleFood
+                                                                  .fdcId]);
+                                              _singleFood
+                                                      .foodNutrients[0].amount =
+                                                  _originalConvertedList[0];
+                                              _singleFood
+                                                      .foodNutrients[1].amount =
+                                                  _originalConvertedList[1];
+                                              _singleFood
+                                                      .foodNutrients[2].amount =
+                                                  _originalConvertedList[2];
+                                              _singleFood
+                                                      .foodNutrients[3].amount =
+                                                  _originalConvertedList[3];
+
+                                              print(
+                                                  "============================= Updated kcal: " +
+                                                      _singleFood
+                                                          .foodNutrients[3]
+                                                          .amount
+                                                          .toString() +
+                                                      " count: " +
+                                                      countValues[
+                                                              _singleFood.fdcId]
+                                                          .toString());
+
                                               countValues[_singleFood.fdcId] -=
                                                   1;
-
+                                              print(
+                                                  "=============================  count: " +
+                                                      countValues[
+                                                              _singleFood.fdcId]
+                                                          .toString());
                                               if (countValues[
-                                                      _singleFood.fdcId] <
+                                                      _singleFood.fdcId] ==
                                                   0) {
+                                                _currentIngrList
+                                                    .remove(_singleFood);
                                                 countValues[_singleFood.fdcId] =
                                                     0;
-                                                print(
-                                                    "_singleFood.fdcId in remove count : " +
-                                                        countValues[_singleFood
-                                                                .fdcId]
-                                                            .toString());
+                                                print("_singleFood.fdcId in remove count : " +
+                                                    countValues[
+                                                            _singleFood.fdcId]
+                                                        .toString() +
+                                                    "\n _______________________________________________________________________________________________________");
                                               }
                                             });
                                           },
@@ -276,21 +325,50 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
                                             color: Colors.green,
                                           ),
                                         ),
-                                        // --- Ingredient
+                                        //* >>>>>>>>>>>>>>>>>  Ingredient
                                         Text(countValues[_singleFood.fdcId]
                                             .toString()),
-                                        // --- Add button
+                                        //* >>>>>>>>>>>>>>>>>  Add button
                                         InkWell(
                                           onTap: () {
                                             setState(() {
+                                              // * Converting nutrient values back to orginal
+                                              List<double>
+                                                  _originalConvertedList = model
+                                                      .convertNutrientsBackToOriginal(
+                                                          _singleFood,
+                                                          countValues[
+                                                              _singleFood
+                                                                  .fdcId]);
+                                              _singleFood
+                                                      .foodNutrients[0].amount =
+                                                  _originalConvertedList[0];
+                                              _singleFood
+                                                      .foodNutrients[1].amount =
+                                                  _originalConvertedList[1];
+                                              _singleFood
+                                                      .foodNutrients[2].amount =
+                                                  _originalConvertedList[2];
+                                              _singleFood
+                                                      .foodNutrients[3].amount =
+                                                  _originalConvertedList[3];
+                                              print(
+                                                  "============================= Updated kcal: " +
+                                                      _singleFood
+                                                          .foodNutrients[3]
+                                                          .amount
+                                                          .toString() +
+                                                      " count: " +
+                                                      countValues[
+                                                              _singleFood.fdcId]
+                                                          .toString());
                                               countValues[_singleFood.fdcId] +=
                                                   1;
                                             });
-                                            print(
-                                                "_singleFood.fdcId in add count : " +
-                                                    countValues[
-                                                            _singleFood.fdcId]
-                                                        .toString());
+                                            print("=============================  count: " +
+                                                countValues[_singleFood.fdcId]
+                                                    .toString() +
+                                                "\n _______________________________________________________________________________________________________");
                                           },
                                           child: Icon(Icons.add_circle,
                                               color: Colors.green),
