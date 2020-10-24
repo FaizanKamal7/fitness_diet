@@ -1,7 +1,6 @@
-import 'package:custom_switch/custom_switch.dart';
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
-import 'package:fitness_diet/core/viewmodels/chefViewModels/apiIngrViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/addDishViewModel.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/bigLightGreenBtn.dart';
@@ -26,7 +25,12 @@ class _IngredientsSearchViewState extends State<IngredientsSearchView> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    return BaseView<IngrViewModel>(
+    return BaseView<AddDishViewModel>(
+      onModelReady: (model) {
+        print(
+            "--- Setting Ing list to empty from with in onModelReady ingrSearchView");
+        model.setIngList([]);
+      },
       builder: (context, model, child) => Scaffold(
         body: Container(
           height: deviceSize.height,
@@ -49,9 +53,11 @@ class _IngredientsSearchViewState extends State<IngredientsSearchView> {
                             ? Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.error,
-                                      size: 15,
-                                      color: Colors.red.withOpacity(0.8)),
+                                  Icon(
+                                    Icons.error,
+                                    size: 15,
+                                    color: Colors.red.withOpacity(0.8),
+                                  ),
                                   Text(
                                     " Textfeild is empty",
                                     style: TextStyle(color: Colors.black54),
@@ -60,85 +66,184 @@ class _IngredientsSearchViewState extends State<IngredientsSearchView> {
                               )
                             : allFoodIngrList != null
                                 ? Column(
-                                    children: allFoodIngrList
-                                        .map(
-                                          (singleFood) => Container(
-                                            margin: EdgeInsets.all(5),
-                                            child: CheckboxListTile(
-                                              title:
-                                                  Text(singleFood.description),
-                                              activeColor: Colors.green,
-                                              subtitle: Text(
-                                                ConstantFtns()
-                                                        .getStringAfterCharacter(
-                                                            singleFood
-                                                                .foodNutrients[
-                                                                    3]
-                                                                .amount
-                                                                .toString(),
-                                                            " ") +
-                                                    " " +
-                                                    ConstantFtns()
-                                                        .getStringAfterCharacter(
-                                                            singleFood
-                                                                .foodNutrients[
-                                                                    3]
-                                                                .unitName
-                                                                .toString(),
-                                                            ".") +
-                                                    " \n" +
-                                                    singleFood
-                                                        .additionalDescriptions
-                                                        .toString(),
-                                              ),
-
-                                              value: selectionStatus[
-                                                  singleFood.fdcId],
-                                              onChanged: (val) {
-                                                setState(() {
-                                                  selectionStatus[
-                                                      singleFood.fdcId] = val;
-                                                });
-                                                selectionStatus[
-                                                        singleFood.fdcId]
-                                                    ? selectedFoodInfoList
-                                                        .add(singleFood)
-                                                    : selectedFoodInfoList
-                                                        .remove(singleFood);
-                                              },
-
-                                              // trailing: Container(
-                                              //   height: 40,
-                                              //   width: 60,
-                                              //   child: Center(
-                                              //     child: FlutterSwitch(
-                                              //       value: addStatus,
-                                              //       onToggle: (val) {
-                                              // val
-                                              //     ? selectedFoodInfoList
-                                              //         .add(singleFood.fdcId)
-                                              //     : selectedFoodInfoList
-                                              //         .remove(
-                                              //             singleFood.fdcId);
-                                              //         print("singleFood.fdcId:" +
-                                              //             singleFood.fdcId
-                                              //                 .toString() +
-                                              //             " selectedFoodInfoList: " +
-                                              //             selectedFoodInfoList
-                                              //                 .toString());
-                                              //       },
-                                              //     ),
-                                              //   ),
-                                              // ),
+                                    children: allFoodIngrList.map(
+                                      (singleFood) {
+                                        // * G E T T I N G   N U T R I E N T S   V A L U E S
+                                        String _caloriesAmount = ConstantFtns()
+                                            .getStringAfterCharacter(
+                                                singleFood
+                                                    .foodNutrients[3].amount
+                                                    .toString(),
+                                                " ");
+                                        String _caloriesUnit = ConstantFtns()
+                                            .getStringAfterCharacter(
+                                                singleFood
+                                                    .foodNutrients[3].unitName
+                                                    .toString(),
+                                                ".");
+                                        String _proteinAmount = ConstantFtns()
+                                            .getStringAfterCharacter(
+                                                singleFood
+                                                    .foodNutrients[0].amount
+                                                    .toString(),
+                                                " ");
+                                        String _proteinUnit = ConstantFtns()
+                                            .getStringAfterCharacter(
+                                                singleFood
+                                                    .foodNutrients[0].unitName
+                                                    .toString(),
+                                                ".");
+                                        String _fatsAmount = ConstantFtns()
+                                            .getStringAfterCharacter(
+                                                singleFood
+                                                    .foodNutrients[1].amount
+                                                    .toString(),
+                                                " ");
+                                        String _fatsUnit = ConstantFtns()
+                                            .getStringAfterCharacter(
+                                                singleFood
+                                                    .foodNutrients[1].unitName
+                                                    .toString(),
+                                                ".");
+                                        String _carbsAmount = ConstantFtns()
+                                            .getStringAfterCharacter(
+                                                singleFood
+                                                    .foodNutrients[2].amount
+                                                    .toString(),
+                                                " ");
+                                        String _carbsUnit = ConstantFtns()
+                                            .getStringAfterCharacter(
+                                                singleFood
+                                                    .foodNutrients[2].unitName
+                                                    .toString(),
+                                                ".");
+                                        // * S H O W I N G   I N G R   I N F O
+                                        return Container(
+                                          margin: EdgeInsets.all(5),
+                                          child: CheckboxListTile(
+                                            title: Text(singleFood.description),
+                                            activeColor: Colors.green,
+                                            subtitle: Text(
+                                              _caloriesAmount +
+                                                  " " +
+                                                  _caloriesUnit +
+                                                  ", Prot: " +
+                                                  _proteinAmount +
+                                                  " " +
+                                                  _proteinUnit +
+                                                  ", Carbs " +
+                                                  _carbsAmount +
+                                                  " " +
+                                                  _carbsUnit +
+                                                  ", Fats " +
+                                                  _fatsAmount +
+                                                  " " +
+                                                  _fatsUnit +
+                                                  " \nper 100g",
                                             ),
+                                            // Flexible(
+                                            //   child:
+                                            //   // Row(
+                                            //   //   children: [
+                                            //   //     Text(
+                                            //   //       _caloriesUnit + ": ",
+                                            //   //       style: TextStyle(
+                                            //   //         fontWeight:
+                                            //   //             FontWeight.bold,
+                                            //   //       ),
+                                            //   //     ),
+                                            //   //     Text(_caloriesAmount + ", "),
+                                            //   //     Text(
+                                            //   //       "Prot: ",
+                                            //   //       style: TextStyle(
+                                            //   //         fontWeight:
+                                            //   //             FontWeight.bold,
+                                            //   //       ),
+                                            //   //     ),
+                                            //   //     Text(
+                                            //   //       _proteinAmount +
+                                            //   //           " " +
+                                            //   //           _proteinUnit,
+                                            //   //     ),
+                                            //   //     // * C A R B S
+                                            //   //     Text(
+                                            //   //       "Carbs: ",
+                                            //   //       style: TextStyle(
+                                            //   //         fontWeight:
+                                            //   //             FontWeight.bold,
+                                            //   //       ),
+                                            //   //     ),
+                                            //   //     Text(
+                                            //   //       _carbsAmount +
+                                            //   //           " " +
+                                            //   //           _carbsUnit,
+                                            //   //     ),
+                                            //   //     // * F A T S
+                                            //   //     Text(
+                                            //   //       "Fats: ",
+                                            //   //       style: TextStyle(
+                                            //   //         fontWeight:
+                                            //   //             FontWeight.bold,
+                                            //   //       ),
+                                            //   //     ),
+                                            //   //     Text(
+                                            //   //       _fatsAmount +
+                                            //   //           " " +
+                                            //   //           _fatsUnit,
+                                            //   //     ),
+                                            //   //   ],
+                                            //   // ),
+
+                                            // ),
+
+                                            value: selectionStatus[
+                                                singleFood.fdcId],
+                                            onChanged: (val) {
+                                              setState(() {
+                                                selectionStatus[
+                                                    singleFood.fdcId] = val;
+                                              });
+                                              selectionStatus[singleFood.fdcId]
+                                                  ? selectedFoodInfoList
+                                                      .add(singleFood)
+                                                  : selectedFoodInfoList
+                                                      .remove(singleFood);
+                                            },
+
+                                            // trailing: Container(
+                                            //   height: 40,
+                                            //   width: 60,
+                                            //   child: Center(
+                                            //     child: FlutterSwitch(
+                                            //       value: addStatus,
+                                            //       onToggle: (val) {
+                                            // val
+                                            //     ? selectedFoodInfoList
+                                            //         .add(singleFood.fdcId)
+                                            //     : selectedFoodInfoList
+                                            //         .remove(
+                                            //             singleFood.fdcId);
+                                            //         print("singleFood.fdcId:" +
+                                            //             singleFood.fdcId
+                                            //                 .toString() +
+                                            //             " selectedFoodInfoList: " +
+                                            //             selectedFoodInfoList
+                                            //                 .toString());
+                                            //       },
+                                            //     ),
+                                            //   ),
+                                            // ),
                                           ),
-                                        )
-                                        .toList(),
+                                        );
+                                      },
+                                    ).toList(),
                                   )
                                 : Container(
+                                    color: Colors.red,
                                     child: Center(
                                       child: Text(
                                         "No result for particular search",
+                                        style: TextStyle(color: Colors.white),
                                       ),
                                     ),
                                   ),
@@ -226,8 +331,8 @@ class _IngredientsSearchViewState extends State<IngredientsSearchView> {
                                   isLoading = true;
                                 });
                                 // * Getting the searched food list
-                                allFoodIngrList = await IngrViewModel()
-                                    .getSearchedIngredientsList(
+                                allFoodIngrList =
+                                    await model.getSearchedIngredientsList(
                                         searchedIng.text);
                                 // * Setting the check status of all foods to false
                                 if (allFoodIngrList != null) {
@@ -241,6 +346,15 @@ class _IngredientsSearchViewState extends State<IngredientsSearchView> {
                                   }
                                   setState(() {
                                     isLoading = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                  print(
+                                      "---> Inside else of on press of Search inside search view");
+                                  setState(() {
+                                    allFoodIngrList = null;
                                   });
                                 }
                               }

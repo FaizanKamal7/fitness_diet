@@ -7,11 +7,11 @@ class Dish {
   String dishPic;
   bool dishAval;
   int dishPrepTime;
+  int dishPrice;
+  double dishCarb;
+  double dishProtein;
   double dishKcal;
   double dishFat;
-  int dishPrice;
-  double dishCarbs;
-  double dishProtein;
   Timestamp dishAddDate;
   Timestamp dishUpdateDate;
   String chefName; // Jugar
@@ -29,7 +29,7 @@ class Dish {
     this.dishPrepTime,
     this.dishKcal,
     this.dishFat,
-    this.dishCarbs,
+    this.dishCarb,
     this.dishProtein,
     this.dishAddDate,
     this.dishUpdateDate,

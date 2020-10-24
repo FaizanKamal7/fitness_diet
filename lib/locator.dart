@@ -59,5 +59,5 @@ void setupLocator() {
   locator.registerFactory(() => ChefDishesViewmodel());
   locator.registerFactory(() => ChefProfileEditViewModel());
   locator.registerFactory(() => ChefProfileViewModel());
-  locator.registerFactory(() => IngrViewModel());
+  // locator.registerFactory(() => IngrViewModel());
 }
