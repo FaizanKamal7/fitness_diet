@@ -8,50 +8,122 @@ import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
+import 'dart:async';
+
+import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
+import 'package:http/http.dart' as http;
+
+List<FoodInfo> _currentFoodIngr = [];
 
 class AddDishViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
 
-// var fileName = "fileName.jpeg";
-//   StorageUploadTask putFile =
-//       storage.ref().child("folder/$fileName").putFile(_image);
-//   putFile.future.catchError(onError);
+// ---------------------------------------- G E T   L I S T   R E L A T E D   T O   S E A R C H E D    F O O D
+  Future<List<FoodInfo>> getSearchedIngredientsList(
+      String searchedQuery) async {
+    setState(ViewState.Busy);
+    var client = http.Client();
+    List<FoodInfo> searchedFoodsList;
+    var apiKey = "vAK9vJMtSQdYxcBhYRxZl5cpEkahZEkBhl0iw0ox";
+    var dataType = "Survey (FNDDS)";
+    // var dataType = "Branded";
 
-//   UploadTaskSnapshot uploadSnapshot = await putFile.future;
+    int pageSize = 30;
 
-//   print("image uploaded");
+    try {
+      http.Response responce = await client.get(
+          "https://api.nal.usda.gov/fdc/v1/foods/list?api_key=$apiKey&query=$searchedQuery&pageSize=$pageSize&dataType=$dataType");
+      if (responce.statusCode == 200) {
+        String jsonString = responce.body;
+        // printWrapped(jsonString);
+        searchedFoodsList = foodInfoFromJson(jsonString);
+      }
+    } catch (Exception) {
+      print("E X C E P T I O N");
+      print("Exception in APi in apimanager class: " + Exception.toString());
+    }
+    setState(ViewState.Idle);
+    return searchedFoodsList;
+  }
 
-//   Map<String, dynamic> pictureData = new Map<String, dynamic>();
-//   pictureData["url"] = uploadSnapshot.downloadUrl.toString();
+  void printWrapped(String text) {
+    final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
+    pattern.allMatches(text).forEach((match) => print(match.group(0)));
+  }
 
-//   DocumentReference collectionReference =
-//       Firestore.instance.collection("collection").document(fileName);
+// ---------------------------------------- G E T   L I S T   O F   A L L   F O O D S   I T E M S
+  Future<List<FoodInfo>> getAllIngredientsList() async {
+    setState(ViewState.Busy);
+    print("---> Inside getAllIngredientsList in ViewModel");
+    var client = http.Client();
+    List<FoodInfo> allFoodsInfo;
+    var apiKey = "vAK9vJMtSQdYxcBhYRxZl5cpEkahZEkBhl0iw0ox";
+    var dataType = "Survey (FNDDS)";
+    // int pageSize = 100;
 
-//   await Firestore.instance.runTransaction((transaction) async {
-//     await transaction.set(collectionReference, pictureData);
-//     print("instance created");
-//   }).catchError(onError);
+    try {
+      http.Response responce = await client.get(
+          "https://api.nal.usda.gov/fdc/v1/foods/list?api_key=$apiKey&dataType=$dataType");
+      print("Inside API MANAGER");
+      if (responce.statusCode == 200) {
+        String jsonString = responce.body;
 
-  // extractSingleFeildListFromProviderList() {}
+        allFoodsInfo = foodInfoFromJson(jsonString);
+      }
+    } catch (Exception) {
+      print("E X C E P T I O N");
+      print("Exception in APi in apimanager class: " + Exception.toString());
+    }
 
-  // Future uploadFile(File _filePath) async {
-  //   //  String fileBasename = _filePath.path.split('/').last;
-  //   StorageReference storageReference =
-  //       FirebaseStorage.instance.ref().child('dishPics/$_filePath}');
-  //   StorageUploadTask uploadTask = storageReference.putFile(_filePath);
-  //   await uploadTask.onComplete;
-  //   print('File Uploaded');
-  //   storageReference.getDownloadURL().then((fileURL) {
-  //     //  setState(() {
-  //     //    _uploadedFileURL = fileURL;
-  //     //  });
-  //     print("fileURL = " + fileURL.toString());
-  //     return fileURL;
-  //   });
-  // }
+    setState(ViewState.Idle);
+    return allFoodsInfo;
+  }
 
-  Future uploadDishInfo(String dishName, int dishPrice, int totalPrepTime,
-      File dishPic, String dishCatg, String dishAttr) async {
+// ---------------------------------------- S E T   /    G E T   I N G R E D I E N T S
+
+  FutureOr setIngList(List<FoodInfo> _foodInfoList) {
+    _currentFoodIngr = _foodInfoList;
+
+    print(" ---> INSIDE setIngList and _currentFoodIngr = " +
+        _currentFoodIngr.toString());
+  }
+
+  List<FoodInfo> get getCurrentFoodIngr {
+    print(" ---> INSIDE getCurrentFoodIngr and  returning  = " +
+        _currentFoodIngr.toString());
+    return _currentFoodIngr;
+  }
+
+  List<double> convertNutrientsBackToOriginal(
+      FoodInfo _singleFood, int _count) {
+    // Indexes => Protien - 0, Fats - 1, Carbs - 2, Kcal - 3
+    List<double> _convertedNutrients = [];
+    _singleFood.foodNutrients[0].amount = double.parse(
+        (_singleFood.foodNutrients[0].amount / _count).toStringAsFixed(2));
+    _singleFood.foodNutrients[1].amount = double.parse(
+        (_singleFood.foodNutrients[1].amount / _count).toStringAsFixed(2));
+    _singleFood.foodNutrients[2].amount = double.parse(
+        (_singleFood.foodNutrients[2].amount / _count).toStringAsFixed(2));
+    _singleFood.foodNutrients[3].amount = double.parse(
+        (_singleFood.foodNutrients[3].amount / _count).toStringAsFixed(2));
+    _convertedNutrients.add(_singleFood.foodNutrients[0].amount);
+    _convertedNutrients.add(_singleFood.foodNutrients[1].amount);
+    _convertedNutrients.add(_singleFood.foodNutrients[2].amount);
+    _convertedNutrients.add(_singleFood.foodNutrients[3].amount);
+    print("--- Fat: " + _singleFood.foodNutrients[1].amount.toString());
+    return _convertedNutrients;
+  }
+
+// ---------------------------------------- U P L O A D I N G    D I S H
+  Future uploadDishInfo(
+    String dishName,
+    int dishPrice,
+    int totalPrepTime,
+    File dishPic,
+    String dishCatg,
+    String dishAttr,
+    List<FoodInfo> _foodIngrList,
+  ) async {
     setState(ViewState.Busy);
     print("--------> Upload dish Function reached.");
 
@@ -59,9 +131,10 @@ class AddDishViewModel extends BaseViewModel {
         Validators().verifyNameInputFeild(dishCatg) &&
         Validators().verifyNumInputFeild(dishPrice) &&
         Validators().verifyNumInputFeild(totalPrepTime) &&
+        _foodIngrList != null &&
         dishPic != null) {
       print("uploaded yahooooooo");
-      String userId =  getUser;
+      String userId = getUser;
 // ---------- Check if attribute name already exists then add accordingly
       if (dishAttr != null) {
         bool attrNameAlreadyExist = await DBHelperFtns().feildExistInCollection(
@@ -99,6 +172,13 @@ class AddDishViewModel extends BaseViewModel {
       print("---------> attrID inside AddDishViewModel : " + attrID.toString());
 
       String _uploadedImgURL = await ConstantFtns().uploadFile(dishPic);
+      List<String> _totalDishNutrientsList =
+          getTotalDishNutrients(_foodIngrList);
+
+      String _dishProtein = _totalDishNutrientsList[0];
+      String _dishFat = _totalDishNutrientsList[1];
+      String _dishCarb = _totalDishNutrientsList[2];
+      String _dishKcal = _totalDishNutrientsList[3];
 
       await DatabaseService().addNewDishData({
         'dishName': dishName,
@@ -109,7 +189,12 @@ class AddDishViewModel extends BaseViewModel {
         'dishPrice': dishPrice,
         'attrID': attrID,
         'chefName': _chefName,
-        'ctgID': ctgID
+        'ctgID': ctgID,
+        'dishProtein': _dishProtein,
+        'dishFat': _dishFat,
+        'dishCarb': _dishCarb,
+        'dishKcal': _dishKcal,
+        'dishIngrIDs': getDishIngrIDs,
       });
 
       setState(ViewState.Idle);
@@ -117,6 +202,32 @@ class AddDishViewModel extends BaseViewModel {
     } else {
       setErrorMessage("Enter valid info");
       setState(ViewState.Idle);
+    }
+  }
+
+  List<String> getTotalDishNutrients(List<FoodInfo> _foodIngrList) {
+    double _totalKcal = 0;
+    double _totalFats = 0;
+    double _totalCarbs = 0;
+    double _totalProtein = 0;
+    List<String> _nutrientData = [];
+    for (int i = 0; i < _foodIngrList.length; i++) {
+      _totalProtein += _foodIngrList[i].foodNutrients[0].amount;
+      _totalFats += _foodIngrList[i].foodNutrients[1].amount;
+      _totalCarbs += _foodIngrList[i].foodNutrients[2].amount;
+      _totalKcal += _foodIngrList[i].foodNutrients[3].amount;
+    }
+    _nutrientData.add(_totalProtein.toString() + " G");
+    _nutrientData.add(_totalFats.toString() + " G");
+    _nutrientData.add(_totalCarbs.toString() + " G");
+    _nutrientData.add(_totalKcal.toString() + " Kcal");
+    return _nutrientData;
+  }
+
+  List<int> getDishIngrIDs(List<FoodInfo> _foodIngrList) {
+    List<int> _dishIngrIDs = [];
+    for (int i = 0; i < _foodIngrList.length; i++) {
+      _dishIngrIDs.add(_foodIngrList[i].fdcId);
     }
   }
 }

@@ -233,44 +233,6 @@ class _AddDishInfoState extends State<AddDishInfo> {
                     },
                   ),
                 ),
-
-                // --------------------------------------- B L U E   B U T T O N
-                pageIndex == 1
-                    ? Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          margin:
-                              EdgeInsets.only(bottom: deviceSize.height * 0.02),
-                          child: FlatButton(
-                              onPressed: () async {
-                                print(
-                                    "------ dishPic inside onPressed  of addDishView.dart : " +
-                                        dishPic.toString());
-                                model.uploadDishInfo(
-                                  dishNameContr.text,
-                                  int.parse(priceContr.text),
-                                  totalPrepTime,
-                                  dishPic,
-                                  dishCatg,
-                                  attrContr.text,
-                                );
-                              },
-                              child:
-                                  StandardBtnBlueRound(passedText: "Upload")),
-                        ),
-                      )
-                    : Container(),
-
-                model.hasErrorMessage
-                    ? Container(
-                        color: Colors.red,
-                        child: Text(
-                          model.errorMessage,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    : Container(),
-                model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),
           );
