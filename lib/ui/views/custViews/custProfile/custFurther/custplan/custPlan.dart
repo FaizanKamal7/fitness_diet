@@ -6,6 +6,7 @@ import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/addExerciseView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custMeals.dart';
+import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/cutsExercises.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/summaryCard.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingwithBGandRoundCorner.dart';
 import 'package:fitness_diet/ui/widgets/standardInfoDisplayWithBullets.dart';
@@ -149,11 +150,45 @@ class _CustPlanState extends State<CustPlan> {
                   SizedBox(
                     height: widgetSize.height * 0.04,
                   ),
+
+                  Container(
+                    // color: Colors.red,
+                    height: widgetSize.height * 0.9,
+                    width: widgetSize.width,
+                    child: Swiper(
+                      pagination: new SwiperPagination(),
+                      itemCount: _planData.custExercise.length < 7
+                          ? _planData.custExercise.length
+                          : 7,
+                      itemBuilder: (BuildContext context, int index) {
+                        // geting list of exercise on the same day
+
+                        Map<String, dynamic> newList = model.getExerciseList(
+                            _planData.custExercise.keys.elementAt(index),
+                            _planData.custExercise);
+                        print(
+                            '---------------------------------new list length in list builder' +
+                                newList.length.toString());
+
+                        //
+                        return CustExercise(exerciseList: newList);
+                        // return CustExercise(
+                        //     exerciseTime:
+                        //         _planData.custExercise.keys.elementAt(index),
+                        //     exerciseName: _planData.custExercise.values
+                        //         .elementAt(index)[0],
+                        //     caloriesBurnt: _planData.custExercise.values
+                        //         .elementAt(index)[1],
+                        //     duration: newList.length.toString());
+                      },
+                    ),
+                  ),
+
                   FlatButton(
                     onPressed: () {
-                      print('add address presed :');
+                      print('add exercise presed :');
                       // _showAddressBottomSheet(context);
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (Context) => AddExerciseView()),

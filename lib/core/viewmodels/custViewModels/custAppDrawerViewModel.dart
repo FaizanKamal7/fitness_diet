@@ -18,6 +18,7 @@ class CustAppDrawerViewModel extends BaseViewModel {
   goToProfile() {
     _navigationService.navigateToWithoutReplacement(routes.CustProfileRoute);
   }
+
   goToHome() {
     _navigationService.navigateToWithoutReplacement(routes.FoodMenuMainRoute);
   }

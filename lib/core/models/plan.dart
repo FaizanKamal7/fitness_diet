@@ -1,4 +1,3 @@
-
 class Plan {
   String planID;
   String custId; //foreign key
@@ -23,6 +22,8 @@ class Plan {
   double custGainedCarbs;
   double custBurntCarbs;
 
+  Map<String, dynamic> custExercise;
+
   Plan({
     this.planID,
     this.custId,
@@ -42,5 +43,6 @@ class Plan {
     this.custReqCarbs,
     this.custGainedCarbs,
     this.custBurntCarbs,
+    this.custExercise,
   });
 }

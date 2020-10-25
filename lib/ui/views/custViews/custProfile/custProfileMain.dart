@@ -1,3 +1,4 @@
+import 'package:fitness_diet/core/models/exercise.dart';
 import 'package:fitness_diet/core/models/orders.dart';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
@@ -14,6 +15,7 @@ class CustProfileMain extends StatelessWidget {
     var custStreamProvider;
     var planStreamProvider;
     var ordersStreamProvider;
+    var exerciseStreamProvider;
 
     try {
       custStreamProvider = StreamProvider<CustData>.value(
@@ -23,11 +25,18 @@ class CustProfileMain extends StatelessWidget {
       ordersStreamProvider = StreamProvider<List<Order>>.value(
           value: DatabaseService(uid: user != null ? user.uid : null)
               .getCustOrderData());
+      exerciseStreamProvider = StreamProvider<List<Exercise>>.value(
+          value: DatabaseService().getAllExercises());
     } catch (e) {
       print("--------> Error in custProfileMain: " + e.toString());
     }
     return MultiProvider(
-      providers: [custStreamProvider, planStreamProvider, ordersStreamProvider],
+      providers: [
+        custStreamProvider,
+        planStreamProvider,
+        ordersStreamProvider,
+        exerciseStreamProvider,
+      ],
       child: MaterialApp(
         home: CustProfile(),
         //   ),

@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 
 class CustInfoViewModel extends BaseViewModel {
   String parseDate(DateTime firebasedate) {
+    // DateTime newDate = DateTime.parse('2020-10-25 08:03:18.068031');
+
     var newFormat = DateFormat("dd-MMM-yyyy");
     return newFormat.format(firebasedate);
   }

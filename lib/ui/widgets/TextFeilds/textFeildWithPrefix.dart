@@ -1,4 +1,3 @@
-import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:flutter/material.dart';
 
 class TextFeildWithPrefix extends StatefulWidget {
@@ -28,7 +27,7 @@ class _TextFeildWithPrefixState extends State<TextFeildWithPrefix> {
       padding: EdgeInsets.symmetric(horizontal: widget.deviceSize.width * 0.02),
       height: widget.deviceSize.height * 0.036,
       width: widget.deviceSize.width * 0.9,
-      color: Colors.white.withOpacity(0.7), 
+      color: Colors.white.withOpacity(0.7),
       child: ClipRRect(
         borderRadius:
             BorderRadius.all(Radius.circular(widget.deviceSize.height * 0.11)),

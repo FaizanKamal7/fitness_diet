@@ -67,15 +67,15 @@ class ChefData {
   String chefID;
   String chefName;
   String chefPhNo;
-  DateTime chefDateOfBirth;
-  DateTime chefAddDate;
+  var chefDateOfBirth;
+  var chefAddDate;
   String chefLocation;
   int chefRatings;
   List chefFollowers;
   List chefDishes;
   String chefPic;
   String chefBio;
-  DateTime chefUpdateDate;
+  var chefUpdateDate;
   bool hasDish;
   // Map<String, dynamic> keyValuesPairs;
 //  ChefData(this.keyValuesPairs);

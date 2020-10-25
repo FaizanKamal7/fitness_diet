@@ -3,12 +3,14 @@ import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/core/datamodel/alert_response.dart';
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/exercise.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
+import 'package:intl/intl.dart';
 
 class CustPlanViewModel extends BaseViewModel {
   final DialogService _dialogService = locator<DialogService>();
@@ -268,5 +270,85 @@ class CustPlanViewModel extends BaseViewModel {
 
   goToStartPlan() {
     _navigationService.navigateTo(routes.CustStartPlanRoute);
+  }
+
+  //-------------------------- E  X  E  R  C  I  S  E
+  //
+
+  double getExerciseCalories(double custWeight, Exercise exercise) {
+    double exerciseCalories = 0;
+
+    if (custWeight >= 48 && custWeight < 59) {
+      exerciseCalories = double.parse(exercise.weight_48_59);
+    } else if (custWeight >= 59 && custWeight < 70) {
+      exerciseCalories = double.parse(exercise.weight_59_70);
+    } else if (custWeight >= 70 && custWeight < 82) {
+      exerciseCalories = double.parse(exercise.weight_70_82);
+    } else if (custWeight >= 82 && custWeight < 93) {
+      exerciseCalories = double.parse(exercise.weight_82_93);
+    } else if (custWeight >= 93 && custWeight < 104) {
+      exerciseCalories = double.parse(exercise.weight_93_104);
+    } else if (custWeight >= 104 && custWeight < 116) {
+      exerciseCalories = double.parse(exercise.weight_104_116);
+    } else if (custWeight >= 116 && custWeight < 127) {
+      exerciseCalories = double.parse(exercise.weight_116_127);
+    }
+
+    return exerciseCalories / 60;
+  }
+
+  void addExercise(
+    String planID,
+    String exerciseName,
+    String calories,
+    String duration,
+  ) {
+    Map<String, dynamic> planData = {};
+    planData.addAll({"custburntKcal": double.parse(calories)});
+    planData
+        .addAll({"custburntProtein": getProteinvalue(double.parse(calories))});
+    planData.addAll({"custBurntFats": getFatsValue(double.parse(calories))});
+    planData.addAll({"custBurntCarbs": getCarbsVlaue(double.parse(calories))});
+
+    DatabaseService().updatePLanData(planData, planID);
+    print('------------ add exercise in plan view model  ');
+    DatabaseService()
+        .updateCustExercise(planID, exerciseName, calories, duration);
+  }
+
+  String formateDate(String date) {
+    //--------- for displaying
+
+    // var newFormat = DateFormat("dd-MM-yyyy");
+
+    DateTime newDate = DateTime.parse('2020-10-25 08:03:18.068031');
+// EEE,d,
+    var newFormat = DateFormat("EEE,d, ");
+    return newFormat.format(newDate);
+    // 2020-10-25 08:03:18.068031
+  }
+
+  String formateDateForDifference(String date) {
+    // var newFormat = DateFormat("dd-MM-yyyy");
+
+    DateTime newDate = DateTime.parse(date);
+
+    var newFormat = DateFormat("dd-MM-yyyy");
+    // DateTime formatedDate = DateTime.parse(newFormat.format(newDate));
+    return newFormat.format(newDate);
+  }
+
+// geting excercise list of the same day exercises
+  Map<String, dynamic> getExerciseList(
+    String day,
+    Map<String, dynamic> exerciseList,
+  ) {
+    Map<String, dynamic> newList = {};
+    exerciseList.forEach((key, value) {
+      if (formateDateForDifference(key) == formateDateForDifference(day)) {
+        newList[key] = value;
+      }
+    });
+    return newList;
   }
 }

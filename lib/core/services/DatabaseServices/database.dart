@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
+import 'package:fitness_diet/core/models/exercise.dart';
 import 'package:fitness_diet/core/models/orders.dart';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
@@ -27,6 +28,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('plan');
   final CollectionReference orderCollection =
       FirebaseFirestore.instance.collection('order');
+  final CollectionReference exerciseCollection =
+      FirebaseFirestore.instance.collection('exercise');
 
   final String uid;
   DatabaseService({this.uid});
@@ -494,9 +497,11 @@ class DatabaseService {
     print("-------> add dish function reached in database calass...");
     print("DataMap : " + dataMap.toString());
 
+    Map<String, List<String>> custExercise = {};
     await planCollection.doc(planID).set({
       'planID': planID,
       'custID': uid,
+      'custExercise': custExercise,
     }, SetOptions(merge: true));
 
     dataMap.forEach(
@@ -518,14 +523,16 @@ class DatabaseService {
       planID: snapshot.docs[0].data()['planID'] ?? "",
       custId: snapshot.docs[0].data()['custID'] ?? "",
       custGender: snapshot.docs[0].data()['custGender'] ?? "",
-      custHeight: snapshot.docs[0].data()['custHeight'] ?? "",
-      custWeight: snapshot.docs[0].data()['custWeight'] ?? "",
-      custGoalWeight: snapshot.docs[0].data()['custGoalWeight'] ?? "",
-      custReqKcal: snapshot.docs[0].data()['custReqKcl'] ?? "",
-      custReqProtein: snapshot.docs[0].data()['custReqProtein'] ?? "",
-      custReqFats: snapshot.docs[0].data()['custReqFats'] ?? "",
-      custReqCarbs: snapshot.docs[0].data()['custReqCarbs'] ?? "",
-
+      custHeight: snapshot.docs[0].data()['custHeight'] ?? 0.0,
+      custWeight: snapshot.docs[0].data()['custWeight'] ?? 0.0,
+      custGoalWeight: snapshot.docs[0].data()['custGoalWeight'] ?? 0.0,
+      custReqKcal: snapshot.docs[0].data()['custReqKcl'] ?? 0.0,
+      custReqProtein: snapshot.docs[0].data()['custReqProtein'] ?? 0.0,
+      custReqFats: snapshot.docs[0].data()['custReqFats'] ?? 0.0,
+      custReqCarbs: snapshot.docs[0].data()['custReqCarbs'] ?? 0.0,
+      custExercise: snapshot.docs[0].data()['custExercise'] ?? "",
+      custburntKcal: snapshot.docs[0].data()['custburntKcal'] ?? 0.0,
+      custburntProtein: snapshot.docs[0].data()['custburntProtein'] ?? 0.0,
       //  custGender: snapshot.data()['custGender'] ?? "",
       // custHeight: snapshot.data()['custID'] ?? "",
     );
@@ -544,6 +551,48 @@ class DatabaseService {
         .asStream()
         .map(_planDataFromSnapshot);
   }
+
+//todo
+  Future updatePLanData(Map<String, dynamic> dataMap, String planID) {
+    print('------------------- inside update plan data in database ');
+    dataMap.forEach(
+      (key, value) async {
+        await planCollection.doc(planID).set(
+          {
+            key: value,
+          },
+          SetOptions(merge: true),
+        );
+      },
+    );
+  }
+  //  Future<bool> updateCustData(
+  //     Map<String, dynamic> dataMap, String custID) async {
+  //   print(
+  //       "---------> DataBase services class reached. Updating user for uid : " +
+  //           uid.toString());
+
+  //   // - Setting ID first in a doc
+  //   await custCollection.doc(custID).set(
+  //     {
+  //       'custUpdateDate': DateTime.now(),
+  //     },
+  //     SetOptions(merge: true),
+  //   );
+
+  //   // - Dynamically adding data in the db
+  //   dataMap.forEach(
+  //     (key, value) async {
+  //       await custCollection.doc(custID).set(
+  //         {
+  //           key: value,
+  //         },
+  //         SetOptions(merge: true),
+  //       );
+  //     },
+  //   );
+  //   return true;
+  // }
 
   Future<int> countdocs(CollectionReference collection) async {
     QuerySnapshot _myDoc = await collection.get();
@@ -868,4 +917,87 @@ class DatabaseService {
         .snapshots()
         .map(_orderDataFromSnapshot);
   }
+
+  //
+  //------------------------------ E  X  E  R  C  I  S  E //
+
+  // List<Order> _orderDataFromSnapshot(QuerySnapshot snapshot) {
+  //   print(
+  //       ">>>>>>>>>>> _orderDataFromSnapshot inside database INVOKED and snapshot legth is : " +
+  //           snapshot.docs.length.toString());
+  //   // Map<Dish,dynamic> chefDishes;
+  //   List<Order> ordersList = List<Order>();
+
+  //   for (int i = 0; i < snapshot.docs.length; i++) {
+  //     ordersList.add(Order(
+  //       orderID: snapshot.docs[i].data()['orderID'] ?? "",
+  //       custID: snapshot.docs[i].data()['custID'] ?? "",
+  //       orderStatus: snapshot.docs[i].data()['orderStatus'] ?? "",
+  //       phoneNo: snapshot.docs[i].data()['contactNo'] ?? "",
+  //       chefID: snapshot.docs[i].data()['chefID'] ?? "",
+  //       orderDate:
+  //           (snapshot.docs[i].data()['orderDate'] as Timestamp).toDate() ?? "",
+  //       // shippedDate:
+  //       //     (snapshot.docs[i].data()['shippedDate'] as Timestamp).toDate() ??
+  //       //         "",
+  //       shippingAddress: snapshot.docs[i].data()['shippingAddress'] ?? "",
+  //       items: snapshot.docs[i].data()['items'] ?? "",
+  //       total: snapshot.docs[i].data()['total'] ?? "",
+  //       custName: snapshot.docs[i].data()['custName'] ?? "",
+  //     ));
+  //   }
+  //   return ordersList;
+  // }
+  List<Exercise> _exerciseDataFromSnapShop(QuerySnapshot snapshot) {
+    print('-------------------------- inside map function of exercise ' +
+        snapshot.docs.length.toString());
+
+    List<Exercise> exerciseList = List<Exercise>();
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      exerciseList.add(Exercise(
+        exerciseName: snapshot.docs[i].data()['ExerciseName'] ?? "",
+        weight_48_59: snapshot.docs[i].data()['48kg to 59kg'] ?? "",
+        weight_59_70: snapshot.docs[i].data()['59kg to 70kg'] ?? "",
+        weight_70_82: snapshot.docs[i].data()['70kg to 82kg'] ?? "",
+        weight_82_93: snapshot.docs[i].data()['82kg to 93kg'] ?? "",
+        weight_93_104: snapshot.docs[i].data()['93kg to 104'] ?? "",
+        weight_104_116: snapshot.docs[i].data()['104kg to 116kg'] ?? "",
+        weight_116_127: snapshot.docs[i].data()['116kg to 127kg'] ?? "",
+      ));
+    }
+    return exerciseList;
+  }
+
+  Stream<List<Exercise>> getAllExercises() {
+    print('--------------- inside get all exercises function ');
+    return exerciseCollection.snapshots().map(_exerciseDataFromSnapShop);
+  }
+
+  Future updateCustExercise(String planID, String exerciseName, String calories,
+      String duration) async {
+    print(
+        '---------------------inside updaet cust exercise funtion indatabase');
+    String now = DateTime.now().toString();
+    await planCollection.doc(planID).set(
+      {
+        'custExercise': {
+          now: [exerciseName, calories, duration]
+        },
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  // Future updateCustAddress(String custID, String title, String houseno,
+  //     String street, String city) async {
+  //   print('inside update address function  in  data base');
+  //   await custCollection.doc(custID).set(
+  //     {
+  //       'custAddress': {
+  //         title: [houseno, street, city]
+  //       },
+  //     },
+  //     SetOptions(merge: true),
+  //   );
+  // }
 }

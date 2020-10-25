@@ -134,13 +134,14 @@ class _SummaryCardState extends State<SummaryCard> {
                 ),
 
                 //
-                // B U R N E D  --   C A LA O R I E S //
+                // B U R N T  --   C A LA O R I E S //
                 //
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "2,455",
+                      // '',
+                      _planData.custburntKcal.toStringAsFixed(0),
                       style: TextStyle(
                         fontFamily: "Montserrat",
                         fontSize: widget.widgetSize.height * 0.040,

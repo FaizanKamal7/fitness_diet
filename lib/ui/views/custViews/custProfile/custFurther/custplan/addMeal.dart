@@ -1,22 +1,22 @@
 import 'package:fitness_diet/core/models/exercise.dart';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
-import 'package:fitness_diet/ui/views/custViews/addExerciseSolo.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 import '../../../../baseView.dart';
 
-class AddExerciseView extends StatefulWidget {
+class AddMealView extends StatefulWidget {
   @override
-  _AddExerciseViewState createState() => _AddExerciseViewState();
+  _AddMealViewState createState() => _AddMealViewState();
 }
 
 var _controller = TextEditingController();
 String selectedValue;
 
-class _AddExerciseViewState extends State<AddExerciseView> {
+class _AddMealViewState extends State<AddMealView> {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -69,14 +69,14 @@ class _AddExerciseViewState extends State<AddExerciseView> {
                                     onTap: () {
                                       print('ink well pressed go to solo ');
 
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AddExerciseSolo(
-                                            selectedExercise: value,
-                                          ),
-                                        ),
-                                      );
+                                      // Navigator.pushReplacement(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) => AddMealSolo(
+                                      //       selectedExercise: value,
+                                      //     ),
+                                      //   ),
+                                      // );
                                       // Navigator.of(context).pop();
                                     },
                                     child: ListTile(
