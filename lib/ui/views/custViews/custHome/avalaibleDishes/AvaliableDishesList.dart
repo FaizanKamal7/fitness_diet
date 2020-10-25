@@ -58,68 +58,68 @@ class AvailableDishesList extends StatelessWidget {
                   ),
                 ),
                 // >>>>>>>>   D I S H E S    C O N T E N T
-                child: Container(
-                  margin: EdgeInsets.only(
-                    top: deviceSize.height * 0.032,
-                    left: deviceSize.width * 0.15,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        foodItem['dishName'].toString().toUpperCase(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: deviceSize.height * 0.15,
-                          color: Color(0xff4e7a0b),
-                        ),
-                      ),
-                      Text(
-                        " By Ali Khan",
-                        style: TextStyle(
-                          fontFamily: "UniSansRegular",
-                          fontSize: deviceSize.height * 0.09,
-                          color: Color(0xff000000),
-                        ),
-                      ),
-                      Container(
-                        height: deviceSize.height * 0.1,
-                        width: deviceSize.width * 0.3,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.green,
-                              size: deviceSize.height * 0.1,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.green,
-                              size: deviceSize.height * 0.1,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.green,
-                              size: deviceSize.height * 0.1,
-                            ),
-                            Icon(
-                              Icons.star,
-                              color: Colors.green,
-                              size: deviceSize.height * 0.1,
-                            ),
-                            Icon(
-                              Icons.star_half,
-                              color: Colors.green,
-                              size: deviceSize.height * 0.1,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+                // child: Container(
+                //   margin: EdgeInsets.only(
+                //     top: deviceSize.height * 0.032,
+                //     left: deviceSize.width * 0.15,
+                //   ),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: <Widget>[
+                //       Text(
+                //         foodItem['dishName'].toString().toUpperCase(),
+                //         textAlign: TextAlign.center,
+                //         style: TextStyle(
+                //           fontFamily: "Montserrat",
+                //           fontSize: deviceSize.height * 0.15,
+                //           color: Color(0xff4e7a0b),
+                //         ),
+                //       ),
+                //       Text(
+                //         " By Khan",
+                //         style: TextStyle(
+                //           fontFamily: "UniSansRegular",
+                //           fontSize: deviceSize.height * 0.09,
+                //           color: Color(0xff000000),
+                //         ),
+                //       ),
+                //       Container(
+                //         height: deviceSize.height * 0.1,
+                //         width: deviceSize.width * 0.3,
+                //         child: Row(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Icon(
+                //               Icons.star,
+                //               color: Colors.green,
+                //               size: deviceSize.height * 0.1,
+                //             ),
+                //             Icon(
+                //               Icons.star,
+                //               color: Colors.green,
+                //               size: deviceSize.height * 0.1,
+                //             ),
+                //             Icon(
+                //               Icons.star,
+                //               color: Colors.green,
+                //               size: deviceSize.height * 0.1,
+                //             ),
+                //             Icon(
+                //               Icons.star,
+                //               color: Colors.green,
+                //               size: deviceSize.height * 0.1,
+                //             ),
+                //             Icon(
+                //               Icons.star_half,
+                //               color: Colors.green,
+                //               size: deviceSize.height * 0.1,
+                //             ),
+                //           ],
+                //         ),
+                //       )
+                //     ],
+                //   ),
+                // ),
               ),
 
               // -------------- Price
@@ -127,7 +127,7 @@ class AvailableDishesList extends StatelessWidget {
                 margin: EdgeInsets.only(
                     left: deviceSize.width * 0.7, top: deviceSize.height * 0.5),
                 child: Text(
-                  "Rs100",
+                  "Rs500",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Lemon-Milk",
@@ -201,5 +201,4 @@ class AvailableDishesList extends StatelessWidget {
       ),
     );
   }
-
 }

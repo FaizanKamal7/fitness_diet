@@ -28,7 +28,11 @@ class BaseViewModel extends ChangeNotifier {
     baseUser = FirebaseAuth.instance.currentUser;
     // print('current user in baseview model ' + baseUser.toString());
     setState(ViewState.Idle);
-    return baseUser.uid;
+    if (baseUser == null) {
+      return null;
+    } else {
+      return baseUser.uid;
+    }
   }
 
 //  dynamic x = AuthService().user;

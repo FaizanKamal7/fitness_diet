@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
+import 'package:fitness_diet/core/models/orders.dart';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/dbHelperFtns.dart';
@@ -17,11 +19,14 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('dishCategory');
   final CollectionReference dishAttrCollection =
       FirebaseFirestore.instance.collection('attribute');
-
+  final CollectionReference cartCollection =
+      FirebaseFirestore.instance.collection('cart');
   final CollectionReference custCollection =
       FirebaseFirestore.instance.collection('customer');
   final CollectionReference planCollection =
       FirebaseFirestore.instance.collection('plan');
+  final CollectionReference orderCollection =
+      FirebaseFirestore.instance.collection('order');
 
   final String uid;
   DatabaseService({this.uid});
@@ -35,10 +40,13 @@ class DatabaseService {
     print("---------> DataBase services class reached. Updating user for uid" +
         uid.toString());
     // - Setting ID first in a doc
+
+    Map<String, List<String>> address = {};
     await custCollection.doc(uid).set(
       {
         'custID': uid,
         'custAddDate': DateTime.now(),
+        'custAddress': address,
       },
       SetOptions(merge: true),
     );
@@ -85,6 +93,31 @@ class DatabaseService {
     return true;
   }
 
+  //-------------- address
+  Future updateCustAddress(String custID, String title, String houseno,
+      String street, String city) async {
+    print('inside update address function  in  data base');
+    await custCollection.doc(custID).set(
+      {
+        'custAddress': {
+          title: [houseno, street, city]
+        },
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  // ignore: missing_return
+  Future removeCustAddress(String custID, String title) {
+    print('********** inside remove address in database :' + title.toString());
+    custCollection.doc(custID).set(
+      {
+        'custAddress': {title: FieldValue.delete()}
+      },
+      SetOptions(merge: true),
+    );
+  }
+
   //
   // >>>>>>>>>>>>>>>> G E T T I N G   D A T A
   //
@@ -100,10 +133,13 @@ class DatabaseService {
       custDateOfBirth:
           (snapshot.data()['custDateOfBirth'] as Timestamp).toDate() ?? "",
       // custfavs: snapshot.data()['custfavs'] ?? "",
-      custLocation: snapshot.data()['custLocation'] ?? "",
+
+      custaddress: snapshot.data()['custAddress'] ?? '',
+      custContactNo: snapshot.data()['custContactNo'] ?? '',
       // custFollowing: snapshot.data()['custFollowing'] ?? "",
       planID: snapshot.data()['planID'] ?? "",
       custPic: snapshot.data()['custPic'] ?? "",
+      cartID: snapshot.data()['cartID'] ?? "",
       // custOrders: snapshot.data()['custOrders'] ?? "",
     );
   }
@@ -644,4 +680,192 @@ class DatabaseService {
   // >>>>>>>> Sign-in Customer
   //
 
+//******************************************************************************************** */
+// *************************************** C  A  R  T ******************************************
+//********************************************************************************************** */
+
+  Future<String> addNewCartData(String custID) async {
+    print(
+        "---------> Addnewcart on user registration  function reached in DatabaseServies class");
+
+    // *  Creating ID
+    int lastIndexOfcart =
+        await DBHelperFtns().lastDocumentIdNumber(cartCollection, 'cartID');
+
+    String newcartID = "cart" + (lastIndexOfcart + 1).toString();
+    print(
+        '******* after last document function in add new cart function in  database new cart id is ' +
+            newcartID.toString());
+    Map<String, dynamic> items = {};
+    await cartCollection.doc(newcartID).set(
+      {
+        'custID': custID,
+        'cartID': newcartID,
+        'cartAddDate': DateTime.now(),
+        'items': items,
+      },
+      SetOptions(merge: true),
+    );
+
+    return newcartID;
+  }
+
+  Future updateCartData(String cartID, String productID, int quantity) async {
+    print("---------> update cart  function reached in DatabaseServies class");
+    await cartCollection.doc(cartID).set(
+      {
+        'items': {productID: quantity},
+      },
+      SetOptions(merge: true),
+    );
+
+    print('data updated ');
+  }
+
+  Future deleteCartItem(String cartID, String productID) {
+    print('**** inside delete cart item in database');
+
+    cartCollection.doc(cartID).set(
+      {
+        'items': {productID: FieldValue.delete()}
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  Future deleteallCartItems(String cartID, Map<String, dynamic> items) {
+    print('**** inside delete all cart item in database');
+
+    for (int index = 0; index < items.length; index++) {
+      cartCollection.doc(cartID).set(
+        {
+          'items': {items.keys.elementAt(index): FieldValue.delete()}
+        },
+        SetOptions(merge: true),
+      );
+    }
+  }
+
+  Future updateInventory(String dishID, int quantity) {
+    print('------->>>>> inside update inventory  in database' +
+        quantity.toString());
+    dishCollection.doc(dishID).set(
+      {
+        'quantity': quantity,
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  Cart _userCartDataFromsnapshot(QuerySnapshot snapshot) {
+    int i = 0;
+    print('****** snapshot length inside user cart data from snapshot ' +
+        snapshot.docs[i].data()['items'].toString());
+    try {
+      String cartID = snapshot.docs[i].data()['cartID'] ?? '';
+      String custID = snapshot.docs[i].data()['custID'] ?? '';
+      return Cart(
+        cartid: cartID,
+        custID: custID,
+        items: snapshot.docs[i].data()['items'] ?? null,
+      );
+    } catch (error) {
+      print('error in map function of ucer cart ' + error.toString());
+    }
+  }
+
+  Stream<Cart> getCartData(String custID) {
+    return cartCollection
+        .where('custID', isEqualTo: custID)
+        .snapshots()
+        .map(_userCartDataFromsnapshot);
+  }
+
+  //--------------------------------- O R D E R ------------------------------
+
+  Future<String> createOrder(
+    String custID,
+    String custName,
+    String chefID,
+    Map<String, dynamic> shippingAddress,
+    String phoneNo,
+    List orderStatus,
+    Map<String, dynamic> itemsList,
+    double total,
+  ) async {
+    print('inside create mew order function ***********');
+
+    int lastindexofOrder =
+        await DBHelperFtns().lastDocumentIdNumber(orderCollection, 'orderID');
+
+    String newOrderID = 'order' + (lastindexofOrder + 1).toString();
+
+    print(
+        '******* after last document function in add new order function in  database new order id is ' +
+            newOrderID.toString());
+
+    // Map<String, int> items = {};
+    await orderCollection.doc(newOrderID).set(
+      {
+        'custID': custID,
+        'orderID': newOrderID,
+        'custName': custName,
+        'chefID': chefID,
+        'shippingAddress': shippingAddress,
+        'contactNo': phoneNo,
+        'orderStatus': orderStatus,
+        'orderDate': DateTime.now(),
+        'items': itemsList,
+        'total': total,
+      },
+      SetOptions(merge: true),
+    );
+    return newOrderID;
+  }
+
+  List<Order> _orderDataFromSnapshot(QuerySnapshot snapshot) {
+    print(
+        ">>>>>>>>>>> _orderDataFromSnapshot inside database INVOKED and snapshot legth is : " +
+            snapshot.docs.length.toString());
+    // Map<Dish,dynamic> chefDishes;
+    List<Order> ordersList = List<Order>();
+
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      ordersList.add(Order(
+        orderID: snapshot.docs[i].data()['orderID'] ?? "",
+        custID: snapshot.docs[i].data()['custID'] ?? "",
+        orderStatus: snapshot.docs[i].data()['orderStatus'] ?? "",
+        phoneNo: snapshot.docs[i].data()['contactNo'] ?? "",
+        chefID: snapshot.docs[i].data()['chefID'] ?? "",
+        orderDate:
+            (snapshot.docs[i].data()['orderDate'] as Timestamp).toDate() ?? "",
+        // shippedDate:
+        //     (snapshot.docs[i].data()['shippedDate'] as Timestamp).toDate() ??
+        //         "",
+        shippingAddress: snapshot.docs[i].data()['shippingAddress'] ?? "",
+        items: snapshot.docs[i].data()['items'] ?? "",
+        total: snapshot.docs[i].data()['total'] ?? "",
+        custName: snapshot.docs[i].data()['custName'] ?? "",
+      ));
+    }
+    return ordersList;
+  }
+
+  Stream<List<Order>> getSingleOrderData(String _passedOrderID) {
+    print("---> _passedOrderID inside getSingleOrderData in database class: " +
+        _passedOrderID.toString());
+    return orderCollection
+        .where("orderID", isEqualTo: _passedOrderID)
+        .snapshots()
+        .map(_orderDataFromSnapshot);
+  }
+
+  Stream<List<Order>> getCustOrderData() {
+    // print("---> _custID inside getSingleOrderData in database class: " +
+    //     _custID.toString());
+    return orderCollection
+        .where("custID", isEqualTo: uid)
+        .snapshots()
+        .map(_orderDataFromSnapshot);
+  }
 }

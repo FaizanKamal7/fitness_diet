@@ -52,8 +52,12 @@ class CustRegViewModel extends BaseViewModel {
         print("New user result at the end : " + verifiedUserID.toString());
 
         if (verifiedUserID != null) {
+          String cartid =
+              await DatabaseService().addNewCartData(verifiedUserID);
           await DatabaseService(uid: verifiedUserID).addNewCustData({
             'custPhNo': updatedPhoneNo,
+            'custContactNo': updatedPhoneNo,
+            'cartID': cartid,
           });
           print(
               "PhoneNo verified and added to DB (Message from within 'CustRegViewmodel')");

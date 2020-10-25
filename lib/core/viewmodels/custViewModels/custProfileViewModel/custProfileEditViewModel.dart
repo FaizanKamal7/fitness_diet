@@ -14,20 +14,20 @@ class CustProfileEditViewModel extends BaseViewModel {
 
   Future<String> uploadCustPic() async {}
 
-  Future updateCustData(String custName, String custLocation,
+  Future updateCustData(String custName, String custContactNo,
       DateTime custdateOfBirth, File custProfilePic) async {
     setState(ViewState.Busy);
     String _currentUserID = await getUser;
     Map<String, dynamic> custdataMap = {};
     // if (Validators().verifyNameInputFeild(custName) &&
-    //     Validators().verifyNameInputFeild(custLocation) &&
+    //     Validators().verifyNameInputFeild(custContactNo) &&
     //     custdateOfBirth != null &&
     //     cusrProfilePic != null) {}
 
     if (Validators().verifyNameInputFeild(custName))
       custdataMap.addAll({"custName": custName});
-    if (Validators().verifyNameInputFeild(custLocation))
-      custdataMap.addAll({"custLocation": custLocation});
+    if (Validators().verifyPhoneNumber(custContactNo))
+      custdataMap.addAll({"custContactNo": custContactNo});
     if (custdateOfBirth != null)
       custdataMap.addAll({"custDateOfBirth": custdateOfBirth});
     if (custProfilePic != null) {

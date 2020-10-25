@@ -4,12 +4,14 @@ import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/addExerciseView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custMeals.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/summaryCard.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingwithBGandRoundCorner.dart';
 import 'package:fitness_diet/ui/widgets/standardInfoDisplayWithBullets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class CustPlan extends StatefulWidget {
@@ -131,16 +133,43 @@ class _CustPlanState extends State<CustPlan> {
                   // / M  E  A  L  S -- W   I   D  G  E  T \\
                   // /
 
-                  // Container(
-                  //   height: widgetSize.height * 0.9,
-                  //   width: widgetSize.width,
-                  //   child: Swiper(
-                  //     itemCount: 2,
-                  //     itemBuilder: (BuildContext context, int index) {
-                  //       return mealsList[index];
-                  //     },
-                  //   ),
-                  // ),
+                  Container(
+                    // color: Colors.red,
+                    height: widgetSize.height * 0.8,
+                    width: widgetSize.width,
+                    child: Swiper(
+                      itemCount: 2,
+                      itemBuilder: (BuildContext context, int index) {
+                        return mealsList[index];
+                      },
+                    ),
+                  ),
+
+                  standardHeadingWithBGAndRoundCorner(passedText: 'Exercise '),
+                  SizedBox(
+                    height: widgetSize.height * 0.04,
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      print('add address presed :');
+                      // _showAddressBottomSheet(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (Context) => AddExerciseView()),
+                      );
+                    },
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Add Exercise",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 15,
+                            color: Color(0xff3caa43),
+                          ),
+                        )),
+                  ),
                 ],
               ),
             ),

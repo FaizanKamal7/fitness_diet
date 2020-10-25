@@ -20,7 +20,7 @@ class CustProfileEdit extends StatefulWidget {
 class _CustProfileEditState extends State<CustProfileEdit> {
   DateTime _dateOfBirth;
   // ignore: unused_field
-  TextEditingController _custResdController = TextEditingController();
+  TextEditingController _custContactNoController = TextEditingController();
   TextEditingController _custNameController = TextEditingController();
 
   File _custPic;
@@ -188,7 +188,7 @@ class _CustProfileEditState extends State<CustProfileEdit> {
                   Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Text(
-                      "Change Residence: ",
+                      "Change Contact NO: ",
                       style: TextStyle(
                         color: Constants().headerTextColor1,
                       ),
@@ -199,11 +199,11 @@ class _CustProfileEditState extends State<CustProfileEdit> {
                   // >>>>>>>>> R E S I D E N C E   T E X T F E I L D
                   //
                   TextFeildWithPrefix(
-                    controller: _custResdController,
+                    controller: _custContactNoController,
                     deviceSize: deviceSize,
-                    isTypeInt: false,
-                    preIcon: Icons.map,
-                    hintText: _custData.custLocation,
+                    isTypeInt: true,
+                    preIcon: Icons.contact_phone_rounded,
+                    hintText: _custData.custContactNo.toString(),
                     isObscureText: false,
                   ),
                   //
@@ -252,7 +252,7 @@ class _CustProfileEditState extends State<CustProfileEdit> {
 
               FlatButton(
                 onPressed: () => model.updateCustData(_custNameController.text,
-                    _custResdController.text, _dateOfBirth, _custPic),
+                    _custContactNoController.text, _dateOfBirth, _custPic),
                 child: AuthBtnStyle(deviceSize: deviceSize, passedText: "Done"),
               ),
 
@@ -261,7 +261,7 @@ class _CustProfileEditState extends State<CustProfileEdit> {
               //     // if (_formKey.currentState.validate()) {
               //     //   await DatabaseService(uid: user.uid).updateCustData({
               //     //     'custName': _custNameController ?? _custData.custName,
-              //     //     //      _custResdController ?? _custData.residence,
+              //     //     //      _custContactNoController ?? _custData.residence,
               //     //     //  _dateOfBirth ?? _custData.dateOfBirth,
               //     //   });
               //     //   Navigator.pop(context);
@@ -292,5 +292,4 @@ class _CustProfileEditState extends State<CustProfileEdit> {
       ),
     );
   }
-
 }

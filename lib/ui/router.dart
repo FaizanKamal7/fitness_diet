@@ -2,7 +2,7 @@ import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_1.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_2.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefSignInView.dart';
-import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/soleDishView.dart';
+import 'package:fitness_diet/ui/views/soleDishView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileMain.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_1.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_2.dart';

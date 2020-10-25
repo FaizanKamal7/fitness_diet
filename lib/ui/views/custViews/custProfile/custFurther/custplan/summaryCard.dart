@@ -1,4 +1,6 @@
 import 'package:fitness_diet/core/models/plan.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
+import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +27,8 @@ class _SummaryCardState extends State<SummaryCard> {
     final deviceSize = MediaQuery.of(context).size;
     final _planData = Provider.of<Plan>(context);
 
-    return Container(
+    return BaseView<CustPlanViewModel>(
+      builder: (context, model, child) => Container(
         padding: EdgeInsets.only(
             left: widget.widgetSize.width * 0.06,
             right: widget.widgetSize.width * 0.05,
@@ -178,21 +181,29 @@ class _SummaryCardState extends State<SummaryCard> {
                 //
                 ///
                 caloriesContainer(
-                    'Carbs', _planData.custReqCarbs.round(), widget.widgetSize),
+                    'Carbs',
+                    model.getCarbsVlaue(_planData.custReqKcal).round(),
+                    widget.widgetSize),
                 //
                 //P R  O  T  E  I  N -- C O N T A I N E R
                 //
-                caloriesContainer('Protein', _planData.custReqProtein.round(),
+                caloriesContainer(
+                    'Protein',
+                    model.getProteinvalue(_planData.custReqKcal).round(),
                     widget.widgetSize),
                 //
                 // F A T S -- C O N T A I N E R
                 //
                 caloriesContainer(
-                    'Fats', _planData.custReqFats.round(), widget.widgetSize),
+                    'Fats',
+                    model.getFatsValue(_planData.custReqKcal).round(),
+                    widget.widgetSize),
               ],
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }
 

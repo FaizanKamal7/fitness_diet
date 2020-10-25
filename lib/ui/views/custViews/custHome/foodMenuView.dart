@@ -1,19 +1,17 @@
-import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
-import 'package:fitness_diet/core/services/DatabaseServices/dbHelperFtns.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/foodmenueViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/soleDishView.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/custAppDrawer.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/guestappdrawer.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/homeAppBarDelegate.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/locationHeader.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/recentFoodSlider/recentFoodSlider.dart';
 import 'package:fitness_diet/ui/widgets/dishViewSingleListItemDesign.dart';
-import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBg.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -96,10 +94,11 @@ class FoodMenuView extends StatelessWidget {
   Widget build(BuildContext context) {
     final _dishData = Provider.of<List<Dish>>(context);
     final _user = Provider.of<CurrentUser>(context);
+    final _allChefsData = Provider.of<List<ChefData>>(context);
 
     final deviceSize = MediaQuery.of(context).size;
     String _chefName;
-    return BaseView(
+    return BaseView<FoodMenueViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Scaffold(
           key: _scaffoldKey,
@@ -188,13 +187,27 @@ class FoodMenuView extends StatelessWidget {
                                   margin: EdgeInsets.symmetric(
                                     vertical: widgetSize.height * 0.002,
                                   ),
-                                  child: DishViewSingleListItemDesign(
-                                    dishName: dish.dishName,
-                                    chefName: dish.chefName,
-                                    kcal: 250.5,
-                                    price: dish.dishPrice,
-                                    ratings: 3.5,
-                                    dishPic: dish.dishPic,
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SoleDishView(
+                                            passedDish: dish,
+                                            isFromCustView: true,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: DishViewSingleListItemDesign(
+                                      dishName: dish.dishName,
+                                      chefName: model.extractedChefName(
+                                          _allChefsData, dish.chefID),
+                                      kcal: 250.5,
+                                      price: dish.dishPrice,
+                                      ratings: 3.5,
+                                      dishPic: dish.dishPic,
+                                    ),
                                   ),
                                 );
                               }).toList()

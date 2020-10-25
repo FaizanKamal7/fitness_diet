@@ -123,6 +123,9 @@ flutter:
     - family: Lemon-Milk
       fonts:
         - asset: assets/fonts/LEMONMILK-Regular.otf
+    - family: Montserrat-Bold
+      fonts:
+        - asset: assets/fonts/Montserrat-Bold.otf
     - family: BigNoodle
       fonts:
         - asset: assets/fonts/big_noodle_titling.ttf

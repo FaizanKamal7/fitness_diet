@@ -1,4 +1,3 @@
-import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custReg2ViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
@@ -8,7 +7,6 @@ import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/custAuthBg.dart';
 import 'package:fitness_diet/ui/widgets/dateOfBirthSelector.dart';
-import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
 import 'package:fitness_diet/ui/widgets/Texts/stepHeaderWithBg.dart';
 import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +28,8 @@ class _CustRegView_2State extends State<CustRegView_2> {
     print("---------> CustReg2VIew Reached ");
     return BaseView<CustReg2ViewModel>(
       builder: (context, model, child) => WillPopScope(
-        onWillPop: ()async=>false ,
-              child: ResponsiveSafeArea(
+        onWillPop: () async => false,
+        child: ResponsiveSafeArea(
           builder: (context, widgetSize) => Scaffold(
             body: Stack(
               children: <Widget>[
@@ -157,15 +155,15 @@ class _CustRegView_2State extends State<CustRegView_2> {
                 // ? UIHelper().showErrorButtomSheet(context, model.errorMessage)
                 // : Container(),
 
-               model.hasErrorMessage
-                      ? Container(
-                          color: Colors.red,
-                          child: Text(
-                            model.errorMessage,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
-                      : Container(),
+                model.hasErrorMessage
+                    ? Container(
+                        color: Colors.red,
+                        child: Text(
+                          model.errorMessage,
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    : Container(),
 
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],

@@ -14,7 +14,7 @@ class _CustMealsState extends State<CustMeals> {
     final _custData = Provider.of<CustData>(context);
     return ResponsiveSafeArea(
       builder: (context, widgetSize) => Container(
-        height: widgetSize.height * 0.8,
+        // height: widgetSize.height * 0.2,
         width: widgetSize.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,151 +63,218 @@ class _CustMealsState extends State<CustMeals> {
             SizedBox(
               height: widgetSize.height * 0.01,
             ),
-            Container(
-              height: widgetSize.height * 0.15,
-              width: widgetSize.width,
-              decoration: BoxDecoration(
-                color: Color(0xffffffff),
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0.00, 3.00),
-                    color: Color(0xff000000).withOpacity(0.16),
-                    blurRadius: 6,
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(widgetSize.height * 0.05),
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    "assets/images/AppIcons/breakfast.png",
-                    height: widgetSize.height * 0.20,
-                    width: widgetSize.height * 0.20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Add breakfast",
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widgetSize.height * 0.045,
-                          color: Color(0xff4d3814),
+            //-----------------------  A  D D  B R E A K F A S T ----------------------
+
+            InkWell(
+              onTap: () {},
+              child: Container(
+                height: widgetSize.height * 0.15,
+                width: widgetSize.width,
+                decoration: BoxDecoration(
+                  color: Color(0xffffffff),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0.00, 3.00),
+                      color: Color(0xff000000).withOpacity(0.16),
+                      blurRadius: 6,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(widgetSize.height * 0.05),
+                ),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      "assets/images/AppIcons/breakfast.png",
+                      height: widgetSize.height * 0.20,
+                      width: widgetSize.height * 0.20,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Add breakfast",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: widgetSize.height * 0.045,
+                            color: Color(0xff4d3814),
+                          ),
                         ),
-                      ),
-                      Text(
-                        "Recommended 774 - 1032 Kcal",
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widgetSize.height * 0.035,
-                          color: Color(0xff4d3814).withOpacity(0.38),
+                        Text(
+                          "Recommended 774 - 1032 Kcal",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: widgetSize.height * 0.035,
+                            color: Color(0xff4d3814).withOpacity(0.38),
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
             SizedBox(
               height: widgetSize.height * 0.01,
             ),
 
-            Container(
-              height: widgetSize.height * 0.15,
-              width: widgetSize.width,
-              decoration: BoxDecoration(
-                color: Color(0xffffffff),
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0.00, 3.00),
-                    color: Color(0xff000000).withOpacity(0.16),
-                    blurRadius: 6,
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(widgetSize.height * 0.05),
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    "assets/images/AppIcons/lunch.png",
-                    height: widgetSize.height * 0.20,
-                    width: widgetSize.height * 0.20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Add Lunch",
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widgetSize.height * 0.045,
-                          color: Color(0xff4d3814),
+            ///-------------------------------- A D D L U N C H
+            ///
+            InkWell(
+              onTap: () {},
+              child: Container(
+                height: widgetSize.height * 0.15,
+                width: widgetSize.width,
+                decoration: BoxDecoration(
+                  color: Color(0xffffffff),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0.00, 3.00),
+                      color: Color(0xff000000).withOpacity(0.16),
+                      blurRadius: 6,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(widgetSize.height * 0.05),
+                ),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      "assets/images/AppIcons/lunch.png",
+                      height: widgetSize.height * 0.20,
+                      width: widgetSize.height * 0.20,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Add Lunch",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: widgetSize.height * 0.045,
+                            color: Color(0xff4d3814),
+                          ),
                         ),
-                      ),
-                      Text(
-                        "Recommended 774 - 1032 Kcal",
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widgetSize.height * 0.035,
-                          color: Color(0xff4d3814).withOpacity(0.38),
+                        Text(
+                          "Recommended 774 - 1032 Kcal",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: widgetSize.height * 0.035,
+                            color: Color(0xff4d3814).withOpacity(0.38),
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
             SizedBox(
               height: widgetSize.height * 0.01,
             ),
             //
-            //
-            Container(
-              height: widgetSize.height * 0.15,
-              width: widgetSize.width,
-              decoration: BoxDecoration(
-                color: Color(0xffffffff),
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(0.00, 3.00),
-                    color: Color(0xff000000).withOpacity(0.16),
-                    blurRadius: 6,
-                  ),
-                ],
-                borderRadius: BorderRadius.circular(widgetSize.height * 0.05),
+            //-------------------------  A D D  -- D I N E R
+
+            InkWell(
+              onTap: () {},
+              child: Container(
+                height: widgetSize.height * 0.15,
+                width: widgetSize.width,
+                decoration: BoxDecoration(
+                  color: Color(0xffffffff),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0.00, 3.00),
+                      color: Color(0xff000000).withOpacity(0.16),
+                      blurRadius: 6,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(widgetSize.height * 0.05),
+                ),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      "assets/images/AppIcons/snacks.png",
+                      height: widgetSize.height * 0.20,
+                      width: widgetSize.height * 0.20,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Add Diner",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: widgetSize.height * 0.045,
+                            color: Color(0xff4d3814),
+                          ),
+                        ),
+                        Text(
+                          "Recommended 774 - 1032 Kcal",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: widgetSize.height * 0.035,
+                            color: Color(0xff4d3814).withOpacity(0.38),
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    "assets/images/AppIcons/snacks.png",
-                    height: widgetSize.height * 0.20,
-                    width: widgetSize.height * 0.20,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Add Snacks",
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widgetSize.height * 0.045,
-                          color: Color(0xff4d3814),
+            ),
+            SizedBox(
+              height: widgetSize.height * 0.01,
+            ),
+            //------------------------------- A D D - S N A C K S
+            InkWell(
+              onTap: () {},
+              child: Container(
+                height: widgetSize.height * 0.15,
+                width: widgetSize.width,
+                decoration: BoxDecoration(
+                  color: Color(0xffffffff),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0.00, 3.00),
+                      color: Color(0xff000000).withOpacity(0.16),
+                      blurRadius: 6,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(widgetSize.height * 0.05),
+                ),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      "assets/images/AppIcons/snacks.png",
+                      height: widgetSize.height * 0.20,
+                      width: widgetSize.height * 0.20,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Add Snacks",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: widgetSize.height * 0.045,
+                            color: Color(0xff4d3814),
+                          ),
                         ),
-                      ),
-                      Text(
-                        "Recommended 774 - 1032 Kcal",
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: widgetSize.height * 0.035,
-                          color: Color(0xff4d3814).withOpacity(0.38),
+                        Text(
+                          "Recommended 774 - 1032 Kcal",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: widgetSize.height * 0.035,
+                            color: Color(0xff4d3814).withOpacity(0.38),
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ],

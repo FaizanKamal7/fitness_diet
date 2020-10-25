@@ -230,7 +230,11 @@ class _CustProfileState extends State<CustProfile>
                                           left: deviceSize.width * 0.03),
                                       child: Flexible(
                                         child: Text(
-                                          _custData.custLocation,
+                                          _custData.custaddress.length == 0
+                                              ? ' '
+                                              : _custData.custaddress.values
+                                                  .elementAt(0)[2]
+                                                  .toString(),
                                           style: TextStyle(
                                             fontFamily: "UniSansRegular",
                                             fontSize: deviceSize.height * 0.025,
@@ -430,12 +434,12 @@ class _CustProfileState extends State<CustProfile>
                               EdgeInsets.only(top: deviceSize.height * 0.02),
                           child: TabBarView(
                             children: [
+                              CustInfo(),
                               _custData != null
                                   ? _custData.planID != ''
                                       ? CustPlan()
                                       : CustNoPlan()
                                   : Loading(),
-                              CustInfo(),
                             ],
                             controller: _tabController,
                           ),

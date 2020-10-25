@@ -229,7 +229,7 @@ class CustPlanViewModel extends BaseViewModel {
     return tdeeValue - tdeedeficit;
   }
 
-  // W E I G H T --- L  O  S  S  -- C   A   L  C  U  L  A  T  I  O  N
+  // W E I G H T --- G  A  I  N  -- C   A   L  C  U  L  A  T  I  O  N
 //
 
   double tDEEValueToGainWeight(double tdeeValue) {
@@ -249,6 +249,21 @@ class CustPlanViewModel extends BaseViewModel {
     List<double> macronutrients = [protein, fats, carbs];
 
     return macronutrients;
+  }
+
+  double getProteinvalue(double tdeeValue) {
+    return (tdeeValue / 3.230) / 4;
+  }
+
+  double getFatsValue(double tdeeValue) {
+    return (tdeeValue / 2.875) / 9;
+  }
+
+  double getCarbsVlaue(double tdeeValue) {
+    double protein = (tdeeValue / 3.230) / 4;
+
+    double fats = (tdeeValue / 2.875) / 9;
+    return (tdeeValue - (protein * 4 + fats * 9)) / 4;
   }
 
   goToStartPlan() {

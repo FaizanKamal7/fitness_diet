@@ -1,4 +1,6 @@
+import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
+import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuView.dart';
 import 'package:flutter/material.dart';
@@ -7,19 +9,36 @@ import 'package:provider/provider.dart';
 class FoodMenuMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("------> FoodMenuMain REACHED");
-    var dishStreamProvider;
+    final _custData = Provider.of<CurrentUser>(context);
 
+    print("------> FoodMenuMain REACHED");
+    var dishStreamProvider,
+        chefDataStreamProvider,
+        cartProvider,
+        custStreamProvider;
     try {
       // - Dish data stream
       dishStreamProvider = StreamProvider<List<Dish>>.value(
           value: DatabaseService().getAllDishData);
+      chefDataStreamProvider = StreamProvider<List<ChefData>>.value(
+          value: DatabaseService().getAllChefData);
+
+      custStreamProvider = StreamProvider<CustData>.value(
+          value: DatabaseService(uid: _custData != null ? _custData.uid : null)
+              .getCustData);
+
+      cartProvider = StreamProvider<Cart>.value(
+          value: DatabaseService()
+              .getCartData(_custData != null ? _custData.uid : null));
     } catch (error) {
       print("-----> Error in ChefProfileMain : " + error.toString());
     }
     return MultiProvider(
       providers: [
         dishStreamProvider,
+        chefDataStreamProvider,
+        cartProvider,
+        custStreamProvider,
       ],
       child: MaterialApp(home: FoodMenuView()),
     );

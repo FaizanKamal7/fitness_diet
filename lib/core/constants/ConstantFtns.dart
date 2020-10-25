@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/cart.dart';
+import 'package:fitness_diet/core/models/dish.dart';
+import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -59,10 +62,80 @@ class ConstantFtns extends BaseViewModel {
     return _imgURl;
   }
 
+  //
+  //----------------------------------------  C  A  R  T -- F  U  N  C  T I  O  N  S -------------------------
+
   String getStringAfterCharacter(String _completeString, String _char) {
     return _completeString.substring(
         _completeString.indexOf(_char) + 1, _completeString.length);
   }
+
+  int getCartLength(
+    CustData _custData,
+    Cart _cart,
+  ) {
+    int length = 0;
+    if (_custData != null) {
+      _cart.items.forEach((key, value) {
+        length = length + value;
+      });
+
+      // length = _useCart.items.length;
+    }
+
+    return length;
+  }
+
+  int getquantity(Map<String, dynamic> items, String dishID) {
+    print('inside get quantity function product id is  ' + dishID);
+    print('*****************items length in get quatity function ' +
+        items.length.toString());
+    int quan = 0;
+    items.forEach((key, value) {
+      print('key in items is ' + key.toString());
+      if (key == dishID) {
+        // print('product id found ' + value.toString());
+        String str = value.toString();
+
+        int i = int.parse(str);
+        quan = i;
+        print('product id found ' + quan.toString());
+        return i;
+      }
+    });
+    return quan;
+  }
+
+  double getTotal(CustData _custData, Cart _cart, List<Dish> _dishData) {
+    double subtotal = 0;
+    print('******************inside get total function in receipt container ');
+
+    if (_custData != null) {
+      for (int i = 0; i < _dishData.length; i++) {
+        if (_cart.items.keys.contains(_dishData[i].dishID)) {
+          int _singlePrice =
+              // checkOffer(_dishData[i].price, _dishData[i].salePrice)
+              //     ? _dishData[i].salePrice
+              //     :
+              _dishData[i].dishPrice;
+
+          subtotal = subtotal +
+              _singlePrice * getquantity(_cart.items, _dishData[i].dishID);
+        }
+      }
+    }
+
+    return subtotal;
+  }
+
+  String getEnumValue(String enumvalue) {
+    String newenum = enumvalue.toString().split('.').last;
+    return newenum;
+  }
+
+////
+  ///
+  ///
 
   // ------------------------------------------- L O G I C    H E L P E R    F U N C T I O N S
 

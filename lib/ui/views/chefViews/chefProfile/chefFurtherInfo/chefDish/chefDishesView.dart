@@ -4,7 +4,7 @@ import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewM
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/soleDishView.dart';
+import 'package:fitness_diet/ui/views/soleDishView.dart';
 import 'package:fitness_diet/ui/widgets/dishViewSingleListItemDesign.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBg.dart';
 import 'package:flutter/material.dart';
@@ -39,8 +39,10 @@ class _ChefDishesState extends State<ChefDishes> {
                   children: <Widget>[
                     // ----------- A D D   D I S H   B T N
                     FlatButton(
-                      onPressed: () => Navigator.push((context),
-                          MaterialPageRoute(builder: (context) => AddDishInfo())),
+                      onPressed: () => Navigator.push(
+                          (context),
+                          MaterialPageRoute(
+                              builder: (context) => AddDishInfo())),
                       child: Text("Add new dish"),
                     ),
                     // ----------- A V A L A I B L E   D I S H E S   H E A D I N G

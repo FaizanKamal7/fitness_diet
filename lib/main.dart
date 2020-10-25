@@ -37,13 +37,14 @@ Future<void> main() async {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: DevicePreview(
-          enabled: true,
+          enabled: false,
           builder: (context) => MyApp(),
         ),
       ),
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

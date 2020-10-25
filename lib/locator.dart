@@ -14,13 +14,17 @@ import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefSignInViewM
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custReg2ViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custRegViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custSignInViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/cartViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custAppDrawerViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custInfoViewModel/custInfoViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custProfileEditViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custProfileViewmodel.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/foodmenueViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/custViewModels/orderViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/homeViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/loginViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/soleDishViewModel.dart';
 import 'package:get_it/get_it.dart';
 
 GetIt locator = GetIt.instance;
@@ -39,6 +43,7 @@ void setupLocator() {
 
   locator.registerFactory(() => HomeViewModel());
   locator.registerFactory(() => BaseViewModel());
+  locator.registerFactory(() => SoleDishViewModel());
 
   // Customer
   locator.registerFactory(() => CustRegViewModel());
@@ -49,6 +54,9 @@ void setupLocator() {
   locator.registerFactory(() => CustInfoViewModel());
   locator.registerFactory(() => CustPlanViewModel());
   locator.registerFactory(() => CustProfileEditViewModel());
+  locator.registerFactory(() => FoodMenueViewModel());
+  locator.registerFactory(() => CartViewModel());
+  locator.registerFactory(() => OrderViewModel());
 
   // Chef
   locator.registerFactory(() => ChefRegViewModel());
