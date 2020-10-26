@@ -172,14 +172,24 @@ class AddDishViewModel extends BaseViewModel {
       print("---------> attrID inside AddDishViewModel : " + attrID.toString());
 
       String _uploadedImgURL = await ConstantFtns().uploadFile(dishPic);
+      print(" INSIDE UPLOAD DISH AND    N U T R I E N T S    ARE: " +
+          _foodIngrList.toString());
+      // print(" INSIDE UPLOAD DISH AND    N U T R I E N T S    ARE: " +
+      //     _foodIngrList[0].foodNutrients[3].amount.toString() +
+      //     " " +
+      //     _foodIngrList[0].foodNutrients[1].amount.toString());
 
       List<double> _totalDishNutrientsList =
           getTotalDishNutrients(_foodIngrList);
 
-      double _dishProtein = _totalDishNutrientsList[0];
-      double _dishFat = _totalDishNutrientsList[1];
-      double _dishCarb = _totalDishNutrientsList[2];
-      double _dishKcal = _totalDishNutrientsList[3];
+      double _dishProtein =
+          double.parse((_totalDishNutrientsList[0]).toStringAsFixed(2));
+      double _dishFat =
+          double.parse(_totalDishNutrientsList[1].toStringAsFixed(2));
+      double _dishCarb =
+          double.parse(_totalDishNutrientsList[2].toStringAsFixed(2));
+      double _dishKcal =
+          double.parse(_totalDishNutrientsList[3].toStringAsFixed(2));
       print("---------------" + _dishProtein.toString());
       // double _protein = double.parse(
       //     ConstantFtns().getStringBeforeCharacter(_dishProtein, " "));

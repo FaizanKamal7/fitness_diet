@@ -44,11 +44,8 @@ class ChefOrdersViewModel extends BaseViewModel {
       if (_order.orderStatus[i] == "ORDER_COMPLETED")
         _orderStatusPreSelectedList.add(4);
 
-      if (_order.orderStatus[i] == "ORDER_CANCELLED")
-        _orderStatusPreSelectedList.add(5);
-
       if (_order.orderStatus[i] == "ORDER_FAILED")
-        _orderStatusPreSelectedList.add(6);
+        _orderStatusPreSelectedList.add(5);
     }
 
     return _orderStatusPreSelectedList;
@@ -76,9 +73,6 @@ class ChefOrdersViewModel extends BaseViewModel {
         _orderStatusPreSelectedList.add("ORDER_COMPLETED");
 
       if (_updatedStatusList[i] == 5)
-        _orderStatusPreSelectedList.add("ORDER_CANCELLED");
-
-      if (_updatedStatusList[i] == 6)
         _orderStatusPreSelectedList.add("ORDER_FAILED");
     }
 

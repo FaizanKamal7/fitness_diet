@@ -1,22 +1,14 @@
 import 'dart:io';
-
-import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/addDishViewModel.dart';
-import 'package:fitness_diet/core/viewmodels/chefViewModels/apiIngrViewModel.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/addDish/ingrSearchView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/addDish/singleDishIngr.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
-import 'package:fitness_diet/ui/widgets/Buttons/standardBtnWhitishRound.dart';
-import 'package:fitness_diet/ui/widgets/Buttons/tinyBtnRow.dart';
-import 'package:fitness_diet/ui/widgets/Buttons/tinyLeftBtn.dart';
-import 'package:fitness_diet/ui/widgets/Buttons/tinyRightBtn.dart';
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 // ignore: must_be_immutable
 class AddDishIngrView extends StatefulWidget {
@@ -52,8 +44,8 @@ class AddDishIngrView extends StatefulWidget {
 class _AddDishIngrViewState extends State<AddDishIngrView> {
   List<FoodInfo> _currentIngrList;
   Map<int, int> countValues = {};
-  Map<int, bool> _currentIngUnit = {};
-  int _currentSelectedIngrIndex;
+  // Map<int, bool> _currentIngUnit = {};
+  // int _currentSelectedIngrIndex;
   @override
   Widget build(BuildContext context) {
     updatedIngrInfo != [] &&
@@ -136,8 +128,8 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
                             shrinkWrap: true,
                             itemCount: _currentIngrList.length,
                             itemBuilder: (context, index) {
-                              List<FoodInfo> _newIngrList = _currentIngrList;
-                              FoodInfo _singleFood = _currentIngrList[index];
+                              // List<FoodInfo> _newIngrList = _currentIngrList;
+                              // FoodInfo _singleFood = _currentIngrList[index];
 
                               // print(
                               //     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ " +

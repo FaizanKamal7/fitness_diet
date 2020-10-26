@@ -44,8 +44,10 @@ class _ChefOrdersViewState extends State<ChefOrdersView> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SoleOrderView(
-                                    singleOrder: _singleOrder[index])),
+                              builder: (context) => SoleOrderView(
+                                singleOrder: _singleOrder[index],
+                              ),
+                            ),
                           );
                         },
                         child: ChefSingleListOrderView(
