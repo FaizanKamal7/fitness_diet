@@ -128,20 +128,22 @@ class _IngredientsSearchViewState extends State<IngredientsSearchView> {
                                                   " " +
                                                   _caloriesUnit +
                                                   ", Prot: " +
-                                                  _proteinAmount +
+                                                  double.parse(_proteinAmount)
+                                                      .toStringAsFixed(2) +
                                                   " " +
                                                   _proteinUnit +
                                                   ", Carbs: " +
-                                                  _carbsAmount +
+                                                  double.parse(_carbsAmount)
+                                                      .toStringAsFixed(2) +
                                                   " " +
                                                   _carbsUnit +
                                                   ", Fats: " +
-                                                  _fatsAmount +
+                                                  double.parse(_fatsAmount)
+                                                      .toStringAsFixed(2) +
                                                   " " +
                                                   _fatsUnit +
                                                   " \nper 100g",
                                             ),
-                                           
 
                                             value: selectionStatus[
                                                 singleFood.fdcId],

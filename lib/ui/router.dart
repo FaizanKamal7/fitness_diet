@@ -2,6 +2,7 @@ import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_1.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_2.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefSignInView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/chefOrdersView.dart';
 import 'package:fitness_diet/ui/views/soleDishView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileMain.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_1.dart';
@@ -48,6 +49,9 @@ class Router {
         return MaterialPageRoute(builder: (_) => ChefSignInView());
       case routes.ChefProfileRoute:
         return MaterialPageRoute(builder: (_) => ChefProfileMain());
+      case routes.ChefOrdersView:
+        return MaterialPageRoute(builder: (_) => ChefOrdersView());
+        
       // case routes.SoleDishRoute:
       //   return MaterialPageRoute(builder: (_) => SoleDishView());
 

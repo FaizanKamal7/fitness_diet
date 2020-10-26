@@ -29,7 +29,7 @@ class _ChefProfileEditViewState extends State<ChefProfileEditView> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final _chefData = Provider.of<ChefData>(context);
+    final _chefData = Provider.of<List<ChefData>>(context);
     final deviceSize = MediaQuery.of(context).size;
 
     return BaseView<ChefProfileEditViewModel>(
@@ -93,7 +93,6 @@ class _ChefProfileEditViewState extends State<ChefProfileEditView> {
                         left: deviceSize.width * 0.14),
                     child: FlatButton(
                       onPressed: () => showBottomSheet(
-                        
                         backgroundColor: Colors.lightBlueAccent,
                         context: context,
                         builder: (context) => Container(
@@ -182,7 +181,7 @@ class _ChefProfileEditViewState extends State<ChefProfileEditView> {
                     deviceSize: deviceSize,
                     isTypeInt: false,
                     preIcon: Icons.account_circle,
-                    hintText: _chefData.chefName,
+                    hintText: _chefData[0].chefName,
                     isObscureText: false,
                   ),
                   //
@@ -206,7 +205,7 @@ class _ChefProfileEditViewState extends State<ChefProfileEditView> {
                     deviceSize: deviceSize,
                     isTypeInt: false,
                     preIcon: Icons.map,
-                    hintText: _chefData.chefLocation,
+                    hintText: _chefData[0].chefLocation,
                     isObscureText: false,
                   ),
                   //
@@ -263,7 +262,7 @@ class _ChefProfileEditViewState extends State<ChefProfileEditView> {
               //   onPressed: () async {
               //     // if (_formKey.currentState.validate()) {
               //     //   await DatabaseService(uid: user.uid).updateCustData({
-              //     //     'custName': _chefNameController ?? _chefData.custName,
+              //     //     'custName': _chefNameController ?? _chefData[0].custName,
               //     //     //      _chefResdController ?? _chefData.residence,
               //     //     //  _dateOfBirth ?? _chefData.dateOfBirth,
               //     //   });

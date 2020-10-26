@@ -65,11 +65,6 @@ class ConstantFtns extends BaseViewModel {
   //
   //----------------------------------------  C  A  R  T -- F  U  N  C  T I  O  N  S -------------------------
 
-  String getStringAfterCharacter(String _completeString, String _char) {
-    return _completeString.substring(
-        _completeString.indexOf(_char) + 1, _completeString.length);
-  }
-
   int getCartLength(
     CustData _custData,
     Cart _cart,
@@ -131,6 +126,44 @@ class ConstantFtns extends BaseViewModel {
   String getEnumValue(String enumvalue) {
     String newenum = enumvalue.toString().split('.').last;
     return newenum;
+  }
+
+  String getStringAfterCharacter(String _completeString, String _char) {
+    return _completeString.substring(
+        _completeString.indexOf(_char) + 1, _completeString.length);
+  }
+
+  String getStringBeforeCharacter(String _completeString, String _char) {
+    return _completeString.substring(0, _completeString.indexOf(_char) - 1);
+  }
+  //* ---------------------------------------- I N G R   U N I T   C O N V E R T E R
+// >>>>>   ½ cup (3.55oz) --- 100g --- 6.67 tsp
+// >>>>> 1 gram = 0.067 tsp  1 tsp = 15 grams
+// >>>>> 1 tsp = 0.0625 cup  1 cup = 16 tsp
+// >>>>> 1 cup = 219 gram (Generalized)  1 gram = 0.0046 cups
+
+  double gramsToTablespoon(double _gramValue) {
+    return _gramValue / 6.67;
+  }
+
+  double tablespoonToGram(double _tableSpoonValue) {
+    return _tableSpoonValue * 6.67;
+  }
+
+  double gramsToCups(double _gramValue) {
+    return (_gramValue * 219) / 100;
+  }
+
+  double cupsToGram(double _cupValue) {
+    return (_cupValue / 219) * 100;
+  }
+
+  double tablespoonToCup(double _tableSpoonValue) {
+    return _tableSpoonValue * 16;
+  }
+
+  double cupsToTablespoon(double _cupsValue) {
+    return _cupsValue / 16;
   }
 
 ////

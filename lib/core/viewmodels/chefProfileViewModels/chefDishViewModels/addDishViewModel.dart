@@ -172,6 +172,7 @@ class AddDishViewModel extends BaseViewModel {
       print("---------> attrID inside AddDishViewModel : " + attrID.toString());
 
       String _uploadedImgURL = await ConstantFtns().uploadFile(dishPic);
+
       List<String> _totalDishNutrientsList =
           getTotalDishNutrients(_foodIngrList);
 
@@ -179,6 +180,20 @@ class AddDishViewModel extends BaseViewModel {
       String _dishFat = _totalDishNutrientsList[1];
       String _dishCarb = _totalDishNutrientsList[2];
       String _dishKcal = _totalDishNutrientsList[3];
+      double _protein = double.parse(
+          ConstantFtns().getStringBeforeCharacter(_dishProtein, " "));
+      double _fat =
+          double.parse(ConstantFtns().getStringBeforeCharacter(_dishFat, " "));
+      double _carb =
+          double.parse(ConstantFtns().getStringBeforeCharacter(_dishCarb, " "));
+      double _kcal =
+          double.parse(ConstantFtns().getStringBeforeCharacter(_dishKcal, " "));
+
+      List<int> _dishIngredientsIDs;
+
+      for (int i = 0; i < _foodIngrList.length; i++) {
+        _dishIngredientsIDs.add(_foodIngrList[i].fdcId);
+      }
 
       await DatabaseService().addNewDishData({
         'dishName': dishName,
@@ -190,11 +205,12 @@ class AddDishViewModel extends BaseViewModel {
         'attrID': attrID,
         'chefName': _chefName,
         'ctgID': ctgID,
-        'dishProtein': _dishProtein,
-        'dishFat': _dishFat,
-        'dishCarb': _dishCarb,
-        'dishKcal': _dishKcal,
+        'dishProtein': _protein,
+        'dishFat': _fat,
+        'dishCarb': _carb,
+        'dishKcal': _kcal,
         'dishIngrIDs': getDishIngrIDs,
+        'dishIngrList': _dishIngredientsIDs,
       });
 
       setState(ViewState.Idle);

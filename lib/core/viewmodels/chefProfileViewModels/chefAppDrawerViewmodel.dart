@@ -16,6 +16,10 @@ class ChefAppDrawerViewModel extends BaseViewModel {
   }
 
   goToProfile() {
-    _navigationService.navigateTo(routes.CustProfileRoute);
+    _navigationService.navigateTo(routes.ChefProfileRoute);
+  }
+
+  goToChefOrdersView() {
+    _navigationService.navigateTo(routes.ChefOrdersView);
   }
 }

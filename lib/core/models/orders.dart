@@ -1,8 +1,6 @@
 class Order {
   String orderID;
-  String custID;
   String custName;
-  String chefID;
   String phoneNo;
   List orderStatus;
   Map<String, dynamic> items;
@@ -10,6 +8,9 @@ class Order {
   dynamic shippedDate;
   Map<String, dynamic> shippingAddress;
   double total;
+  String chefID;
+  String custID;
+  String dishID;
 
   Order({
     this.orderID,
@@ -23,5 +24,6 @@ class Order {
     this.shippingAddress,
     this.total,
     this.chefID,
+    this.dishID,
   });
 }

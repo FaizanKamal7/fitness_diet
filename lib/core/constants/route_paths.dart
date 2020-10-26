@@ -14,3 +14,4 @@ const String ChefReg2Route = 'chefReg_2';
 const String ChefSignRoute = 'chefSignIn';
 const String ChefProfileRoute = 'chefProfile';
 const String SoleDishRoute = 'soleDishView';
+const String ChefOrdersView = 'chefOrdersView';

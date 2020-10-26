@@ -1,5 +1,4 @@
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefAppDrawerViewmodel.dart';
-import 'package:fitness_diet/core/viewmodels/custViewModels/custAppDrawerViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
@@ -59,29 +58,23 @@ class ChefAppDrawer extends StatelessWidget {
                     ],
                   ),
                 ),
-                // decoration: new BoxDecoration(
-                //   image: DecorationImage(
-                //     image: AssetImage("assets/images/navCover4.jpg"),
-                //     fit: BoxFit.cover,
-                //   ),
-                // ),
               ),
 // ---------------------------------------------------- O P T I O N S
               SizedBox(
                 height: deviceSize.height * 0.02,
               ),
-              InkWell(
-                onTap: null,
-                child: NavBarContent(
-                  deviceSize: deviceSize,
-                  passedText: "Home",
-                  passedIcon: Icons.home,
-                ),
-              ),
-              Divider(
-                thickness: 2,
-                color: Colors.black12,
-              ),
+              // InkWell(
+              //   onTap: null,
+              //   child: NavBarContent(
+              //     deviceSize: deviceSize,
+              //     passedText: "Home",
+              //     passedIcon: Icons.home,
+              //   ),
+              // ),
+              // Divider(
+              //   thickness: 2,
+              //   color: Colors.black12,
+              // ),
               InkWell(
                 onTap: () => model.goToProfile(),
                 child: NavBarContent(
@@ -95,10 +88,10 @@ class ChefAppDrawer extends StatelessWidget {
                 color: Colors.black12,
               ),
               InkWell(
-                onTap: null,
+                onTap: () => model.goToChefOrdersView(),
                 child: NavBarContent(
                   deviceSize: deviceSize,
-                  passedText: "Favourites",
+                  passedText: "Orders",
                   passedIcon: Icons.favorite,
                 ),
               ),

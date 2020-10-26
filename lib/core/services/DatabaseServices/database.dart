@@ -260,10 +260,9 @@ class DatabaseService {
         chefID: snapshot.docs[i].data()['chefID'],
         chefName: snapshot.docs[i].data()['chefName'] ?? "",
         chefPhNo: snapshot.docs[i].data()['chefPhNo'] ?? "",
-        chefDateOfBirth:
-            (snapshot.docs[i].data()['chefDateOfBirth'] as Timestamp)
-                    .toDate() ??
-                "",
+        chefDateOfBirth: snapshot.docs[i].data()['chefDateOfBirth'] != null
+            ? (snapshot.docs[i].data()['chefDateOfBirth'] as Timestamp).toDate()
+            : "",
         // //  chefAddDate: (snapshot.docs[i].data()['chefAddDate'] as Timestamp).toDate() ??,
         chefLocation: snapshot.docs[i].data()['chefLocation'] ?? "",
         chefRatings: snapshot.docs[i].data()['chefRatings'] ?? 0,
@@ -870,6 +869,31 @@ class DatabaseService {
       SetOptions(merge: true),
     );
     return newOrderID;
+  }
+
+  // >>>>>>>>>>  Upon updating old order
+  Future updateOrderData(Map<String, dynamic> dataMap, String orderID) async {
+    print(
+        "---------> updateProductData function reached in DatabaseServies class");
+
+    await orderCollection.doc(orderID).set(
+      {
+        'updateDate': DateTime.now(),
+      },
+      SetOptions(merge: true),
+    );
+    //- Dynamically adding data in the db
+    dataMap.forEach(
+      (key, value) async {
+        print("Adding dynamic data - DatabaseService");
+        print("Key: $key ,  Value: $value");
+        await orderCollection.doc(orderID).update(
+          {
+            key: value,
+          },
+        );
+      },
+    );
   }
 
   List<Order> _orderDataFromSnapshot(QuerySnapshot snapshot) {

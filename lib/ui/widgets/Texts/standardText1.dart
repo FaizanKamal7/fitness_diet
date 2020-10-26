@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class StandardText1 extends StatelessWidget {
   String passedDescText;
-  StandardText1({@required this.passedDescText});
+  FontWeight fontWeight;
+  StandardText1({@required this.passedDescText, this.fontWeight});
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -13,6 +14,7 @@ class StandardText1 extends StatelessWidget {
       style: TextStyle(
         fontFamily: fontBahnschrift,
         fontSize: 12,
+        fontWeight: fontWeight != null ? fontWeight : FontWeight.normal,
       ),
     );
   }
