@@ -1041,8 +1041,6 @@ class DatabaseService {
 
   Future updateCustMeals(
       String planID, String mealName, String calories) async {
-    print(
-        '---------------------inside updaet cust exercise funtion indatabase');
     String now = DateTime.now().toString();
     await planCollection.doc(planID).set(
       {
@@ -1052,6 +1050,7 @@ class DatabaseService {
       },
       SetOptions(merge: true),
     );
+    print('---------------------inside updaet cust Meals  funtion indatabase');
   }
 
   // Future updateCustAddress(String custID, String title, String houseno,

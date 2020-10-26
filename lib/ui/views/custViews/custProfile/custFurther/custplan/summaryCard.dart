@@ -1,4 +1,5 @@
 import 'package:fitness_diet/core/models/plan.dart';
+import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:flutter/material.dart';
@@ -51,13 +52,18 @@ class _SummaryCardState extends State<SummaryCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 //
-                // E A T E N --   C A LA O R I E S //
+                // R E M A N I N G --   C A LA O R I E S //
                 //
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _planData.custEatenKcal.toStringAsFixed(0),
+                      _planData.custEatenKcal > _planData.custReqKcal
+                          ? '0'
+                          : ((_planData.custReqKcal - _planData.custEatenKcal) +
+                                  _planData.custburntKcal)
+                              .toStringAsFixed(0),
+                      // _planData.custEatenKcal.toStringAsFixed(0),
                       style: TextStyle(
                         fontFamily: "Montserrat",
                         fontSize: widget.widgetSize.height * 0.040,
@@ -72,7 +78,7 @@ class _SummaryCardState extends State<SummaryCard> {
                       ),
                     ),
                     Text(
-                      "Eaten",
+                      "Remaning",
                       style: TextStyle(
                         fontFamily: "Montserrat",
                         fontSize: widget.widgetSize.height * 0.040,
@@ -90,7 +96,7 @@ class _SummaryCardState extends State<SummaryCard> {
                 ),
                 //
                 //
-                //  R E M A I N I N G -- S L I D E R   //
+                //  E A T E N  -- S L I D E R   //
                 //
 
                 Container(
@@ -98,7 +104,7 @@ class _SummaryCardState extends State<SummaryCard> {
                   width: widget.widgetSize.width * 0.4,
                   height: widget.widgetSize.height * 0.3,
                   child: SleekCircularSlider(
-                    initialValue: _planData.custReqKcal,
+                    initialValue: _planData.custEatenKcal,
                     max: _planData.custReqKcal,
 
                     appearance: CircularSliderAppearance(
@@ -114,7 +120,7 @@ class _SummaryCardState extends State<SummaryCard> {
                                 percentage.ceil().toInt().toString();
                             return '$roundedValue ';
                           },
-                          bottomLabelText: 'Remaining',
+                          bottomLabelText: 'Eaten',
                           bottomLabelStyle: TextStyle(
                               fontFamily: "Montserrat",
                               color: Color(0xffffffff),

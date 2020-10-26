@@ -1,9 +1,13 @@
 import 'package:age/age.dart';
+import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/core/datamodel/alert_response.dart';
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
+import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/exercise.dart';
+import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
@@ -11,6 +15,7 @@ import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class CustPlanViewModel extends BaseViewModel {
   final DialogService _dialogService = locator<DialogService>();
@@ -383,5 +388,187 @@ class CustPlanViewModel extends BaseViewModel {
       });
     }
     return count;
+  }
+
+  Future<List<FoodInfo>> getSearchedIngredientsList(
+      String searchedQuery) async {
+    setState(ViewState.Busy);
+    var client = http.Client();
+    List<FoodInfo> searchedFoodsList;
+    var apiKey = "vAK9vJMtSQdYxcBhYRxZl5cpEkahZEkBhl0iw0ox";
+    var dataType = "Survey (FNDDS)";
+    // var dataType = "Branded";
+
+    int pageSize = 30;
+
+    try {
+      http.Response responce = await client.get(
+          "https://api.nal.usda.gov/fdc/v1/foods/list?api_key=$apiKey&query=$searchedQuery&pageSize=$pageSize&dataType=$dataType");
+      if (responce.statusCode == 200) {
+        String jsonString = responce.body;
+        // printWrapped(jsonString);
+        searchedFoodsList = foodInfoFromJson(jsonString);
+      }
+    } catch (Exception) {
+      print("E X C E P T I O N");
+      print("Exception in APi in apimanager class: " + Exception.toString());
+    }
+    setState(ViewState.Idle);
+    return searchedFoodsList;
+  }
+
+  void addeCustMeals(Plan custPlan, List<FoodInfo> foodinfo) {
+    Map<String, dynamic> planData = {};
+
+    double kcalofOrder = 0;
+    double proteinofOrder = 0;
+    double fatsofOrder = 0;
+    double carbsofOrder = 0;
+    if (foodinfo.length > 0) {
+      for (int i = 0; i < foodinfo.length; i++) {
+        proteinofOrder = proteinofOrder +
+            double.parse(ConstantFtns().getStringAfterCharacter(
+                foodinfo[i].foodNutrients[0].amount.toString(), ' '));
+        fatsofOrder = fatsofOrder +
+            double.parse(ConstantFtns().getStringAfterCharacter(
+                foodinfo[i].foodNutrients[1].amount.toString(), ' '));
+        carbsofOrder = carbsofOrder +
+            double.parse(ConstantFtns().getStringAfterCharacter(
+                foodinfo[i].foodNutrients[2].amount.toString(), ' '));
+        kcalofOrder = kcalofOrder +
+            double.parse(ConstantFtns().getStringAfterCharacter(
+                foodinfo[i].foodNutrients[3].amount.toString(), ' '));
+        DatabaseService().updateCustMeals(
+            custPlan.planID, foodinfo[i].description, kcalofOrder.toString());
+      }
+      print(
+          '------------------- after loop  inside update cust mean in plan view model' +
+              kcalofOrder.toString());
+
+      planData
+          .addAll({"custEatenKcal": (kcalofOrder + custPlan.custEatenKcal)});
+      planData.addAll(
+        {
+          "custEatenProtein": (proteinofOrder + custPlan.custEatenProtein),
+        },
+      );
+      planData.addAll(
+        {
+          "custEatenFats": (fatsofOrder + custPlan.custEatenFats),
+        },
+      );
+      planData.addAll(
+        {
+          "custEatenCarbs": (carbsofOrder + custPlan.custEatenCarbs),
+        },
+      );
+      print(
+          '--------------------------updating plan data inside custplan view model ');
+      DatabaseService().updatePLanData(planData, custPlan.planID);
+    }
+  }
+
+  List<double> calculateEatenNutritients(
+    Map<String, dynamic> items,
+    List<Dish> allDishes,
+  ) {
+    print('----> inside calculateCalories   in orderview model...' +
+        items.length.toString());
+
+    double kcalofOrder = 0;
+    double proteinofOrder = 0;
+    double fatsofOrder = 0;
+    double carbsofOrder = 0;
+
+    // for (int i = 0; i <= 9; i++) {
+    // items.forEach((key, value) {
+    //   if (key == allDishes[i].dishID) {
+    //     kcalofOrder += double.parse(allDishes[i].dishKcal);
+    //   }
+    // });
+
+    // }
+    items.forEach((key, value) {
+      for (int i = 0; i < allDishes.length; i++) {
+        if (key == allDishes[i].dishID) {
+          print('----------------inside for loop ' +
+              allDishes[i].dishCarb.toString());
+          kcalofOrder = kcalofOrder + allDishes[i].dishKcal;
+          proteinofOrder = proteinofOrder + allDishes[i].dishProtein;
+          fatsofOrder = fatsofOrder + allDishes[i].dishFat;
+          carbsofOrder = carbsofOrder + allDishes[i].dishCarb;
+        }
+      }
+    });
+    print('----> inside calculateCalories   in orderview model...' +
+        kcalofOrder.toString());
+
+    List<double> nutritientslist = [
+      kcalofOrder,
+      proteinofOrder,
+      fatsofOrder,
+      carbsofOrder
+    ];
+    return nutritientslist;
+  }
+
+  DateTime calcMaxDate(Plan planData) {
+    DateTime maxDate = DateTime.now();
+    if (planData.custExercise.length > 0) {
+      maxDate = DateTime.parse(planData.custExercise.keys.elementAt(0));
+
+      planData.custExercise.forEach((key, value) {
+        DateTime temp = DateTime.parse(key);
+        if (temp.isAfter(maxDate)) {
+          maxDate = temp;
+        }
+      });
+
+      // dates.forEach((date) {
+      //   if (date.isAfter(maxDate)) {
+      //     maxDate = date;
+      //   }
+      // });
+    } else if (planData.custMeals.length > 0) {
+      maxDate = DateTime.parse(planData.custMeals.keys.elementAt(0));
+
+      planData.custMeals.forEach((key, value) {
+        DateTime temp = DateTime.parse(key);
+        if (temp.isAfter(maxDate)) {
+          maxDate = temp;
+        }
+      });
+    }
+    print('-------------------inside cal max date function in plan view model' +
+        maxDate.toString());
+    return maxDate;
+  }
+
+  void checkNewDay(Plan planData, String planID) {
+    print('-------------------inside checknew day function in plan view model');
+    DateTime maxDate = calcMaxDate(planData);
+    DateTime now = DateTime.now();
+    print(
+        '-------------------inside checknew day function in plan view model max date is :' +
+            maxDate.toString() +
+            " now date is " +
+            now.toString());
+
+    if (DateTime(maxDate.year, maxDate.month, maxDate.day)
+            .difference(DateTime(now.year, now.month, now.day))
+            .inDays <
+        0) {
+      // new day
+      DatabaseService().updatePLanData({
+        'custEatenKcal': 0.0,
+        'custEatenProtein': 0.0,
+        'custEatenFats': 0.0,
+        'custEatenCarbs': 0.0,
+        'custburntKcal': 0.0,
+        'custburntProtein': 0.0,
+        'custBurntFats': 0.0,
+        'custBurntCarbs': 0.0,
+      }, planID);
+    }
   }
 }

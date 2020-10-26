@@ -16,6 +16,7 @@ class CustMeals extends StatefulWidget {
 }
 
 class _CustMealsState extends State<CustMeals> {
+  double totalCaloriesEaten = 0;
   @override
   Widget build(BuildContext context) {
     final _custData = Provider.of<CustData>(context);
@@ -80,6 +81,9 @@ class _CustMealsState extends State<CustMeals> {
                       scrollDirection: Axis.vertical,
                       itemCount: widget.mealsList.length,
                       itemBuilder: (context, index) {
+                        totalCaloriesEaten = totalCaloriesEaten +
+                            double.parse(
+                                widget.mealsList.values.elementAt(index)[1]);
                         return Container(
                           margin: EdgeInsets.only(
                             top: 10.0,
@@ -139,11 +143,58 @@ class _CustMealsState extends State<CustMeals> {
                                   //   ),
                                   // ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         );
                       },
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 10.0,
+                      ),
+                      padding: EdgeInsets.only(left: 10.0),
+                      height: widgetSize.height * 0.15,
+                      width: widgetSize.width,
+                      decoration: BoxDecoration(
+                        color: Color(0xffffffff),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0.00, 3.00),
+                            color: Color(0xff000000).withOpacity(0.16),
+                            blurRadius: 6,
+                          ),
+                        ],
+                        borderRadius:
+                            BorderRadius.circular(widgetSize.height * 0.05),
+                      ),
+                      child: Row(
+                        children: [
+                          // Image.asset(
+                          //   "assets/images/AppIcons/breakfast.png",
+                          //   height: widgetSize.height * 0.20,
+                          //   width: widgetSize.height * 0.20,
+                          // ),
+                          Text(
+                            'Total Calories Eaten : ',
+                            style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontSize: widgetSize.height * 0.045,
+                              color: Color(0xff4d3814),
+                            ),
+                          ),
+                          // Spacer(),
+                          Text(
+                            totalCaloriesEaten.toStringAsFixed(0),
+                            style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontSize: widgetSize.height * 0.045,
+                              color: Color(0xff4d3814),
+                            ),
+                          ),
+                          // Spacer(),
+                        ],
+                      ),
                     ),
                   ],
                 ),

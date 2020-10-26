@@ -6,8 +6,8 @@ import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/addExerciseView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/addMeal.dart';
-import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custMeals.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/cutsExercises.dart';
+import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/mealsSwiper.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/summaryCard.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingwithBGandRoundCorner.dart';
 import 'package:fitness_diet/ui/widgets/standardInfoDisplayWithBullets.dart';
@@ -15,7 +15,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../../../main.dart';
+
 class CustPlan extends StatefulWidget {
+  // DateTime maxDate;
+  // CustPlan({
+  //   @required this.maxDate,
+  // });
   @override
   _CustPlanState createState() => _CustPlanState();
 }
@@ -23,6 +29,43 @@ class CustPlan extends StatefulWidget {
 enum SingingCharacter { male, female }
 
 class _CustPlanState extends State<CustPlan> {
+  String _content = '';
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addObserver(new LifecycleEventHandler(
+        resumeCallBack: () async => _refreshContent()));
+  }
+
+  void _refreshContent() {
+    setState(() {
+      // Here you can change your widget
+      // each time the app resumed.
+      var now = DateTime.now();
+
+      // Today
+      if (new DateTime(now.year, now.month, now.day) ==
+          new DateTime(2019, 8, 4)) {
+        _content = "Happy Birthday :D";
+      }
+      // Tomorrow
+      else if (new DateTime(now.year, now.month, now.day) ==
+          new DateTime(2019, 8, 5)) {
+        _content = "It passed ONE day for your birthday ;)";
+      }
+      // After Tomorrow
+      else if (new DateTime(now.year, now.month, now.day) ==
+          new DateTime(2019, 8, 6)) {
+        _content = "Did your dreams come true ??";
+      }
+      // Unknown date
+      else {
+        _content = "Sorry, this day is not allowed. :(";
+      }
+    });
+  }
+
   Size widgetSize;
   // String _activitylevel;
   // String _activitylevelWORKOUT;
@@ -34,11 +77,13 @@ class _CustPlanState extends State<CustPlan> {
     final deviceSize = MediaQuery.of(context).size;
     final _planData = Provider.of<Plan>(context);
 
-    mealsList = [CustMeals(), CustMeals()];
     String previousdate;
     String previousdateMeals;
 
     return BaseView<CustPlanViewModel>(
+      onModelReady: (model) {
+        model.checkNewDay(_planData, _planData.planID);
+      },
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Stack(
           children: [
@@ -48,6 +93,7 @@ class _CustPlanState extends State<CustPlan> {
                   left: widgetSize.width * 0.04,
                   right: widgetSize.width * 0.04),
               child: ListView(
+                shrinkWrap: true,
                 children: [
                   Row(
                     children: [
@@ -55,7 +101,7 @@ class _CustPlanState extends State<CustPlan> {
                         "Summary:",
                         style: TextStyle(
                           fontFamily: "Montserrat",
-                          fontSize: widgetSize.height * 0.05,
+                          fontSize: widgetSize.height * 0.03,
                           color: Color(0xff4d3814).withOpacity(0.71),
                         ),
                       ),
@@ -101,29 +147,14 @@ class _CustPlanState extends State<CustPlan> {
                             'Height :',
                             _planData.custHeight.toString() + '  inch',
                             deviceSize),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: widgetSize.height * 0.03,
-                  ),
-                  standardHeadingWithBGAndRoundCorner(passedText: 'Goals'),
-                  SizedBox(
-                    height: widgetSize.height * 0.03,
-                  ),
-                  Container(
-                    // margin: EdgeInsets.only(left: widgetSize.width * 0.1),
-                    child: Column(
-                      children: <Widget>[
                         standardInfDisplaywithBullets(
-                            'Weight :',
-                            _planData.custGoalWeight.toString() + 'Kg',
+                            'Goal Weight :',
+                            _planData.custGoalWeight.toString() + '  Kg',
                             deviceSize),
-                        standardInfDisplaywithBullets('Calories :',
-                            _planData.custHeight.toString(), deviceSize),
                       ],
                     ),
                   ),
+
                   SizedBox(
                     height: widgetSize.height * 0.02,
                   ),
@@ -135,46 +166,50 @@ class _CustPlanState extends State<CustPlan> {
                   // /
                   // / M  E  A  L  S -- W   I   D  G  E  T \\
                   // /
+                  // MealsSwiper(planData: _planData),
+                  // Container(
+                  //   color: Colors.red,
+                  //   height: widgetSize.height * 0.9,
+                  //   width: widgetSize.width,
+                  //   child: Swiper(
+                  //     loop: false,
+                  //     // pagination: new SwiperPagination(),
+                  //     itemCount:
+                  //         model.getUnigueDateCount(_planData.custMeals) < 7
+                  //             ? model.getUnigueDateCount(_planData.custMeals)
+                  //             : 7,
+                  //     itemBuilder: (BuildContext context, int index) {
+                  //       // geting list of exercise on the same day
 
-                  Container(
-                    // color: Colors.red,
-                    height: widgetSize.height * 0.9,
-                    width: widgetSize.width,
-                    child: Swiper(
-                      loop: false,
-                      // pagination: new SwiperPagination(),
-                      itemCount:
-                          model.getUnigueDateCount(_planData.custMeals) < 7
-                              ? model.getUnigueDateCount(_planData.custMeals)
-                              : 7,
-                      itemBuilder: (BuildContext context, int index) {
-                        // geting list of exercise on the same day
+                  //       if (previousdateMeals !=
+                  //           model.formateDateForDifference(
+                  //               _planData.custMeals.keys.elementAt(index))) {
+                  //         Map<String, dynamic> newList = model.getExerciseList(
+                  //             _planData.custMeals.keys.elementAt(index),
+                  //             _planData.custMeals);
+                  //         previousdateMeals = model.formateDateForDifference(
+                  //             _planData.custMeals.keys.elementAt(index));
+                  //         print(
+                  //             '---------------------------------new list length in list builder in meals ' +
+                  //                 newList.length.toString());
+                  //         return Container(
+                  //           height: 10.0,
+                  //           color: Colors.yellow,
+                  //         );
+                  //         // CustMeals(mealsList: newList);
+                  //         //
 
-                        if (previousdateMeals !=
-                            model.formateDateForDifference(
-                                _planData.custMeals.keys.elementAt(index))) {
-                          Map<String, dynamic> newList = model.getExerciseList(
-                              _planData.custMeals.keys.elementAt(index),
-                              _planData.custMeals);
-                          previousdateMeals = model.formateDateForDifference(
-                              _planData.custMeals.keys.elementAt(index));
-                          print(
-                              '---------------------------------new list length in list builder in meals ' +
-                                  newList.length.toString());
-                          return CustMeals(mealsList: newList);
-                          //
-
-                        }
-                      },
-                    ),
-                  ),
+                  //       }
+                  //     },
+                  //   ),
+                  // ),
                   FlatButton(
                     onPressed: () {
                       print('add Meal presed :');
                       // _showAddressBottomSheet(context);
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (Context) => AddMealView()),
+                        MaterialPageRoute(builder: (Context) => AddMealsView()),
                       );
                     },
                     child: Align(

@@ -1,3 +1,4 @@
+import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
@@ -81,7 +82,37 @@ class CustProfileViewModel extends BaseViewModel {
   }
 
   goToStartPlan() {
-    print('fuck you control is in there ');
     _navigationService.navigateTo(routes.CustStartPlanRoute);
+  }
+
+  DateTime calcMaxDate(Plan planData) {
+    DateTime maxDate = DateTime.now();
+    if (planData.custExercise.length > 0) {
+      maxDate = DateTime.parse(planData.custExercise.keys.elementAt(0));
+
+      planData.custExercise.forEach((key, value) {
+        DateTime temp = DateTime.parse(key);
+        if (temp.isAfter(maxDate)) {
+          maxDate = temp;
+        }
+      });
+
+      // dates.forEach((date) {
+      //   if (date.isAfter(maxDate)) {
+      //     maxDate = date;
+      //   }
+      // });
+    } else if (planData.custMeals.length > 0) {
+      maxDate = DateTime.parse(planData.custMeals.keys.elementAt(0));
+
+      planData.custMeals.forEach((key, value) {
+        DateTime temp = DateTime.parse(key);
+        if (temp.isAfter(maxDate)) {
+          maxDate = temp;
+        }
+      });
+    }
+    print('---------------max date is :' + maxDate.toString());
+    return maxDate;
   }
 }
