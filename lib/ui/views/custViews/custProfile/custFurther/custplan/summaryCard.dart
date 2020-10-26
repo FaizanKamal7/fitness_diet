@@ -57,7 +57,7 @@ class _SummaryCardState extends State<SummaryCard> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "2,455",
+                      _planData.custEatenKcal.toStringAsFixed(0),
                       style: TextStyle(
                         fontFamily: "Montserrat",
                         fontSize: widget.widgetSize.height * 0.040,
@@ -183,6 +183,7 @@ class _SummaryCardState extends State<SummaryCard> {
                 ///
                 caloriesContainer(
                     'Carbs',
+                    _planData.custEatenCarbs,
                     model.getCarbsVlaue(_planData.custReqKcal).round(),
                     widget.widgetSize),
                 //
@@ -190,6 +191,7 @@ class _SummaryCardState extends State<SummaryCard> {
                 //
                 caloriesContainer(
                     'Protein',
+                    _planData.custEatenProtein,
                     model.getProteinvalue(_planData.custReqKcal).round(),
                     widget.widgetSize),
                 //
@@ -197,6 +199,7 @@ class _SummaryCardState extends State<SummaryCard> {
                 //
                 caloriesContainer(
                     'Fats',
+                    _planData.custEatenFats,
                     model.getFatsValue(_planData.custReqKcal).round(),
                     widget.widgetSize),
               ],
@@ -208,7 +211,9 @@ class _SummaryCardState extends State<SummaryCard> {
   }
 }
 
-Widget caloriesContainer(String heading, int value, Size widgetSize) {
+Widget caloriesContainer(
+    String heading, double eatencal, int value, Size widgetSize) {
+  String eaten = eatencal.toStringAsFixed(0);
   return Container(
     height: widgetSize.height * 0.18,
     width: widgetSize.width * 0.2,
@@ -227,14 +232,14 @@ Widget caloriesContainer(String heading, int value, Size widgetSize) {
           ),
         ),
         LinearProgressIndicator(
-          value: (value * 0.5) / value,
+          value: int.parse(eaten) / value,
           backgroundColor: Color(0xffd6d8ff),
           valueColor: AlwaysStoppedAnimation<Color>(
             Color(0xffffffff),
           ),
         ),
         Text(
-          "123 / $value g",
+          eaten + " / $value g",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: "Montserrat",

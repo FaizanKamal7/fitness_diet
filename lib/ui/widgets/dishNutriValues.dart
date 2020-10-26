@@ -38,7 +38,7 @@ class DishNutriValues extends StatelessWidget {
                 ),
               ),
               Text(
-                "10.2G",
+                passedDish.dishKcal.toStringAsFixed(0),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: fontLemonMilk,
@@ -50,13 +50,19 @@ class DishNutriValues extends StatelessWidget {
           ),
           Spacer(),
           NutriHeadingAndValueSmall(
-              passedHeading: "Fat", passedValue: "1005 G"),
+            passedHeading: "Fat",
+            passedValue: passedDish.dishFat.toStringAsFixed(0),
+          ),
           SizedBox(width: 10),
           NutriHeadingAndValueSmall(
-              passedHeading: "Protein", passedValue: "550 G"),
+            passedHeading: "Protein",
+            passedValue: passedDish.dishProtein.toStringAsFixed(0),
+          ),
           SizedBox(width: 10),
           NutriHeadingAndValueSmall(
-              passedHeading: "Carbs", passedValue: "300 G"),
+            passedHeading: "Carbs",
+            passedValue: passedDish.dishCarb.toStringAsFixed(0),
+          ),
         ],
       ),
     );

@@ -7,22 +7,23 @@ class Plan {
   double custGoalWeight;
 
   double custReqKcal;
-  double custGainKcal;
+  double custEatenKcal;
   double custburntKcal;
 
   double custReqProtein;
-  double custGainedProtein;
+  double custEatenProtein;
   double custburntProtein;
 
   double custReqFats;
-  double custGainedFats;
+  double custEatenFats;
   double custBurntFats;
 
   double custReqCarbs;
-  double custGainedCarbs;
+  double custEatenCarbs;
   double custBurntCarbs;
 
   Map<String, dynamic> custExercise;
+  Map<String, dynamic> custMeals;
 
   Plan({
     this.planID,
@@ -32,17 +33,18 @@ class Plan {
     this.custWeight,
     this.custGoalWeight,
     this.custReqKcal,
-    this.custGainKcal,
+    this.custEatenKcal,
     this.custburntKcal,
     this.custReqProtein,
-    this.custGainedProtein,
+    this.custEatenProtein,
     this.custburntProtein,
     this.custReqFats,
-    this.custGainedFats,
+    this.custEatenFats,
     this.custBurntFats,
     this.custReqCarbs,
-    this.custGainedCarbs,
+    this.custEatenCarbs,
     this.custBurntCarbs,
     this.custExercise,
+    this.custMeals,
   });
 }

@@ -5,6 +5,7 @@ import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fitness_diet/core/models/plan.dart';
 
 class FoodMenuMain extends StatelessWidget {
   @override
@@ -15,6 +16,7 @@ class FoodMenuMain extends StatelessWidget {
     var dishStreamProvider,
         chefDataStreamProvider,
         cartProvider,
+        planStreamProvider,
         custStreamProvider;
     try {
       // - Dish data stream
@@ -26,7 +28,9 @@ class FoodMenuMain extends StatelessWidget {
       custStreamProvider = StreamProvider<CustData>.value(
           value: DatabaseService(uid: _custData != null ? _custData.uid : null)
               .getCustData);
-
+      planStreamProvider = StreamProvider<Plan>.value(
+          value: DatabaseService(uid: _custData != null ? _custData.uid : null)
+              .getPlanData);
       cartProvider = StreamProvider<Cart>.value(
           value: DatabaseService()
               .getCartData(_custData != null ? _custData.uid : null));
@@ -39,6 +43,7 @@ class FoodMenuMain extends StatelessWidget {
         chefDataStreamProvider,
         cartProvider,
         custStreamProvider,
+        planStreamProvider,
       ],
       child: MaterialApp(home: FoodMenuView()),
     );

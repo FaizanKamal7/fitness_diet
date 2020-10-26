@@ -304,11 +304,24 @@ class CustPlanViewModel extends BaseViewModel {
     String duration,
   ) {
     Map<String, dynamic> planData = {};
-    planData.addAll({"custburntKcal": double.parse(calories)});
-    planData
-        .addAll({"custburntProtein": getProteinvalue(double.parse(calories))});
-    planData.addAll({"custBurntFats": getFatsValue(double.parse(calories))});
-    planData.addAll({"custBurntCarbs": getCarbsVlaue(double.parse(calories))});
+    double cal = double.parse(calories);
+    planData.addAll({"custburntKcal": double.parse(cal.toStringAsFixed(2))});
+    planData.addAll(
+      {
+        "custburntProtein":
+            double.parse(getProteinvalue(cal).toStringAsFixed(2)),
+      },
+    );
+    planData.addAll(
+      {
+        "custBurntFats": double.parse(getFatsValue(cal).toStringAsFixed(2)),
+      },
+    );
+    planData.addAll(
+      {
+        "custBurntCarbs": double.parse(getCarbsVlaue(cal).toStringAsFixed(2)),
+      },
+    );
 
     DatabaseService().updatePLanData(planData, planID);
     print('------------ add exercise in plan view model  ');
@@ -321,7 +334,7 @@ class CustPlanViewModel extends BaseViewModel {
 
     // var newFormat = DateFormat("dd-MM-yyyy");
 
-    DateTime newDate = DateTime.parse('2020-10-25 08:03:18.068031');
+    DateTime newDate = DateTime.parse(date);
 // EEE,d,
     var newFormat = DateFormat("EEE,d, ");
     return newFormat.format(newDate);
@@ -350,5 +363,25 @@ class CustPlanViewModel extends BaseViewModel {
       }
     });
     return newList;
+  }
+
+  //geting count of slider
+
+  int getUnigueDateCount(Map<String, dynamic> exerciseList) {
+    int count = 0;
+    if (exerciseList.length != 0) {
+      count = 1;
+
+      String previousdate = exerciseList.keys.elementAt(0);
+
+      exerciseList.forEach((key, value) {
+        if (formateDateForDifference(previousdate) ==
+            formateDateForDifference(key)) {
+        } else {
+          count = count + 1;
+        }
+      });
+    }
+    return count;
   }
 }

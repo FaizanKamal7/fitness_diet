@@ -2,6 +2,7 @@ import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/enums/orderStatus.dart';
 import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
+import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/orderViewModel.dart';
@@ -35,6 +36,7 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
     final _dishData = Provider.of<List<Dish>>(context);
     // final _dishData = Provider.of<List<Product>>(context);
     final _custData = Provider.of<CustData>(context);
+    final _planData = Provider.of<Plan>(context);
 
     double subtotal = ConstantFtns().getTotal(_custData, _cart, _dishData);
     Widget navigateToOrderViewBtn = InkWell(
@@ -192,6 +194,7 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
                                       _dishData,
                                       _total,
                                       _custData.cartID,
+                                      _planData,
                                     );
 
                                     Navigator.pushReplacement(

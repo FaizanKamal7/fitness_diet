@@ -4,7 +4,6 @@ import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
-import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/chefDishesViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/soleDishViewModel.dart';
 import 'package:fitness_diet/locator.dart';
 import 'package:fitness_diet/ui/shared/colors.dart';

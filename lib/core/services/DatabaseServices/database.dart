@@ -501,10 +501,12 @@ class DatabaseService {
     print("DataMap : " + dataMap.toString());
 
     Map<String, List<String>> custExercise = {};
+    Map<String, List<String>> custMeals = {};
     await planCollection.doc(planID).set({
       'planID': planID,
       'custID': uid,
       'custExercise': custExercise,
+      'custMeals': custMeals,
     }, SetOptions(merge: true));
 
     dataMap.forEach(
@@ -529,13 +531,25 @@ class DatabaseService {
       custHeight: snapshot.docs[0].data()['custHeight'] ?? 0.0,
       custWeight: snapshot.docs[0].data()['custWeight'] ?? 0.0,
       custGoalWeight: snapshot.docs[0].data()['custGoalWeight'] ?? 0.0,
+//------------reg nutritients
+
       custReqKcal: snapshot.docs[0].data()['custReqKcl'] ?? 0.0,
       custReqProtein: snapshot.docs[0].data()['custReqProtein'] ?? 0.0,
       custReqFats: snapshot.docs[0].data()['custReqFats'] ?? 0.0,
       custReqCarbs: snapshot.docs[0].data()['custReqCarbs'] ?? 0.0,
+      //
       custExercise: snapshot.docs[0].data()['custExercise'] ?? "",
+      custMeals: snapshot.docs[0].data()['custMeals'] ?? "",
+      //------------burnt nutritients
       custburntKcal: snapshot.docs[0].data()['custburntKcal'] ?? 0.0,
       custburntProtein: snapshot.docs[0].data()['custburntProtein'] ?? 0.0,
+      custBurntFats: snapshot.docs[0].data()['custBurntFats'] ?? 0.0,
+      custBurntCarbs: snapshot.docs[0].data()['custBurntCarbs'] ?? 0.0,
+      //------------eaten nutritients
+      custEatenKcal: snapshot.docs[0].data()['custEatenKcal'] ?? 0.0,
+      custEatenProtein: snapshot.docs[0].data()['custEatenProtein'] ?? 0.0,
+      custEatenFats: snapshot.docs[0].data()['custEatenFats'] ?? 0.0,
+      custEatenCarbs: snapshot.docs[0].data()['custEatenCarbs'] ?? 0.0,
       //  custGender: snapshot.data()['custGender'] ?? "",
       // custHeight: snapshot.data()['custID'] ?? "",
     );
@@ -1010,6 +1024,21 @@ class DatabaseService {
       {
         'custExercise': {
           now: [exerciseName, calories, duration]
+        },
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  Future updateCustMeals(
+      String planID, String mealName, String calories) async {
+    print(
+        '---------------------inside updaet cust exercise funtion indatabase');
+    String now = DateTime.now().toString();
+    await planCollection.doc(planID).set(
+      {
+        'custMeals': {
+          now: [mealName, calories]
         },
       },
       SetOptions(merge: true),

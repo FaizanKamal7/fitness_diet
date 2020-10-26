@@ -5,6 +5,7 @@ import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/addExerciseView.dart';
+import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/addMeal.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custMeals.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/cutsExercises.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/summaryCard.dart';
@@ -12,7 +13,6 @@ import 'package:fitness_diet/ui/widgets/Texts/standardHeadingwithBGandRoundCorne
 import 'package:fitness_diet/ui/widgets/standardInfoDisplayWithBullets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class CustPlan extends StatefulWidget {
@@ -35,6 +35,8 @@ class _CustPlanState extends State<CustPlan> {
     final _planData = Provider.of<Plan>(context);
 
     mealsList = [CustMeals(), CustMeals()];
+    String previousdate;
+    String previousdateMeals;
 
     return BaseView<CustPlanViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
@@ -136,50 +138,92 @@ class _CustPlanState extends State<CustPlan> {
 
                   Container(
                     // color: Colors.red,
-                    height: widgetSize.height * 0.8,
+                    height: widgetSize.height * 0.9,
                     width: widgetSize.width,
                     child: Swiper(
-                      itemCount: 2,
+                      loop: false,
+                      // pagination: new SwiperPagination(),
+                      itemCount:
+                          model.getUnigueDateCount(_planData.custMeals) < 7
+                              ? model.getUnigueDateCount(_planData.custMeals)
+                              : 7,
                       itemBuilder: (BuildContext context, int index) {
-                        return mealsList[index];
+                        // geting list of exercise on the same day
+
+                        if (previousdateMeals !=
+                            model.formateDateForDifference(
+                                _planData.custMeals.keys.elementAt(index))) {
+                          Map<String, dynamic> newList = model.getExerciseList(
+                              _planData.custMeals.keys.elementAt(index),
+                              _planData.custMeals);
+                          previousdateMeals = model.formateDateForDifference(
+                              _planData.custMeals.keys.elementAt(index));
+                          print(
+                              '---------------------------------new list length in list builder in meals ' +
+                                  newList.length.toString());
+                          return CustMeals(mealsList: newList);
+                          //
+
+                        }
                       },
                     ),
                   ),
-
+                  FlatButton(
+                    onPressed: () {
+                      print('add Meal presed :');
+                      // _showAddressBottomSheet(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (Context) => AddMealView()),
+                      );
+                    },
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Add Meal",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 15,
+                            color: Color(0xff3caa43),
+                          ),
+                        )),
+                  ),
                   standardHeadingWithBGAndRoundCorner(passedText: 'Exercise '),
                   SizedBox(
                     height: widgetSize.height * 0.04,
                   ),
 
+                  // --------------------------- > E X E C I S E --W I D G E T
+                  //
                   Container(
                     // color: Colors.red,
                     height: widgetSize.height * 0.9,
                     width: widgetSize.width,
                     child: Swiper(
-                      pagination: new SwiperPagination(),
-                      itemCount: _planData.custExercise.length < 7
-                          ? _planData.custExercise.length
-                          : 7,
+                      loop: false,
+                      // pagination: new SwiperPagination(),
+                      itemCount:
+                          model.getUnigueDateCount(_planData.custExercise) < 7
+                              ? model.getUnigueDateCount(_planData.custExercise)
+                              : 7,
                       itemBuilder: (BuildContext context, int index) {
                         // geting list of exercise on the same day
 
-                        Map<String, dynamic> newList = model.getExerciseList(
-                            _planData.custExercise.keys.elementAt(index),
-                            _planData.custExercise);
-                        print(
-                            '---------------------------------new list length in list builder' +
-                                newList.length.toString());
+                        if (previousdate !=
+                            model.formateDateForDifference(
+                                _planData.custExercise.keys.elementAt(index))) {
+                          Map<String, dynamic> newList = model.getExerciseList(
+                              _planData.custExercise.keys.elementAt(index),
+                              _planData.custExercise);
+                          previousdate = model.formateDateForDifference(
+                              _planData.custExercise.keys.elementAt(index));
+                          print(
+                              '---------------------------------new list length in list builder' +
+                                  newList.length.toString());
+                          return CustExercise(exerciseList: newList);
+                          //
 
-                        //
-                        return CustExercise(exerciseList: newList);
-                        // return CustExercise(
-                        //     exerciseTime:
-                        //         _planData.custExercise.keys.elementAt(index),
-                        //     exerciseName: _planData.custExercise.values
-                        //         .elementAt(index)[0],
-                        //     caloriesBurnt: _planData.custExercise.values
-                        //         .elementAt(index)[1],
-                        //     duration: newList.length.toString());
+                        }
                       },
                     ),
                   ),

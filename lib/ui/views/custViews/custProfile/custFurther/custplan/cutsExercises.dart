@@ -85,7 +85,7 @@ class _CustExerciseState extends State<CustExercise> {
                     SizedBox(
                       height: widgetSize.height * 0.01,
                     ),
-                    //-----------------------  A  D D  B R E A K F A S T ----------------------
+                    //-----------------------  A  D D  E X E R C I S E ----------------------
 
                     ListView.builder(
                       shrinkWrap: true,
