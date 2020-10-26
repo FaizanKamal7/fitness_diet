@@ -1,8 +1,9 @@
 import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/orders.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/chefOrdersViewmodel.dart';
-import 'package:fitness_diet/core/viewmodels/custViewModels/orderViewModel.dart';
 import 'package:fitness_diet/ui/shared/fonts.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
@@ -32,7 +33,6 @@ class _SoleOrderViewState extends State<SoleOrderView> {
     "Order Processed   ",
     "Order Dispatched   ",
     "Order Completed   ",
-    "Order Cancelled   ",
     "Order Failed   ",
   ];
   GlobalKey<SimpleGroupedChipsState<int>> chipKey =
@@ -47,252 +47,203 @@ class _SoleOrderViewState extends State<SoleOrderView> {
       builder: (context, model, child) => model.state == ViewState.Busy
           ? Loading()
           : Scaffold(
-              body: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Stack(
+              appBar: AppBar(
+                title: Text("Order Information"),
+                backgroundColor: Colors.brown,
+              ),
+              body: Container(
+                margin: EdgeInsets.only(top: 10, left: 15, right: 15),
+                child: ListView(
+                  children: [
+                    SizedBox(height: 10),
+
+                    // >>>>>>>>>>>>>>>>>>>>>>>>>>  O R D E R   I N F O
+                    StandardHeading(passedText: "Order Info"),
+                    Divider(thickness: 2),
+                    Row(
                       children: [
-                        // ----------------------------------- B A C K G R O U N D    I M A G E
-                        Container(
-                          margin: EdgeInsets.only(bottom: 50),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(150),
-                              bottomRight: Radius.circular(150),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(2.00, 3.00),
-                                color: Colors.black45,
-                                blurRadius: 5,
-                              ),
-                            ],
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/20190503-delish-pineapple-baked-salmon-horizontal-ehg-450-1557771120.jpg?crop=0.669xw:1.00xh;0.173xw,0&resize=640:*",
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                        StandardText1(
+                          passedDescText: "Order ID: ",
+                          fontWeight: FontWeight.bold,
                         ),
-                        // ----------------------------------- A P P   B A R   I C O N S
-                        Container(
-                          margin: EdgeInsets.only(top: 50, left: 30, right: 30),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: CircularIcon(
-                                  passedIcon: FontAwesomeIcons.chevronLeft,
-                                  passedColor: Colors.black87,
-                                ),
-                              ),
-                              Spacer(),
-                              InkWell(
-                                child: CircularIcon(
-                                  passedIcon: FontAwesomeIcons.shareAlt,
-                                  passedColor: Colors.black87,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              InkWell(
-                                child: CircularIcon(
-                                  passedIcon: FontAwesomeIcons.solidHeart,
-                                  passedColor: Colors.red,
-                                ),
-                              ),
-                            ],
-                          ),
+                        StandardText1(
+                          passedDescText: widget.singleOrder.orderID.toString(),
                         ),
-                        // ----------------------------------- D I S H   H E A D I N G
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            height: 120,
-                            width: deviceSize.width,
-                            margin: EdgeInsets.symmetric(horizontal: 30),
-                            padding:
-                                EdgeInsets.only(left: 25, top: 20, right: 25),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.9),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              boxShadow: [
-                                BoxShadow(
-                                  offset: Offset(2.00, 3.00),
-                                  color: Colors.black45,
-                                  blurRadius: 5,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  widget.singleOrder.orderID.toString(),
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: fontMontserratBold,
-                                  ),
-                                ),
-                                Text(
-                                  "Avalaible for order now",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: fontUniSans,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    FlutterRatingBarIndicator(
-                                      rating: 3.5,
-                                      itemCount: 5,
-                                      itemSize: deviceSize.height * 0.015,
-                                      emptyColor: Colors.brown.withOpacity(0.5),
-                                      fillColor: Colors.brown,
-                                    ),
-                                    Text(
-                                      "(3.5)",
-                                      style: TextStyle(
-                                        fontSize: deviceSize.height * 0.015,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    "Rs " + widget.singleOrder.total.toString(),
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: fontLemonMilk,
-                                      color: Colors.brown,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
                       ],
                     ),
-                  ),
-                  Expanded(
-                    flex: 6,
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 15),
-                      child: ListView(
-                        children: [
-                          SizedBox(height: 10),
-
-                          // >>>>>>>>>>>>>>>>>>>>>>>>>>  O R D E R   I N F O
-                          StandardHeading(passedText: "Order Info"),
-                          Divider(thickness: 2),
-                          Row(
-                            children: [
-                              StandardText1(
-                                passedDescText: "Order time: ",
-                                fontWeight: FontWeight.bold,
-                              ),
-                              StandardText1(
-                                  passedDescText:
-                                      widget.singleOrder.orderDate.toString()),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              StandardText1(
-                                passedDescText: "Address: ",
-                                fontWeight: FontWeight.bold,
-                              ),
-                              StandardText1(
-                                passedDescText: widget.singleOrder
-                                            .shippingAddress.length ==
-                                        0
-                                    ? ' '
-                                    : widget.singleOrder.shippingAddress["home"]
-                                            [0] +
-                                        ", " +
-                                        widget.singleOrder
-                                            .shippingAddress["home"][1] +
-                                        ", " +
-                                        widget.singleOrder
-                                            .shippingAddress["home"][2]
-                                            .toString(),
-                              ),
-                            ],
-                          ),
-
-                          // >>>>>>>>>>>>>>>>>>>>>>>>>>  O R D E R   S T A T U S
-                          StandardHeading(passedText: "Order Status"),
-                          Divider(thickness: 2),
-                          StandardText1(
-                              passedDescText: "Update order status: "),
-                          SimpleGroupedChips<int>(
-                            isMultiple: true,
-                            preSelection: model.getOrderStatusPreSelectedList(
-                                widget.singleOrder),
-                            key: chipKey,
-                            isScrolling: false,
-                            values: _statusListValues,
-                            itemTitle: _statusListText,
-                            backgroundColorItem: Colors.black26,
-                            onItemSelected: (selected) {
-                              print("selected " + selected.toString());
-                              setState(() {
-                                _updatedStatusList = selected;
-                              });
-                              // _updatedStatusList.add(selected);
-
-                              print(
-                                  "---> _updatedStatusList inside checkBox: " +
-                                      _updatedStatusList.toString());
-                            },
-                          ),
-                          _updatedStatusList != null
-                              ? InkWell(
-                                  onTap: () async {
-                                    print("--- _updatedStatusList : " +
-                                        _updatedStatusList.toString());
-                                    bool result = await model.updateOrderStatus(
-                                        _updatedStatusList,
-                                        widget.singleOrder.orderID);
-
-                                    if (result) {
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "Order status updated successfully ",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.CENTER,
-                                          timeInSecForIosWeb: 3,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
+                    Row(
+                      children: [
+                        StandardText1(
+                          passedDescText: "Order time: ",
+                          fontWeight: FontWeight.bold,
+                        ),
+                        StandardText1(
+                            passedDescText:
+                                widget.singleOrder.orderDate.toString()),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        StandardText1(
+                          passedDescText: "Address: ",
+                          fontWeight: FontWeight.bold,
+                        ),
+                        // StandardText1(
+                        //   passedDescText: widget.singleOrder
+                        //               .shippingAddress.length ==
+                        //           0
+                        //       ? ' '
+                        //       : widget.singleOrder.shippingAddress["home"]
+                        //               [0] +
+                        //           ", " +
+                        //           widget.singleOrder
+                        //               .shippingAddress["home"][1] +
+                        //           ", " +
+                        //           widget.singleOrder
+                        //               .shippingAddress["home"][2]
+                        //               .toString(),
+                        // ),
+                      ],
+                    ),
+                    SizedBox(height: 10),
+                    // >>>>>>>>>>>>>>>>>>>>>>>>>>  O R D E R   I N F O
+                    StandardHeading(passedText: "Dishes"),
+                    Divider(thickness: 2),
+                    widget.singleOrder.items != null &&
+                            widget.singleOrder.items.length > 0
+                        ? Flexible(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: widget.singleOrder.items.length,
+                              itemBuilder: (context, index) {
+                                final _singleDishID = widget
+                                    .singleOrder.items.keys
+                                    .elementAt(index);
+                                return StreamBuilder<List<Dish>>(
+                                  stream: DatabaseService()
+                                      .getSingleDish(_singleDishID),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      Dish _singleDishInfo = snapshot.data[0];
+                                      return Container(
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              leading: Image(
+                                                image: NetworkImage(
+                                                  _singleDishInfo.dishPic,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
+                                              title: Text(_singleDishInfo
+                                                  .dishName
+                                                  .toString()),
+                                              subtitle: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      StandardText1(
+                                                        passedDescText:
+                                                            "Dish Price: ",
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      Text(_singleDishInfo
+                                                              .dishPrice
+                                                              .toString() +
+                                                          " Rs"),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      StandardText1(
+                                                        passedDescText:
+                                                            "Dish Kcal: ",
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      Text(_singleDishInfo
+                                                              .dishKcal
+                                                              .toString() +
+                                                          " Kcal"),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                          ],
+                                        ),
+                                      );
                                     } else {
-                                      Fluttertoast.showToast(
-                                          msg: "Order status updation failed ",
-                                          toastLength: Toast.LENGTH_SHORT,
-                                          gravity: ToastGravity.CENTER,
-                                          timeInSecForIosWeb: 3,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
+                                      return Text("No dish info");
                                     }
                                   },
-                                  child: StandardLinkText(
-                                    passedText: "Update status",
-                                  ),
-                                )
-                              : Container(),
-                        ],
-                      ),
+                                );
+                              },
+                            ),
+                          )
+                        : SizedBox(),
+
+                    // >>>>>>>>>>>>>>>>>>>>>>>>>>  O R D E R   S T A T U S
+                    StandardHeading(passedText: "Order Status"),
+                    Divider(thickness: 2),
+                    StandardText1(passedDescText: "Update order status: "),
+                    SimpleGroupedChips<int>(
+                      isMultiple: true,
+                      preSelection: model
+                          .getOrderStatusPreSelectedList(widget.singleOrder),
+                      key: chipKey,
+                      isScrolling: false,
+                      values: _statusListValues,
+                      itemTitle: _statusListText,
+                      backgroundColorItem: Colors.black26,
+                      onItemSelected: (selected) {
+                        print("selected " + selected.toString());
+                        setState(() {
+                          _updatedStatusList = selected;
+                        });
+                        // _updatedStatusList.add(selected);
+
+                        print("---> _updatedStatusList inside checkBox: " +
+                            _updatedStatusList.toString());
+                      },
                     ),
-                  ),
-                ],
+                    _updatedStatusList != null
+                        ? InkWell(
+                            onTap: () async {
+                              print("--- _updatedStatusList : " +
+                                  _updatedStatusList.toString());
+                              bool result = await model.updateOrderStatus(
+                                  _updatedStatusList,
+                                  widget.singleOrder.orderID);
+
+                              if (result) {
+                                Fluttertoast.showToast(
+                                    msg: "Order status updated successfully ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 3,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: "Order status updation failed ",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 3,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              }
+                            },
+                            child: StandardLinkText(
+                              passedText: "Update status",
+                            ),
+                          )
+                        : Container(),
+                  ],
+                ),
               ),
             ),
     );

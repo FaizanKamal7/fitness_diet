@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 class ChefSingleListOrderView extends StatelessWidget {
   Order singleOrder;
   ChefSingleListOrderView({@required this.singleOrder});
+  
   @override
   Widget build(BuildContext context) {
     // final _dishData = Provider.of<List<Dish>>(context);
@@ -27,59 +28,40 @@ class ChefSingleListOrderView extends StatelessWidget {
           Radius.circular(15),
         ),
       ),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(15),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                StandardHeadingNoBgSmall(
+                  passedText: "Order ID : " + singleOrder.orderID.toString(),
                 ),
-              ),
-              height: 110,
-              child: Image(
-                image: NetworkImage(
-                  "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/20190503-delish-pineapple-baked-salmon-horizontal-ehg-450-1557771120.jpg?crop=0.669xw:1.00xh;0.173xw,0&resize=640:*",
+                Text(
+                  "by Customer name here",
+                  style: TextStyle(
+                    fontFamily: fontUniSans,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 6,
-            child: Container(
-              padding: EdgeInsets.all(5),
-              child: Stack(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      StandardHeadingNoBgSmall(passedText: "Order Name here"),
-                      Text(
-                        "by Customer name here",
-                        style: TextStyle(
-                          fontFamily: fontUniSans,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      Row(
-                        children: [
-                          Text("Order time: 12:10am",
-                              style: TextStyle(fontFamily: fontBahnschrift)),
-                          Spacer(),
-                          StandardHeadingSmall(passedText: "Active"),
-                        ],
-                      ),
-                      StandardLinkText(passedText: "Check order detail"),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
+                SizedBox(height: 15),
+                Row(
+                  children: [
+                    Text("Order time: 12:10am",
+                        style: TextStyle(fontFamily: fontBahnschrift)),
+                    Spacer(),
+                    StandardHeadingSmall(
+                      passedText: singleOrder
+                          .orderStatus[singleOrder.orderStatus.length - 1],
+                    ),
+                  ],
+                ),
+                StandardLinkText(passedText: "Check order detail"),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

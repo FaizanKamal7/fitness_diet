@@ -398,6 +398,15 @@ class DatabaseService {
         .map(_dishDataFromSnapshot);
   }
 
+  Stream<List<Dish>> getSingleDish(String dishID) {
+    print("-------> getChefDishData inside DATABASE INVOKED");
+    return dishCollection
+        .where("dishID", isEqualTo: dishID)
+        .get()
+        .asStream()
+        .map(_dishDataFromSnapshot);
+  }
+
   Stream<List<Dish>> get getAllDishData {
     return dishCollection.get().asStream().map(_dishDataFromSnapshot);
   }

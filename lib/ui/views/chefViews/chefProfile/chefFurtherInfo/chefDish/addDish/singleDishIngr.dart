@@ -24,7 +24,7 @@ class _SingleDishIngrState extends State<SingleDishIngr> {
   Widget build(BuildContext context) {
     // ------------------ ADDING UPCOMING FOOD ITEM IN GLOBAL LIST IF NOT ALREADY EXIST
 
-    if (updatedIngrInfo.length != 0) {
+    if (updatedIngrInfo.length != null) {
       int _foodExistingCount = 0;
       for (int i = 0; i < updatedIngrInfo.length; i++) {
         if (widget.singleFood.fdcId == updatedIngrInfo[i].fdcId) {

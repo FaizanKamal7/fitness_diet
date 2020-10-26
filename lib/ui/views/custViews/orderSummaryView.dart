@@ -81,15 +81,6 @@ class OrderSummaryView extends StatelessWidget {
                     : false,
               ),
               OrderSingleStage(
-                primaryText: "Order Confirmed",
-                secondaryText: "Your order has been confirmed",
-                passedIcon: FontAwesomeIcons.handshake,
-                isDone: orderStatus.contains(ConstantFtns()
-                        .getEnumValue(Order_Status.ORDER_CONFIRMED.toString()))
-                    ? true
-                    : false,
-              ),
-              OrderSingleStage(
                 primaryText: "Order Processed",
                 secondaryText: "We are prepearing your order",
                 passedIcon: FontAwesomeIcons.gift,
@@ -114,19 +105,18 @@ class OrderSummaryView extends StatelessWidget {
                 passedIcon: FontAwesomeIcons.thumbsUp,
                 isDone: false,
               ),
+              OrderSingleStage(
+                primaryText: "Order Failed",
+                secondaryText: "Order is not not completed due to some reason",
+                passedIcon: FontAwesomeIcons.thumbsUp,
+                isDone: false,
+              ),
             ],
             indicators: <Widget>[
               Icon(
                 FontAwesomeIcons.checkCircle,
                 color: orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_PLACED.toString()))
-                    ? Colors.blueAccent
-                    : Colors.redAccent.withOpacity(0.4),
-              ),
-              Icon(
-                FontAwesomeIcons.checkCircle,
-                color: orderStatus.contains(ConstantFtns()
-                        .getEnumValue(Order_Status.ORDER_CONFIRMED.toString()))
                     ? Colors.blueAccent
                     : Colors.redAccent.withOpacity(0.4),
               ),
@@ -148,6 +138,13 @@ class OrderSummaryView extends StatelessWidget {
                 FontAwesomeIcons.checkCircle,
                 color: orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_COMPLETED.toString()))
+                    ? Colors.blueAccent
+                    : Colors.redAccent.withOpacity(0.4),
+              ),
+              Icon(
+                FontAwesomeIcons.cross,
+                color: orderStatus.contains(ConstantFtns()
+                        .getEnumValue(Order_Status.ORDER_FAILED.toString()))
                     ? Colors.blueAccent
                     : Colors.redAccent.withOpacity(0.4),
               ),
