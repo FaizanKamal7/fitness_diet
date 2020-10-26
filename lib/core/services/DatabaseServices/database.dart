@@ -368,12 +368,16 @@ class DatabaseService {
         dishPic: snapshot.docs[i].data()['dishPic'] ?? "",
         dishAval: snapshot.docs[i].data()['dishAval'] ?? false,
         dishPrepTime: snapshot.docs[i].data()['dishPrepTime'] ?? 0,
-        //  dishAddDate: snapshot.docs[i].data()['dishAddDate'],
-        //  dishUpdateDate: snapshot.docs[i].data()['dishUpdateDate'],
+        dishAddDate: snapshot.docs[i].data()['dishAddDate'] ?? "",
+        dishUpdateDate: snapshot.docs[i].data()['dishUpdateDate'] ?? "",
         chefID: snapshot.docs[i].data()['chefID'] ?? "",
         attrID: snapshot.docs[i].data()['attrID'] ?? "",
         chefName: snapshot.docs[i].data()['chefName'] ?? "",
         ctgID: snapshot.docs[i].data()['ctgID'] ?? "",
+        dishCarb: snapshot.docs[i].data()['dishCarb'] ?? 0.0,
+        dishProtein: snapshot.docs[i].data()['dishProtein'] ?? 0.0,
+        dishFat: snapshot.docs[i].data()['dishFat'] ?? 0.0,
+        dishKcal: snapshot.docs[i].data()['dishKcal'] ?? 0.0,
       ));
       // print("ALL THE DISHES: " + chefDishes.elementAt(i).dishName.toString());
     }

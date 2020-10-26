@@ -180,6 +180,7 @@ class AddDishViewModel extends BaseViewModel {
       double _dishFat = _totalDishNutrientsList[1];
       double _dishCarb = _totalDishNutrientsList[2];
       double _dishKcal = _totalDishNutrientsList[3];
+      print("---------------" + _dishProtein.toString());
       // double _protein = double.parse(
       //     ConstantFtns().getStringBeforeCharacter(_dishProtein, " "));
       // double _fat =
@@ -210,7 +211,7 @@ class AddDishViewModel extends BaseViewModel {
         'dishCarb': _dishCarb,
         'dishKcal': _dishKcal,
         'dishIngrIDs': getDishIngrIDs,
-        'dishIngrList': _dishIngredientsIDs,
+        // 'dishIngrList': _dishIngredientsIDs,
       });
 
       setState(ViewState.Idle);
@@ -229,10 +230,13 @@ class AddDishViewModel extends BaseViewModel {
     // List<String> _nutrientData = [];
     List<double> _nutrientData = [];
     for (int i = 0; i < _foodIngrList.length; i++) {
-      _totalProtein += _foodIngrList[i].foodNutrients[0].amount;
-      _totalFats += _foodIngrList[i].foodNutrients[1].amount;
-      _totalCarbs += _foodIngrList[i].foodNutrients[2].amount;
-      _totalKcal += _foodIngrList[i].foodNutrients[3].amount;
+      _totalProtein = _totalProtein + _foodIngrList[i].foodNutrients[0].amount;
+      _totalFats = _totalFats + _foodIngrList[i].foodNutrients[1].amount;
+      _totalCarbs = _totalCarbs + _foodIngrList[i].foodNutrients[2].amount;
+      _totalKcal = _totalKcal + _foodIngrList[i].foodNutrients[3].amount;
+      print("Total protein: " + _totalProtein.toString());
+      print("Total _totalFats: " + _totalFats.toString());
+      print("Total _totalKcal: " + _totalKcal.toString());
     }
     _nutrientData.add(_totalProtein);
     _nutrientData.add(_totalFats);

@@ -12,8 +12,8 @@ class Dish {
   double dishProtein;
   double dishKcal;
   double dishFat;
-  Timestamp dishAddDate;
-  Timestamp dishUpdateDate;
+  var dishAddDate;
+  var dishUpdateDate;
   String chefName; // Jugar
   String chefID; // - Foreign Key
   String attrID; // - Foreign Key
