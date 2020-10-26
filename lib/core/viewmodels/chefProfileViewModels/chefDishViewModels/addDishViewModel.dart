@@ -173,27 +173,27 @@ class AddDishViewModel extends BaseViewModel {
 
       String _uploadedImgURL = await ConstantFtns().uploadFile(dishPic);
 
-      List<String> _totalDishNutrientsList =
+      List<double> _totalDishNutrientsList =
           getTotalDishNutrients(_foodIngrList);
 
-      String _dishProtein = _totalDishNutrientsList[0];
-      String _dishFat = _totalDishNutrientsList[1];
-      String _dishCarb = _totalDishNutrientsList[2];
-      String _dishKcal = _totalDishNutrientsList[3];
-      double _protein = double.parse(
-          ConstantFtns().getStringBeforeCharacter(_dishProtein, " "));
-      double _fat =
-          double.parse(ConstantFtns().getStringBeforeCharacter(_dishFat, " "));
-      double _carb =
-          double.parse(ConstantFtns().getStringBeforeCharacter(_dishCarb, " "));
-      double _kcal =
-          double.parse(ConstantFtns().getStringBeforeCharacter(_dishKcal, " "));
+      double _dishProtein = _totalDishNutrientsList[0];
+      double _dishFat = _totalDishNutrientsList[1];
+      double _dishCarb = _totalDishNutrientsList[2];
+      double _dishKcal = _totalDishNutrientsList[3];
+      // double _protein = double.parse(
+      //     ConstantFtns().getStringBeforeCharacter(_dishProtein, " "));
+      // double _fat =
+      //     double.parse(ConstantFtns().getStringBeforeCharacter(_dishFat, " "));
+      // double _carb =
+      //     double.parse(ConstantFtns().getStringBeforeCharacter(_dishCarb, " "));
+      // double _kcal =
+      //     double.parse(ConstantFtns().getStringBeforeCharacter(_dishKcal, " "));
 
-      List<int> _dishIngredientsIDs;
+      // List<int> _dishIngredientsIDs;
 
-      for (int i = 0; i < _foodIngrList.length; i++) {
-        _dishIngredientsIDs.add(_foodIngrList[i].fdcId);
-      }
+      // for (int i = 0; i < _foodIngrList.length; i++) {
+      //   _dishIngredientsIDs.add(_foodIngrList[i].fdcId);
+      // }
 
       await DatabaseService().addNewDishData({
         'dishName': dishName,
@@ -205,10 +205,10 @@ class AddDishViewModel extends BaseViewModel {
         'attrID': attrID,
         'chefName': _chefName,
         'ctgID': ctgID,
-        'dishProtein': _protein,
-        'dishFat': _fat,
-        'dishCarb': _carb,
-        'dishKcal': _kcal,
+        'dishProtein': _dishProtein,
+        'dishFat': _dishFat,
+        'dishCarb': _dishCarb,
+        'dishKcal': _dishKcal,
         'dishIngrIDs': getDishIngrIDs,
         'dishIngrList': _dishIngredientsIDs,
       });
@@ -221,22 +221,27 @@ class AddDishViewModel extends BaseViewModel {
     }
   }
 
-  List<String> getTotalDishNutrients(List<FoodInfo> _foodIngrList) {
+  List<double> getTotalDishNutrients(List<FoodInfo> _foodIngrList) {
     double _totalKcal = 0;
     double _totalFats = 0;
     double _totalCarbs = 0;
     double _totalProtein = 0;
-    List<String> _nutrientData = [];
+    // List<String> _nutrientData = [];
+    List<double> _nutrientData = [];
     for (int i = 0; i < _foodIngrList.length; i++) {
       _totalProtein += _foodIngrList[i].foodNutrients[0].amount;
       _totalFats += _foodIngrList[i].foodNutrients[1].amount;
       _totalCarbs += _foodIngrList[i].foodNutrients[2].amount;
       _totalKcal += _foodIngrList[i].foodNutrients[3].amount;
     }
-    _nutrientData.add(_totalProtein.toString() + " G");
-    _nutrientData.add(_totalFats.toString() + " G");
-    _nutrientData.add(_totalCarbs.toString() + " G");
-    _nutrientData.add(_totalKcal.toString() + " Kcal");
+    _nutrientData.add(_totalProtein);
+    _nutrientData.add(_totalFats);
+    _nutrientData.add(_totalCarbs);
+    _nutrientData.add(_totalKcal);
+    // _nutrientData.add(_totalProtein.toString() + " G");
+    // _nutrientData.add(_totalFats.toString() + " G");
+    // _nutrientData.add(_totalCarbs.toString() + " G");
+    // _nutrientData.add(_totalKcal.toString() + " Kcal");
     return _nutrientData;
   }
 
