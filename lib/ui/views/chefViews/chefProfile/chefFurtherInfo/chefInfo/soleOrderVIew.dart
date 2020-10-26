@@ -116,20 +116,68 @@ class _SoleOrderViewState extends State<SoleOrderView> {
                               shrinkWrap: true,
                               itemCount: widget.singleOrder.items.length,
                               itemBuilder: (context, index) {
-                                final _singleDish = widget
+                                final _singleDishID = widget
                                     .singleOrder.items.keys
                                     .elementAt(index);
                                 return StreamBuilder<List<Dish>>(
                                   stream: DatabaseService()
-                                      .getSingleDish(_singleDish),
+                                      .getSingleDish(_singleDishID),
                                   builder: (context, snapshot) {
-                                    return Container(
-                                      child: Column(
-                                        children: [
-                                          Text(_singleDish.toString()),
-                                        ],
-                                      ),
-                                    );
+                                    if (snapshot.hasData) {
+                                      Dish _singleDishInfo = snapshot.data[0];
+                                      return Container(
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              leading: Image(
+                                                image: NetworkImage(
+                                                  _singleDishInfo.dishPic,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
+                                              title: Text(_singleDishInfo
+                                                  .dishName
+                                                  .toString()),
+                                              subtitle: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      StandardText1(
+                                                        passedDescText:
+                                                            "Dish Price: ",
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      Text(_singleDishInfo
+                                                              .dishPrice
+                                                              .toString() +
+                                                          " Rs"),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      StandardText1(
+                                                        passedDescText:
+                                                            "Dish Kcal: ",
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                      Text(_singleDishInfo
+                                                              .dishKcal
+                                                              .toString() +
+                                                          " Kcal"),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      return Text("No dish info");
+                                    }
                                   },
                                 );
                               },
