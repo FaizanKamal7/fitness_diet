@@ -40,7 +40,7 @@ class _CustExerciseState extends State<CustExercise> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      height: widgetSize.height * 0.1,
+                      height: 40,
                       width: widgetSize.width,
                       decoration: BoxDecoration(
                         color: Color(0xffffffff),
@@ -71,7 +71,7 @@ class _CustExerciseState extends State<CustExercise> {
                                 widget.exerciseList.keys.elementAt(0)),
                             style: TextStyle(
                               fontFamily: "Montserrat",
-                              fontSize: widgetSize.height * 0.05,
+                              fontSize: 20,
                               color: Color(0xff4d3814).withOpacity(0.71),
                             ),
                           ),
@@ -97,7 +97,7 @@ class _CustExerciseState extends State<CustExercise> {
                             top: 10.0,
                           ),
                           padding: EdgeInsets.only(left: 10.0),
-                          height: widgetSize.height * 0.15,
+                          height: 60,
                           width: widgetSize.width,
                           decoration: BoxDecoration(
                             color: Color(0xffffffff),
@@ -111,56 +111,91 @@ class _CustExerciseState extends State<CustExercise> {
                             borderRadius:
                                 BorderRadius.circular(widgetSize.height * 0.05),
                           ),
-                          child: Row(
-                            children: [
-                              // Image.asset(
-                              //   "assets/images/AppIcons/breakfast.png",
-                              //   height: widgetSize.height * 0.20,
-                              //   width: widgetSize.height * 0.20,
-                              // ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.exerciseList.values
-                                        .elementAt(index)[0],
-                                    style: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: widgetSize.height * 0.045,
-                                      color: Color(0xff4d3814),
-                                    ),
+                          child: Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.exerciseList.values
+                                      .elementAt(index)[0],
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 14,
+                                    color: Color(0xff4d3814),
                                   ),
-                                  Text(
-                                    "Calories burnet :" +
-                                        widget.exerciseList.values
-                                            .elementAt(index)[1],
-                                    style: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: widgetSize.height * 0.035,
-                                      color:
-                                          Color(0xff4d3814).withOpacity(0.38),
-                                    ),
+                                ),
+                                Text(
+                                  "Calories burnet :" +
+                                      widget.exerciseList.values
+                                          .elementAt(index)[1],
+                                  style: TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 14,
+                                    color: Color(0xff4d3814).withOpacity(0.38),
                                   ),
-                                  Text(
-                                    'Duration :' +
-                                        widget.exerciseList.values
-                                            .elementAt(index)[2],
-                                    style: TextStyle(
-                                      fontFamily: "Montserrat",
-                                      fontSize: widgetSize.height * 0.035,
-                                      color:
-                                          Color(0xff4d3814).withOpacity(0.38),
-                                    ),
+                                ),
+                                Text(
+                                  'Duration :' +
+                                      widget.exerciseList.values
+                                          .elementAt(index)[2],
+                                  style: TextStyle(
+                                    fontFamily: "Montserrat",
+                                    fontSize: 14,
+                                    color: Color(0xff4d3814).withOpacity(0.38),
                                   ),
-                                ],
-                              )
-                            ],
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
                     ),
-
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 10.0,
+                      ),
+                      padding: EdgeInsets.only(left: 10.0),
+                      height: 55,
+                      width: widgetSize.width,
+                      decoration: BoxDecoration(
+                        color: Color(0xffffffff),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0.00, 3.00),
+                            color: Color(0xff000000).withOpacity(0.16),
+                            blurRadius: 6,
+                          ),
+                        ],
+                        borderRadius:
+                            BorderRadius.circular(widgetSize.height * 0.05),
+                      ),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Total Calories Eaten : ',
+                            style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontSize: 12,
+                              color: Color(0xff4d3814),
+                            ),
+                          ),
+                          // Spacer(),
+                          Text(
+                            model
+                                .calculateTotalDaily(widget.exerciseList)
+                                .toStringAsFixed(0),
+                            style: TextStyle(
+                              fontFamily: "Montserrat",
+                              fontSize: 13,
+                              color: Color(0xff4d3814),
+                            ),
+                          ),
+                          // Spacer(),
+                        ],
+                      ),
+                    ),
                     // SizedBox(
                     //   height: widgetSize.height * 0.01,
                     // ),

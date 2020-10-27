@@ -14,9 +14,6 @@ import 'package:fitness_diet/ui/widgets/standardInfoDisplayWithBullets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_snap_list/scroll_snap_list.dart';
-
-import '../../../../../../main.dart';
 
 class CustPlan extends StatefulWidget {
   @override
@@ -26,14 +23,10 @@ class CustPlan extends StatefulWidget {
 enum SingingCharacter { male, female }
 
 class _CustPlanState extends State<CustPlan> {
-  // String _content = '';
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   // WidgetsBinding.instance.addObserver(new LifecycleEventHandler(
-  //   //     resumeCallBack: () async => _refreshContent()));
-  // }
+  @override
+  void initState() {
+    super.initState();
+  }
 
   Size widgetSize;
   // String _activitylevel;
@@ -134,117 +127,37 @@ class _CustPlanState extends State<CustPlan> {
                   // /
                   // / M  E  A  L  S -- W   I   D  G  E  T \\
                   // /
-                  // MealsSwiper(planData: _planData),
-                  // Container(
-                  //   height: deviceSize.height * 0.4,
-                  //   child: ScrollSnapList(
-                  //     onItemFocus: _onItemFocus,
-                  //     itemSize: 35,
-                  //     itemCount:
-                  //         model.getUnigueDateCount(_planData.custMeals) < 7
-                  //             ? model.getUnigueDateCount(_planData.custMeals)
-                  //             : 7,
-                  //     reverse: false,
-                  //     // ignore: missing_return
-                  //     itemBuilder: (BuildContext context, int index) {
-                  //       // geting list of exercise on the same day
-
-                  //       if (previousdateMeals !=
-                  //           model.formateDateForDifference(
-                  //               _planData.custMeals.keys.elementAt(index))) {
-                  //         Map<String, dynamic> newList = model.getExerciseList(
-                  //             _planData.custMeals.keys.elementAt(index),
-                  //             _planData.custMeals);
-                  //         previousdateMeals = model.formateDateForDifference(
-                  //             _planData.custMeals.keys.elementAt(index));
-                  //         print(
-                  //             '---------------------------------new list length in list builder in meals ' +
-                  //                 newList.length.toString());
-                  //         return CustMeals(mealsList: newList);
-                  //         //
-                  //         //
-
-                  //       }
-                  //     },
-                  //   ),
-                  // ),
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   scrollDirection: Axis.horizontal,
-                  //   itemCount: model.getUnigueDateCount(_planData.custMeals) < 7
-                  //       ? model.getUnigueDateCount(_planData.custMeals)
-                  //       : 7,
-                  //   // ignore: missing_return
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     // geting list of exercise on the same day
-
-                  //     if (previousdateMeals !=
-                  //         model.formateDateForDifference(
-                  //             _planData.custMeals.keys.elementAt(index))) {
-                  //       Map<String, dynamic> newList = model.getExerciseList(
-                  //           _planData.custMeals.keys.elementAt(index),
-                  //           _planData.custMeals);
-                  //       previousdateMeals = model.formateDateForDifference(
-                  //           _planData.custMeals.keys.elementAt(index));
-                  //       print(
-                  //           '---------------------------------new list length in list builder in meals ' +
-                  //               newList.length.toString());
-                  //       return Container(
-                  //         color: Colors.amber,
-                  //         height: 100,
-                  //         // child: CustMeals(mealsList: newList),
-                  //       child: Text("sfafs"),
-                  //       );
-                  //       //
-                  //       //
-
-                  //     }
-                  //   },
-                  // ),
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   scrollDirection: Axis.horizontal,
-                  //   itemCount: 5,
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     return Container(
-                  //       color: Colors.amber,
-                  //       height: 100,
-                  //       child: Text("sfafs"),
-                  //     );
-                  //     //
-                  //     //
-                  //   },
-                  // ),
 
                   Container(
-                    height: deviceSize.height * 0.3,
+                    // color: Colors.red,
+                    height: deviceSize.height * 0.4,
+                    width: widgetSize.width,
                     child: Swiper(
                       loop: false,
                       // pagination: new SwiperPagination(),
                       itemCount:
-                  model.getUnigueDateCount(_planData.custMeals) < 7
-                      ? model.getUnigueDateCount(_planData.custMeals)
-                      : 7,
-                  itemBuilder: (BuildContext context, int index) {
-                    // geting list of exercise on the same day
+                          model.getUnigueDateCount(_planData.custMeals) < 7
+                              ? model.getUnigueDateCount(_planData.custMeals)
+                              : 7,
+                      itemBuilder: (BuildContext context, int index) {
+                        // geting list of exercise on the same day
 
-                    if (previousdateMeals !=
-                        model.formateDateForDifference(
-                            _planData.custMeals.keys.elementAt(index))) {
-                      Map<String, dynamic> newList = model.getExerciseList(
-                          _planData.custMeals.keys.elementAt(index),
-                          _planData.custMeals);
-                      previousdateMeals = model.formateDateForDifference(
-                          _planData.custMeals.keys.elementAt(index));
-                      print(
-                          '---------------------------------new list length in list builder in meals ' +
-                              newList.length.toString());
-                      return CustMeals(mealsList: newList);
-                      //
-                      //
+                        if (previousdateMeals !=
+                            model.formateDateForDifference(
+                                _planData.custMeals.keys.elementAt(index))) {
+                          Map<String, dynamic> newList = model.getExerciseList(
+                              _planData.custMeals.keys.elementAt(index),
+                              _planData.custMeals);
+                          previousdateMeals = model.formateDateForDifference(
+                              _planData.custMeals.keys.elementAt(index));
+                          print(
+                              '---------------------------------new list length in list builder in meals ' +
+                                  newList.length.toString());
+                          return CustMeals(mealsList: newList);
+                          //
 
-                    }
-                  },
+                        }
+                      },
                     ),
                   ),
 
@@ -277,7 +190,7 @@ class _CustPlanState extends State<CustPlan> {
                   //
                   Container(
                     // color: Colors.red,
-                    height: widgetSize.height * 0.9,
+                    height: deviceSize.height * 0.4,
                     width: widgetSize.width,
                     child: Swiper(
                       loop: false,

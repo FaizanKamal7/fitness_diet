@@ -252,8 +252,7 @@ class _AddMealsViewState extends State<AddMealsView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // >>>>>>>>>>>>>>>>>>>>>>>>> H E A D I N G
-                    StandardHeadingNoBgUniSans(
-                        passedText: "Search Ingredients: "),
+                    StandardHeadingNoBgUniSans(passedText: "Search Food: "),
 
                     // >>>>>>>>>>>>>>>>>>>>>>>>> T E X T F E I L D
                     Row(

@@ -5,7 +5,6 @@ import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/cartViewModel.dart';
-import 'package:fitness_diet/ui/shared/constants.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/ReceiptContainer.dart';
@@ -36,7 +35,7 @@ class CartView extends StatelessWidget {
             iconTheme: IconThemeData(
               color: Colors.black,
             ),
-            backgroundColor: Colors.green,
+            backgroundColor: Color(0xffe4d7cb),
             title: Row(
               children: [
                 StandardGradientAppBarText(passedText: "Cart"),

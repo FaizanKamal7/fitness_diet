@@ -164,17 +164,17 @@ class _OrderViewState extends State<OrderView> {
                           ),
                         ),
 
-                        SizedBox(height: 10),
-                        Text(
-                          "Edit existing",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: fontUniSans,
-                            fontSize: 12,
-                            color: Color(0xff0e8fff),
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
+                        // SizedBox(height: 10),
+                        // Text(
+                        //   "Edit existing",
+                        //   textAlign: TextAlign.center,
+                        //   style: TextStyle(
+                        //     fontFamily: fontUniSans,
+                        //     fontSize: 12,
+                        //     color: Color(0xff0e8fff),
+                        //     decoration: TextDecoration.underline,
+                        //   ),
+                        // ),
                         SizedBox(height: 5),
                         InkWell(
                           onTap: () {

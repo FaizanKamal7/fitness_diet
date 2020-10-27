@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../baseView.dart';
 
+// ignore: must_be_immutable
 class AddExerciseSolo extends StatefulWidget {
   Exercise selectedExercise;
   AddExerciseSolo({
@@ -133,7 +134,7 @@ class _AddExerciseSoloState extends State<AddExerciseSolo> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AddExerciseView(),
+                            builder: (context) => CustProfileMain(),
                           ),
                         );
                       },

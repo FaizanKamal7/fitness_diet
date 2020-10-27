@@ -1,9 +1,18 @@
+import 'package:badges/badges.dart';
+import 'package:fitness_diet/core/constants/ConstantFtns.dart';
+import 'package:fitness_diet/core/models/cart.dart';
+import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
+import 'package:fitness_diet/ui/views/custViews/cartView.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/iconBtn.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 class LocationHeader extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
+    final _cart = Provider.of<Cart>(context);
+    final _custData = Provider.of<CustData>(context);
     return ResponsiveSafeArea(
       builder: (context, widgetSize) => Container(
         color: Colors.white,
@@ -35,15 +44,15 @@ class LocationHeader extends StatelessWidget {
                     onTap: null,
                     child: Row(
                       children: <Widget>[
-                       Icon(
+                        Icon(
                           Icons.location_on,
                           size: widgetSize.height * 0.015,
                           color: Colors.black54,
-                        ), Text(
+                        ),
+                        Text(
                           "Current location",
                           style: TextStyle(fontSize: widgetSize.height * 0.014),
                         ),
-                        
                       ],
                     ),
                   ),
@@ -55,21 +64,26 @@ class LocationHeader extends StatelessWidget {
             // >>>>>>>>> Notification
             //
 
-            InkResponse(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => null,
-                ),
+            Badge(
+              position: BadgePosition.topEnd(top: -6, end: 40),
+              badgeColor: Colors.green,
+              shape: BadgeShape.circle,
+              badgeContent: Text(
+                ConstantFtns().getCartLength(_custData, _cart).toString(),
+                style: TextStyle(color: Colors.white, fontSize: 8.5),
               ),
-              child: Container(
-                margin: EdgeInsets.only(
-                    right: widgetSize.width * 0.1,
-                    top: widgetSize.height * 0.009),
-                child: Icon(
-                  Icons.notifications,
-                  color: Colors.black54,
-                  size: widgetSize.width * 0.05,
+              child: InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CartView(),
+                  ),
+                ),
+                child: Container(
+                  margin: EdgeInsets.only(right: 40.0),
+                  child: IconBtn(
+                    passedIcon: Icons.shopping_cart,
+                  ),
                 ),
               ),
             ),

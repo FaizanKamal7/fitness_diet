@@ -24,26 +24,6 @@ import 'package:provider/provider.dart';
 //     ),
 //   );
 // }
-// class LifecycleEventHandler extends WidgetsBindingObserver {
-//   final AsyncCallback resumeCallBack;
-
-//   LifecycleEventHandler({this.resumeCallBack});
-
-//   @override
-//   Future<Null> didChangeAppLifecycleState(AppLifecycleState state) async {
-//     switch (state) {
-//       case AppLifecycleState.inactive:
-//       case AppLifecycleState.paused:
-//       // case AppLifecycleState.suspending:
-//       case AppLifecycleState.resumed:
-//         await resumeCallBack();
-//         break;
-//       case AppLifecycleState.detached:
-//         // TODO: Handle this case.
-//         break;
-//     }
-//   }
-// }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

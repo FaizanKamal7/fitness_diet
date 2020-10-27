@@ -1,8 +1,6 @@
-import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../baseView.dart';
 
@@ -17,14 +15,12 @@ class CustMeals extends StatefulWidget {
 }
 
 class _CustMealsState extends State<CustMeals> {
-  double totalCaloriesEaten = 0;
   @override
   Widget build(BuildContext context) {
-    final _custData = Provider.of<CustData>(context);
     return BaseView<CustPlanViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Container(
-          height: widgetSize.height * 0.2,
+          // height: widgetSize.height * 0.2,
           width: widgetSize.width,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,8 +70,6 @@ class _CustMealsState extends State<CustMeals> {
                 scrollDirection: Axis.vertical,
                 itemCount: widget.mealsList.length,
                 itemBuilder: (context, index) {
-                  totalCaloriesEaten = totalCaloriesEaten +
-                      double.parse(widget.mealsList.values.elementAt(index)[1]);
                   return Container(
                     margin: EdgeInsets.only(
                       top: 10.0,
@@ -108,8 +102,7 @@ class _CustMealsState extends State<CustMeals> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                // widget.mealsList.values.elementAt(index)[0],
-                                "saffffffffffffffffffff asdffffff asfd dsfssssssssssddddddddddddddd ",
+                                widget.mealsList.values.elementAt(index)[0],
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontFamily: "Montserrat",
@@ -164,7 +157,9 @@ class _CustMealsState extends State<CustMeals> {
                     ),
                     // Spacer(),
                     Text(
-                      totalCaloriesEaten.toStringAsFixed(0),
+                      model
+                          .calculateTotalDaily(widget.mealsList)
+                          .toStringAsFixed(0),
                       style: TextStyle(
                         fontFamily: "Montserrat",
                         fontSize: 13,

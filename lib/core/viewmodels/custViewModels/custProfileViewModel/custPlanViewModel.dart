@@ -128,7 +128,7 @@ class CustPlanViewModel extends BaseViewModel {
 //**************************************** U  P  L   O  A  D --   D  A  T  A */
   Future uploadData(String gender, double height, double weight,
       double goalWeight, double reqkcal, List<double> regMacroNutrients) async {
-    String userID = await getUser;
+    String userID = getUser;
 
     print('inside plan data upload function ****************************');
     setState(ViewState.Busy);
@@ -570,5 +570,16 @@ class CustPlanViewModel extends BaseViewModel {
         'custBurntCarbs': 0.0,
       }, planID);
     }
+  }
+
+  double calculateTotalDaily(Map<String, dynamic> list) {
+    double totalEaten = 0;
+    // list.forEach((key, value) {
+    //   totalEaten = double.parse(list.value[1]);
+    // });
+    for (int i = 0; i < list.length; i++) {
+      totalEaten = totalEaten + double.parse(list.values.elementAt(i)[1]);
+    }
+    return totalEaten;
   }
 }
