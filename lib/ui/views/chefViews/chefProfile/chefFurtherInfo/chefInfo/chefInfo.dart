@@ -16,7 +16,6 @@ class ChefInfo extends StatelessWidget {
         if (snapshot.hasData) {
           ChefData _chefData = snapshot.data[0];
           return Container(
-            //  color: Colors.amber,
             margin: EdgeInsets.only(left: 20),
             height: deviceSize.height * 0.2,
             width: deviceSize.width * 0.2,
@@ -25,42 +24,24 @@ class ChefInfo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 standardInfDisplaywithBullets(
-                    "Bio: ",
-                    _chefData.chefBio != null
-                        ? _chefData.chefBio.toString()
-                        : "",
-                    deviceSize),
+                  "Bio: ",
+                  _chefData.chefBio != null ? _chefData.chefBio.toString() : "",
+                  deviceSize,
+                ),
                 standardInfDisplaywithBullets(
-                    "Phone no:  ",
-                    _chefData.chefPhNo != null
-                        ? _chefData.chefPhNo.toString()
-                        : "",
-                    deviceSize),
+                  "Phone no:  ",
+                  _chefData.chefPhNo != null
+                      ? _chefData.chefPhNo.toString()
+                      : "",
+                  deviceSize,
+                ),
                 standardInfDisplaywithBullets(
                     "Date of Birth:  ",
-                    _chefData.chefDateOfBirth != null
-                        ? formatDate(
-                            _chefData.chefDateOfBirth, [dd, '-', mm, '-', yyyy])
-                        : "",
+                    _chefData.chefDateOfBirth.toString().isEmpty
+                        ? ""
+                        : formatDate(_chefData.chefDateOfBirth,
+                            [dd, '-', mm, '-', yyyy]),
                     deviceSize),
-                // Row(
-                //   children: <Widget>[
-                //     Constants().standardTextStyle1("Phone no: "),
-                //     Constants().standardTextStyle2(_chefData[0].chefPhNo != null
-                //         ? _chefData[0].chefPhNo.toString()
-                //         : ""),
-                //   ],
-                // ),
-                // Row(
-                //   children: <Widget>[
-                //     Constants().standardTextStyle1("Date of Birth: "),
-                //     Constants().standardTextStyle2(_chefData[0].chefDateOfBirth !=
-                //             null
-                //         ? formatDate(
-                //             _chefData[0].chefDateOfBirth, [dd, '-', mm, '-', yyyy])
-                //         : ""),
-                //   ],
-                // ),
               ],
             ),
           );

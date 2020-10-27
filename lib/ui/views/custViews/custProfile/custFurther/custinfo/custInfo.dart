@@ -158,9 +158,7 @@ class CustInfo extends StatelessWidget {
               SizedBox(height: widgetSize.height * 0.06),
               standardHeadingWithBGAndRoundCorner(passedText: "Orders"),
 
-              SizedBox(
-                height: widgetSize.height * 0.02,
-              ),
+              SizedBox(height: widgetSize.height * 0.02),
 
               //>>>>>>> F  A V O RU R I T E S --- D I S H E S I
               _custOrders != null

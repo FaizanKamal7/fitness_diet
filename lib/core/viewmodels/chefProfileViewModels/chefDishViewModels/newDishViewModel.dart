@@ -156,17 +156,17 @@ class NewAddDishViewModel extends BaseViewModel {
         dishCatg,
       );
 
-      String _chefName = await DBHelperFtns().documentIDToName(
-        DatabaseService().chefCollection,
-        "chefID",
-        "chefName",
-        userId,
-      );
-      print(
-          "---------> ChefID and extracted ChefName inside NewAddDishViewModel : " +
-              userId.toString() +
-              " " +
-              _chefName);
+      // String _chefName = await DBHelperFtns().documentIDToName(
+      //   DatabaseService().chefCollection,
+      //   "chefID",
+      //   "chefName",
+      //   userId,
+      // );
+      // print(
+      //     "---------> ChefID and extracted ChefName inside NewAddDishViewModel : " +
+      //         userId.toString() +
+      //         " " +
+      //         _chefName);
 
       print("---------> attrID inside NewAddDishViewModel : " +
           attrID.toString());
@@ -196,7 +196,7 @@ class NewAddDishViewModel extends BaseViewModel {
         'dishPic': _uploadedImgURL.toString(),
         'dishPrice': int.parse(dishPrice),
         'attrID': attrID,
-        'chefName': _chefName,
+        // 'chefName': _chefName,
         'ctgID': ctgID,
         'dishProtein': _dishProtein,
         'dishFat': _dishFat,

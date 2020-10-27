@@ -14,7 +14,7 @@ class Dish {
   double dishFat;
   var dishAddDate;
   var dishUpdateDate;
-  String chefName; // Jugar
+  // String chefName; // Jugar
   String chefID; // - Foreign Key
   String attrID; // - Foreign Key
   String ctgID; // - Foreign Key
@@ -33,7 +33,7 @@ class Dish {
     this.dishProtein,
     this.dishAddDate,
     this.dishUpdateDate,
-    this.chefName,
+    // this.chefName,
     this.chefID,
     this.attrID,
     this.ctgID,

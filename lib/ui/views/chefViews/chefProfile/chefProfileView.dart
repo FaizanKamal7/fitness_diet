@@ -149,16 +149,6 @@ class _ChefProfileViewState extends State<ChefProfileView>
                                     _scaffoldKey.currentState.openEndDrawer();
                                   },
                                 ),
-                                // Container(
-                                //   //color: Colors.amber,
-                                //   alignment: Alignment.topRight,
-                                //   margin: EdgeInsets.only(
-                                //     top: widgetSize.height * 0.0001,
-                                //     left: widgetSize.width * 0.09,
-                                //     bottom: widgetSize.height * 0.93,
-                                //   ),
-                                //   child:
-                                // ),
                               ],
                             ),
                           ),

@@ -20,6 +20,6 @@ class ChefAppDrawerViewModel extends BaseViewModel {
   }
 
   goToChefOrdersView() {
-    _navigationService.navigateTo(routes.ChefOrdersView);
+    _navigationService.navigateToWithoutReplacement(routes.ChefOrdersView);
   }
 }

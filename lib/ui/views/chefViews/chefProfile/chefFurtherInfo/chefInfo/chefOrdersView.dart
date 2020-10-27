@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/orders.dart';
+import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/chefOrdersViewmodel.dart';
 import 'package:fitness_diet/ui/shared/colors.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
@@ -7,6 +9,7 @@ import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/chefSingleListOrderView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/soleOrderVIew.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ChefOrdersView extends StatefulWidget {
   @override
@@ -17,6 +20,7 @@ class _ChefOrdersViewState extends State<ChefOrdersView> {
   Stream<List<Order>> _allOrderStream;
   @override
   Widget build(BuildContext context) {
+    final _user = Provider.of<CurrentUser>(context);
     return BaseView<ChefOrdersViewModel>(
       onModelReady: (model) {
         _allOrderStream = model.getAllOrders();
@@ -40,21 +44,23 @@ class _ChefOrdersViewState extends State<ChefOrdersView> {
                   child: ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SoleOrderView(
+                      return _singleOrder[index].chefID == _user.uid
+                          ? InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SoleOrderView(
+                                      singleOrder: _singleOrder[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: ChefSingleListOrderView(
                                 singleOrder: _singleOrder[index],
                               ),
-                            ),
-                          );
-                        },
-                        child: ChefSingleListOrderView(
-                          singleOrder: _singleOrder[index],
-                        ),
-                      );
+                            )
+                          : SizedBox();
                     },
                   ),
                   // Center(
@@ -67,7 +73,7 @@ class _ChefOrdersViewState extends State<ChefOrdersView> {
                 child: Text("No data loaded"),
               );
             } else {
-              return Container(child: Text("No data loaded"));
+              return Loading();
             }
           }
         },
