@@ -1,16 +1,10 @@
 import 'dart:io';
-import 'package:dio/dio.dart';
-import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
-import 'package:fitness_diet/core/viewmodels/chefViewModels/apiIngrViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/addDishViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
-import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/addDish/addDishIngrView.dart';
-import 'package:fitness_diet/ui/widgets/Buttons/standardBtnBlueRound.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeaderWithWhiteBG.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBgUniSan.dart';
 import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildBigWhiteBG.dart';
@@ -19,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:searchable_dropdown/searchable_dropdown.dart';
 
 class AddDishInfo extends StatefulWidget {
   @override

@@ -10,110 +10,96 @@ import 'package:fitness_diet/core/services/validators.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/locator.dart';
 import 'dart:async';
-
-import 'package:fitness_diet/core/models/API_MODELS/FoodCentralJSONModel.dart';
 import 'package:http/http.dart' as http;
 
-List<FoodInfo> _currentFoodIngr = [];
+List<IngredientInfo> _newCurrentIngrList = [];
 
-class AddDishViewModel extends BaseViewModel {
+class NewAddDishViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
 
-// ---------------------------------------- G E T   L I S T   R E L A T E D   T O   S E A R C H E D    F O O D
-  Future<List<FoodInfo>> getSearchedMealsList(String searchedQuery) async {
-    setState(ViewState.Busy);
-    var client = http.Client();
-    List<FoodInfo> searchedFoodsList;
-    var apiKey = "vAK9vJMtSQdYxcBhYRxZl5cpEkahZEkBhl0iw0ox";
-    var dataType = "Survey (FNDDS)";
-    // var dataType = "Branded";
+  FutureOr setIngList(List<IngredientInfo> _foodInfoList) {
+    _newCurrentIngrList = _foodInfoList;
 
-    int pageSize = 30;
-
-    try {
-      http.Response responce = await client.get(
-          "https://api.nal.usda.gov/fdc/v1/foods/list?api_key=$apiKey&query=$searchedQuery&pageSize=$pageSize&dataType=$dataType");
-      if (responce.statusCode == 200) {
-        String jsonString = responce.body;
-        // printWrapped(jsonString);
-        searchedFoodsList = foodInfoFromJson(jsonString);
-      }
-    } catch (Exception) {
-      print("E X C E P T I O N");
-      print("Exception in APi in apimanager class: " + Exception.toString());
-    }
-    setState(ViewState.Idle);
-    return searchedFoodsList;
+    print(" ---> INSIDE setIngList and _newCurrentIngrList = " +
+        _newCurrentIngrList.toString());
   }
 
-  void printWrapped(String text) {
-    final pattern = new RegExp('.{1,800}'); // 800 is the size of each chunk
-    pattern.allMatches(text).forEach((match) => print(match.group(0)));
-  }
-
-// // ---------------------------------------- G E T   L I S T   O F   A L L   F O O D S   I T E M S
-//   Future<List<FoodInfo>> getAllIngredientsList() async {
-//     setState(ViewState.Busy);
-//     print("---> Inside getAllIngredientsList in ViewModel");
-//     var client = http.Client();
-//     List<FoodInfo> allFoodsInfo;
-//     var apiKey = "vAK9vJMtSQdYxcBhYRxZl5cpEkahZEkBhl0iw0ox";
-//     var dataType = "Survey (FNDDS), Foundation";
-//     // int pageSize = 100;
-
-//     try {
-//       http.Response responce = await client.get(
-//           "https://api.nal.usda.gov/fdc/v1/foods/list?api_key=$apiKey&dataType=$dataType");
-//       print("Inside API MANAGER");
-//       if (responce.statusCode == 200) {
-//         String jsonString = responce.body;
-
-//         allFoodsInfo = foodInfoFromJson(jsonString);
-//       }
-//     } catch (Exception) {
-//       print("E X C E P T I O N");
-//       print("Exception in APi in apimanager class: " + Exception.toString());
-//     }
-
-//     setState(ViewState.Idle);
-//     return allFoodsInfo;
-//   }
-
-// ---------------------------------------- S E T   /    G E T   I N G R E D I E N T S
-
-  FutureOr setIngList(List<FoodInfo> _foodInfoList) {
-    _currentFoodIngr = _foodInfoList;
-
-    print(" ---> INSIDE setIngList and _currentFoodIngr = " +
-        _currentFoodIngr.toString());
-  }
-
-  List<FoodInfo> get getCurrentFoodIngr {
+  List<IngredientInfo> get getCurrentFoodIngr {
     print(" ---> INSIDE getCurrentFoodIngr and  returning  = " +
-        _currentFoodIngr.toString());
-    return _currentFoodIngr;
+        _newCurrentIngrList.toString());
+    return _newCurrentIngrList;
   }
 
   List<double> convertNutrientsBackToOriginal(
-      FoodInfo _singleFood, int _count) {
+      IngredientInfo _singleFood, int _count) {
     // Indexes => Protien - 0, Fats - 1, Carbs - 2, Kcal - 3
     List<double> _convertedNutrients = [];
-    _singleFood.foodNutrients[0].amount = double.parse(
-        (_singleFood.foodNutrients[0].amount / _count).toStringAsFixed(2));
-    _singleFood.foodNutrients[1].amount = double.parse(
-        (_singleFood.foodNutrients[1].amount / _count).toStringAsFixed(2));
-    _singleFood.foodNutrients[2].amount = double.parse(
-        (_singleFood.foodNutrients[2].amount / _count).toStringAsFixed(2));
-    _singleFood.foodNutrients[3].amount = double.parse(
-        (_singleFood.foodNutrients[3].amount / _count).toStringAsFixed(2));
-    _convertedNutrients.add(_singleFood.foodNutrients[0].amount);
-    _convertedNutrients.add(_singleFood.foodNutrients[1].amount);
-    _convertedNutrients.add(_singleFood.foodNutrients[2].amount);
-    _convertedNutrients.add(_singleFood.foodNutrients[3].amount);
-    print("--- Fat: " + _singleFood.foodNutrients[1].amount.toString());
+    _singleFood.ingredients[0].parsed[0].nutrients["PROCNT"].quantity =
+        double.parse(
+            (_singleFood.ingredients[0].parsed[0].nutrients["PROCNT"].quantity /
+                    _count)
+                .toStringAsFixed(2));
+    _singleFood.ingredients[0].parsed[0].nutrients["FAT"].quantity =
+        double.parse(
+            (_singleFood.ingredients[0].parsed[0].nutrients["FAT"].quantity /
+                    _count)
+                .toStringAsFixed(2));
+    _singleFood.ingredients[0].parsed[0].nutrients["CHOCDF"].quantity =
+        double.parse(
+            (_singleFood.ingredients[0].parsed[0].nutrients["CHOCDF"].quantity /
+                    _count)
+                .toStringAsFixed(2));
+    _singleFood.ingredients[0].parsed[0].nutrients["ENERC_KCAL"].quantity =
+        double.parse((_singleFood
+                    .ingredients[0].parsed[0].nutrients["ENERC_KCAL"].quantity /
+                _count)
+            .toStringAsFixed(2));
+    _convertedNutrients
+        .add(_singleFood.ingredients[0].parsed[0].nutrients["PROCNT"].quantity);
+    _convertedNutrients
+        .add(_singleFood.ingredients[0].parsed[0].nutrients["FAT"].quantity);
+    _convertedNutrients
+        .add(_singleFood.ingredients[0].parsed[0].nutrients["CHOCDF"].quantity);
+    _convertedNutrients.add(
+        _singleFood.ingredients[0].parsed[0].nutrients["ENERC_KCAL"].quantity);
+    print("--- Fat: " +
+        _singleFood.ingredients[0].parsed[0].nutrients["FAT"].quantity
+            .toString());
     return _convertedNutrients;
   }
 // ---------------------------------------- E D A M N A N   A P I
+
+  Future<IngredientInfo> getSearchedIngredientsList(
+      String searchedQuery) async {
+    setState(ViewState.Busy);
+    var client = http.Client();
+    IngredientInfo _searchedIngrInfo;
+    var ingr = searchedQuery;
+    // var dataType = "Branded";
+
+    // int pageSize = 30;
+
+    try {
+      http.Response responce = await client.get(
+          "https://api.edamam.com/api/nutrition-data?app_id=a2d43d71&app_key=6fb432105b306e6f26db1d0b082938d9&ingr=$ingr");
+      if (responce.statusCode == 200) {
+        String jsonString = responce.body;
+        print("jsonString: : " + jsonString);
+        // searchedIngrList = ingredientInfoFromJson(jsonString);
+        _searchedIngrInfo = ingredientInfoFromJson(jsonString);
+        print("After");
+        // print("After" + _ingredientInfo.calories.toString());
+
+        // searchedIngrList.add(_ingredientInfo);
+      }
+    } catch (Exception) {
+      print("E X C E P T I O N");
+      print(Exception.runtimeType.toString());
+      print("Exception in A P I in apimanager class: " + Exception.toString());
+    }
+    setState(ViewState.Idle);
+    return _searchedIngrInfo;
+  }
 
 // ---------------------------------------- U P L O A D I N G    D I S H
   Future uploadDishInfo(
@@ -123,7 +109,7 @@ class AddDishViewModel extends BaseViewModel {
     File dishPic,
     String dishCatg,
     String dishAttr,
-    List<FoodInfo> _foodIngrList,
+    List<IngredientInfo> _foodIngrList,
   ) async {
     setState(ViewState.Busy);
     print("--------> Upload dish Function reached.");
@@ -165,12 +151,13 @@ class AddDishViewModel extends BaseViewModel {
         userId,
       );
       print(
-          "---------> ChefID and extracted ChefName inside AddDishViewModel : " +
+          "---------> ChefID and extracted ChefName inside NewAddDishViewModel : " +
               userId.toString() +
               " " +
               _chefName);
 
-      print("---------> attrID inside AddDishViewModel : " + attrID.toString());
+      print("---------> attrID inside NewAddDishViewModel : " +
+          attrID.toString());
 
       String _uploadedImgURL = await ConstantFtns().uploadFile(dishPic);
       print(" INSIDE UPLOAD DISH AND    N U T R I E N T S    ARE: " +
@@ -233,7 +220,7 @@ class AddDishViewModel extends BaseViewModel {
     }
   }
 
-  List<double> getTotalDishNutrients(List<FoodInfo> _foodIngrList) {
+  List<double> getTotalDishNutrients(List<IngredientInfo> _foodIngrList) {
     double _totalKcal = 0;
     double _totalFats = 0;
     double _totalCarbs = 0;
@@ -241,10 +228,26 @@ class AddDishViewModel extends BaseViewModel {
     // List<String> _nutrientData = [];
     List<double> _nutrientData = [];
     for (int i = 0; i < _foodIngrList.length; i++) {
-      _totalProtein = _totalProtein + _foodIngrList[i].foodNutrients[0].amount;
-      _totalFats = _totalFats + _foodIngrList[i].foodNutrients[1].amount;
-      _totalCarbs = _totalCarbs + _foodIngrList[i].foodNutrients[2].amount;
-      _totalKcal = _totalKcal + _foodIngrList[i].foodNutrients[3].amount;
+      _totalProtein = _totalProtein +
+          _foodIngrList[i]
+              .ingredients[0]
+              .parsed[0]
+              .nutrients["PROCNT"]
+              .quantity;
+      _totalFats = _totalFats +
+          _foodIngrList[i].ingredients[0].parsed[0].nutrients["FAT"].quantity;
+      _totalCarbs = _totalCarbs +
+          _foodIngrList[i]
+              .ingredients[0]
+              .parsed[0]
+              .nutrients["CHOCDF"]
+              .quantity;
+      _totalKcal = _totalKcal +
+          _foodIngrList[i]
+              .ingredients[0]
+              .parsed[0]
+              .nutrients["ENERC_KCAL"]
+              .quantity;
       print("Total protein: " + _totalProtein.toString());
       print("Total _totalFats: " + _totalFats.toString());
       print("Total _totalKcal: " + _totalKcal.toString());
@@ -260,10 +263,10 @@ class AddDishViewModel extends BaseViewModel {
     return _nutrientData;
   }
 
-  List<int> getDishIngrIDs(List<FoodInfo> _foodIngrList) {
-    List<int> _dishIngrIDs = [];
+  List<String> getDishIngrIDs(List<IngredientInfo> _foodIngrList) {
+    List<String> _dishIngrIDs = [];
     for (int i = 0; i < _foodIngrList.length; i++) {
-      _dishIngrIDs.add(_foodIngrList[i].fdcId);
+      _dishIngrIDs.add(_foodIngrList[i].ingredients[0].text);
     }
   }
 }

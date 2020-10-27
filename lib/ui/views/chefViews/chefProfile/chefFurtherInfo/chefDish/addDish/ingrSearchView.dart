@@ -1,5 +1,5 @@
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
-import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
+import 'package:fitness_diet/core/models/API_MODELS/FoodCentralJSONModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/addDishViewModel.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
@@ -281,7 +281,7 @@ class _IngredientsSearchViewState extends State<IngredientsSearchView> {
                                 });
                                 // * Getting the searched food list
                                 allFoodIngrList =
-                                    await model.getSearchedIngredientsList(
+                                    await model.getSearchedMealsList(
                                         searchedIng.text);
                                 // * Setting the check status of all foods to false
                                 if (allFoodIngrList != null) {

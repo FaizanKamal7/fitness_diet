@@ -4,7 +4,7 @@ import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import 'package:fitness_diet/core/datamodel/alert_response.dart';
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
+import 'package:fitness_diet/core/models/API_MODELS/FoodCentralJSONModel.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/exercise.dart';
 import 'package:fitness_diet/core/models/plan.dart';

@@ -7,7 +7,6 @@ import 'package:fitness_diet/core/services/auth.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/locator.dart';
 import 'package:fitness_diet/ui/router.dart' as router;
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,26 +24,26 @@ import 'package:provider/provider.dart';
 //     ),
 //   );
 // }
-class LifecycleEventHandler extends WidgetsBindingObserver {
-  final AsyncCallback resumeCallBack;
+// class LifecycleEventHandler extends WidgetsBindingObserver {
+//   final AsyncCallback resumeCallBack;
 
-  LifecycleEventHandler({this.resumeCallBack});
+//   LifecycleEventHandler({this.resumeCallBack});
 
-  @override
-  Future<Null> didChangeAppLifecycleState(AppLifecycleState state) async {
-    switch (state) {
-      case AppLifecycleState.inactive:
-      case AppLifecycleState.paused:
-      // case AppLifecycleState.suspending:
-      case AppLifecycleState.resumed:
-        await resumeCallBack();
-        break;
-      case AppLifecycleState.detached:
-        // TODO: Handle this case.
-        break;
-    }
-  }
-}
+//   @override
+//   Future<Null> didChangeAppLifecycleState(AppLifecycleState state) async {
+//     switch (state) {
+//       case AppLifecycleState.inactive:
+//       case AppLifecycleState.paused:
+//       // case AppLifecycleState.suspending:
+//       case AppLifecycleState.resumed:
+//         await resumeCallBack();
+//         break;
+//       case AppLifecycleState.detached:
+//         // TODO: Handle this case.
+//         break;
+//     }
+//   }
+// }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -34,6 +34,7 @@ class _ChefOrdersViewState extends State<ChefOrdersView> {
                 appBar: AppBar(
                   backgroundColor: Colors.brown,
                   title: Text("Order"),
+                  shadowColor: Colors.black,
                 ),
                 body: Container(
                   child: ListView.builder(

@@ -1,5 +1,5 @@
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
-import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
+import 'package:fitness_diet/core/models/API_MODELS/FoodCentralJSONModel.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/tinyLeftBtn.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/tinyRightBtn.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,7 @@ class _SingleDishIngrState extends State<SingleDishIngr> {
   Widget build(BuildContext context) {
     // ------------------ ADDING UPCOMING FOOD ITEM IN GLOBAL LIST IF NOT ALREADY EXIST
 
-    if (updatedIngrInfo.length != null) {
+    if (updatedIngrInfo.length != 0) {
       int _foodExistingCount = 0;
       for (int i = 0; i < updatedIngrInfo.length; i++) {
         if (widget.singleFood.fdcId == updatedIngrInfo[i].fdcId) {
@@ -34,7 +34,7 @@ class _SingleDishIngrState extends State<SingleDishIngr> {
         }
       }
       if (_foodExistingCount == 0) {
-         print("O M G  INSIDE and equal to "+_foodExistingCount.toString());
+        print("O M G  INSIDE and equal to " + _foodExistingCount.toString());
         updatedIngrInfo.add(widget.singleFood);
       }
     }

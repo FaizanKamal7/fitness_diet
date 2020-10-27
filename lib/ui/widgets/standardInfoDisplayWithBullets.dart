@@ -23,7 +23,7 @@ Widget standardInfDisplaywithBullets(
         text1,
         style: TextStyle(
           fontFamily: "Montserrat",
-          fontSize: deviceSize.height * 0.020,
+          fontSize: 17,
           color: Color(0xff4D3814),
           shadows: [
             Shadow(
@@ -40,7 +40,7 @@ Widget standardInfDisplaywithBullets(
             text2,
             style: TextStyle(
               fontFamily: "Montserrat",
-              fontSize: deviceSize.height * 0.020,
+              fontSize: 17,
               color: Color(0xff2A6427),
               shadows: [
                 Shadow(

@@ -13,18 +13,7 @@ class OrderSummaryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("orderStatus : " + orderStatus.toString());
-    return
-        // WillPopScope(
-        //   onWillPop: () {
-        //     Navigator.push(
-        //       context,
-        //       MaterialPageRoute(
-        //         builder: (context) => MainDataProvider(),
-        //       ),
-        //     );
-        //   },
-        //   child:
-        Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text("Order Summary"),
         backgroundColor: Colors.lightGreen.withOpacity(0.3),
@@ -103,13 +92,19 @@ class OrderSummaryView extends StatelessWidget {
                 primaryText: "Order Completed",
                 secondaryText: "Order completed successfully",
                 passedIcon: FontAwesomeIcons.thumbsUp,
-                isDone: false,
+                isDone: orderStatus.contains(ConstantFtns()
+                        .getEnumValue(Order_Status.ORDER_COMPLETED.toString()))
+                    ? true
+                    : false,
               ),
               OrderSingleStage(
                 primaryText: "Order Failed",
                 secondaryText: "Order is not not completed due to some reason",
                 passedIcon: FontAwesomeIcons.thumbsUp,
-                isDone: false,
+                isDone: orderStatus.contains(ConstantFtns()
+                        .getEnumValue(Order_Status.ORDER_FAILED.toString()))
+                    ? true
+                    : false,
               ),
             ],
             indicators: <Widget>[

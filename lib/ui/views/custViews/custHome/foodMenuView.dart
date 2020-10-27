@@ -21,75 +21,6 @@ class FoodMenuView extends StatelessWidget {
   ScrollController _scrollController = new ScrollController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  static List foodItemInfoList = [
-    {
-      'id': 0,
-      'dishPic': "assets/images/biryani.jpg",
-      'chefPic': "assets/images/cookUser.png",
-      'location': "Mandian, Abbottabad",
-      "dishName": "Seekh Kebab",
-      "_chefName": "Begum Uzma",
-      "price": 100,
-      'dishRatings': 4.3,
-      'chefRatings': 4.3,
-    },
-    {
-      'id': 1,
-      'dishPic': "assets/images/biryani.jpg",
-      'chefPic': "assets/images/cookUser.png",
-      'location': "Supply, Abbottabad",
-      "dishName": "Nihari",
-      "_chefName": "Humaira Jabeen",
-      "price": 100,
-      'dishRatings': 4.3,
-      'chefRatings': 4.3,
-    },
-    {
-      'id': 2,
-      'dishPic': "assets/images/biryani.jpg",
-      'chefPic': "assets/images/cookUser.png",
-      'location': "Nawasher, Abbottabad",
-      "dishName": "Biryani",
-      "_chefName": "Nudrat Habib",
-      "price": 10,
-      'dishRatings': 4.3,
-      'chefRatings': 4.3,
-    },
-    {
-      'id': 3,
-      'dishPic': "assets/images/biryani.jpg",
-      'chefPic': "assets/images/cookUser.png",
-      'location': "sa",
-      "dishName": "Karahi",
-      "_chefName": "Ali",
-      "price": 100,
-      'dishRatings': 4.3,
-      'chefRatings': 4.3,
-    },
-    {
-      'id': 4,
-      'dishPic': "assets/images/biryani.jpg",
-      'chefPic': "assets/images/cookUser.png",
-      'location': "Asafdtd",
-      "dishName": "Karahi",
-      "_chefName": "Ali",
-      "price": 100,
-      'dishRatings': 4.3,
-      'chefRatings': 4.3,
-    },
-    {
-      'id': 5,
-      'dishPic': "assets/images/biryani.jpg",
-      'chefPic': "assets/images/cookUser.png",
-      'location': "Atd",
-      "dishName": "Karahi",
-      "_chefName": "Ali",
-      "price": 100,
-      'dishRatings': 4.3,
-      'chefRatings': 4.3,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
     final _dishData = Provider.of<List<Dish>>(context);
@@ -97,7 +28,7 @@ class FoodMenuView extends StatelessWidget {
     final _allChefsData = Provider.of<List<ChefData>>(context);
 
     final deviceSize = MediaQuery.of(context).size;
-    String _chefName;
+
     return BaseView<FoodMenueViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Scaffold(
@@ -180,9 +111,9 @@ class FoodMenuView extends StatelessWidget {
                                 //           dish.chefID);
                                 // }
 
-                                print(
-                                    ">>>>>>>>>>>> dish._chefName inside chefDishesView: " +
-                                        dish.dishName);
+                                // print(
+                                //     ">>>>>>>>>>>> dish._chefName inside chefDishesView: " +
+                                //         dish.dishName);
                                 return Container(
                                   margin: EdgeInsets.symmetric(
                                     vertical: widgetSize.height * 0.002,

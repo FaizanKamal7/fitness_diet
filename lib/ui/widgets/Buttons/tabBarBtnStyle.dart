@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class TabBarBtnStyle extends StatelessWidget {
   Size deviceSize;
 
@@ -21,6 +22,7 @@ class TabBarBtnStyle extends StatelessWidget {
       child: Center(
         child: Text(
           btnText,
+          style: TextStyle(fontSize: 20),
         ),
       ),
     );

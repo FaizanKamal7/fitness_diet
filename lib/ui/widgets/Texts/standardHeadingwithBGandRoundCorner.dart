@@ -1,6 +1,8 @@
 import 'package:fitness_diet/ui/shared/app_colors.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
+// ignore: camel_case_types
 class standardHeadingWithBGAndRoundCorner extends StatelessWidget {
   String passedText;
   standardHeadingWithBGAndRoundCorner({@required this.passedText});

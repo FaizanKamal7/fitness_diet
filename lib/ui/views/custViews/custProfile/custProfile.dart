@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custProfileViewmodel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
@@ -11,6 +10,7 @@ import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custinfo
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custNoplan.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custPlan.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custProfileEdit.dart';
+import 'package:fitness_diet/ui/widgets/Buttons/tabBarBtnStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_diet/ui/shared/app_colors.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +69,7 @@ class _CustProfileState extends State<CustProfile>
     final _custData = Provider.of<CustData>(context);
     final _planData = Provider.of<Plan>(context);
 
-    // final deviceSize = MediaQuery.of(context).size;
+    final deviceSize = MediaQuery.of(context).size;
 
     // return StreamBuilder<CustData>(
     //   stream: DatabaseService(uid: user.uid).getCustData,
@@ -409,46 +409,38 @@ class _CustProfileState extends State<CustProfile>
                                 labelColor: Color(0xff2a6427),
                                 controller: _tabController,
                                 tabs: <Tab>[
+                                  // Tab(
+                                  //   child: Container(
+                                  //     height: deviceSize.height * 0.05,
+                                  //     width: deviceSize.width,
+                                  //     decoration: BoxDecoration(
+                                  //       color: standardButtonBGColor,
+                                  //       border: Border.all(
+                                  //         // width: 1.00,
+                                  //         color: Color(0xff2a6427),
+                                  //       ),
+                                  //       borderRadius:
+                                  //           BorderRadius.circular(22.00),
+                                  //     ),
+                                  //     child: Center(
+                                  //       child: Text(
+                                  //         "Info",
+                                  //         textAlign: TextAlign.center,
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                   Tab(
-                                    child: Container(
-                                      height: deviceSize.height * 0.05,
-                                      width: deviceSize.width,
-                                      decoration: BoxDecoration(
-                                        color: standardButtonBGColor,
-                                        border: Border.all(
-                                          // width: 1.00,
-                                          color: Color(0xff2a6427),
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(22.00),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Info",
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
+                                    child: TabBarBtnStyle(
+                                      deviceSize: deviceSize,
+                                      btnText: "Info",
                                     ),
                                   ),
+
                                   Tab(
-                                    child: Container(
-                                      height: deviceSize.height * 0.05,
-                                      width: deviceSize.width,
-                                      decoration: BoxDecoration(
-                                        color: standardButtonBGColor,
-                                        border: Border.all(
-                                          //width: 1.00,
-                                          color: Color(0xff2a6427),
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(22.00),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Plan",
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
+                                    child: TabBarBtnStyle(
+                                      deviceSize: deviceSize,
+                                      btnText: "Plan",
                                     ),
                                   ),
                                 ],

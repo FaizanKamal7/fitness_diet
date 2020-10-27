@@ -1,6 +1,5 @@
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
-import 'package:fitness_diet/core/models/FoodCentralJSONModel.dart';
-import 'package:fitness_diet/core/models/exercise.dart';
+import 'package:fitness_diet/core/models/API_MODELS/FoodCentralJSONModel.dart';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
