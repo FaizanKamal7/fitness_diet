@@ -2,6 +2,7 @@ import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custRegViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
+import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
@@ -90,6 +91,14 @@ class _CustRegView_1State extends State<CustRegView_1> {
                           print(
                               "Register button is pressed. Redirecting to 'CustReg1Viewmodel' (Message from inside CustRegView1)");
                           model.register(_controller.text);
+                          model.hasErrorMessage
+                              ? WidgetsBinding.instance.addPostFrameCallback(
+                                  (_) => _showErrorMessage(
+                                    context,
+                                    model.errorMessage,
+                                  ),
+                                )
+                              : Container();
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
@@ -131,19 +140,6 @@ class _CustRegView_1State extends State<CustRegView_1> {
                     ),
                   ],
                 ),
-                //    model.hasErrorMessage
-                // ? UIHelper()
-                //     .showErrorButtomSheet(context, model.errorMessage)
-                // : Container(),
-                model.hasErrorMessage
-                    ? Container(
-                        color: Colors.red,
-                        child: Text(
-                          model.errorMessage,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    : Container(),
 
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
@@ -153,4 +149,11 @@ class _CustRegView_1State extends State<CustRegView_1> {
       ),
     );
   }
+}
+
+_showErrorMessage(BuildContext context, String error) async {
+  showModalBottomSheet(
+    context: (context),
+    builder: (context) => UIHelper().showErrorButtomSheet(context, error),
+  );
 }

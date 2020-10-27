@@ -117,9 +117,45 @@ class _SummaryCardState extends State<SummaryCard> {
                     //
                     // B U R N T  --   C A LA O R I E S //
                     //
-                    PlanSummaryKcalValue(
-                      planData: _planData,
-                      passedText: "Burnt",
+                    // PlanSummaryKcalValue(
+                    //   planData: _planData,
+                    //   passedText: "Burnt",
+                    // ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          _planData.custburntKcal.toStringAsFixed(0),
+                          // planData.custEatenKcal.toStringAsFixed(0),
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 17,
+                            color: Color(0xffd6d8ff),
+                            shadows: [
+                              Shadow(
+                                offset: Offset(0.00, 3.00),
+                                color: Color(0xff000000).withOpacity(0.16),
+                                blurRadius: 6,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Text(
+                          'Burnt',
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 12.5,
+                            color: Color(0xffffffff),
+                            shadows: [
+                              Shadow(
+                                offset: Offset(0.00, 3.00),
+                                color: Color(0xff000000).withOpacity(0.16),
+                                blurRadius: 6,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -75,9 +75,6 @@ class NewAddDishViewModel extends BaseViewModel {
     var client = http.Client();
     IngredientInfo _searchedIngrInfo;
     var ingr = searchedQuery;
-    // var dataType = "Branded";
-
-    // int pageSize = 30;
 
     try {
       http.Response responce = await client.get(
@@ -104,7 +101,7 @@ class NewAddDishViewModel extends BaseViewModel {
 // ---------------------------------------- U P L O A D I N G    D I S H
   Future uploadDishInfo(
     String dishName,
-    int dishPrice,
+    String dishPrice,
     int totalPrepTime,
     File dishPic,
     String dishCatg,
@@ -114,13 +111,28 @@ class NewAddDishViewModel extends BaseViewModel {
     setState(ViewState.Busy);
     print("--------> Upload dish Function reached.");
 
-    if (Validators().verifyNameInputFeild(dishName) &&
-        Validators().verifyNameInputFeild(dishCatg) &&
-        Validators().verifyNumInputFeild(dishPrice) &&
-        Validators().verifyNumInputFeild(totalPrepTime) &&
-        _foodIngrList != null &&
-        dishPic != null) {
-      print("uploaded yahooooooo");
+    if (!Validators().verifyNameInputFeild(dishName)) {
+      setErrorMessage("    Dishname can't be empty");
+      setState(ViewState.Idle);
+    } else if (!Validators().verifyNameInputFeild(dishCatg)) {
+      setErrorMessage("    Dish Category can't be empty");
+      setState(ViewState.Idle);
+    } else if (!Validators().verifyNameInputFeild(dishPrice)) {
+      setErrorMessage("    Price can't be empty");
+      setState(ViewState.Idle);
+    } else if (!Validators().verifyNumInputFeild(totalPrepTime)) {
+      setErrorMessage("    Total prepration time can't \nbe empty");
+      setState(ViewState.Idle);
+    } else if (!Validators().verifyNameInputFeild(dishCatg)) {
+      setErrorMessage("    Dish Category can't be empty");
+      setState(ViewState.Idle);
+    } else if (_foodIngrList == null) {
+      setErrorMessage("    Ingredients can't be null");
+      setState(ViewState.Idle);
+    } else if (dishPic == null) {
+      setErrorMessage("    Picture can't be empty");
+      setState(ViewState.Idle);
+    } else {
       String userId = getUser;
 // ---------- Check if attribute name already exists then add accordingly
       if (dishAttr != null) {
@@ -162,10 +174,6 @@ class NewAddDishViewModel extends BaseViewModel {
       String _uploadedImgURL = await ConstantFtns().uploadFile(dishPic);
       print(" INSIDE UPLOAD DISH AND    N U T R I E N T S    ARE: " +
           _foodIngrList.toString());
-      // print(" INSIDE UPLOAD DISH AND    N U T R I E N T S    ARE: " +
-      //     _foodIngrList[0].foodNutrients[3].amount.toString() +
-      //     " " +
-      //     _foodIngrList[0].foodNutrients[1].amount.toString());
 
       List<double> _totalDishNutrientsList =
           getTotalDishNutrients(_foodIngrList);
@@ -179,20 +187,6 @@ class NewAddDishViewModel extends BaseViewModel {
       double _dishKcal =
           double.parse(_totalDishNutrientsList[3].toStringAsFixed(2));
       print("---------------" + _dishProtein.toString());
-      // double _protein = double.parse(
-      //     ConstantFtns().getStringBeforeCharacter(_dishProtein, " "));
-      // double _fat =
-      //     double.parse(ConstantFtns().getStringBeforeCharacter(_dishFat, " "));
-      // double _carb =
-      //     double.parse(ConstantFtns().getStringBeforeCharacter(_dishCarb, " "));
-      // double _kcal =
-      //     double.parse(ConstantFtns().getStringBeforeCharacter(_dishKcal, " "));
-
-      // List<int> _dishIngredientsIDs;
-
-      // for (int i = 0; i < _foodIngrList.length; i++) {
-      //   _dishIngredientsIDs.add(_foodIngrList[i].fdcId);
-      // }
 
       await DatabaseService().addNewDishData({
         'dishName': dishName,
@@ -200,7 +194,7 @@ class NewAddDishViewModel extends BaseViewModel {
         'chefID': userId,
         'dishPrepTime': totalPrepTime,
         'dishPic': _uploadedImgURL.toString(),
-        'dishPrice': dishPrice,
+        'dishPrice': int.parse(dishPrice),
         'attrID': attrID,
         'chefName': _chefName,
         'ctgID': ctgID,
@@ -208,15 +202,11 @@ class NewAddDishViewModel extends BaseViewModel {
         'dishFat': _dishFat,
         'dishCarb': _dishCarb,
         'dishKcal': _dishKcal,
-        'dishIngrIDs': getDishIngrIDs,
-        // 'dishIngrList': _dishIngredientsIDs,
+        // 'dishIngrIDs': getDishIngrIDs,
       });
 
       setState(ViewState.Idle);
       _navigationService.navigateTo(ChefProfileRoute);
-    } else {
-      setErrorMessage("Enter valid info");
-      setState(ViewState.Idle);
     }
   }
 
@@ -225,7 +215,6 @@ class NewAddDishViewModel extends BaseViewModel {
     double _totalFats = 0;
     double _totalCarbs = 0;
     double _totalProtein = 0;
-    // List<String> _nutrientData = [];
     List<double> _nutrientData = [];
     for (int i = 0; i < _foodIngrList.length; i++) {
       _totalProtein = _totalProtein +
@@ -256,10 +245,6 @@ class NewAddDishViewModel extends BaseViewModel {
     _nutrientData.add(_totalFats);
     _nutrientData.add(_totalCarbs);
     _nutrientData.add(_totalKcal);
-    // _nutrientData.add(_totalProtein.toString() + " G");
-    // _nutrientData.add(_totalFats.toString() + " G");
-    // _nutrientData.add(_totalCarbs.toString() + " G");
-    // _nutrientData.add(_totalKcal.toString() + " Kcal");
     return _nutrientData;
   }
 
@@ -268,5 +253,6 @@ class NewAddDishViewModel extends BaseViewModel {
     for (int i = 0; i < _foodIngrList.length; i++) {
       _dishIngrIDs.add(_foodIngrList[i].ingredients[0].text);
     }
+    return _dishIngrIDs;
   }
 }

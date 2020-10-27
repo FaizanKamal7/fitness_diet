@@ -25,7 +25,7 @@ class CustData {
   String custName;
   String custPhNo;
   String custContactNo;
-  DateTime custDateOfBirth;
+  var custDateOfBirth;
   String custPic;
   List custfavs;
 

@@ -1,6 +1,4 @@
-import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
@@ -10,8 +8,6 @@ import 'package:fitness_diet/ui/shared/colors.dart';
 import 'package:fitness_diet/ui/shared/fonts.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/views/custViews/cartView.dart';
-import 'package:fitness_diet/ui/widgets/Buttons/bigLightGreenBtn.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadinNoBgSmall.dart';
 import 'package:fitness_diet/ui/widgets/briefChefInfo.dart';
 import 'package:fitness_diet/ui/widgets/circularIcon.dart';
@@ -22,20 +18,20 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
-class SoleDishView extends StatelessWidget {
+class ChefSoleDishView extends StatelessWidget {
   Dish passedDish;
   bool isFromCustView = false;
-  SoleDishView({@required this.passedDish, @required this.isFromCustView});
+  ChefSoleDishView({@required this.passedDish, @required this.isFromCustView});
   // ChefData _chefData;
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final _allChefsData = Provider.of<List<ChefData>>(context);
-    final _dishData = Provider.of<List<Dish>>(context);
-    final _cart = Provider.of<Cart>(context);
-    final _custData = Provider.of<CustData>(context);
+    // final _dishData = Provider.of<List<Dish>>(context);
+    // final _cart = Provider.of<Cart>(context);
+    // final _custData = Provider.of<CustData>(context);
 
-    DialogService _dialogService = locator<DialogService>();
+    // DialogService _dialogService = locator<DialogService>();
 
     return BaseView<SoleDishViewModel>(
       onModelReady: (model) async {},
@@ -204,140 +200,13 @@ class SoleDishView extends StatelessWidget {
                             ),
                             SizedBox(height: 15),
                             BriefChefInfo(
-                                passedChefData: model.extractedChefData(
-                                    _allChefsData, passedDish.chefID)),
+                              passedChefData: model.extractedChefData(
+                                _allChefsData,
+                                passedDish.chefID,
+                              ),
+                            ),
                           ],
                         ),
-                        // ----------------------------------- A D D   T O   C A R T   B U T T O N
-
-                        // InkWell(
-                        // onTap: () async {
-                        // if (model.getUser == null) {
-                        //   _dialogService.showDialog(
-                        //       title: 'Alert',
-                        //       description:
-                        //           "Please Sign in to Continue ",
-                        //       buttonTitle: "ok ",
-                        //       dialogType: Dialog_Types.PLAN_SUCCESS);
-                        // } else {
-                        //   print(
-                        //       '--------------------inside add to cart function in soleDish view ');
-
-                        //   if (model.getServings(
-                        //           _cart.items, passedDish.dishID) ==
-                        //       0) {
-                        //     bool added = model.additem(
-                        //       passedDish,
-                        //       _custData,
-                        //       _cart,
-                        //       _dishData,
-                        //     );
-
-                        //     if (!added) {
-                        //       var dialogResult =
-                        //           await _dialogService.showDialog(
-                        //               title: 'Alert',
-                        //               description:
-                        //                   "your Previous Cart Will be Cleared If you procced With this cheff ",
-                        //               buttonTitle: "ok ",
-                        //               dialogType:
-                        //                   Dialog_Types.New_Order);
-                        //       if (dialogResult.confirmed) {
-                        //         model.removeCartItems(
-                        //             _cart.cartid, _cart.items);
-
-                        //         print(
-                        //             '--------------------------------added ' +
-                        //                 added.toString());
-                        //       }
-                        //     }
-                        //   } else {
-                        //     print('nevigate to View Cart ');
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) => CartView(),
-                        //       ),
-                        //     );
-                        //   }
-                        // }
-                        // },
-                        isFromCustView
-                            ? Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  height: deviceSize.height * 0.05,
-                                  margin: EdgeInsets.all(15),
-                                  child: FlatButton(
-                                    onPressed: () async {
-                                      if (model.getUser == null) {
-                                        _dialogService.showDialog(
-                                            title: 'Alert',
-                                            description:
-                                                "Please Sign in to Continue ",
-                                            buttonTitle: "ok ",
-                                            dialogType:
-                                                Dialog_Types.PLAN_SUCCESS);
-                                      } else {
-                                        print(
-                                            '--------------------inside add to cart function in soleDish view ');
-
-                                        if (model.getServings(_cart.items,
-                                                passedDish.dishID) ==
-                                            0) {
-                                          bool added = model.additem(
-                                            passedDish,
-                                            _custData,
-                                            _cart,
-                                            _dishData,
-                                          );
-
-                                          if (!added) {
-                                            var dialogResult =
-                                                await _dialogService.showDialog(
-                                                    title: 'Alert',
-                                                    description:
-                                                        "your Previous Cart Will be Cleared If you procced With this cheff ",
-                                                    buttonTitle: "ok ",
-                                                    dialogType:
-                                                        Dialog_Types.New_Order);
-                                            if (dialogResult.confirmed) {
-                                              model.removeCartItems(
-                                                  _cart.cartid, _cart.items);
-
-                                              print(
-                                                  '--------------------------------added ' +
-                                                      added.toString());
-                                            }
-                                          }
-                                        } else {
-                                          print('nevigate to View Cart ');
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => CartView(),
-                                            ),
-                                          );
-                                        }
-                                      }
-                                    },
-                                    child: BigLightGreenBtn(
-                                      passedText: model.getServings(_cart.items,
-                                                  passedDish.dishID) ==
-                                              0
-                                          ? "Add to cart"
-                                          : 'View Your Cart' +
-                                              ' (' +
-                                              _cart.items.length.toString() +
-                                              ') ',
-                                      isDisabled: false,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : SizedBox(
-                                height: 0.0,
-                              ),
                       ],
                     ),
                   ),

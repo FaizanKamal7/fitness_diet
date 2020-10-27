@@ -2,6 +2,7 @@ import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefSignInViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
+import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
@@ -84,26 +85,14 @@ class _ChefSignInViewState extends State<ChefSignInView> {
                       child: FlatButton(
                         onPressed: () async {
                           model.signInChef(_phNocontroller.text);
-
-                          // bool signInSuccess =
-                          //     await model.signInChef(_phNocontroller.text);
-                          // print("--------------------> Build context: " +
-                          //     context.toString());
-                          // // await PhoneVer(context: context)
-                          // //     .verifyPhone(_controller.text);
-
-                          // // print("------> Register success : " +
-                          // //     signInSuccess.toString());
-
-                          // if (signInSuccess) {
-                          //   print("sucessssssssssssssssssssssssssssssssss");
-                          //   Navigator.pushReplacementNamed(
-                          //       context, 'chefProfile');
-                          // } else {
-                          //   UIHelper().showErrorButtomSheet(
-                          //       context, model.errorMessage);
-                          // }
-                          //   Navigator.pushNamed(context, 'foodMenu');
+                          model.hasErrorMessage
+                              ? WidgetsBinding.instance.addPostFrameCallback(
+                                  (_) => _showErrorMessage(
+                                    context,
+                                    model.errorMessage,
+                                  ),
+                                )
+                              : Container();
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
@@ -145,11 +134,7 @@ class _ChefSignInViewState extends State<ChefSignInView> {
                     ),
                   ],
                 ),
-                model.hasErrorMessage
-                    ? Container(
-                        child: Text(model.errorMessage),
-                      )
-                    : Container(),
+
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),
@@ -158,4 +143,11 @@ class _ChefSignInViewState extends State<ChefSignInView> {
       ),
     );
   }
+}
+
+_showErrorMessage(BuildContext context, String error) async {
+  showModalBottomSheet(
+    context: (context),
+    builder: (context) => UIHelper().showErrorButtomSheet(context, error),
+  );
 }

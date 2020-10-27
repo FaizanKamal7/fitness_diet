@@ -106,22 +106,6 @@ class CustInfo extends StatelessWidget {
                                                   .length -
                                               1),
                                   deviceSize),
-                              //  Text(
-                              //   _custData.custaddress.keys
-                              //           .elementAt(index)
-                              //           .toString() +
-                              //       " : "
-                              //       // ,
-                              //       +
-                              //       _custData.custaddress.values
-                              //           .elementAt(index)
-                              //           .toString(),
-                              //   style: TextStyle(
-                              //     fontFamily: "Montserrat",
-                              //     fontSize: deviceSize.height * 0.020,
-                              //     color: Color(0xff2A6427),
-                              //   ),
-                              // ),
                             ),
                             IconButton(
                               icon: Icon(Icons.edit),
@@ -179,23 +163,26 @@ class CustInfo extends StatelessWidget {
               ),
 
               //>>>>>>> F  A V O RU R I T E S --- D I S H E S I
-
-              ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: _custOrders != null ? _custOrders.length : 0,
-                itemBuilder: (context, index) {
-                  // return Container(
-                  //   child: Text(_custOrders[index].orderID.toString()),
-                  // );
-                  return CustOrders(
-                      orderID: _custOrders[index].orderID,
-                      noOfItems: _custOrders[index].items.length,
-                      total: _custOrders[index].total,
-                      orderDate: _custOrders[index].orderDate,
-                      orderStatus: _custOrders[index].orderStatus);
-                },
-              ),
+              _custOrders != null
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: _custOrders != null ? _custOrders.length : 0,
+                      itemBuilder: (context, index) {
+                        // return Container(
+                        //   child: Text(_custOrders[index].orderID.toString()),
+                        // );
+                        return CustOrders(
+                            orderID: _custOrders[index].orderID,
+                            noOfItems: _custOrders[index].items.length,
+                            total: _custOrders[index].total,
+                            orderDate: _custOrders[index].orderDate,
+                            orderStatus: _custOrders[index].orderStatus);
+                      },
+                    )
+                  : Center(
+                      child: Text("No orders yet!"),
+                    ),
             ],
           ),
         ),

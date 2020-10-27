@@ -101,16 +101,6 @@ class FoodMenuView extends StatelessWidget {
                           delegate: SliverChildListDelegate(
                             [
                               ..._dishData.map((dish) {
-                                // ignore: unused_element
-                                // Future<void> getChefName() async {
-                                //   _chefName = await DBHelperFtns()
-                                //       .documentIDToName(
-                                //           DatabaseService().chefCollection,
-                                //           "chefID",
-                                //           "_chefName",
-                                //           dish.chefID);
-                                // }
-
                                 // print(
                                 //     ">>>>>>>>>>>> dish._chefName inside chefDishesView: " +
                                 //         dish.dishName);
@@ -134,7 +124,7 @@ class FoodMenuView extends StatelessWidget {
                                       dishName: dish.dishName,
                                       chefName: model.extractedChefName(
                                           _allChefsData, dish.chefID),
-                                      kcal: 250.5,
+                                      kcal: dish.dishKcal,
                                       price: dish.dishPrice,
                                       ratings: 3.5,
                                       dishPic: dish.dishPic,
@@ -142,11 +132,6 @@ class FoodMenuView extends StatelessWidget {
                                   ),
                                 );
                               }).toList()
-
-                              // ...foodItemInfoList.map(
-                              //   (itemNo) => AvailableDishesList(
-                              //     foodItem: itemNo, // Containing food item info
-                              //   ),
                             ],
                           ),
                         )

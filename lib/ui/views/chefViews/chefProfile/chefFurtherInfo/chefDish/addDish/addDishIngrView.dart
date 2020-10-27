@@ -4,21 +4,15 @@ import 'package:fitness_diet/core/models/API_MODELS/edamamJSONModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/newDishViewModel.dart';
 import 'package:fitness_diet/globals.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
+import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/addDish/newIngrSearchView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 
 import 'package:flutter/material.dart';
 
-// List<IngredientInfo> currentIngrList;
-
 // ignore: must_be_immutable
 class AddDishIngrView extends StatefulWidget {
-  // void getIng() async {
-  //   allFoodIngrList = await IngrViewModel().getAllIngredientsList();
-  //   print("_foodNutrient: " + allFoodIngrList.toString());
-  // }
-
   String dishCatg;
   int prepTimeHrs, prepTimeMin, totalPrepTime;
   File dishPic;
@@ -46,17 +40,6 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
   // int _currentSelectedIngrIndex;
   @override
   Widget build(BuildContext context) {
-    // newUpdatedIngrInfo != [] &&
-    //         newUpdatedIngrInfo != null &&
-    //         newUpdatedIngrInfo.length != 0
-    //     ? print("  ============== updatedList: " +
-    //         newUpdatedIngrInfo[0]
-    //             .ingredients[0]
-    //             .parsed[0]
-    //             .nutrients["ENERC_KCAL"]
-    //             .quantity
-    //             .toString())
-    //     : print("Still null");
     final deviceSize = MediaQuery.of(context).size;
 
     return BaseView<NewAddDishViewModel>(
@@ -85,12 +68,6 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
                           print("------- INSIDE setState : " +
                               currentIngrList.toString());
                         });
-                        // Assigning value 1 to default selected ingredients
-                        //   List<IngredientInfo> tempList = currentIngrList;
-                        //   for (int i = 0; i < currentIngrList.length; i++) {
-                        //     countValues[tempList[i].ingredients[0].text] = 1;
-                        //     print("countValues : " + countValues.toString());
-                        //   }
                       });
                     },
                     child: ClipRRect(
@@ -189,23 +166,23 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
 
                       child: FlatButton(
                         onPressed: () async {
-                          print(
-                              " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% newUpdatedIngrInfo: " +
-                                  currentIngrList[0].calories.toString());
-                          print(
-                              " %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  newUpdatedIngrInfo: " +
-                                  currentIngrList[currentIngrList.length - 1]
-                                      .calories
-                                      .toString());
                           model.uploadDishInfo(
                             widget.dishNameContr.text,
-                            int.parse(widget.priceContr.text),
+                            widget.priceContr.text,
                             widget.totalPrepTime,
                             widget.dishPic,
                             widget.dishCatg,
                             widget.attrContr.text,
                             currentIngrList,
                           );
+                          model.hasErrorMessage
+                              ? WidgetsBinding.instance.addPostFrameCallback(
+                                  (_) => _showErrorMessage(
+                                    context,
+                                    model.errorMessage,
+                                  ),
+                                )
+                              : Container();
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
@@ -214,20 +191,16 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
                       ),
                     ),
                   ),
-
-                  model.hasErrorMessage
-                      ? Container(
-                          color: Colors.red,
-                          child: Text(
-                            model.errorMessage,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
-                      : Container(),
-                  model.state == ViewState.Busy ? Loading() : Container(),
                 ],
               ),
             ),
     );
   }
+}
+
+_showErrorMessage(BuildContext context, String error) async {
+  showModalBottomSheet(
+    context: (context),
+    builder: (context) => UIHelper().showErrorButtomSheet(context, error),
+  );
 }

@@ -21,7 +21,7 @@ class ChefProfileMain extends StatelessWidget {
           value: DatabaseService().getAllChefData);
       // - Dish data stream
       dishStreamProvider = StreamProvider<List<Dish>>.value(
-          value: DatabaseService().getChefDishData);
+          value: DatabaseService().getAllDishData);
       // - DishCategory data stream
       dishCatgStreamProvider = StreamProvider<List<DishCategory>>.value(
           value: DatabaseService().getDishCatgData);

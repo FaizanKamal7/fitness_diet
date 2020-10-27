@@ -20,7 +20,7 @@ class CustNoPlan extends StatelessWidget {
                         "No active plan",
                         style: TextStyle(
                           fontFamily: "Montserrat",
-                          fontSize: deviceSize.height * 0.06,
+                          fontSize: 15,
                           color: Color(0xff554141),
                         ),
                       ),
@@ -48,7 +48,7 @@ class CustNoPlan extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: "UniSansRegular",
-                                fontSize: deviceSize.height * 0.05,
+                                fontSize: 18,
                                 color: Color(0xff5f2424),
                               ),
                             ),

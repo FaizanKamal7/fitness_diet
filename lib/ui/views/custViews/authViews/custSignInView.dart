@@ -1,5 +1,3 @@
-import 'package:animated_widgets/widgets/translation_animated.dart';
-import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
@@ -11,12 +9,10 @@ import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/custAuthBg.dart';
-import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
 import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithPrefix.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:animator/animator.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 class CustSigninView extends StatefulWidget {
@@ -106,14 +102,14 @@ class _CustSigninViewState extends State<CustSigninView> {
                         child: FlatButton(
                           onPressed: () {
                             model.signInCust(_phNoController.text);
-
-                            // bool signInResult =
-                            //     await model.signInCust(_phNoController.text);
-                            // signInResult
-                            //     ? Navigator.popAndPushNamed(
-                            //         context, FoodMenuRoute)
-                            //     : UIHelper().showErrorButtomSheet(
-                            //         context, model.errorMessage);
+                            model.hasErrorMessage || _phNoController.text == null
+                                ? WidgetsBinding.instance.addPostFrameCallback(
+                                    (_) => _showErrorMessage(
+                                      context,
+                                      model.errorMessage,
+                                    ),
+                                  )
+                                : Container();
                           },
                           child: AuthBtnStyle(
                             deviceSize: deviceSize,
@@ -147,72 +143,12 @@ class _CustSigninViewState extends State<CustSigninView> {
                                   color: Colors.brown,
                                 ),
                               ),
-                              // InkResponse(
-                              //   onTap: () {
-                              //     print("Tapped");
-                              //     Navigator.pushNamed(context, 'custReg_1');
-                              //   },
-                              //   child: Text(
-                              //     "Register",
-                              //     style: TextStyle(
-                              //       fontSize: widgetSize.height * 0.02,
-                              //       fontFamily: 'Uni-Sans',
-                              //       fontWeight: FontWeight.bold,
-                              //       color: Colors.brown,
-                              //     ),
-                              //   ),
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-
-                  // tempBool
-                  //     ? showBottomSheet(
-                  //         context: context,
-                  //         builder: (context) => UIHelper()
-                  //             .showErrorButtomSheet(context, "errorText"))
-                  // Animator<double>(
-                  //       tween: Tween<double>(begin: 0, end: 300),
-                  //       cycles: 0,
-                  //       builder: (context, animatorState, child) => Center(
-                  //         child: Container(
-                  //           margin: EdgeInsets.symmetric(vertical: 10),
-                  //           height: animatorState.value,
-                  //           width: animatorState.value,
-                  //           child: FlutterLogo(),
-                  //         ),
-                  //       ),
-                  //     )
-                  //  : Container(),
-
-                  // Countdown(
-                  //     seconds: 10,
-                  //     build: (BuildContext context, double time) =>
-                  //         TranslationAnimatedWidget(
-                  //             enabled:
-                  //                 timeComplete, //update this boolean to forward/reverse the animation
-                  //             values: [
-                  //               Offset(0, -40), // disabled value value
-                  //               Offset(0, 400), //intermediate value
-                  //               Offset(0, -40) //enabled value
-                  //             ],
-                  //             child: Text("feds")),
-                  //     interval: Duration(milliseconds: 1000),
-                  //     onFinished: () {
-                  //       //timeComplete= false;
-                  //     },
-                  //   )
-                  model.hasErrorMessage
-                      ? Container(
-                          color: Colors.red,
-                          child: Text(
-                            model.errorMessage,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
-                      : Container(),
 
                   model.state == ViewState.Busy ? Loading() : Container(),
                 ],
@@ -223,4 +159,11 @@ class _CustSigninViewState extends State<CustSigninView> {
       ),
     );
   }
+}
+
+_showErrorMessage(BuildContext context, String error) async {
+  showModalBottomSheet(
+    context: (context),
+    builder: (context) => UIHelper().showErrorButtomSheet(context, error),
+  );
 }

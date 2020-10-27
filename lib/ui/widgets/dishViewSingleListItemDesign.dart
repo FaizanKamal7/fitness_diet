@@ -99,40 +99,6 @@ class DishViewSingleListItemDesign extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // Container(
-                  //   height: _deviceSize.height * 0.1,
-                  //   width: _deviceSize.width * 0.3,
-                  //   child: Row(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       Icon(
-                  //         Icons.star,
-                  //         color: Colors.green,
-                  //         size: _deviceSize.height * 0.1,
-                  //       ),
-                  //       Icon(
-                  //         Icons.star,
-                  //         color: Colors.green,
-                  //         size: _deviceSize.height * 0.1,
-                  //       ),
-                  //       Icon(
-                  //         Icons.star,
-                  //         color: Colors.green,
-                  //         size: _deviceSize.height * 0.1,
-                  //       ),
-                  //       Icon(
-                  //         Icons.star,
-                  //         color: Colors.green,
-                  //         size: _deviceSize.height * 0.1,
-                  //       ),
-                  //       Icon(
-                  //         Icons.star_half,
-                  //         color: Colors.green,
-                  //         size: _deviceSize.height * 0.1,
-                  //       ),
-                  //     ],
-                  //   ),
-                  // )
                 ],
               ),
             ),
@@ -183,7 +149,7 @@ class DishViewSingleListItemDesign extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(right: _deviceSize.width * 0.02),
                 child: Text(
-                  "280 Kcal",
+                 kcal.toString() + " Kcal",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Lemon-Milk",

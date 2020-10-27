@@ -55,12 +55,6 @@ class _ChefProfileViewState extends State<ChefProfileView>
               builder: (context, widgetSize) => StreamBuilder<List<ChefData>>(
                 stream: _chefData,
                 builder: (context, snapshot) {
-                  // print("snapshot " +
-                  //     snapshot.toString() +
-                  //     ",  _chefData: " +
-                  //     _chefData.toString() +
-                  //     "   snapSHot error " +
-                  //     snapshot.error.toString());
                   if (snapshot.hasData) {
                     ChefData chefData = snapshot.data[0];
                     return Scaffold(
@@ -84,7 +78,7 @@ class _ChefProfileViewState extends State<ChefProfileView>
                                     minExtent: deviceSize.height * 0.26,
                                     // chefName: chefData.chefName,
                                     // chefPic: chefData.chefPic,
-                                    chefData:chefData,
+                                    chefData: chefData,
                                   ),
                                   pinned: true,
                                   floating: false,
@@ -138,39 +132,12 @@ class _ChefProfileViewState extends State<ChefProfileView>
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 //
-                                // >>>>>>>>> B A C K   I C O N
-                                //
-
-                                // RawMaterialButton(
-                                //   onPressed: () {},
-                                //   elevation: 2.0,
-                                //   fillColor: Colors.white,
-                                //   child: Icon(
-                                //     Icons.arrow_back_ios,
-                                //     size: deviceSize.height * 0.025,
-                                //   ),
-                                //   //    padding: EdgeInsets.all(deviceSize.height * 0.0),
-                                //   shape: CircleBorder(),
-                                // ),
-
-                                //
                                 // >>>>>>>>> P R O F I L E   T E X T
                                 //
                                 ProfielHeaderText(),
 
                                 Spacer(),
-                                // FlatButton(
-                                //   onPressed: () {
-                                //     AuthService().signOut();
-                                //   },
-                                //   child: Text(
-                                //     "Sign out",
-                                //     style: TextStyle(
-                                //       color: Colors.white,
-                                //       fontSize: MediaQuery.of(context).size.height * 0.02,
-                                //     ),
-                                //   ),
-                                // ),
+
                                 IconButton(
                                   // color: Colors.white,
                                   icon: Icon(

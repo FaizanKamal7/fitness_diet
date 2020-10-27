@@ -193,7 +193,6 @@ class _AddDishInfoState extends State<AddDishInfo> {
                 StandardHeaderWithWhiteBG(passedText: "Add new dish"),
                 // --------------------------------------- A D D   D I S H   I N F O   C O L U M N
                 Container(
-                  // alignment: Alignment.topLeft,
                   margin: EdgeInsets.only(top: widgetSize.height * 0.28),
 
                   //   height: widgetSize.height * 0.8,
@@ -344,6 +343,7 @@ class _AddDishInfoState extends State<AddDishInfo> {
             //
 
             StandardHeadingNoBgUniSans(passedText: "Dish name: "),
+
             TextFeildBigWhiteBG(
                 controller: dishNameContr,
                 deviceSize: deviceSize,

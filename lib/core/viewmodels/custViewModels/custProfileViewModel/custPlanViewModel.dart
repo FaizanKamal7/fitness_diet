@@ -20,7 +20,7 @@ import 'package:http/http.dart' as http;
 class CustPlanViewModel extends BaseViewModel {
   final DialogService _dialogService = locator<DialogService>();
   double _weightDifference;
-  String errorMessage;
+
   final NavigationService _navigationService = locator<NavigationService>();
   startPlan(String gender, String custheight, String custWeight,
       String custgoalWeight, DateTime dateOfBirth, double activityLevel) async {
@@ -32,7 +32,7 @@ class CustPlanViewModel extends BaseViewModel {
     print('date of birth ........................' + dateOfBirth.toString());
     print('activity level ........................' + activityLevel.toString());
     bool dataValidated;
-
+    setState(ViewState.Busy);
     Validators().verifySmallNumberField(custheight) &&
             Validators().verifySmallNumberField(custWeight) &&
             Validators().verifySmallNumberField(custgoalWeight)
@@ -116,12 +116,14 @@ class CustPlanViewModel extends BaseViewModel {
 
       print("--------> AlertResponse().confirmed inside CustPlanViewModel : " +
           AlertResponse().confirmed.toString());
-
+      setState(ViewState.Idle);
       if (dialogResult.confirmed == true)
         _navigationService.navigateTo(routes.CustProfileRoute);
     } else {
-      setErrorMessage(' Invalid data in height and weight ');
-      print('invalid data in height and weight *****************************');
+      setErrorMessage('    Invalid data in height and weight ');
+      print('invalid data in height and weight *****************************' +
+          errorMessage.toString());
+      setState(ViewState.Idle);
     }
   }
 

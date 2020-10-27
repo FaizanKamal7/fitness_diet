@@ -1,13 +1,12 @@
-import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefRegViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
+import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
 import 'package:fitness_diet/ui/widgets/chefAuthBg.dart';
-import 'package:fitness_diet/ui/widgets/showErrorMessage.dart';
 import 'package:fitness_diet/ui/widgets/Texts/stepHeaderWithBg.dart';
 import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithPrefix.dart';
 import 'package:flutter/material.dart';
@@ -89,24 +88,14 @@ class _ChefRegView_1State extends State<ChefRegView_1> {
                       child: FlatButton(
                         onPressed: () {
                           model.register(_phNocontroller.text);
-
-                          // bool registerSuccess =
-                          //     await model.register(_phNocontroller.text);
-                          // print("--------------------> Build context: " +
-                          //     context.toString());
-                          // await PhoneVer(context: context)
-                          //     .verifyPhone(_controller.text);
-
-                          // print("------> Register success : " +
-                          //     registerSuccess.toString());
-
-                          // if (registerSuccess) {
-                          //   print("sucessssssssssssssssssssssssssssssssss");
-                          //   Navigator.popAndPushNamed(context, 'chefReg_2');
-                          // } else {
-                          //   UIHelper().showErrorButtomSheet(
-                          //       context, model.errorMessage);
-                          // }
+                          model.hasErrorMessage || _phNocontroller.text == null
+                              ? WidgetsBinding.instance.addPostFrameCallback(
+                                  (_) => _showErrorMessage(
+                                    context,
+                                    model.errorMessage,
+                                  ),
+                                )
+                              : Container();
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
@@ -150,16 +139,6 @@ class _ChefRegView_1State extends State<ChefRegView_1> {
                     ),
                   ],
                 ),
-                 model.hasErrorMessage
-                      ? Container(
-                          color: Colors.red,
-                          child: Text(
-                            model.errorMessage,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        )
-                      : Container(),
-
 
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
@@ -169,4 +148,11 @@ class _ChefRegView_1State extends State<ChefRegView_1> {
       ),
     );
   }
+}
+
+_showErrorMessage(BuildContext context, String error) async {
+  showModalBottomSheet(
+    context: (context),
+    builder: (context) => UIHelper().showErrorButtomSheet(context, error),
+  );
 }

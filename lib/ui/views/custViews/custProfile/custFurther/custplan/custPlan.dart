@@ -127,7 +127,27 @@ class _CustPlanState extends State<CustPlan> {
                   // /
                   // / M  E  A  L  S -- W   I   D  G  E  T \\
                   // /
-
+                  FlatButton(
+                    onPressed: () {
+                      print('Add Meal presed :');
+                      // _showAddressBottomSheet(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddMealsView()),
+                      );
+                    },
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Add Meal",
+                        style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontSize: 15,
+                          color: Color(0xff3caa43),
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
                     // color: Colors.red,
                     height: deviceSize.height * 0.4,
@@ -161,26 +181,6 @@ class _CustPlanState extends State<CustPlan> {
                     ),
                   ),
 
-                  FlatButton(
-                    onPressed: () {
-                      print('Add Meal presed :');
-                      // _showAddressBottomSheet(context);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddMealsView()),
-                      );
-                    },
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Add Meal",
-                          style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 15,
-                            color: Color(0xff3caa43),
-                          ),
-                        )),
-                  ),
                   standardHeadingWithBGAndRoundCorner(passedText: 'Exercise '),
                   SizedBox(
                     height: widgetSize.height * 0.04,
@@ -188,6 +188,28 @@ class _CustPlanState extends State<CustPlan> {
 
                   // --------------------------- > E X E C I S E --W I D G E T
                   //
+                  FlatButton(
+                    onPressed: () {
+                      print('add exercise presed :');
+                      // _showAddressBottomSheet(context);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddExerciseView()),
+                      );
+                    },
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Add Exercise",
+                        style: TextStyle(
+                          fontFamily: "Montserrat",
+                          fontSize: 15,
+                          color: Color(0xff3caa43),
+                        ),
+                      ),
+                    ),
+                  ),
                   Container(
                     // color: Colors.red,
                     height: deviceSize.height * 0.4,
@@ -219,28 +241,6 @@ class _CustPlanState extends State<CustPlan> {
                         }
                       },
                     ),
-                  ),
-
-                  FlatButton(
-                    onPressed: () {
-                      print('add exercise presed :');
-                      // _showAddressBottomSheet(context);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AddExerciseView()),
-                      );
-                    },
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Add Exercise",
-                          style: TextStyle(
-                            fontFamily: "Montserrat",
-                            fontSize: 15,
-                            color: Color(0xff3caa43),
-                          ),
-                        )),
                   ),
                 ],
               ),

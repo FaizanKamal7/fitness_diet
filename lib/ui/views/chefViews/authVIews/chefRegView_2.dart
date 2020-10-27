@@ -1,8 +1,8 @@
-import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/auth/chefReg2ViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
+import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
@@ -97,18 +97,14 @@ class _ChefRegView_2State extends State<ChefRegView_2> {
                           chefNameContr.text,
                           dateOfBirth,
                         );
-
-                        // bool isChefDataSuccess = await model.addChefData(
-                        //   chefNameContr.text,
-                        //   dateOfBirth,
-                        // );
-                        // print("isChefDataSuccess: ---------------- " +
-                        //     isChefDataSuccess.toString());
-                        // isChefDataSuccess
-                        //     ? Navigator.pushReplacementNamed(
-                        //         context, 'chefProfile')
-                        //     : UIHelper().showErrorButtomSheet(
-                        //         context, model.errorMessage);
+                        model.hasErrorMessage
+                            ? WidgetsBinding.instance.addPostFrameCallback(
+                                (_) => _showErrorMessage(
+                                  context,
+                                  model.errorMessage,
+                                ),
+                              )
+                            : Container();
                       },
                       child: AuthBtnStyle(
                         deviceSize: deviceSize,
@@ -167,4 +163,11 @@ class _ChefRegView_2State extends State<ChefRegView_2> {
       ),
     );
   }
+}
+
+_showErrorMessage(BuildContext context, String error) async {
+  showModalBottomSheet(
+    context: (context),
+    builder: (context) => UIHelper().showErrorButtomSheet(context, error),
+  );
 }

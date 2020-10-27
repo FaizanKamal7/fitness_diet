@@ -5,7 +5,7 @@ import 'package:fitness_diet/globals.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/views/soleDishView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/chefSoleDishView.dart';
 import 'package:fitness_diet/ui/widgets/dishViewSingleListItemDesign.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBg.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class _ChefDishesState extends State<ChefDishes> {
   @override
   Widget build(BuildContext context) {
     final _chefDish = Provider.of<List<Dish>>(context);
-    final _chefData = Provider.of<List<ChefData>>(context);
+    // final _chefData = Provider.of<List<ChefData>>(context);
     final _user = Provider.of<CurrentUser>(context);
 
     // int count = 0;
@@ -72,36 +72,37 @@ class _ChefDishesState extends State<ChefDishes> {
                       children: _chefDish.map((dish) {
                         // count += 1;
 
-                        if (dish.chefID == _user.uid) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SoleDishView(
-                                    passedDish: dish,
-                                    isFromCustView: false,
-                                  ),
+                        // if (dish.chefID == _user.uid) {
+                        return InkWell(
+                          onTap: () {
+                            print(" dish: " + dish.dishID);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChefSoleDishView(
+                                  passedDish: dish,
+                                  isFromCustView: false,
                                 ),
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                SizedBox(height: 10),
-                                DishViewSingleListItemDesign(
-                                  dishName: dish.dishName,
-                                  chefName: dish.chefName,
-                                  kcal: 250.5,
-                                  price: dish.dishPrice,
-                                  ratings: 3.5,
-                                  dishPic: dish.dishPic,
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          return Container();
-                        }
+                              ),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              SizedBox(height: 10),
+                              DishViewSingleListItemDesign(
+                                dishName: dish.dishName,
+                                chefName: dish.chefName,
+                                kcal: dish.dishKcal,
+                                price: dish.dishPrice,
+                                ratings: 3.5,
+                                dishPic: dish.dishPic,
+                              ),
+                            ],
+                          ),
+                        );
+                        // } else {
+                        //   return Container();
+                        // }
                       }).toList(),
                     )
             ],

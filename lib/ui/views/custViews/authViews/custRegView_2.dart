@@ -2,6 +2,7 @@ import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custReg2ViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
+import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
@@ -81,15 +82,6 @@ class _CustRegView_2State extends State<CustRegView_2> {
                       hintText: "Enter your name",
                     ),
                     SizedBox(height: widgetSize.height * 0.01),
-                    // TextFeildWithPrefix(
-                    //   controller: custPassContr,
-                    //   deviceSize: deviceSize,
-                    //   isTypeInt: false,
-                    //   isObscureText: true,
-                    //   preIcon: Icons.lock,
-                    //   hintText: "Enter your password",
-                    // ),
-                    // SizedBox(height: widgetSize.height * 0.01),
 
                     DateOfBirthSelector(
                       deviceSize: deviceSize,
@@ -107,10 +99,14 @@ class _CustRegView_2State extends State<CustRegView_2> {
                           print(
                               "Register button is pressed. Redirecting to 'CustReg2Viewmodel' to add 'CustData' (Message from inside CustRegView1)");
                           model.addCustData(custNameContr.text, dateOfBirth);
-                          // bool isCustDataSuccess = await model.addCustData(
-                          //   custNameContr.text,
-                          //   dateOfBirth,
-                          // );
+                          model.hasErrorMessage
+                              ? WidgetsBinding.instance.addPostFrameCallback(
+                                  (_) => _showErrorMessage(
+                                    context,
+                                    model.errorMessage,
+                                  ),
+                                )
+                              : Container();
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
@@ -155,16 +151,6 @@ class _CustRegView_2State extends State<CustRegView_2> {
                 // ? UIHelper().showErrorButtomSheet(context, model.errorMessage)
                 // : Container(),
 
-                model.hasErrorMessage
-                    ? Container(
-                        color: Colors.red,
-                        child: Text(
-                          model.errorMessage,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    : Container(),
-
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],
             ),
@@ -173,4 +159,11 @@ class _CustRegView_2State extends State<CustRegView_2> {
       ),
     );
   }
+}
+
+_showErrorMessage(BuildContext context, String error) async {
+  showModalBottomSheet(
+    context: (context),
+    builder: (context) => UIHelper().showErrorButtomSheet(context, error),
+  );
 }
