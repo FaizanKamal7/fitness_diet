@@ -1,10 +1,12 @@
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
+import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/orderViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/fonts.dart';
+import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/ReceiptContainer.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/addAddressView.dart';
@@ -300,126 +302,7 @@ class _OrderViewState extends State<OrderView> {
               // ----------------------------------------- R E C E I P T
               Align(
                 alignment: Alignment.bottomCenter,
-                child:
-                    // Container(
-                    //   height: deviceSize.height * 0.25,
-                    //   width: deviceSize.width,
-                    //   padding: EdgeInsets.symmetric(horizontal: 27),
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.white,
-                    //     boxShadow: [
-                    //       BoxShadow(
-                    //         offset: Offset(0.00, 3.00),
-                    //         color: Colors.black,
-                    //         blurRadius: 6,
-                    //       ),
-                    //     ],
-                    //     borderRadius: BorderRadius.only(
-                    //       topLeft: Radius.circular(42),
-                    //       topRight: Radius.circular(42),
-                    //     ),
-                    //   ),
-                    //   child: Column(
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    //     crossAxisAlignment: CrossAxisAlignment.center,
-                    //     children: [
-                    //       StandardReceiptSmallText(
-                    //         passedText: "Sub-total: ",
-                    //         passedPrice: subtotal.toString(),
-                    //       ),
-                    //       StandardReceiptSmallText(
-                    //         passedText: "Total Saved: ",
-                    //         passedPrice: getTotalSaved(
-                    //                 _custdata, _cart, _cart, _dishData)
-                    //             .toString(),
-                    //       ),
-                    //       StandardReceiptSmallText(
-                    //         passedText: "Delivery fee: ",
-                    //         passedPrice:
-                    //             subtotal > 4000 ? '0' : deliveryFee.toString(),
-                    //       ),
-                    //       StandardReceiptBigText(
-                    //         passedText: "Total: ",
-                    //         passedPrice: subtotal -
-                    //                     getTotalSaved(_custdata, _cart, _cart,
-                    //                         _productData) >
-                    //                 4000
-                    //             ? (subtotal -
-                    //                     getTotalSaved(_custdata, _cart, _cart,
-                    //                         _productData))
-                    //                 .toString()
-                    //             : ((subtotal -
-                    //                         getTotalSaved(_custdata, _cart,
-                    //                             _cart, _productData)) +
-                    //                     deliveryFee)
-                    //                 .toString(),
-                    //       ),
-                    //       SizedBox(height: 10),
-                    //       _custdata != null
-                    //           ? InkWell(
-                    //               onTap: () {
-                    //                 Map<String, dynamic> _shippingAddr = {
-                    //                   _addrSelectedTitle:
-                    //                       _custdata.address[_addrSelectedTitle]
-                    //                 };
-                    //                 double _total = subtotal > 4000
-                    //                     ? (subtotal -
-                    //                         getTotalSaved(_custdata, _cart,
-                    //                             _cart, _productData))
-                    //                     : ((subtotal -
-                    //                             getTotalSaved(_custdata, _cart,
-                    //                                 _cart, _productData)) +
-                    //                         deliveryFee);
-                    //                 print(
-                    //                     " ===> _shippingAddr inside OrderView : " +
-                    //                         _shippingAddr.toString());
-                    //                 // _custdata.address.keys.
-
-                    //                 if (_addrSelectedTitle != null &&
-                    //                     _custdata.custPhNo != null) {
-                    //                   model.createOrder(
-                    //                       _custdata.custId,
-                    //                       _custdata.custName,
-                    //                       _shippingAddr,
-                    //                       _custdata.custPhNo,
-                    //                       [
-                    //                         getEnumValue(Order_Status.ORDER_PLACED
-                    //                             .toString())
-                    //                       ],
-                    //                       _cart.items,
-                    //                       _total,
-                    //                       _custdata.cartID);
-
-                    //                   Navigator.pushReplacement(
-                    //                     context,
-                    //                     MaterialPageRoute(
-                    //                       builder: (context) => OrderSummaryView(),
-                    //                     ),
-                    //                   );
-                    //                 } else {
-                    //                   if (_addrSelectedTitle == null) {
-                    //                     _showAlert(context, 'Address ',
-                    //                         'Address not found Kindly enter a valid address');
-                    //                   } else {
-                    //                     _showAlert(context, 'Contact Number',
-                    //                         'contact number not found ,Enter a valid contact number ');
-                    //                   }
-                    //                 }
-                    //               },
-                    //               child: BigLightGreenBtn(
-                    //                 passedText: "Place order",
-                    //                 isDisabled: false,
-                    //               ),
-                    //             )
-                    //           : BigLightGreenBtn(
-                    //               passedText: "Place order",
-                    //               isDisabled: true,
-                    //             ),
-                    //     ],
-                    //   ),
-                    // ),
-
-                    ReceiptContainer(
+                child: ReceiptContainer(
                   isCartViewReceipt: false,
                   shippingAddr: _custdata != null
                       ? {
@@ -428,140 +311,12 @@ class _OrderViewState extends State<OrderView> {
                         }
                       : {},
                 ),
-                // Align(
-                //   alignment: Alignment.bottomCenter,
-                //   child: Container(
-                //     height: deviceSize.height * 0.25,
-                //     width: deviceSize.width,
-                //     padding: EdgeInsets.symmetric(horizontal: 27),
-                //     decoration: BoxDecoration(
-                //       color: Colors.white,
-                //       boxShadow: [
-                //         BoxShadow(
-                //           offset: Offset(0.00, 3.00),
-                //           color: Colors.black,
-                //           blurRadius: 6,
-                //         ),
-                //       ],
-                //       borderRadius: BorderRadius.only(
-                //         topLeft: Radius.circular(42),
-                //         topRight: Radius.circular(42),
-                //       ),
-                //     ),
-                //     child: Column(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       crossAxisAlignment: CrossAxisAlignment.center,
-                //       children: [
-                //         StandardReceiptSmallText(
-                //           passedText: "Sub-total: ",
-                //           passedPrice: subtotal.toString(),
-                //         ),
-                //         StandardReceiptSmallText(
-                //           passedText: "Total Saved: ",
-                //           passedPrice: getTotalSaved(
-                //                   _custdata, _cart, _cart, _productData)
-                //               .toString(),
-                //         ),
-                //         StandardReceiptSmallText(
-                //           passedText: "Delivery fee: ",
-                //           passedPrice:
-                //               subtotal > 4000 ? '0' : deliveryFee.toString(),
-                //         ),
-                //         StandardReceiptBigText(
-                //           passedText: "Total: ",
-                //           passedPrice: subtotal -
-                //                       getTotalSaved(_custdata, _cart, _cart,
-                //                           _productData) >
-                //                   4000
-                //               ? (subtotal -
-                //                       getTotalSaved(_custdata, _cart, _cart,
-                //                           _productData))
-                //                   .toString()
-                //               : ((subtotal -
-                //                           getTotalSaved(_custdata, _cart,
-                //                               _cart, _productData)) +
-                //                       deliveryFee)
-                //                   .toString(),
-                //         ),
-                //         SizedBox(height: 10),
-
-                //         // _custdata != null
-                //         //     ? InkWell(
-                //         //         onTap: () {
-                //         //           Map<String, dynamic> _shippingAddr = {
-                //         //             _addrSelectedTitle:
-                //         //                 _custdata.address[_addrSelectedTitle]
-                //         //           };
-                //         //           double _total = subtotal > 4000
-                //         //               ? (subtotal -
-                //         //                   getTotalSaved(_custdata, _cart,
-                //         //                       _cart, _productData))
-                //         //               : ((subtotal -
-                //         //                       getTotalSaved(_custdata, _cart,
-                //         //                           _cart, _productData)) +
-                //         //                   deliveryFee);
-                //         //           print(
-                //         //               " ===> _shippingAddr inside OrderView : " +
-                //         //                   _shippingAddr.toString());
-                //         //           // _custdata.address.keys.
-
-                //         //           if (_addrSelectedTitle != null &&
-                //         //               _custdata.custPhNo != null) {
-                //         //             model.createOrder(
-                //         //                 _custdata.custId,
-                //         //                 _custdata.custName,
-                //         //                 _shippingAddr,
-                //         //                 _custdata.custPhNo,
-                //         //                 [
-                //         //                   getEnumValue(Order_Status.ORDER_PLACED
-                //         //                       .toString())
-                //         //                 ],
-                //         //                 _cart.items,
-                //         //                 _total,
-                //         //                 _custdata.cartID);
-
-                //         //             Navigator.pushReplacement(
-                //         //               context,
-                //         //               MaterialPageRoute(
-                //         //                 builder: (context) => OrderSummaryView(),
-                //         //               ),
-                //         //             );
-                //         //           } else {
-                //         //             if (_addrSelectedTitle == null) {
-                //         //               _showAlert(context, 'Address ',
-                //         //                   'Address not found Kindly enter a valid address');
-                //         //             } else {
-                //         //               _showAlert(context, 'Contact Number',
-                //         //                   'contact number not found ,Enter a valid contact number ');
-                //         //             }
-                //         //           }
-                //         //         },
-                //         //         child: BigLightGreenBtn(
-                //         //           passedText: "Place order",
-                //         //           isDisabled: false,
-                //         //         ),
-                //         //       )
-                //         //     : BigLightGreenBtn(
-                //         //         passedText: "Place order",
-                //         //         isDisabled: true,
-                //         //       ),
-                //       ],
-                //     ),
-                //   ),
               ),
+              model.state == ViewState.Busy ? Loading() : SizedBox(),
             ],
           ),
         ),
       ),
     );
   }
-}
-
-void _showAlert(BuildContext context, String title, String desc) {
-  showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: Text(title),
-            content: Text(desc),
-          ));
 }

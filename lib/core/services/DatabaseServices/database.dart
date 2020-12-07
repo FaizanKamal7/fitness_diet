@@ -133,8 +133,8 @@ class DatabaseService {
       custId: uid,
       custPhNo: snapshot.data()['custPhNo'] ?? "load",
       custName: snapshot.data()['custName'] ?? "load",
-      custDateOfBirth:
-          (snapshot.data()['custDateOfBirth'] as Timestamp).toDate() ?? "",
+      // custDateOfBirth:
+      //     (snapshot.data()['custDateOfBirth'] as Timestamp).toDate() ?? "",
       // custfavs: snapshot.data()['custfavs'] ?? "",
 
       custaddress: snapshot.data()['custAddress'] ?? '',
@@ -786,7 +786,11 @@ class DatabaseService {
   }
 
   Future updateCartData(String cartID, String productID, int quantity) async {
-    print("---------> update cart  function reached in DatabaseServies class");
+    print(
+        "---------> update cart  function reached in DatabaseServies class. Product id: " +
+            productID.toString() +
+            " cartID: " +
+            cartID.toString());
     await cartCollection.doc(cartID).set(
       {
         'items': {productID: quantity},

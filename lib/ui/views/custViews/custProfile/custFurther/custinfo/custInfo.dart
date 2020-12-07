@@ -78,8 +78,8 @@ class CustInfo extends StatelessWidget {
                   children: <Widget>[
                     standardInfDisplaywithBullets(
                         'Contact No : ', _custData.custContactNo, deviceSize),
-                    standardInfDisplaywithBullets('Data of birth : ',
-                        model.parseDate(_custData.custDateOfBirth), deviceSize),
+                    // standardInfDisplaywithBullets('Data of birth : ',
+                    //     model.parseDate(_custData.custDateOfBirth), deviceSize),
                     standardInfDisplaywithBullets('Address :', '', deviceSize),
                     ListView.builder(
                       shrinkWrap: true,

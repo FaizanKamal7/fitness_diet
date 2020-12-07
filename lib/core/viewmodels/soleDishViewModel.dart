@@ -43,6 +43,7 @@ class SoleDishViewModel extends BaseViewModel {
         ) ==
         true) {
       int _quantity = getServings(cart.items, passedDish.dishID);
+      print("custData.cartID: " + custData.toString());
       DatabaseService()
           .updateCartData(custData.cartID, passedDish.dishID, _quantity + 1);
       return true;

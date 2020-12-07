@@ -8,6 +8,7 @@ import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/orderViewModel.dart';
 import 'package:fitness_diet/locator.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
+import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/orderSummaryView.dart';
 import 'package:fitness_diet/ui/views/custViews/orderView.dart';
@@ -146,8 +147,14 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
                             ? navigateToOrderViewBtn
                             : InkWell(
                                 onTap: () async {
-                                  // await model.verifyInventory(
-                                  //     _cart.items, _dishData, _cart.cartid);
+                                  model.hasErrorMessage
+                                      ? WidgetsBinding.instance
+                                          .addPostFrameCallback(
+                                              (_) => _showErrorMessage(
+                                                    context,
+                                                    model.errorMessage,
+                                                  ))
+                                      : Container();
 
                                   print(
                                       '---------------->user cart items after verify inventory in order view ' +
@@ -240,51 +247,18 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
                             passedText: "Place order",
                             isDisabled: true,
                           ),
-                // Row(
-                //   children: [
-                //     Container(
-                //       width: 50.0,
-                //     ),
-                //     Expanded(
-                //       child: Container(
-                //         height: 40.0,
-                //         decoration: BoxDecoration(
-                //           color: Colors.green,
-                //           borderRadius: BorderRadius.circular(50.0),
-                //         ),
-                //         child: Center(
-                //           child: InkWell(
-                //             onTap: () {
-                //               Navigator.push(
-                //                 context,
-                //                 MaterialPageRoute(
-                //                     builder: (context) => OrderView()),
-                //               );
-                //               // model..goToOrderView(),
-                //             },
-                //             child: Text(
-                //               'Checkout',
-                //               overflow: TextOverflow.ellipsis,
-                //               style: TextStyle(
-                //                 color: Colors.white,
-                //                 fontSize: 20.0,
-                //                 fontWeight: FontWeight.w400,
-                //               ),
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //     Container(
-                //       width: 50.0,
-                //     ),
-                //   ],
-                // ),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  _showErrorMessage(BuildContext context, String error) async {
+    showModalBottomSheet(
+      context: (context),
+      builder: (context) => UIHelper().showErrorButtomSheet(context, error),
     );
   }
 }

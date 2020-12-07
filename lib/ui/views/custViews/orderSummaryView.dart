@@ -4,6 +4,7 @@ import 'package:fitness_diet/ui/widgets/orderSingleStage.dart';
 import 'package:fitness_diet/ui/widgets/timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 // ignore: must_be_immutable
 class OrderSummaryView extends StatelessWidget {
@@ -57,6 +58,15 @@ class OrderSummaryView extends StatelessWidget {
               ),
             ),
           ),
+          // GoogleMap(
+          //   mapType: MapType.hybrid,
+          //   initialCameraPosition: initialLocation,
+          //   markers: Set.of((marker != null) ? [marker] : []),
+          //   circles: Set.of((circle != null) ? [circle] : []),
+          //   onMapCreated: (GoogleMapController controller) {
+          //     _controller = controller;
+          //   },
+          // ),
           // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R  T R A C K I N G
           Timeline(
             children: <Widget>[
