@@ -11,16 +11,6 @@ class ChefDishesViewmodel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
   var _currentUser;
 
-  String extractedChefName(List<ChefData> _allChefsData, String chefID) {
-    String _chefName;
-    for (int i = 0; i < _allChefsData.length; i++) {
-      if (_allChefsData[i].chefID == chefID) {
-        _chefName = _allChefsData[i].chefName;
-      }
-    }
-    return _chefName;
-  }
-
   Future getChefName(String _chefID) async {
     String _chefName = await DBHelperFtns().documentIDToName(
         DatabaseService().chefCollection, "chefID", "chefName", _chefID);

@@ -1,4 +1,3 @@
-import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/chefDishesViewModel.dart';
@@ -22,7 +21,7 @@ class _ChefDishesState extends State<ChefDishes> {
   @override
   Widget build(BuildContext context) {
     final _chefDish = Provider.of<List<Dish>>(context);
-    final _chefData = Provider.of<List<ChefData>>(context);
+    // final _chefData = Provider.of<List<ChefData>>(context);
     final _user = Provider.of<CurrentUser>(context);
 
     // int count = 0;
@@ -70,41 +69,41 @@ class _ChefDishesState extends State<ChefDishes> {
               _chefDish == null
                   ? Loading()
                   : Column(
-                      children: [
-                        ..._chefDish.map((dish) {
-                          print("INSIDE CHEFDAssssssssTA");
-                          return dish.chefID == _user.uid
-                              ? InkWell(
-                                  onTap: () async {
-                                    print(" dish: " + dish.dishID);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ChefSoleDishView(
-                                          passedDish: dish,
-                                          isFromCustView: false,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: 10),
-                                      DishViewSingleListItemDesign(
-                                        dishName: dish.dishName,
-                                        chefName: model.extractedChefName(
-                                            _chefData, dish.chefID),
-                                        kcal: dish.dishKcal,
-                                        price: dish.dishPrice,
-                                        ratings: 3.5,
-                                        dishPic: dish.dishPic,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : SizedBox();
-                        }).toList(),
-                      ],
+                      children: _chefDish.map((dish) {
+                        // count += 1;
+
+                        // if (dish.chefID == _user.uid) {
+                        return InkWell(
+                          onTap: () {
+                            print(" dish: " + dish.dishID);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChefSoleDishView(
+                                  passedDish: dish,
+                                  isFromCustView: false,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              SizedBox(height: 10),
+                              DishViewSingleListItemDesign(
+                                dishName: dish.dishName,
+                                chefName: dish.chefName,
+                                kcal: dish.dishKcal,
+                                price: dish.dishPrice,
+                                ratings: 3.5,
+                                dishPic: dish.dishPic,
+                              ),
+                            ],
+                          ),
+                        );
+                        // } else {
+                        //   return Container();
+                        // }
+                      }).toList(),
                     )
             ],
           ),

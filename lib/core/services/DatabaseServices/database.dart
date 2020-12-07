@@ -372,7 +372,7 @@ class DatabaseService {
         dishUpdateDate: snapshot.docs[i].data()['dishUpdateDate'] ?? "",
         chefID: snapshot.docs[i].data()['chefID'] ?? "",
         attrID: snapshot.docs[i].data()['attrID'] ?? "",
-        // chefName: snapshot.docs[i].data()['chefName'] ?? "",
+        chefName: snapshot.docs[i].data()['chefName'] ?? "",
         ctgID: snapshot.docs[i].data()['ctgID'] ?? "",
         dishCarb: snapshot.docs[i].data()['dishCarb'] ?? 0.0,
         dishProtein: snapshot.docs[i].data()['dishProtein'] ?? 0.0,
@@ -967,12 +967,6 @@ class DatabaseService {
         .where("custID", isEqualTo: uid)
         .snapshots()
         .map(_orderDataFromSnapshot);
-  }
-
-  Stream<List<Order>> getAllOrderData() {
-    // print("---> _custID inside getSingleOrderData in database class: " +
-    //     _custID.toString());
-    return orderCollection.snapshots().map(_orderDataFromSnapshot);
   }
 
   //
