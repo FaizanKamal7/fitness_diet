@@ -53,6 +53,7 @@ class ChefRegViewModel extends BaseViewModel {
           await DatabaseService(uid: verifiedUserID).addNewChefData({
             'chefPhNo': updatedPhoneNo,
           });
+          await DatabaseService(uid: verifiedUserID).addnewuser('');
           print("---------> Navigating to chefReg2Route ");
           _navigationService.navigateTo(routes.ChefReg2Route);
           setState(ViewState.Idle);

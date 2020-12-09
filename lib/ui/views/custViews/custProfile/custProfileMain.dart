@@ -15,9 +15,14 @@ class CustProfileMain extends StatelessWidget {
     var custStreamProvider;
     var planStreamProvider;
     var ordersStreamProvider;
+    var usersDatastreamProvider;
+    var chefDataStreamProvider;
     var exerciseStreamProvider;
+    var messagedocumentprovider;
 
     try {
+      chefDataStreamProvider = StreamProvider<List<ChefData>>.value(
+          value: DatabaseService().getAllChefData);
       custStreamProvider = StreamProvider<CustData>.value(
           value: DatabaseService(uid: user.uid).getCustData);
       planStreamProvider = StreamProvider<Plan>.value(
@@ -27,6 +32,10 @@ class CustProfileMain extends StatelessWidget {
               .getCustOrderData());
       exerciseStreamProvider = StreamProvider<List<Exercise>>.value(
           value: DatabaseService().getAllExercises());
+      usersDatastreamProvider = StreamProvider<List<ChatUser>>.value(
+          value: DatabaseService().getAllUserData);
+      messagedocumentprovider = StreamProvider<List<String>>.value(
+          value: DatabaseService().getallmessagedocument);
     } catch (e) {
       print("--------> Error in custProfileMain: " + e.toString());
     }
@@ -36,6 +45,9 @@ class CustProfileMain extends StatelessWidget {
         planStreamProvider,
         ordersStreamProvider,
         exerciseStreamProvider,
+        chefDataStreamProvider,
+        usersDatastreamProvider,
+        messagedocumentprovider,
       ],
       child: MaterialApp(
         home: CustProfile(),

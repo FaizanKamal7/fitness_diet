@@ -32,7 +32,10 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('exercise');
   final CollectionReference delivCollection =
       FirebaseFirestore.instance.collection('delivery');
-
+  final CollectionReference userCollection =
+      FirebaseFirestore.instance.collection('users');
+  final CollectionReference messageCollection =
+      FirebaseFirestore.instance.collection('messages');
   final String uid;
   DatabaseService({this.uid});
 // ============================================================================================================
@@ -386,6 +389,34 @@ class DatabaseService {
     return chefDishes;
   }
 
+  Dish _singledishDataFromSnapshot(QuerySnapshot snapshot) {
+    print(
+        ">>>>>>>>>>> _dishDataFromSnapshot inside database INVOKED and snapshot legth is : " +
+            snapshot.docs.length.toString());
+    // Map<Dish,dynamic> chefDishes;
+
+    return Dish(
+      dishID: snapshot.docs[0].data()['dishID'] ?? "",
+      dishName: snapshot.docs[0].data()['dishName'] ?? "",
+      dishPrice: snapshot.docs[0].data()['dishPrice'] ?? 0,
+      dishRatings: snapshot.docs[0].data()['dishRatings'] ?? 0.0,
+      dishPic: snapshot.docs[0].data()['dishPic'] ?? "",
+      dishAval: snapshot.docs[0].data()['dishAval'] ?? false,
+      dishPrepTime: snapshot.docs[0].data()['dishPrepTime'] ?? 0,
+      dishAddDate: snapshot.docs[0].data()['dishAddDate'] ?? "",
+      dishUpdateDate: snapshot.docs[0].data()['dishUpdateDate'] ?? "",
+      chefID: snapshot.docs[0].data()['chefID'] ?? "",
+      attrID: snapshot.docs[0].data()['attrID'] ?? "",
+      chefName: snapshot.docs[0].data()['chefName'] ?? "",
+      ctgID: snapshot.docs[0].data()['ctgID'] ?? "",
+      dishCarb: snapshot.docs[0].data()['dishCarb'] ?? 0.0,
+      dishProtein: snapshot.docs[0].data()['dishProtein'] ?? 0.0,
+      dishFat: snapshot.docs[0].data()['dishFat'] ?? 0.0,
+      dishKcal: snapshot.docs[0].data()['dishKcal'] ?? 0.0,
+    );
+    // print("ALL THE DISHES: " + chefDishes.elementAt(i).dishName.toString());
+  }
+
 // //Get user doc stream
 //   Stream<List<Dish>> get getDishData {
 //     return dishCollection.get().asStream().map(_dishDataFromSnapshot);
@@ -398,6 +429,15 @@ class DatabaseService {
         .get()
         .asStream()
         .map(_dishDataFromSnapshot);
+  }
+
+  Stream<Dish> getSingleDishforordersummary(String dishID) {
+    print("-------> getChefDishData inside DATABASE INVOKED");
+    return dishCollection
+        .where("dishID", isEqualTo: dishID)
+        .get()
+        .asStream()
+        .map(_singledishDataFromSnapshot);
   }
 
   Stream<List<Dish>> getSingleDish(String dishID) {
@@ -1190,5 +1230,139 @@ class DatabaseService {
     print(
         " UiD DB TEST function reached in getdeliv data******************** ");
     return delivCollection.doc(uid).snapshots().map(_delivDataFromSnapshot);
+  }
+
+  //---------------------------- C H A T F U N C T I O N S------------
+  ///
+  ///
+  ///
+
+  Future<bool> addnewuser(String name) async {
+    await userCollection.doc(uid).set(
+      {
+        'idUser': uid,
+        'LastMessagetime': DateTime.now(),
+        'name': name,
+        'urlAvatar': ''
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  Future<bool> updateUserData(
+      Map<String, dynamic> dataMap, String custID) async {
+    print(
+        "---------> DataBase services class reached. Updating user for uid : " +
+            uid.toString());
+
+    // - Setting ID first in a doc
+    await userCollection.doc(custID).set(
+      {
+        'custUpdateDate': DateTime.now(),
+      },
+      SetOptions(merge: true),
+    );
+
+    // Future<dynamic> checkUserID(String userID) async {
+    //   var _completer = Completer<dynamic>();
+
+    //   await custCollection.where("custID", isEqualTo: userID).get().then((data) {
+    //     if (data.docs.length > 0) {
+    //       print(
+    //           "-----> data.docs inside custCollection completer check of 'checkUserID' : " +
+    //               data.docs.length.toString());
+    //       _completer.complete("cust");
+    //     }
+    //   });
+
+    //   await chefCollection.where("chefID", isEqualTo: userID).get().then((data) {
+    //     if (data.docs.length > 0) {
+    //       print(
+    //           "-----> data.docs inside chefCollection completer check of 'checkUserID' : " +
+    //               data.docs.length.toString());
+    //       _completer.complete("chef");
+    //     }
+    //   });
+
+    //   print(
+    //       "---------> DataBase services class reached. Completer.future inside checkUserID in DBServices: " +
+    //           _completer.future.toString());
+
+    //   String returnUser = await _completer.future;
+    //   print("-------> User returned from COMPLETER: " + returnUser);
+    //   return returnUser != null ? returnUser : null;
+
+    //   // return null;
+
+    //   // ---> https://stackoverflow.com/a/51122369
+    // }
+
+    Future<String> checkusertype(String uid) async {
+      String usertype = 'cust';
+      print('-----------------------------inside check user type in database ');
+      final snapShot = await FirebaseFirestore.instance
+          .collection('customer')
+          .doc(uid)
+          .get();
+
+      if (snapShot == null || !snapShot.exists) {
+        print('-------------------------> user id ' +
+            uid +
+            " if froom chef collection  ");
+        usertype = 'chef';
+      }
+
+      // chefCollection.where("chefID", isEqualTo: uid).get().then((data) {
+      //   if (data.docs.length > 0) {
+      //     print(
+      //         "-----> data.docs inside chefCollection completer check of 'checkUserID' : " +
+      //             data.docs.length.toString());
+      //     usertype = "chef";
+      //   }
+      // });
+      return usertype;
+    }
+  }
+
+  Stream<List<String>> get getallmessagedocument {
+    print(" ---------> Inside the getAllmessagedocument in database ");
+    return messageCollection.snapshots().map(_messagedatafromsnapshot);
+  }
+
+  List<String> _messagedatafromsnapshot(QuerySnapshot snapshot) {
+    // print(
+    //     '-------------------> inside map function of message data in database :' +
+    //         snapshot.docs.length.toString());
+    List<String> _documentlist = List<String>();
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      _documentlist.add(
+        snapshot.docs[i].id,
+      );
+    }
+    return _documentlist;
+  }
+
+  Stream<List<ChatUser>> get getAllUserData {
+    print(" ---------> Inside the getAllUsersData in database ");
+    return userCollection.snapshots().map(_usersdatafromsnapshop);
+  }
+
+  List<ChatUser> _usersdatafromsnapshop(QuerySnapshot snapshot) {
+    List<ChatUser> _usersList = List<ChatUser>();
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      _usersList.add(ChatUser(
+        idUser: snapshot.docs[i].data()['idUser'] ?? "",
+        name: snapshot.docs[i].data()['name'] ?? "",
+        pushToken: snapshot.docs[i].data()['pushToken'] ?? "",
+        urlAvatar: snapshot.docs[i].data()['urlAvatar'] ?? "",
+        chattingWith: snapshot.docs[i].data()['chattingWith'] ?? "",
+        lastMessageTime: snapshot.docs[i].data()['LastMessagetime'] != null
+            ? (snapshot.docs[i].data()['LastMessagetime'] as Timestamp).toDate()
+            : "",
+      ));
+      print("snapshot.docs[i].data()['chefName'] inside Database: " +
+          snapshot.docs[i].data()['chefName'].toString());
+    }
+    return _usersList;
   }
 }

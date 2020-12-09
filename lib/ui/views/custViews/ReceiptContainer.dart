@@ -160,12 +160,12 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
                                   double _total = subtotal + deliveryFee;
 
                                   if (widget.shippingAddr != null &&
-                                      _custData.custPhNo != null) {
+                                      _custData.custContactNo != null) {
                                     String orderID = await model.createOrder(
                                       _custData.custId,
                                       _custData.custName,
                                       widget.shippingAddr,
-                                      _custData.custPhNo,
+                                      _custData.custContactNo,
                                       [
                                         ConstantFtns().getEnumValue(Order_Status
                                             .ORDER_PLACED

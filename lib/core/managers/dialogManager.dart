@@ -6,6 +6,7 @@ import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/locator.dart';
 import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:logger/logger.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
@@ -191,6 +192,71 @@ class _DialogManagerState extends State<DialogManager> {
           btnOkOnPress: () async {
             _dialogService.dialogComplete(AlertResponse(
               confirmed: true,
+            ));
+            //  Navigator.pop(context);
+          },
+        )..show();
+        break;
+
+      case Dialog_Types.Ratings:
+        double _ratings;
+        AwesomeDialog(
+          context: context,
+          animType: AnimType.LEFTSLIDE,
+          dialogType: DialogType.INFO,
+          dismissOnBackKeyPress: true,
+          dismissOnTouchOutside: true,
+          body: Center(
+            child: Column(
+              children: [
+                // >>>>>>>>>>>>>>>>>>>>>>> O T P   H E A D E R
+                Text(
+                  request.title,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: "Lemon-Milk",
+                      fontSize: deviceSize.height * 0.021),
+                ),
+                SizedBox(
+                  height: deviceSize.height * 0.0185,
+                ),
+                RatingBar.builder(
+                  initialRating: 3,
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    _ratings = rating;
+                    print(rating);
+                  },
+                ),
+                // >>>>>>>>>>>>>>>>>>>>>>> O T P   T E X T   F E I L D
+                // Text(
+                //   request.description,
+                //   textAlign: TextAlign.center,
+                //   style: TextStyle(
+                //       fontFamily: "BAHNSCHRIFT",
+                //       fontSize: deviceSize.height * 0.016),
+                // ),
+
+                // >>>>>>>>>>>>>>>>>>>>>>> R E S E N D    A N D   T I M E R
+                SizedBox(
+                  height: deviceSize.height * 0.015,
+                ),
+              ],
+            ),
+          ),
+          btnOkText: request.buttonTitle,
+          btnOkOnPress: () async {
+            _dialogService.dialogComplete(AlertResponse(
+              confirmed: true,
+              userText: _ratings.toString(),
             ));
             //  Navigator.pop(context);
           },

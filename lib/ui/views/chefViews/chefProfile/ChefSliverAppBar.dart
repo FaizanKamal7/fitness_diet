@@ -1,8 +1,10 @@
 import 'dart:math';
 import 'dart:ui';
 import 'package:fitness_diet/core/models/user.dart';
+import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
+import 'package:fitness_diet/ui/views/chatViews/chatHomeChef.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileEditView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/standardBtnWhitishRound.dart';
 import 'package:fleva_icons/fleva_icons.dart';
@@ -188,7 +190,16 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                   // >>>>>>>>> M E S S A G E   I C O N
                   //
                   FlatButton(
-                    onPressed: null,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatHomeChef(
+                            currentUserId: BaseViewModel().getUser,
+                          ),
+                        ),
+                      );
+                    },
                     child: Container(
                         margin: EdgeInsets.only(right: widgetSize.width * 0.06),
                         height: deviceSize.height * 0.18,

@@ -86,12 +86,15 @@ class DishViewSingleListItemDesign extends StatelessWidget {
                   // >>>>>>>>>>>>>> Dish Ratings
                   Row(
                     children: [
-                      FlutterRatingBarIndicator(
+                      RatingBarIndicator(
                         rating: 3.5,
                         itemCount: 5,
                         itemSize: _deviceSize.height * 0.015,
-                        emptyColor: Colors.brown.withOpacity(0.5),
-                        fillColor: Colors.brown,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
                       ),
                       Text(
                         "(3.5)",
@@ -149,7 +152,7 @@ class DishViewSingleListItemDesign extends StatelessWidget {
               child: Container(
                 margin: EdgeInsets.only(right: _deviceSize.width * 0.02),
                 child: Text(
-                 kcal.toString() + " Kcal",
+                  kcal.toString() + " Kcal",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "Lemon-Milk",

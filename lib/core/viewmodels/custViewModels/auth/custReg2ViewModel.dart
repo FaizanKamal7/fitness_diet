@@ -25,6 +25,7 @@ class CustReg2ViewModel extends BaseViewModel {
         'custName': custName,
         'custDateOfBirth': dateOfBirth,
       });
+      await DatabaseService(uid: userID).addnewuser(custName);
       print("Data entered in the DataBase from CustReg2ViewModel status:" +
           check.toString() +
           "    Going to foodMenu");

@@ -16,17 +16,20 @@ class ChefReg2ViewModel extends BaseViewModel {
     setState(ViewState.Busy);
     String userID = await getUser;
     bool dataValidated;
-
+    Map<String, dynamic> userdataMap = {};
     Validators().verifyNameInputFeild(chefName) && dateOfBirth != null
         ? dataValidated = true
         : dataValidated = false;
 
     if (dataValidated) {
       print("--------------User().getUid in CustReg2ViewModel: " + userID);
+      userdataMap.addAll({'name': chefName});
+
       await DatabaseService(uid: userID).addNewChefData({
         'chefName': chefName,
         'chefDateOfBirth': dateOfBirth,
       });
+      await DatabaseService().updateUserData(userdataMap, userID);
       _navigationService.navigateTo(routes.ChefProfileRoute);
       setState(ViewState.Idle);
     } else {

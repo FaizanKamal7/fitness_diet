@@ -1,16 +1,19 @@
 import 'dart:ui';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
+import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custProfileViewmodel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/chatViews/chathomecust.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/custAppDrawer.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custinfo/custInfo.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custNoplan.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custPlan.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custProfileEdit.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/tabBarBtnStyle.dart';
+import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:fitness_diet/ui/shared/app_colors.dart';
 import 'package:provider/provider.dart';
@@ -350,14 +353,35 @@ class _CustProfileState extends State<CustProfile>
                                   // >>>>>>>>> M E S S A G E   B U T T O N
                                   //
                                   FlatButton(
-                                    onPressed: null,
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ChatHomeCust(
+                                                  currentUserId:
+                                                      BaseViewModel().getUser,
+                                                )),
+                                      );
+                                    },
                                     child: Container(
-                                      // margin: EdgeInsets.only(right: deviceSize.width * 0.003),
-                                      height: deviceSize.height * 0.055,
-                                      child: Image.asset(
-                                        "assets/images/AppIcons/message.png",
-                                      ),
-                                    ),
+                                        margin: EdgeInsets.only(
+                                            right: deviceSize.width * 0.006),
+                                        height: deviceSize.height * 0.08,
+                                        decoration: BoxDecoration(
+                                            // boxShadow: [
+                                            //   BoxShadow(
+                                            //     offset: Offset(0.00, 4.00),
+                                            //     color:
+                                            //         Colors.black.withOpacity(0.3),
+                                            //     blurRadius: 8,
+                                            //   ),
+                                            // ],
+                                            ),
+                                        child: Icon(
+                                          FlevaIcons.message_circle,
+                                          color: Colors.tealAccent,
+                                          size: deviceSize.height * 0.06,
+                                        )),
                                   ),
                                 ],
                               ),

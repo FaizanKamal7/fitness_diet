@@ -19,6 +19,7 @@ class CustProfileEditViewModel extends BaseViewModel {
     setState(ViewState.Busy);
     String _currentUserID = await getUser;
     Map<String, dynamic> custdataMap = {};
+    Map<String, dynamic> userdataMap = {};
     // if (Validators().verifyNameInputFeild(custName) &&
     //     Validators().verifyNameInputFeild(custContactNo) &&
     //     custdateOfBirth != null &&
@@ -26,6 +27,7 @@ class CustProfileEditViewModel extends BaseViewModel {
 
     if (Validators().verifyNameInputFeild(custName))
       custdataMap.addAll({"custName": custName});
+    userdataMap.addAll({'name': custName});
     if (Validators().verifyPhoneNumber(custContactNo))
       custdataMap.addAll({"custContactNo": custContactNo});
     if (custdateOfBirth != null)
@@ -33,6 +35,7 @@ class CustProfileEditViewModel extends BaseViewModel {
     if (custProfilePic != null) {
       String _uploadedImgURL = await ConstantFtns().uploadFile(custProfilePic);
       custdataMap.addAll({"custPic": _uploadedImgURL});
+      userdataMap.addAll({'urlAvatar': _uploadedImgURL});
     }
 
     print(
@@ -40,6 +43,7 @@ class CustProfileEditViewModel extends BaseViewModel {
             custdataMap.toString());
 
     await DatabaseService().updateCustData(custdataMap, _currentUserID);
+    await DatabaseService().updateUserData(userdataMap, _currentUserID);
     print("------> CustData UPLOADED.");
     setState(ViewState.Idle);
     _navigationService.navigateTo(CustProfileRoute);

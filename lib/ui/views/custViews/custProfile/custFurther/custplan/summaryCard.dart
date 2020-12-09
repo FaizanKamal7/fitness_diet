@@ -76,7 +76,10 @@ class _SummaryCardState extends State<SummaryCard> {
                       // width: widget.widgetSize.width * 0.4,
                       // height: widget.widgetSize.height * 0.3,
                       child: SleekCircularSlider(
-                        initialValue: _planData.custEatenKcal,
+                        initialValue:
+                            _planData.custEatenKcal >= _planData.custReqKcal
+                                ? _planData.custReqKcal
+                                : _planData.custEatenKcal,
                         // initialValue: 2560,
                         max: _planData.custReqKcal,
 
@@ -87,7 +90,7 @@ class _SummaryCardState extends State<SummaryCard> {
                             mainLabelStyle: TextStyle(
                                 fontFamily: "Montserrat",
                                 color: Color(0xffd6d8ff),
-                                fontSize: widget.widgetSize.height * 0.050),
+                                fontSize: 16),
                             modifier: (percentage) {
                               final roundedValue =
                                   percentage.ceil().toInt().toString();

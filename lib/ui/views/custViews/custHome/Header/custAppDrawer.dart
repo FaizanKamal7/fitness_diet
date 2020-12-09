@@ -1,5 +1,7 @@
-
+import 'package:fitness_diet/core/enums/dialogTypes.dart';
+import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custAppDrawerViewModel.dart';
+import 'package:fitness_diet/locator.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
@@ -10,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustAppDrawer extends StatelessWidget {
+  final DialogService _dialogService = locator<DialogService>();
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
@@ -100,7 +103,16 @@ class CustAppDrawer extends StatelessWidget {
                 color: Colors.black12,
               ),
               InkWell(
-                onTap: null,
+                onTap: () async {
+                  var dialogResult = await _dialogService.showDialog(
+                      title: "how was your Experience with the dish. ",
+                      description: "Your current Calories consumption is",
+                      buttonTitle: "Submit",
+                      dialogType: Dialog_Types.Ratings);
+                  print(
+                      "--------------------> user ratings in app drawer is  " +
+                          dialogResult.userText);
+                },
                 child: NavBarContent(
                   deviceSize: deviceSize,
                   passedText: "Favourites",

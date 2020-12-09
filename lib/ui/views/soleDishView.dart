@@ -141,12 +141,15 @@ class SoleDishView extends StatelessWidget {
                                 ),
                                 Row(
                                   children: [
-                                    FlutterRatingBarIndicator(
+                                    RatingBarIndicator(
                                       rating: 3.5,
                                       itemCount: 5,
                                       itemSize: deviceSize.height * 0.015,
-                                      emptyColor: Colors.brown.withOpacity(0.5),
-                                      fillColor: Colors.brown,
+                                      physics: BouncingScrollPhysics(),
+                                      itemBuilder: (context, _) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
                                     ),
                                     Text(
                                       "(3.5)",
