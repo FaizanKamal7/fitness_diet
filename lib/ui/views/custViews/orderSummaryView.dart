@@ -1,19 +1,108 @@
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/enums/orderStatus.dart';
 import 'package:fitness_diet/ui/widgets/orderSingleStage.dart';
 import 'package:fitness_diet/ui/widgets/timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 // ignore: must_be_immutable
-class OrderSummaryView extends StatelessWidget {
+class OrderSummaryView extends StatefulWidget {
   String orderID;
   List orderStatus;
   OrderSummaryView({@required this.orderID, @required this.orderStatus});
+
+  @override
+  _OrderSummaryViewState createState() => _OrderSummaryViewState();
+}
+
+class _OrderSummaryViewState extends State<OrderSummaryView> {
+  StreamSubscription _locationSubscription;
+  Location _locationTracker = Location();
+  Marker marker;
+  Circle circle;
+  GoogleMapController _controller;
+
+  static final CameraPosition initialLocation = CameraPosition(
+    target: LatLng(34.195317, 73.235871),
+    zoom: 10,
+  );
+
+  Future<Uint8List> getMarker() async {
+    ByteData byteData =
+        await DefaultAssetBundle.of(context).load("assets/images/car_icon.png");
+    return byteData.buffer.asUint8List();
+  }
+
+  void updateMarkerAndCircle(LocationData newLocalData, Uint8List imageData) {
+    LatLng latlng = LatLng(newLocalData.latitude, newLocalData.longitude);
+    this.setState(() {
+      marker = Marker(
+          markerId: MarkerId("home"),
+          position: latlng,
+          rotation: newLocalData.heading,
+          draggable: false,
+          zIndex: 2,
+          flat: true,
+          anchor: Offset(0.5, 0.5),
+          icon: BitmapDescriptor.fromBytes(imageData));
+      circle = Circle(
+          circleId: CircleId("car"),
+          radius: newLocalData.accuracy,
+          zIndex: 1,
+          strokeColor: Colors.blue,
+          center: latlng,
+          fillColor: Colors.blue.withAlpha(70));
+    });
+  }
+
+  void getCurrentLocation() async {
+    try {
+      Uint8List imageData = await getMarker();
+      var location = await _locationTracker.getLocation();
+
+      updateMarkerAndCircle(location, imageData);
+
+      if (_locationSubscription != null) {
+        _locationSubscription.cancel();
+      }
+
+      _locationSubscription =
+          _locationTracker.onLocationChanged.listen((newLocalData) {
+        if (_controller != null) {
+          _controller.animateCamera(CameraUpdate.newCameraPosition(
+              new CameraPosition(
+                  bearing: 192.8334901395799,
+                  target: LatLng(newLocalData.latitude, newLocalData.longitude),
+                  tilt: 0,
+                  zoom: 18.00)));
+          updateMarkerAndCircle(newLocalData, imageData);
+        }
+      });
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        debugPrint("Permission Denied");
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_locationSubscription != null) {
+      _locationSubscription.cancel();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("orderStatus : " + orderStatus.toString());
+    final deviceSize = MediaQuery.of(context).size;
+    print("orderStatus : " + widget.orderStatus.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text("Order Summary"),
@@ -50,7 +139,7 @@ class OrderSummaryView extends StatelessWidget {
                         style: TextStyle(color: Colors.black54),
                       ),
                       Text(
-                        orderID.toString(),
+                        widget.orderID.toString(),
                       ),
                     ],
                   ),
@@ -58,23 +147,48 @@ class OrderSummaryView extends StatelessWidget {
               ),
             ),
           ),
-          // GoogleMap(
-          //   mapType: MapType.hybrid,
-          //   initialCameraPosition: initialLocation,
-          //   markers: Set.of((marker != null) ? [marker] : []),
-          //   circles: Set.of((circle != null) ? [circle] : []),
-          //   onMapCreated: (GoogleMapController controller) {
-          //     _controller = controller;
-          //   },
-          // ),
-          // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R  T R A C K I N G
+          Container(
+            height: deviceSize.height * 0.4,
+            child: Stack(
+              children: [
+                GoogleMap(
+                  mapType: MapType.hybrid,
+                  initialCameraPosition: initialLocation,
+                  markers: Set.of((marker != null) ? [marker] : []),
+                  circles: Set.of((circle != null) ? [circle] : []),
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller = controller;
+                  },
+                ),
+                InkWell(
+                  onTap: () {
+                    getCurrentLocation();
+                  },
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: Container(
+                      margin: EdgeInsets.all(10),
+                      height: deviceSize.height * 0.04,
+                      width: deviceSize.height * 0.04,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(child: Icon(Icons.location_searching)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   T R A C K I N G
           Timeline(
             children: <Widget>[
               OrderSingleStage(
                 primaryText: "Order Placed",
                 secondaryText: "We have received your order",
                 passedIcon: FontAwesomeIcons.receipt,
-                isDone: orderStatus.contains(ConstantFtns()
+                isDone: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_PLACED.toString()))
                     ? true
                     : false,
@@ -83,7 +197,7 @@ class OrderSummaryView extends StatelessWidget {
                 primaryText: "Order Processed",
                 secondaryText: "We are prepearing your order",
                 passedIcon: FontAwesomeIcons.gift,
-                isDone: orderStatus.contains(ConstantFtns()
+                isDone: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_PROCESSED.toString()))
                     ? true
                     : false,
@@ -93,7 +207,7 @@ class OrderSummaryView extends StatelessWidget {
                 secondaryText:
                     "Your order is dispatched and will be ready for pick up",
                 passedIcon: FontAwesomeIcons.truckPickup,
-                isDone: orderStatus.contains(ConstantFtns()
+                isDone: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_DISPATCHED.toString()))
                     ? true
                     : false,
@@ -102,7 +216,7 @@ class OrderSummaryView extends StatelessWidget {
                 primaryText: "Order Completed",
                 secondaryText: "Order completed successfully",
                 passedIcon: FontAwesomeIcons.thumbsUp,
-                isDone: orderStatus.contains(ConstantFtns()
+                isDone: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_COMPLETED.toString()))
                     ? true
                     : false,
@@ -111,7 +225,7 @@ class OrderSummaryView extends StatelessWidget {
                 primaryText: "Order Failed",
                 secondaryText: "Order is not not completed due to some reason",
                 passedIcon: FontAwesomeIcons.thumbsUp,
-                isDone: orderStatus.contains(ConstantFtns()
+                isDone: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_FAILED.toString()))
                     ? true
                     : false,
@@ -120,41 +234,43 @@ class OrderSummaryView extends StatelessWidget {
             indicators: <Widget>[
               Icon(
                 FontAwesomeIcons.checkCircle,
-                color: orderStatus.contains(ConstantFtns()
+                color: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_PLACED.toString()))
                     ? Colors.blueAccent
                     : Colors.redAccent.withOpacity(0.4),
               ),
               Icon(
                 FontAwesomeIcons.checkCircle,
-                color: orderStatus.contains(ConstantFtns()
+                color: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_PROCESSED.toString()))
                     ? Colors.blueAccent
                     : Colors.redAccent.withOpacity(0.4),
               ),
               Icon(
                 FontAwesomeIcons.checkCircle,
-                color: orderStatus.contains(ConstantFtns()
+                color: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_DISPATCHED.toString()))
                     ? Colors.blueAccent
                     : Colors.redAccent.withOpacity(0.4),
               ),
               Icon(
                 FontAwesomeIcons.checkCircle,
-                color: orderStatus.contains(ConstantFtns()
+                color: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_COMPLETED.toString()))
                     ? Colors.blueAccent
                     : Colors.redAccent.withOpacity(0.4),
               ),
               Icon(
                 FontAwesomeIcons.cross,
-                color: orderStatus.contains(ConstantFtns()
+                color: widget.orderStatus.contains(ConstantFtns()
                         .getEnumValue(Order_Status.ORDER_FAILED.toString()))
                     ? Colors.blueAccent
                     : Colors.redAccent.withOpacity(0.4),
               ),
             ],
           ),
+          // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   D I S H E S
+          
         ],
       ),
     );

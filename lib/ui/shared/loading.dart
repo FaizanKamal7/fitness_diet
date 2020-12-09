@@ -6,7 +6,7 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     final _deviceSize = MediaQuery.of(context).size;
     return Material(
-      color: Colors.transparent,
+      color: Colors.black12,
       child: SizedBox(
         height: _deviceSize.height,
         width: _deviceSize.width,

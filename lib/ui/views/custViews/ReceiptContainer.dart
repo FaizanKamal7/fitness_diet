@@ -147,6 +147,7 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
                             ? navigateToOrderViewBtn
                             : InkWell(
                                 onTap: () async {
+                                  // >>>>>> If error
                                   model.hasErrorMessage
                                       ? WidgetsBinding.instance
                                           .addPostFrameCallback(
@@ -156,37 +157,10 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
                                                   ))
                                       : Container();
 
-                                  print(
-                                      '---------------->user cart items after verify inventory in order view ' +
-                                          _cart.items.length.toString());
-
                                   double _total = subtotal + deliveryFee;
-                                  // subtotal > 4000
-                                  // ? (subtotal -
-                                  //     getTotalSaved(_custData, _cart,
-                                  //         _cart, _dishData))
-                                  // : ((subtotal -
-                                  //         getTotalSaved(_custData, _cart,
-                                  //             _cart, _dishData)) +
-                                  //     deliveryFee);
-                                  print(
-                                      " ===> widget.shippingAddr inside OrderView : " +
-                                          widget.shippingAddr.toString());
-                                  // _custData.address.keys.
 
                                   if (widget.shippingAddr != null &&
                                       _custData.custPhNo != null) {
-                                    // bool check = verifyinvetory(_cart.items,
-                                    //     _dishData, _custData.cartID);
-                                    // if (check == false) {
-                                    //   _dialogService.showDialog(
-                                    //       title: 'Alert :(',
-                                    //       description:
-                                    //           "we are sory the product is not available in the quantity you requested ...",
-                                    //       buttonTitle: "its ok ",
-                                    //       dialogType:
-                                    //           Dialog_Types.PLAN_SUCCESS);
-                                    // } else {
                                     String orderID = await model.createOrder(
                                       _custData.custId,
                                       _custData.custName,

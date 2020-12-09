@@ -13,12 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CustInfo extends StatelessWidget {
-  static List FoodCatgSectionItemList = [
-    {'Name': "Biryani", "Pic": "assets/images/biryani.jpg"},
-    {'Name': "Nihari", "Pic": "assets/images/nihari.jpg"},
-    {'Name': "Kebab", "Pic": "assets/images/biryani.jpg"},
-    {'Name': "Chicken", "Pic": "assets/images/cover.jpg"},
-  ];
   void _showAddressBottomSheet(BuildContext _context) {
     showModalBottomSheet(
       backgroundColor: Colors.transparent,
@@ -162,7 +156,7 @@ class CustInfo extends StatelessWidget {
                 height: widgetSize.height * 0.02,
               ),
 
-              //>>>>>>> F  A V O RU R I T E S --- D I S H E S I
+              //>>>>>>> O R D E R
               _custOrders != null
                   ? ListView.builder(
                       shrinkWrap: true,
@@ -172,12 +166,7 @@ class CustInfo extends StatelessWidget {
                         // return Container(
                         //   child: Text(_custOrders[index].orderID.toString()),
                         // );
-                        return CustOrders(
-                            orderID: _custOrders[index].orderID,
-                            noOfItems: _custOrders[index].items.length,
-                            total: _custOrders[index].total,
-                            orderDate: _custOrders[index].orderDate,
-                            orderStatus: _custOrders[index].orderStatus);
+                        return CustOrders(custOrder: _custOrders[index]);
                       },
                     )
                   : Center(

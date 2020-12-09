@@ -116,37 +116,40 @@ class HomeView extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           horizontal:
                               sizingInformation.localWidgetSize.width * 0.04),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            "Start as",
-                            style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: 13,
-                              color: Colors.black,
+                      child: InkWell(
+                        onTap: () => model.gotToDelivSignIn(),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              "Start as",
+                              style: TextStyle(
+                                fontFamily: "Montserrat",
+                                fontSize: 13,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          Text(
-                            " Delivery Guy",
-                            style: TextStyle(
-                              fontFamily: "BigNoodle",
-                              fontSize:
-                                  sizingInformation.localWidgetSize.height *
-                                      0.026,
-                              color: Color(0xff7A400B),
+                            Text(
+                              " Delivery Guy",
+                              style: TextStyle(
+                                fontFamily: "BigNoodle",
+                                fontSize:
+                                    sizingInformation.localWidgetSize.height *
+                                        0.026,
+                                color: Color(0xff7A400B),
+                              ),
                             ),
-                          ),
-                          Spacer(),
-                          // >>>>>>>>>>>>>>>>>>>> S K I P
-                          InkWell(
-                            onTap: () => model.gotToFoodMenu(),
-                            child: SkipBtn(
-                              passedText: "SKIP",
-                              deviceSize: sizingInformation.screenSize,
+                            Spacer(),
+                            // >>>>>>>>>>>>>>>>>>>> S K I P
+                            InkWell(
+                              onTap: () => model.gotToFoodMenu(),
+                              child: SkipBtn(
+                                passedText: "SKIP",
+                                deviceSize: sizingInformation.screenSize,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     )
                   ],

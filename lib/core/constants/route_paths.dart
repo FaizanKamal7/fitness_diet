@@ -15,3 +15,8 @@ const String ChefSignRoute = 'chefSignIn';
 const String ChefProfileRoute = 'chefProfile';
 const String SoleDishRoute = 'soleDishView';
 const String ChefOrdersView = 'chefOrdersView';
+
+const String DelivReg1Route = 'delivReg_1';
+const String DelivReg2Route = 'delivReg_2';
+const String DelivSignRoute = 'delivSignIn';
+const String DelivMainRoute = 'delivMenuMain';

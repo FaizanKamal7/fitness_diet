@@ -6,6 +6,7 @@ import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
 import '../../../locator.dart';
+import 'package:geolocator/geolocator.dart';
 
 class OrderViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
@@ -13,6 +14,12 @@ class OrderViewModel extends BaseViewModel {
 
   goToSignIn() {
     _navigationService.navigateToWithoutReplacement(routes.HomeRoute);
+  }
+
+  void getLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print("P O S I T I O N : " + position.toString());
   }
 
   Future<String> createOrder(

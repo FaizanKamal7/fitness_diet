@@ -96,3 +96,23 @@ class ChefData {
     this.hasDish,
   });
 }
+
+class DelivData {
+  String delivID;
+  String delivName;
+  String delivPhNo;
+  var delivDateOfBirth;
+  Map<String, dynamic> delivaddress;
+  DateTime delivAddDate;
+  DateTime delivUpdateDate;
+
+  DelivData({
+    this.delivID,
+    this.delivName,
+    this.delivDateOfBirth,
+    this.delivPhNo,
+    this.delivaddress,
+    this.delivAddDate,
+    this.delivUpdateDate,
+  });
+}

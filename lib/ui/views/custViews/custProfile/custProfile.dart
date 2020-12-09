@@ -376,14 +376,7 @@ class _CustProfileState extends State<CustProfile>
                           //  unselectedLabelColor: Colors.redAccent,
                           //  indicatorSize: TabBarIndicatorSize.label,
                           //   dragStartBehavior: DragStartBehavior.start,
-                          indicator: BoxDecoration(
-                              // borderRadius: BorderRadius.circular(deviceSize.height * 0.1),
-                              // //    color: Color(0xff4E7A0B),
-                              // border: Border.all(
-                              //   width: deviceSize.width * 0.005,
-                              //   color: Color(0xff4E7A0B),
-                              // ),
-                              ),
+
                           labelStyle: TextStyle(
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w700,

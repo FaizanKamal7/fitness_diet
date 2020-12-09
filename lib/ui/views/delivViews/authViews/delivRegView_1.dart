@@ -1,5 +1,5 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custReg2ViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/delivViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/shared/ui_helpers.dart';
@@ -7,37 +7,39 @@ import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
 import 'package:fitness_diet/ui/widgets/custAuthBg.dart';
-import 'package:fitness_diet/ui/widgets/dateOfBirthSelector.dart';
 import 'package:fitness_diet/ui/widgets/Texts/stepHeaderWithBg.dart';
 import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithPrefix.dart';
+import 'package:fitness_diet/ui/widgets/delivAuthBg.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 // ignore: camel_case_types
-class CustRegView_2 extends StatefulWidget {
+class DelivRegView_1 extends StatefulWidget {
   @override
-  _CustRegView_2State createState() => _CustRegView_2State();
+  _DelivRegView_1State createState() => _DelivRegView_1State();
 }
 
 // ignore: camel_case_types
-class _CustRegView_2State extends State<CustRegView_2> {
-  DateTime dateOfBirth;
-  final TextEditingController custNameContr = TextEditingController();
-
+class _DelivRegView_1State extends State<DelivRegView_1> {
+  Logger logger;
+  final TextEditingController _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    print("---------> CustReg2VIew Reached ");
-    return BaseView<CustReg2ViewModel>(
-      builder: (context, model, child) => WillPopScope(
-        onWillPop: () async => false,
-        child: ResponsiveSafeArea(
-          builder: (context, widgetSize) => Scaffold(
-            body: Stack(
+    print("---------> CustRegView1 reached");
+    return BaseView<DelivViewModel>(
+      builder: (ontext, model, child) => ResponsiveSafeArea(
+        builder: (context, widgetSize) => Scaffold(
+          body: Material(
+            type: MaterialType.card,
+            //  color: Color(0xffD4EBD3),
+            child: Stack(
               children: <Widget>[
                 //
                 // >>>>>>>>> Registor background image
                 //
-                CustAuthBg(),
+                DelivAuthBg(),
+
                 ListView(
                   shrinkWrap: true,
                   children: <Widget>[
@@ -45,7 +47,7 @@ class _CustRegView_2State extends State<CustRegView_2> {
                     Container(
                       margin: EdgeInsets.only(
                           left: widgetSize.width * 0.05,
-                          top: widgetSize.height * 0.25),
+                          top: widgetSize.height * 0.35),
                       child: AuthHeader(
                         firstText: "Hello",
                         secondText: "There.",
@@ -55,14 +57,13 @@ class _CustRegView_2State extends State<CustRegView_2> {
                     ),
                     SizedBox(height: widgetSize.height * 0.02),
                     StepHeaderWithBG(
-                        stepsText: "Step 2 of 2", deviceSize: deviceSize),
-                    SizedBox(height: widgetSize.height * 0.02),
-
+                        stepsText: "Step 1 of 2", deviceSize: deviceSize),
+                    SizedBox(height: widgetSize.height * 0.01),
                     // ------------------------------------------------------   T E X T   F E I L D S   A N D   B U T T O N S
                     Container(
                       margin: EdgeInsets.only(left: widgetSize.width * 0.05),
                       child: Text(
-                        "Add info ",
+                        "Verify phone ",
                         style: TextStyle(
                           fontSize: widgetSize.height * 0.02,
                           fontFamily: 'Montserrat',
@@ -74,31 +75,23 @@ class _CustRegView_2State extends State<CustRegView_2> {
                     // :::::::>>>||||--------------------------------------------------   Phone verification initiated
 
                     TextFeildWithPrefix(
-                      controller: custNameContr,
+                      controller: _controller,
                       deviceSize: deviceSize,
-                      isTypeInt: false,
-                      preIcon: Icons.person,
+                      isTypeInt: true,
+                      preIcon: Icons.phone,
                       isObscureText: false,
-                      hintText: "Enter your name",
-                    ),
-                    SizedBox(height: widgetSize.height * 0.01),
-
-                    DateOfBirthSelector(
-                      deviceSize: deviceSize,
-                      onDateTimeChanged: (newDateTime) {
-                        dateOfBirth = newDateTime;
-                      },
+                      hintText: " 03xxxxxxxxx",
                     ),
 
-                    SizedBox(height: widgetSize.height * 0.01),
+                    SizedBox(height: widgetSize.height * 0.02),
 
                     Align(
                       alignment: Alignment.centerLeft,
                       child: FlatButton(
                         onPressed: () {
                           print(
-                              "Register button is pressed. Redirecting to 'CustReg2Viewmodel' to add 'CustData' (Message from inside CustRegView1)");
-                          model.addCustData(custNameContr.text, dateOfBirth);
+                              "Register button is pressed. Redirecting to 'CustReg1Viewmodel' (Message from inside CustRegView1)");
+                          model.register(_controller.text);
                           model.hasErrorMessage
                               ? WidgetsBinding.instance.addPostFrameCallback(
                                   (_) => _showErrorMessage(
@@ -110,11 +103,11 @@ class _CustRegView_2State extends State<CustRegView_2> {
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
-                          passedText: "Register",
+                          passedText: "Verify",
                         ),
                       ),
                     ),
-                    SizedBox(height: widgetSize.height * 0.04),
+                    SizedBox(height: widgetSize.height * 0.03),
                     // ------------------------------------------------------    T E X T    W I T H    R E G I S T E R    B U T T O N
                     Container(
                       margin: EdgeInsets.only(left: widgetSize.width * 0.05),
@@ -129,9 +122,7 @@ class _CustRegView_2State extends State<CustRegView_2> {
                             ),
                           ),
                           InkResponse(
-                            onTap: () {
-                              model.goToCustSignin();
-                            },
+                            onTap: () => model.goToDelivSignin(),
                             child: Text(
                               "Sign-in",
                               style: TextStyle(
@@ -147,9 +138,6 @@ class _CustRegView_2State extends State<CustRegView_2> {
                     ),
                   ],
                 ),
-                //           model.hasErrorMessage
-                // ? UIHelper().showErrorButtomSheet(context, model.errorMessage)
-                // : Container(),
 
                 model.state == ViewState.Busy ? Loading() : Container(),
               ],

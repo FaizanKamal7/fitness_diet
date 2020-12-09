@@ -30,6 +30,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('order');
   final CollectionReference exerciseCollection =
       FirebaseFirestore.instance.collection('exercise');
+  final CollectionReference delivCollection =
+      FirebaseFirestore.instance.collection('delivery');
 
   final String uid;
   DatabaseService({this.uid});
@@ -651,6 +653,17 @@ class DatabaseService {
         _completer.complete("chef");
       }
     });
+    await delivCollection
+        .where("delivID", isEqualTo: userID)
+        .get()
+        .then((data) {
+      if (data.docs.length > 0) {
+        print(
+            "-----> data.docs inside delivCollection completer check of 'checkUserID' : " +
+                data.docs.length.toString());
+        _completer.complete("deliv");
+      }
+    });
 
     print(
         "---------> DataBase services class reached. Completer.future inside checkUserID in DBServices: " +
@@ -697,7 +710,9 @@ class DatabaseService {
         await chefCollection.where("chefPhNo", isEqualTo: _phoneNo).get();
     var custResult =
         await custCollection.where("custPhNo", isEqualTo: _phoneNo).get();
-    print("chefResult==============" + chefResult.toString() + _phoneNo);
+
+    var delivResult =
+        await custCollection.where("delivPhNo", isEqualTo: _phoneNo).get();
 
     if (chefResult.docs.length > 0) {
       print("Chef Case is true___________");
@@ -705,12 +720,10 @@ class DatabaseService {
     } else if (custResult.docs.length > 0) {
       print("Cust Case is true___________");
       return "cust";
+    } else if (delivResult.docs.length > 0) {
+      print("Deliv Case is true___________");
+      return "deliv";
     } else {
-      print("chefResult.docs.length============== " +
-          chefResult.docs.length.toString());
-      print("custResult.docs.length============== " +
-          custResult.docs.length.toString());
-      print("RESULT IS NULL> DON'T EXIST IN DB");
       return null;
     }
   }
@@ -973,6 +986,9 @@ class DatabaseService {
         .map(_orderDataFromSnapshot);
   }
 
+  Stream<List<Order>> getAllOrdersData() {
+    return orderCollection.snapshots().map(_orderDataFromSnapshot);
+  }
   //
   //------------------------------ E  X  E  R  C  I  S  E //
 
@@ -1069,4 +1085,110 @@ class DatabaseService {
   //     SetOptions(merge: true),
   //   );
   // }
+
+// ============================================================================================================
+// ------------------------------- U P D A T I O N   A N D   R E T R I V A L   O F   C U S T O M E R   D A T A
+// ============================================================================================================
+  //
+  // >>>>>>>>>>>>>>>> S E T T I N G   D A T A
+  //
+  Future<bool> addNewDelivData(Map<String, dynamic> dataMap) async {
+    print("---------> DataBase services class reached. Updating user for uid" +
+        uid.toString());
+    // - Setting ID first in a doc
+
+    Map<String, List<String>> address = {};
+    await delivCollection.doc(uid).set(
+      {
+        'delivID': uid,
+        'delivAddDate': DateTime.now(),
+        'delivAddress': address,
+      },
+      SetOptions(merge: true),
+    );
+
+    // - Dynamically adding data in the db
+    dataMap.forEach(
+      (key, value) async {
+        await delivCollection.doc(uid).set(
+          {
+            key: value,
+          },
+          SetOptions(merge: true),
+        );
+      },
+    );
+    return true;
+  }
+
+  Future<bool> updateDelivData(
+      Map<String, dynamic> dataMap, String delivID) async {
+    print(
+        "---------> DataBase services class reached. Updating user for uid : " +
+            uid.toString());
+
+    // - Setting ID first in a doc
+    await delivCollection.doc(delivID).set(
+      {
+        'delivUpdateDate': DateTime.now(),
+      },
+      SetOptions(merge: true),
+    );
+
+    // - Dynamically adding data in the db
+    dataMap.forEach(
+      (key, value) async {
+        await delivCollection.doc(delivID).set(
+          {
+            key: value,
+          },
+          SetOptions(merge: true),
+        );
+      },
+    );
+    return true;
+  }
+
+  //-------------- address
+  Future updateDelivAddress(String delivID, String title, String houseno,
+      String street, String city) async {
+    print('inside update address function  in  data base');
+    await delivCollection.doc(delivID).set(
+      {
+        'delivAddress': {
+          title: [houseno, street, city]
+        },
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  // ignore: missing_return
+  Future removeDelivAddress(String delivID, String title) {
+    delivCollection.doc(delivID).set(
+      {
+        'delivAddress': {title: FieldValue.delete()}
+      },
+      SetOptions(merge: true),
+    );
+  }
+
+  //
+  // >>>>>>>>>>>>>>>> G E T T I N G   D A T A
+  //
+  DelivData _delivDataFromSnapshot(DocumentSnapshot snapshot) {
+    return DelivData(
+      delivID: uid,
+      delivPhNo: snapshot.data()['delivPhNo'] ?? "",
+      delivName: snapshot.data()['delivName'] ?? "",
+      delivaddress: snapshot.data()['delivAddress'] ?? '',
+    );
+  }
+
+  // Get user doc stream
+  Stream<DelivData> get getDelivData {
+    print(
+        " UiD DB TEST function reached in getdeliv data******************** ");
+    return delivCollection.doc(uid).snapshots().map(_delivDataFromSnapshot);
+  }
 }

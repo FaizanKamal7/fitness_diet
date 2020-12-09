@@ -1,5 +1,4 @@
 import 'package:fitness_diet/core/constants/route_paths.dart' as routes;
-import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
@@ -10,6 +9,10 @@ class HomeViewModel extends BaseViewModel {
 
   gotToCustSignIn() {
     _navigationService.navigateToWithoutReplacement(routes.CustSignRoute);
+  }
+
+  gotToDelivSignIn() {
+    _navigationService.navigateToWithoutReplacement(routes.DelivSignRoute);
   }
 
   gotToChefSignIn() {
@@ -37,6 +40,14 @@ class HomeViewModel extends BaseViewModel {
           " - " +
           userID);
       _navigationService.navigateTo(routes.ChefProfileRoute);
+      // setState(ViewState.Idle);
+      print("Check User ID result: " + user.toString());
+    } else if (user.toString() == "deliv") {
+      print("user and ID form inside the HomeViewModel: " +
+          user.toString() +
+          " - " +
+          userID);
+      _navigationService.navigateTo(routes.DelivMainRoute);
       // setState(ViewState.Idle);
       print("Check User ID result: " + user.toString());
     }

@@ -2,25 +2,26 @@ import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custSignInViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/delivViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
-import 'package:fitness_diet/ui/widgets/custAuthBg.dart';
 import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithPrefix.dart';
+import 'package:fitness_diet/ui/widgets/delivAuthBg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
-class CustSigninView extends StatefulWidget {
+class DelivSigninView extends StatefulWidget {
   @override
-  _CustSigninViewState createState() => _CustSigninViewState();
+  _DelivSigninViewState createState() => _DelivSigninViewState();
 }
 
-class _CustSigninViewState extends State<CustSigninView> {
+class _DelivSigninViewState extends State<DelivSigninView> {
   bool timeComplete = true;
   final TextEditingController _phNoController = TextEditingController();
   @override
@@ -38,12 +39,12 @@ class _CustSigninViewState extends State<CustSigninView> {
       },
     );
 
-    return BaseView<CustSignInViewModel>(
+    return BaseView<DelivViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(
         builder: (context, widgetSize) => Scaffold(
           resizeToAvoidBottomPadding: false,
-          body: StreamProvider<CustData>.value(
-            value: DatabaseService().getCustData,
+          body: StreamProvider<DelivData>.value(
+            value: DatabaseService().getDelivData,
             child: Material(
               type: MaterialType.card,
               //  color: Color(0xffD4EBD3),
@@ -52,7 +53,7 @@ class _CustSigninViewState extends State<CustSigninView> {
                   //
                   // >>>>>>>>> Registor background image
                   //
-                  CustAuthBg(),
+                  DelivAuthBg(),
 
                   ListView(
                     shrinkWrap: true,
@@ -101,8 +102,9 @@ class _CustSigninViewState extends State<CustSigninView> {
                         alignment: Alignment.centerLeft,
                         child: FlatButton(
                           onPressed: () {
-                            model.signInCust(_phNoController.text);
-                            model.hasErrorMessage || _phNoController.text == null
+                            model.signInDeliv(_phNoController.text);
+                            model.hasErrorMessage ||
+                                    _phNoController.text == null
                                 ? WidgetsBinding.instance.addPostFrameCallback(
                                     (_) => _showErrorMessage(
                                       context,
@@ -133,7 +135,7 @@ class _CustSigninViewState extends State<CustSigninView> {
                             ),
                             InkResponse(
                               onTap: () {
-                                model.goToCustReg1();
+                                model.goToDelivReg1();
                               },
                               child: Text(
                                 "Register",

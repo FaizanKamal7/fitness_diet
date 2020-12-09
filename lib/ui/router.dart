@@ -3,13 +3,16 @@ import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_1.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefRegView_2.dart';
 import 'package:fitness_diet/ui/views/chefViews/authVIews/chefSignInView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/chefOrdersView.dart';
-import 'package:fitness_diet/ui/views/soleDishView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileMain.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_1.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custRegView_2.dart';
 import 'package:fitness_diet/ui/views/custViews/authViews/custSignInView.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuMain.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custFurther/custplan/custStartPlan.dart';
+import 'package:fitness_diet/ui/views/delivViews/authViews/delivRegView_1.dart';
+import 'package:fitness_diet/ui/views/delivViews/authViews/delivRegView_2.dart';
+import 'package:fitness_diet/ui/views/delivViews/authViews/delivSignInView.dart';
+import 'package:fitness_diet/ui/views/delivViews/delivMain.dart';
 import 'package:fitness_diet/ui/views/homeview.dart';
 import 'package:fitness_diet/ui/views/splashView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/custProfileMain.dart';
@@ -51,7 +54,17 @@ class Router {
         return MaterialPageRoute(builder: (_) => ChefProfileMain());
       case routes.ChefOrdersView:
         return MaterialPageRoute(builder: (_) => ChefOrdersView());
-        
+
+      // Deliv Routes
+      case routes.DelivReg1Route:
+        return MaterialPageRoute(builder: (_) => DelivRegView_1());
+      case routes.DelivReg2Route:
+        return MaterialPageRoute(builder: (_) => DelivRegView_2());
+      case routes.DelivSignRoute:
+        return MaterialPageRoute(builder: (_) => DelivSigninView());
+      case routes.DelivMainRoute:
+        return MaterialPageRoute(builder: (_) => DelivMainDataProvider());
+
       // case routes.SoleDishRoute:
       //   return MaterialPageRoute(builder: (_) => SoleDishView());
 

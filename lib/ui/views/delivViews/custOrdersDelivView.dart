@@ -1,14 +1,14 @@
 import 'package:date_format/date_format.dart';
 import 'package:fitness_diet/core/models/orders.dart';
 import 'package:fitness_diet/ui/shared/fonts.dart';
-import 'package:fitness_diet/ui/views/custViews/orderSummaryView.dart';
+import 'package:fitness_diet/ui/views/delivViews/updateOrderStatusView.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardLinkText.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class CustOrders extends StatelessWidget {
+class CustOrdersDelivView extends StatelessWidget {
   Order custOrder;
-  CustOrders({@required this.custOrder});
+  CustOrdersDelivView({@required this.custOrder});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -102,14 +102,13 @@ class CustOrders extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => OrderSummaryView(
-                          orderID: custOrder.orderID,
-                          orderStatus: custOrder.orderStatus,
+                        builder: (context) => UpdateOrderStatusView(
+                          passedOrder: custOrder,
                         ),
                       ),
                     );
                   },
-                  child: StandardLinkText(passedText: "View order summary")),
+                  child: StandardLinkText(passedText: "Deliver Order")),
             ),
           )
         ],

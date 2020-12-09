@@ -1,5 +1,5 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custReg2ViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/delivViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/shared/ui_helpers.dart';
@@ -10,16 +10,17 @@ import 'package:fitness_diet/ui/widgets/custAuthBg.dart';
 import 'package:fitness_diet/ui/widgets/dateOfBirthSelector.dart';
 import 'package:fitness_diet/ui/widgets/Texts/stepHeaderWithBg.dart';
 import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithPrefix.dart';
+import 'package:fitness_diet/ui/widgets/delivAuthBg.dart';
 import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
-class CustRegView_2 extends StatefulWidget {
+class DelivRegView_2 extends StatefulWidget {
   @override
-  _CustRegView_2State createState() => _CustRegView_2State();
+  _DelivRegView_2State createState() => _DelivRegView_2State();
 }
 
 // ignore: camel_case_types
-class _CustRegView_2State extends State<CustRegView_2> {
+class _DelivRegView_2State extends State<DelivRegView_2> {
   DateTime dateOfBirth;
   final TextEditingController custNameContr = TextEditingController();
 
@@ -27,7 +28,7 @@ class _CustRegView_2State extends State<CustRegView_2> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     print("---------> CustReg2VIew Reached ");
-    return BaseView<CustReg2ViewModel>(
+    return BaseView<DelivViewModel>(
       builder: (context, model, child) => WillPopScope(
         onWillPop: () async => false,
         child: ResponsiveSafeArea(
@@ -37,7 +38,7 @@ class _CustRegView_2State extends State<CustRegView_2> {
                 //
                 // >>>>>>>>> Registor background image
                 //
-                CustAuthBg(),
+                DelivAuthBg(),
                 ListView(
                   shrinkWrap: true,
                   children: <Widget>[
@@ -98,7 +99,7 @@ class _CustRegView_2State extends State<CustRegView_2> {
                         onPressed: () {
                           print(
                               "Register button is pressed. Redirecting to 'CustReg2Viewmodel' to add 'CustData' (Message from inside CustRegView1)");
-                          model.addCustData(custNameContr.text, dateOfBirth);
+                          model.addDelivData(custNameContr.text, dateOfBirth);
                           model.hasErrorMessage
                               ? WidgetsBinding.instance.addPostFrameCallback(
                                   (_) => _showErrorMessage(
@@ -130,7 +131,7 @@ class _CustRegView_2State extends State<CustRegView_2> {
                           ),
                           InkResponse(
                             onTap: () {
-                              model.goToCustSignin();
+                              model.goToDelivSignin();
                             },
                             child: Text(
                               "Sign-in",

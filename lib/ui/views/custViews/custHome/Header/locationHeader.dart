@@ -6,9 +6,16 @@ import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/views/custViews/cartView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/iconBtn.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 class LocationHeader extends StatelessWidget {
+  void getLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    print("P O S I T I O N : " + position.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     final _cart = Provider.of<Cart>(context);
@@ -61,7 +68,7 @@ class LocationHeader extends StatelessWidget {
             ),
             Spacer(),
             //
-            // >>>>>>>>> Notification
+            // >>>>>>>>> C A R T
             //
 
             Badge(
@@ -73,12 +80,15 @@ class LocationHeader extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 8.5),
               ),
               child: InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CartView(),
-                  ),
-                ),
+                onTap: () async {
+                  getLocation();
+                  return Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CartView(),
+                    ),
+                  );
+                },
                 child: Container(
                   margin: EdgeInsets.only(right: 40.0),
                   child: IconBtn(

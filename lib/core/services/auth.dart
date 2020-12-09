@@ -19,18 +19,6 @@ class AuthService {
   Stream<CurrentUser> get user =>
       _auth.authStateChanges().map(_userFormFirebaseUser);
 
-  // Sign in with email and password
-  // Future signInWithEmailAndPassword(String email, String password) async {
-  //   try {
-  //     AuthResult result = await _auth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //     FirebaseUser user = result.user;
-  //     return _userFormFirebaseUser(user);
-  //   } catch (e) {
-  //     print(e.toString());
-  //     return null;
-  //   }
-  // }
 
   Future signOut() async {
     try {
@@ -115,7 +103,7 @@ class AuthService {
       print("OTP entered by user: " + OTPDialogResult.toString());
 
       // if (isCorrectOTP) {
-      AuthCredential authCred = PhoneAuthProvider.getCredential(
+      AuthCredential authCred = PhoneAuthProvider.credential(
           verificationId: verID, smsCode: OTPDialogResult);
       print("SMS code sent reached OTP is : " + OTPDialogResult.toString());
 
