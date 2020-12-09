@@ -369,7 +369,7 @@ class DatabaseService {
         dishID: snapshot.docs[i].data()['dishID'] ?? "",
         dishName: snapshot.docs[i].data()['dishName'] ?? "",
         dishPrice: snapshot.docs[i].data()['dishPrice'] ?? 0,
-        dishRatings: snapshot.docs[i].data()['dishRatings'] ?? 0.0,
+        dishRatings: snapshot.docs[i].data()['dishRatings'].toDouble() ?? 0.0,
         dishPic: snapshot.docs[i].data()['dishPic'] ?? "",
         dishAval: snapshot.docs[i].data()['dishAval'] ?? false,
         dishPrepTime: snapshot.docs[i].data()['dishPrepTime'] ?? 0,
@@ -390,16 +390,13 @@ class DatabaseService {
   }
 
   Dish _singledishDataFromSnapshot(QuerySnapshot snapshot) {
-    print(
-        ">>>>>>>>>>> _dishDataFromSnapshot inside database INVOKED and snapshot legth is : " +
-            snapshot.docs.length.toString());
     // Map<Dish,dynamic> chefDishes;
 
     return Dish(
       dishID: snapshot.docs[0].data()['dishID'] ?? "",
       dishName: snapshot.docs[0].data()['dishName'] ?? "",
       dishPrice: snapshot.docs[0].data()['dishPrice'] ?? 0,
-      dishRatings: snapshot.docs[0].data()['dishRatings'] ?? 0.0,
+      dishRatings: snapshot.docs[0].data()['dishRatings'].toDouble() ?? 0.0,
       dishPic: snapshot.docs[0].data()['dishPic'] ?? "",
       dishAval: snapshot.docs[0].data()['dishAval'] ?? false,
       dishPrepTime: snapshot.docs[0].data()['dishPrepTime'] ?? 0,

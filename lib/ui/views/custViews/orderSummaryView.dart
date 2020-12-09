@@ -408,6 +408,14 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
                                                                 double.parse(
                                                                     dialogResult
                                                                         .userText);
+                                                            model
+                                                                .updateDishRatings(
+                                                              _singleItemInfo
+                                                                  .dishID,
+                                                              _singleItemInfo
+                                                                  .dishRatings,
+                                                              rating,
+                                                            );
                                                           }
                                                         }
                                                       },

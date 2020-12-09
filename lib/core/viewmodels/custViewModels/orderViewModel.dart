@@ -189,6 +189,11 @@ class OrderViewModel extends BaseViewModel {
     DatabaseService().deleteCartItem(cartID, productID);
   }
 
+  void updateDishRatings(String dishid, double dishratings, double newrating) {
+    double rating = (dishratings + newrating) / 2;
+    DatabaseService().updateDishData({"dishRatings": rating}, dishid);
+  }
+
   /////////////////////////
   ///////////////////////
   //////////////////////************************************************* P  R  O  D  U  C  T  -----W  I  D  G  E  T  --F  U  N  C  T  I  O  N  */
