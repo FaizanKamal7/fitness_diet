@@ -52,7 +52,7 @@ class DelivViewModel extends BaseViewModel {
   Future register(String phoneNo) async {
     print("---------> DelivViewModel reached");
     var updatedPhoneNo = phoneNo.replaceFirst(RegExp(r'0'), '+92');
-
+    String userID = getUser;
     setState(ViewState.Busy);
     String phoneNoAlreadyRegistered =
         await DatabaseService().isPhoneNoAlreadyRegistered(phoneNo);
@@ -80,7 +80,9 @@ class DelivViewModel extends BaseViewModel {
       //
       if (phoneNoAlreadyRegistered == null) {
         verifiedUserID = await AuthService().verifyPhone(updatedPhoneNo);
-
+        await DatabaseService(uid: userID).addNewDelivData({
+          'phoneNo': updatedPhoneNo,
+        });
         _navigationService.navigateTo(routes.DelivReg2Route);
 
         setState(ViewState.Idle);
@@ -103,7 +105,6 @@ class DelivViewModel extends BaseViewModel {
         : dataValidated = false;
 
     if (dataValidated) {
-      print("--------------User().getUid: " + userID);
       bool check = await DatabaseService(uid: userID).addNewDelivData({
         'delivName': delivName,
         'delivDateOfBirth': dateOfBirth,

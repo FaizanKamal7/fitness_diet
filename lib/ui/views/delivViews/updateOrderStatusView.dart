@@ -10,6 +10,7 @@ import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBg.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardLinkText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
@@ -45,13 +46,8 @@ class _UpdateOrderStatusViewState extends State<UpdateOrderStatusView> {
 
   // this set will hold my markers
   Set<Marker> _markers = {};
-  // this will hold the generated polylines
-  Set<Polyline> _polylines = {};
-  // this will hold each polyline coordinate as Lat and Lng pairs
-  List<LatLng> polylineCoordinates = [];
-  // this is the key object - the PolylinePoints
-  // which generates every polyline between start and finish
-    // PolylinePoints polylinePoints = PolylinePoints();
+
+  PolylinePoints polylinePoints = PolylinePoints();
   // for my custom icons
   BitmapDescriptor sourceIcon;
   BitmapDescriptor destinationIcon;
@@ -60,16 +56,6 @@ class _UpdateOrderStatusViewState extends State<UpdateOrderStatusView> {
     target: LatLng(34.195317, 73.235871),
     zoom: 10,
   );
-  static final CameraPosition targetLocation = CameraPosition(
-    target: LatLng(34.218878, 73.244566),
-    zoom: 10,
-  );
-
-  double CAMERA_ZOOM = 13;
-  double CAMERA_TILT = 0;
-  double CAMERA_BEARING = 30;
-  LatLng SOURCE_LOCATION = LatLng(42.7477863, -71.1699932);
-  LatLng DEST_LOCATION = LatLng(42.6871386, -71.2143403);
 
 // ------------------------------------------------------------------------------
   Future<Uint8List> getMarker() async {
@@ -78,18 +64,23 @@ class _UpdateOrderStatusViewState extends State<UpdateOrderStatusView> {
     return byteData.buffer.asUint8List();
   }
 
-  void updateMarkerAndCircle(LocationData newLocalData, Uint8List imageData) {
+// >>>>>>>>>> U P D A T E   R E A L  - T I M E   M A R K E R   L O C A T I O N
+
+  void updateMarkerAndCircle(
+      LocationData newLocalData, Uint8List imageData) async {
     LatLng latlng = LatLng(newLocalData.latitude, newLocalData.longitude);
     this.setState(() {
+      // >>>>>>>>>>>>> First Marker
       marker = Marker(
-          markerId: MarkerId("home"),
-          position: latlng,
-          rotation: newLocalData.heading,
-          draggable: false,
-          zIndex: 2,
-          flat: true,
-          anchor: Offset(0.5, 0.5),
-          icon: BitmapDescriptor.fromBytes(imageData));
+        markerId: MarkerId("1"),
+        position: latlng,
+        rotation: newLocalData.heading,
+        draggable: false,
+        zIndex: 2,
+        flat: true,
+        anchor: Offset(0.5, 0.5),
+        icon: BitmapDescriptor.fromBytes(imageData),
+      );
       circle = Circle(
           circleId: CircleId("car"),
           radius: newLocalData.accuracy,
@@ -97,7 +88,21 @@ class _UpdateOrderStatusViewState extends State<UpdateOrderStatusView> {
           strokeColor: Colors.blue,
           center: latlng,
           fillColor: Colors.blue.withAlpha(70));
+      _markers.add(marker);
     });
+    // >>>>>>>>>>>>> Second Marker
+    ByteData byteData = await DefaultAssetBundle.of(context)
+        .load("assets/images/locationIcon.png");
+    Uint8List _img2 = byteData.buffer.asUint8List();
+    _markers.add(Marker(
+      markerId: MarkerId("2"),
+      position: LatLng(34.218878, 73.244566),
+      infoWindow: InfoWindow(
+        title: "Order destination",
+      ),
+      icon: BitmapDescriptor.fromBytes(_img2),
+      visible: true,
+    ));
   }
 
   void getCurrentLocation() async {
@@ -133,36 +138,7 @@ class _UpdateOrderStatusViewState extends State<UpdateOrderStatusView> {
       }
     }
   }
-//  setPolylines() async {
 
-//         List<PointLatLng> result = await polylinePoints?.getRouteBetweenCoordinates(
-//             googleAPIKey,
-//             SOURCE_LOCATION.latitude,
-//             SOURCE_LOCATION.longitude,
-//             DEST_LOCATION.latitude,
-//             DEST_LOCATION.longitude);
-//         if (result.isNotEmpty) {
-//           // loop through all PointLatLng points and convert them
-//           // to a list of LatLng, required by the Polyline
-//           result.forEach((PointLatLng point) {
-//             polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-//           });
-//         }
-
-//       setState(() {
-//           // create a Polyline instance
-//           // with an id, an RGB color and the list of LatLng pairs
-//           Polyline polyline = Polyline(
-//               polylineId: PolylineId("poly"),
-//               color: Color.fromARGB(255, 40, 122, 198),
-//               points: polylineCoordinates);
-
-//           // add the constructed polyline as a set of points
-//           // to the polyline set, which will eventually
-//           // end up showing up on the map
-//           _polylines.add(polyline);
-//       });
-//   }
   @override
   void dispose() {
     if (_locationSubscription != null) {
@@ -176,49 +152,64 @@ class _UpdateOrderStatusViewState extends State<UpdateOrderStatusView> {
     final deviceSize = MediaQuery.of(context).size;
     return BaseView<DelivViewModel>(
       builder: (context, model, child) => Scaffold(
-        appBar: AppBar(title: Text("Order ID: " + widget.passedOrder.orderID)),
+        appBar: AppBar(
+          title: Text("Order ID: " + widget.passedOrder.orderID),
+          backgroundColor: Colors.brown,
+        ),
         body: Stack(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // --------------------------- M A P S
                 Expanded(
-                  child: Stack(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          getCurrentLocation();
-                        },
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: Container(
+                  flex: 6,
+                  child: GoogleMap(
+                    mapType: MapType.normal,
+                    initialCameraPosition: initialLocation,
+                    markers: Set.of((marker != null) ? _markers : []),
+                    circles: Set.of((circle != null) ? [circle] : []),
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller = controller;
+                    },
+                  ),
+                ),
+                // --------------------------- G E T   L O C A T I O N
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () async {
+                      getCurrentLocation();
+                      await model.updateOrderStatus(
+                        [1, 2, 3],
+                        widget.passedOrder.orderID,
+                      );
+                    },
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Start Delivery"),
+                          SizedBox(width: 5),
+                          Container(
                             margin: EdgeInsets.all(10),
                             height: deviceSize.height * 0.04,
                             width: deviceSize.height * 0.04,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.green,
                               shape: BoxShape.circle,
                             ),
                             child:
                                 Center(child: Icon(Icons.location_searching)),
                           ),
-                        ),
+                        ],
                       ),
-                      GoogleMap(
-                        mapType: MapType.normal,
-                        initialCameraPosition: initialLocation,
-                        // polylines: _polyline,
-                        markers: Set.of((marker != null) ? [marker] : []),
-                        circles: Set.of((circle != null) ? [circle] : []),
-                        onMapCreated: (GoogleMapController controller) {
-                          // setPolylines();
-                          _controller = controller;
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                 ),
                 Expanded(
+                  flex: 6,
                   child: ListView(
                     children: [
                       Container(

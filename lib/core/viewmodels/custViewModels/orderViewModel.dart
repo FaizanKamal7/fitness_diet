@@ -19,10 +19,15 @@ class OrderViewModel extends BaseViewModel {
     _navigationService.navigateToWithoutReplacement(routes.HomeRoute);
   }
 
-  void getLocation() async {
+// >>>>>>>>>> getcurrent user location
+  Future<List<double>> getLocation() async {
+    List<double> _position = [];
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     print("P O S I T I O N : " + position.toString());
+    _position.add(position.latitude);
+    _position.add(position.longitude);
+    return _position;
   }
 
   Stream<List<ChefData>> getSingleChefData(String currentChefID) {
@@ -96,9 +101,19 @@ class OrderViewModel extends BaseViewModel {
       ///
       ///
       String chefID = getShefID(items.keys.elementAt(0), allDishes);
-
-      String orderId = await DatabaseService().createOrder(custID, custName,
-          chefID, shippAddress, phoneNO, orderStatus, items, total);
+      List<double> _currentPosition = await getLocation();
+      Map<String, dynamic> _orderInfo = {};
+      String orderId = await DatabaseService().createOrder({
+        "custID": custID,
+        "custName": custName,
+        "chefID": chefID,
+        "shippAddress": shippAddress,
+        "contactNo": phoneNO,
+        "orderStatus": orderStatus,
+        "items": items,
+        "total": total,
+        "location": _currentPosition
+      });
 
       /// ------------> D  E  L  E  T  I  N  G  -- C  A  R  T  -- I  T  E  M
       ///
