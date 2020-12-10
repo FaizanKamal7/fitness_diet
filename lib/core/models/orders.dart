@@ -11,6 +11,7 @@ class Order {
   String chefID;
   String custID;
   String dishID;
+  List<dynamic> location;
 
   Order({
     this.orderID,
@@ -25,5 +26,6 @@ class Order {
     this.total,
     this.chefID,
     this.dishID,
+    this.location,
   });
 }

@@ -912,43 +912,33 @@ class DatabaseService {
 
   //--------------------------------- O R D E R ------------------------------
 
-  Future<String> createOrder(
-    String custID,
-    String custName,
-    String chefID,
-    Map<String, dynamic> shippingAddress,
-    String phoneNo,
-    List orderStatus,
-    Map<String, dynamic> itemsList,
-    double total,
-  ) async {
+  Future<String> createOrder(Map<String, dynamic> dataMap) async {
     print('inside create mew order function ***********');
 
     int lastindexofOrder =
         await DBHelperFtns().lastDocumentIdNumber(orderCollection, 'orderID');
 
     String newOrderID = 'order' + (lastindexofOrder + 1).toString();
-
-    print(
-        '******* after last document function in add new order function in  database new order id is ' +
-            newOrderID.toString());
-
-    // Map<String, int> items = {};
     await orderCollection.doc(newOrderID).set(
       {
-        'custID': custID,
         'orderID': newOrderID,
-        'custName': custName,
-        'chefID': chefID,
-        'shippingAddress': shippingAddress,
-        'contactNo': phoneNo,
-        'orderStatus': orderStatus,
         'orderDate': DateTime.now(),
-        'items': itemsList,
-        'total': total,
       },
       SetOptions(merge: true),
     );
+    dataMap.forEach(
+      (key, value) async {
+        print("Adding dynamic data - DatabaseService");
+        print("Key: $key ,  Value: $value");
+        await orderCollection.doc(newOrderID).set(
+          {
+            key: value,
+          },
+          SetOptions(merge: true),
+        );
+      },
+    );
+
     return newOrderID;
   }
 
@@ -993,13 +983,12 @@ class DatabaseService {
         chefID: snapshot.docs[i].data()['chefID'] ?? "",
         orderDate:
             (snapshot.docs[i].data()['orderDate'] as Timestamp).toDate() ?? "",
-        // shippedDate:
-        //     (snapshot.docs[i].data()['shippedDate'] as Timestamp).toDate() ??
-        //         "",
-        shippingAddress: snapshot.docs[i].data()['shippingAddress'] ?? "",
+       
+        // shippingAddress: snapshot.docs[i].data()['shippingAddress'] ?? "",
         items: snapshot.docs[i].data()['items'] ?? "",
         total: snapshot.docs[i].data()['total'] ?? "",
         custName: snapshot.docs[i].data()['custName'] ?? "",
+        location: snapshot.docs[i].data()['location'] ?? []
       ));
     }
     return ordersList;
@@ -1015,8 +1004,7 @@ class DatabaseService {
   }
 
   Stream<List<Order>> getCustOrderData() {
-    // print("---> _custID inside getSingleOrderData in database class: " +
-    //     _custID.toString());
+    print("---> _custID inside getSingleOrderData in database class:");
     return orderCollection
         .where("custID", isEqualTo: uid)
         .snapshots()
@@ -1134,12 +1122,10 @@ class DatabaseService {
         uid.toString());
     // - Setting ID first in a doc
 
-    Map<String, List<String>> address = {};
     await delivCollection.doc(uid).set(
       {
         'delivID': uid,
         'delivAddDate': DateTime.now(),
-        'delivAddress': address,
       },
       SetOptions(merge: true),
     );
@@ -1186,7 +1172,7 @@ class DatabaseService {
     return true;
   }
 
-  //-------------- address
+  // -------------- Address
   Future updateDelivAddress(String delivID, String title, String houseno,
       String street, String city) async {
     print('inside update address function  in  data base');

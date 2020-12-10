@@ -45,7 +45,7 @@ class DelivProfile extends StatelessWidget {
                             _allOrder[index].orderStatus.length;
                         return _allOrder[index]
                                     .orderStatus[_statusListLength - 1] !=
-                                Order_Status.ORDER_COMPLETED
+                                "ORDER_COMPLETED"
                             ? CustOrdersDelivView(custOrder: _allOrder[index])
                             : SizedBox();
                       },
@@ -62,9 +62,15 @@ class DelivProfile extends StatelessWidget {
                       itemBuilder: (context, index) {
                         int _statusListLength =
                             _allOrder[index].orderStatus.length;
+                        print("---------> S T A T U S  " +
+                            _allOrder[index]
+                                .orderStatus[_statusListLength - 1]
+                                .toString() +
+                            " I D : " +
+                            _allOrder[index].orderID);
                         return _allOrder[index]
                                     .orderStatus[_statusListLength - 1] ==
-                                Order_Status.ORDER_COMPLETED
+                                "ORDER_COMPLETED"
                             ? CustOrdersDelivView(custOrder: _allOrder[index])
                             : SizedBox();
                       },
