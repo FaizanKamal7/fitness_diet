@@ -19,7 +19,6 @@ class AuthService {
   Stream<CurrentUser> get user =>
       _auth.authStateChanges().map(_userFormFirebaseUser);
 
-
   Future signOut() async {
     try {
       return await _auth.signOut();
@@ -54,7 +53,7 @@ class AuthService {
     final DialogService _dialogService = locator<DialogService>();
     var completer = Completer<dynamic>();
     print("‎ Verify Phone reached __________________");
-    String smsCode;
+    // String smsCode;
     dynamic newUserResult;
 
     Future<String> getOTPresult() async {

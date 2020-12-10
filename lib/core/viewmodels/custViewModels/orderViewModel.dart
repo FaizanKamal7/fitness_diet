@@ -1,3 +1,4 @@
+import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/plan.dart';
@@ -22,6 +23,18 @@ class OrderViewModel extends BaseViewModel {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     print("P O S I T I O N : " + position.toString());
+  }
+
+  Stream<List<ChefData>> getSingleChefData(String currentChefID) {
+    setState(ViewState.Busy);
+    print("--> Inside getSingleChefData in ViewModel  " +
+        currentChefID.toString());
+    Stream<List<ChefData>> allChefsData =
+        DatabaseService().getSingleChefData(currentChefID);
+    print("--> Inside getSingleChefData in ViewModel  and allChefsData " +
+        allChefsData.toString());
+    setState(ViewState.Idle);
+    return allChefsData;
   }
 
   Future<String> createOrder(
@@ -189,9 +202,17 @@ class OrderViewModel extends BaseViewModel {
     DatabaseService().deleteCartItem(cartID, productID);
   }
 
-  void updateDishRatings(String dishid, double dishratings, double newrating) {
-    double rating = (dishratings + newrating) / 2;
+  void updateDishRatings(String dishid, double dishratings, double newrating,
+      double chefrating, String chefID) {
+    double rating = ((dishratings + newrating) / 2) > 5
+        ? 5
+        : double.parse(((dishratings + newrating) / 2).toStringAsFixed(1));
+    double newchefrating = ((chefrating + newrating) / 2) > 5
+        ? 5
+        : double.parse(((chefrating + newrating) / 2).toStringAsFixed(1));
+
     DatabaseService().updateDishData({"dishRatings": rating}, dishid);
+    DatabaseService().updateChefData({'chefRatings': newchefrating}, chefID);
   }
 
   /////////////////////////

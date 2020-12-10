@@ -8,6 +8,7 @@ import 'package:fitness_diet/ui/shared/colors.dart';
 import 'package:fitness_diet/ui/shared/fonts.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/custViews/custProfile/chefview.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadinNoBgSmall.dart';
 import 'package:fitness_diet/ui/widgets/briefChefInfo.dart';
 import 'package:fitness_diet/ui/widgets/circularIcon.dart';
@@ -202,11 +203,20 @@ class ChefSoleDishView extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 15),
-                            BriefChefInfo(
-                              passedChefData: model.extractedChefData(
-                                _allChefsData,
-                                passedDish.chefID,
-                              ),
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChefView(
+                                      chefID: passedDish.chefID,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: BriefChefInfo(
+                                  passedChefData: model.extractedChefData(
+                                      _allChefsData, passedDish.chefID)),
                             ),
                           ],
                         ),

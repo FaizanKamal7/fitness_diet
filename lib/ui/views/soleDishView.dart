@@ -11,6 +11,7 @@ import 'package:fitness_diet/ui/shared/fonts.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/cartView.dart';
+import 'package:fitness_diet/ui/views/custViews/custProfile/chefview.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/bigLightGreenBtn.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadinNoBgSmall.dart';
 import 'package:fitness_diet/ui/widgets/briefChefInfo.dart';
@@ -142,7 +143,7 @@ class SoleDishView extends StatelessWidget {
                                 Row(
                                   children: [
                                     RatingBarIndicator(
-                                      rating: 3.5,
+                                      rating: passedDish.dishRatings,
                                       itemCount: 5,
                                       itemSize: deviceSize.height * 0.015,
                                       physics: BouncingScrollPhysics(),
@@ -152,7 +153,9 @@ class SoleDishView extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      "(3.5)",
+                                      "(" +
+                                          passedDish.dishRatings.toString() +
+                                          ")",
                                       style: TextStyle(
                                         fontSize: deviceSize.height * 0.015,
                                       ),
@@ -206,9 +209,21 @@ class SoleDishView extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 15),
-                            BriefChefInfo(
-                                passedChefData: model.extractedChefData(
-                                    _allChefsData, passedDish.chefID)),
+                            FlatButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChefView(
+                                      chefID: passedDish.chefID,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: BriefChefInfo(
+                                  passedChefData: model.extractedChefData(
+                                      _allChefsData, passedDish.chefID)),
+                            ),
                           ],
                         ),
                         // ----------------------------------- A D D   T O   C A R T   B U T T O N

@@ -126,7 +126,7 @@ class FoodMenuView extends StatelessWidget {
                                           _allChefsData, dish.chefID),
                                       kcal: dish.dishKcal,
                                       price: dish.dishPrice,
-                                      ratings: 3.5,
+                                      ratings: dish.dishRatings,
                                       dishPic: dish.dishPic,
                                     ),
                                   ),

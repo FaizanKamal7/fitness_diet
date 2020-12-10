@@ -70,7 +70,7 @@ class ChefData {
   var chefDateOfBirth;
   var chefAddDate;
   String chefLocation;
-  int chefRatings;
+  double chefRatings;
   List chefFollowers;
   List chefDishes;
   String chefPic;

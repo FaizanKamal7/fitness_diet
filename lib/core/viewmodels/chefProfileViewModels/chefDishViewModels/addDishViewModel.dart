@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
-import 'package:fitness_diet/core/models/API_MODELS/edamamJSONModel.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/dbHelperFtns.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';

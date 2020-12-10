@@ -1,5 +1,4 @@
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 
 class ChatViewModel extends BaseViewModel {
@@ -11,9 +10,9 @@ class ChatViewModel extends BaseViewModel {
     return true;
   }
 
-  Future<List<ChefData>> getallchefdata() async {
-    // List<ChefData> cheflist = await DatabaseService().getAllChefData;
-  }
+  // Future<List<ChefData>> getallchefdata() async {
+  //   // List<ChefData> cheflist = await DatabaseService().getAllChefData;
+  // }
 
   bool checkUserinChef(String uid, List<ChefData> cheflist) {
     for (int i = 0; i < cheflist.length; i++) {
@@ -34,7 +33,7 @@ class ChatViewModel extends BaseViewModel {
     return false;
   }
 
-  Future<List<String>> getmessagedocuments() async {
-    //  List<String> list = await DatabaseService().getallmessagedocument;
-  }
+  // Future<List<String>> getmessagedocuments() async {
+  //   //  List<String> list = await DatabaseService().getallmessagedocument;
+  // }
 }

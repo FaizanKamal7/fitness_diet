@@ -269,7 +269,7 @@ class ChatHomeChefState extends State<ChatHomeChef> {
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           title: Text(
-            'MAIN',
+            'CHATS',
             style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
@@ -436,6 +436,7 @@ class ChatHomeChefState extends State<ChatHomeChef> {
                     builder: (context) => Chat(
                           peerId: document.idUser,
                           peerAvatar: document.urlAvatar,
+                          peername: document.name,
                         )));
           },
           color: greyColor2,

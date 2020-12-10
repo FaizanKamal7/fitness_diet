@@ -87,7 +87,7 @@ class DishViewSingleListItemDesign extends StatelessWidget {
                   Row(
                     children: [
                       RatingBarIndicator(
-                        rating: 3.5,
+                        rating: ratings,
                         itemCount: 5,
                         itemSize: _deviceSize.height * 0.015,
                         physics: BouncingScrollPhysics(),
@@ -97,7 +97,7 @@ class DishViewSingleListItemDesign extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "(3.5)",
+                        "($ratings)",
                         style: TextStyle(fontSize: _deviceSize.height * 0.015),
                       ),
                     ],

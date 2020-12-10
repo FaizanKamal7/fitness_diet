@@ -438,6 +438,7 @@ class ChatHomeCustState extends State<ChatHomeCust> {
                     builder: (context) => Chat(
                           peerId: document.idUser,
                           peerAvatar: document.urlAvatar,
+                          peername: document.name,
                         )));
           },
           color: greyColor2,

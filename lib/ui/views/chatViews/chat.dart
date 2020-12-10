@@ -16,8 +16,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 class Chat extends StatelessWidget {
   final String peerId;
   final String peerAvatar;
+  final String peername;
 
-  Chat({Key key, @required this.peerId, @required this.peerAvatar})
+  Chat(
+      {Key key,
+      @required this.peerId,
+      @required this.peerAvatar,
+      @required this.peername})
       : super(key: key);
 
   @override
@@ -25,7 +30,7 @@ class Chat extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'CHAT',
+          '$peername',
           style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,

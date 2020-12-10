@@ -44,7 +44,8 @@ class CustInfo extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     final _custData = Provider.of<CustData>(context);
     final _custOrders = Provider.of<List<Order>>(context);
-
+    print('---------------------->_custorderdata length in cust info is :' +
+        _custOrders.length.toString());
     final _planData = Provider.of<Plan>(context);
     return BaseView<CustInfoViewModel>(
       builder: (context, model, child) => ResponsiveSafeArea(

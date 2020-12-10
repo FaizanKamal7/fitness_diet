@@ -1,20 +1,26 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/models/user.dart';
+import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
+import 'package:fitness_diet/ui/views/chatViews/chat.dart';
 import 'package:fitness_diet/ui/views/chatViews/chatHomeChef.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileEditView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/standardBtnWhitishRound.dart';
 import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../locator.dart';
+
 class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
   final double maxExtent;
   final double minExtent;
   double animationVal = 0;
   ChefData chefData;
+  bool isfromchef;
   // String chefName, chefPic;
   ChefSliverAppBar({
     @required this.maxExtent,
@@ -22,6 +28,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
     // @required this.chefName,
     // @required this.chefPic,
     @required this.chefData,
+    @required this.isfromchef,
   });
   void _showEditBottomSheet(BuildContext _context) {
     showModalBottomSheet(
@@ -39,6 +46,8 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final deviceSize = MediaQuery.of(context).size;
+
+    DialogService _dialogService = locator<DialogService>();
     // final _chefData = Provider.of<ChefData>(context);
     // print("----> _chefData inside ChefSliverAppBar : " + chefData.toString());
     print("chefPic in SliverAppBar: " +
@@ -180,25 +189,43 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  FlatButton(
-                      //   onPressed: () => _showEditBottomSheet(),
-                      onPressed: () => _showEditBottomSheet(context),
-                      child:
-                          StandardBtnWhitishRound(passedText: "Edit Profile")),
+                  isfromchef
+                      ? FlatButton(
+                          //   onPressed: () => _showEditBottomSheet(),
+                          onPressed: () => _showEditBottomSheet(context),
+                          child: StandardBtnWhitishRound(
+                              passedText: "Edit Profile"))
+                      : SizedBox(),
                   Spacer(),
                   //
                   // >>>>>>>>> M E S S A G E   I C O N
                   //
                   FlatButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChatHomeChef(
-                            currentUserId: BaseViewModel().getUser,
-                          ),
-                        ),
-                      );
+                      isfromchef
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatHomeChef(
+                                  currentUserId: BaseViewModel().getUser,
+                                ),
+                              ),
+                            )
+                          : BaseViewModel().getUser != null
+                              ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Chat(
+                                            peerId: chefData.chefID,
+                                            peerAvatar: chefData.chefPic,
+                                            peername: chefData.chefName,
+                                          )))
+                              : _dialogService.showDialog(
+                                  title: 'Alert',
+                                  description: "Please Sign in to Continue ",
+                                  buttonTitle: "ok ",
+                                  dialogType: Dialog_Types.PLAN_SUCCESS);
+                      ;
                     },
                     child: Container(
                         margin: EdgeInsets.only(right: widgetSize.width * 0.06),

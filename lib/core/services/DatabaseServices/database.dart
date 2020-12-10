@@ -131,7 +131,7 @@ class DatabaseService {
   //
   CustData _custDataFromSnapshot(DocumentSnapshot snapshot) {
     print(
-        " UiD DB TEST function reached in data fromsnapshot ******************** data " +
+        " UiD DBfunction reached in cust data  fromsnapshot ******************** data " +
             uid);
 
     return CustData(
@@ -170,6 +170,7 @@ class DatabaseService {
       {
         'chefID': uid,
         'chefAddDate': DateTime.now(),
+        'chefRatings': 0.0,
         'hasDish': false, // Jugar
       },
       SetOptions(merge: true),
@@ -270,7 +271,7 @@ class DatabaseService {
             : "",
         // //  chefAddDate: (snapshot.docs[i].data()['chefAddDate'] as Timestamp).toDate() ??,
         chefLocation: snapshot.docs[i].data()['chefLocation'] ?? "",
-        chefRatings: snapshot.docs[i].data()['chefRatings'] ?? 0,
+        chefRatings: snapshot.docs[i].data()['chefRatings'].toDouble() ?? 0,
         chefFollowers: snapshot.docs[i].data()['chefFollowers'] ?? [],
         chefDishes: snapshot.docs[i].data()['chefDishes'] ?? [],
         chefPic: snapshot.docs[i].data()['chefPic'] ?? "",
@@ -318,6 +319,7 @@ class DatabaseService {
       {
         'dishID': newDishID,
         'dishAddDate': DateTime.now(),
+        'dishRatings': 0.0,
       },
       SetOptions(merge: true),
     );
@@ -580,12 +582,10 @@ class DatabaseService {
       custWeight: snapshot.docs[0].data()['custWeight'] ?? 0.0,
       custGoalWeight: snapshot.docs[0].data()['custGoalWeight'] ?? 0.0,
 //------------reg nutritients
-
       custReqKcal: snapshot.docs[0].data()['custReqKcl'] ?? 0.0,
       custReqProtein: snapshot.docs[0].data()['custReqProtein'] ?? 0.0,
       custReqFats: snapshot.docs[0].data()['custReqFats'] ?? 0.0,
       custReqCarbs: snapshot.docs[0].data()['custReqCarbs'] ?? 0.0,
-      //
       custExercise: snapshot.docs[0].data()['custExercise'] ?? "",
       custMeals: snapshot.docs[0].data()['custMeals'] ?? "",
       //------------burnt nutritients
@@ -979,7 +979,7 @@ class DatabaseService {
 
   List<Order> _orderDataFromSnapshot(QuerySnapshot snapshot) {
     print(
-        ">>>>>>>>>>> _orderDataFromSnapshot inside database INVOKED and snapshot legth is : " +
+        ">>>>>>>>>>> _orderDataFromSnapshot inside orderdatafrom snapshot database INVOKED and snapshot legth is : " +
             snapshot.docs.length.toString());
     // Map<Dish,dynamic> chefDishes;
     List<Order> ordersList = List<Order>();
@@ -996,9 +996,9 @@ class DatabaseService {
         // shippedDate:
         //     (snapshot.docs[i].data()['shippedDate'] as Timestamp).toDate() ??
         //         "",
-        shippingAddress: snapshot.docs[i].data()['shippingAddress'] ?? "",
+        // shippingAddress: snapshot.docs[i].data()['shippingAddress'] ?? "",
         items: snapshot.docs[i].data()['items'] ?? "",
-        total: snapshot.docs[i].data()['total'] ?? "",
+        total: snapshot.docs[i].data()['total'].toDouble() ?? "",
         custName: snapshot.docs[i].data()['custName'] ?? "",
       ));
     }
@@ -1015,8 +1015,9 @@ class DatabaseService {
   }
 
   Stream<List<Order>> getCustOrderData() {
-    // print("---> _custID inside getSingleOrderData in database class: " +
-    //     _custID.toString());
+    print(
+        "----------------------------> _custID inside getSingleOrderData in database class: " +
+            uid.toString());
     return orderCollection
         .where("custID", isEqualTo: uid)
         .snapshots()
@@ -1340,6 +1341,8 @@ class DatabaseService {
   }
 
   Stream<List<ChatUser>> get getAllUserData {
+    // return userCollection.orderBy("LastMessagetime", "desc").snapshots().map(_usersdatafromsnapshop);
+
     print(" ---------> Inside the getAllUsersData in database ");
     return userCollection.snapshots().map(_usersdatafromsnapshop);
   }

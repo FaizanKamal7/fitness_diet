@@ -7,6 +7,7 @@ import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/orderStatus.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/orders.dart';
+import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/orderViewModel.dart';
@@ -115,10 +116,12 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
     super.dispose();
   }
 
+  List<bool> reviewd = List<bool>();
   @override
   Widget build(BuildContext context) {
     final _allOrdersInfo = Provider.of<List<Order>>(context);
     final deviceSize = MediaQuery.of(context).size;
+    Stream<List<ChefData>> _chefData;
     print("orderStatus : " + widget.orderStatus.toString());
     return BaseView<OrderViewModel>(
         onModelReady: (model) {
@@ -128,266 +131,284 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
               singleOrderInfo = _allOrdersInfo[i];
             }
           }
+          _chefData =
+              model.getSingleChefData(_allOrdersInfo.elementAt(0).chefID);
         },
-        builder: (context, model, child) => Scaffold(
-              appBar: AppBar(
-                title: Text("Order Summary"),
-                backgroundColor: Colors.lightGreen.withOpacity(0.3),
-              ),
-              body: ListView(
-                children: [
-                  Container(
-                    height: 60,
-                    color: Colors.pink.withOpacity(0.1),
-                    child: Center(
-                      // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   I D   A N D   T I M E
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Column(
+        builder: (context, model, child) => StreamBuilder<List<ChefData>>(
+            stream: _chefData,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                ChefData chefData = snapshot.data[0];
+                return Scaffold(
+                  appBar: AppBar(
+                    title: Text("Order Summary"),
+                    backgroundColor: Colors.lightGreen.withOpacity(0.3),
+                  ),
+                  body: ListView(
+                    children: [
+                      Container(
+                        height: 60,
+                        color: Colors.pink.withOpacity(0.1),
+                        child: Center(
+                          // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   I D   A N D   T I M E
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              SizedBox(height: 8),
-                              Text(
-                                "ESTIMATED TIME",
-                                style: TextStyle(color: Colors.black54),
+                              Column(
+                                children: [
+                                  SizedBox(height: 8),
+                                  Text(
+                                    "ESTIMATED TIME",
+                                    style: TextStyle(color: Colors.black54),
+                                  ),
+                                  Text(
+                                    "30 mins",
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "30 mins",
+                              // SizedBox(width: 15),
+                              Column(
+                                children: [
+                                  SizedBox(height: 8),
+                                  Text(
+                                    "Order ID",
+                                    style: TextStyle(color: Colors.black54),
+                                  ),
+                                  Text(
+                                    widget.orderID.toString(),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          // SizedBox(width: 15),
-                          Column(
-                            children: [
-                              SizedBox(height: 8),
-                              Text(
-                                "Order ID",
-                                style: TextStyle(color: Colors.black54),
+                        ),
+                      ),
+                      Container(
+                        height: deviceSize.height * 0.4,
+                        child: Stack(
+                          children: [
+                            GoogleMap(
+                              mapType: MapType.hybrid,
+                              initialCameraPosition: initialLocation,
+                              markers: Set.of((marker != null) ? [marker] : []),
+                              circles: Set.of((circle != null) ? [circle] : []),
+                              onMapCreated: (GoogleMapController controller) {
+                                _controller = controller;
+                              },
+                            ),
+                            InkWell(
+                              onTap: () {
+                                getCurrentLocation();
+                              },
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  height: deviceSize.height * 0.04,
+                                  width: deviceSize.height * 0.04,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                      child: Icon(Icons.location_searching)),
+                                ),
                               ),
-                              Text(
-                                widget.orderID.toString(),
-                              ),
-                            ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   T R A C K I N G
+                      Timeline(
+                        children: <Widget>[
+                          OrderSingleStage(
+                            primaryText: "Order Placed",
+                            secondaryText: "We have received your order",
+                            passedIcon: FontAwesomeIcons.receipt,
+                            isDone: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(
+                                        Order_Status.ORDER_PLACED.toString()))
+                                ? true
+                                : false,
+                          ),
+                          OrderSingleStage(
+                            primaryText: "Order Processed",
+                            secondaryText: "We are prepearing your order",
+                            passedIcon: FontAwesomeIcons.gift,
+                            isDone: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(Order_Status.ORDER_PROCESSED
+                                        .toString()))
+                                ? true
+                                : false,
+                          ),
+                          OrderSingleStage(
+                            primaryText: "Order Dispatched",
+                            secondaryText:
+                                "Your order is dispatched and will be ready for pick up",
+                            passedIcon: FontAwesomeIcons.truckPickup,
+                            isDone: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(Order_Status.ORDER_DISPATCHED
+                                        .toString()))
+                                ? true
+                                : false,
+                          ),
+                          OrderSingleStage(
+                            primaryText: "Order Completed",
+                            secondaryText: "Order completed successfully",
+                            passedIcon: FontAwesomeIcons.thumbsUp,
+                            isDone: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(Order_Status.ORDER_COMPLETED
+                                        .toString()))
+                                ? true
+                                : false,
+                          ),
+                          OrderSingleStage(
+                            primaryText: "Order Failed",
+                            secondaryText:
+                                "Order is not not completed due to some reason",
+                            passedIcon: FontAwesomeIcons.thumbsUp,
+                            isDone: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(
+                                        Order_Status.ORDER_FAILED.toString()))
+                                ? true
+                                : false,
+                          ),
+                        ],
+                        indicators: <Widget>[
+                          Icon(
+                            FontAwesomeIcons.checkCircle,
+                            color: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(
+                                        Order_Status.ORDER_PLACED.toString()))
+                                ? Colors.blueAccent
+                                : Colors.redAccent.withOpacity(0.4),
+                          ),
+                          Icon(
+                            FontAwesomeIcons.checkCircle,
+                            color: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(Order_Status.ORDER_PROCESSED
+                                        .toString()))
+                                ? Colors.blueAccent
+                                : Colors.redAccent.withOpacity(0.4),
+                          ),
+                          Icon(
+                            FontAwesomeIcons.checkCircle,
+                            color: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(Order_Status.ORDER_DISPATCHED
+                                        .toString()))
+                                ? Colors.blueAccent
+                                : Colors.redAccent.withOpacity(0.4),
+                          ),
+                          Icon(
+                            FontAwesomeIcons.checkCircle,
+                            color: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(Order_Status.ORDER_COMPLETED
+                                        .toString()))
+                                ? Colors.blueAccent
+                                : Colors.redAccent.withOpacity(0.4),
+                          ),
+                          Icon(
+                            FontAwesomeIcons.cross,
+                            color: widget.orderStatus.contains(ConstantFtns()
+                                    .getEnumValue(
+                                        Order_Status.ORDER_FAILED.toString()))
+                                ? Colors.blueAccent
+                                : Colors.redAccent.withOpacity(0.4),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  Container(
-                    height: deviceSize.height * 0.4,
-                    child: Stack(
-                      children: [
-                        GoogleMap(
-                          mapType: MapType.hybrid,
-                          initialCameraPosition: initialLocation,
-                          markers: Set.of((marker != null) ? [marker] : []),
-                          circles: Set.of((circle != null) ? [circle] : []),
-                          onMapCreated: (GoogleMapController controller) {
-                            _controller = controller;
-                          },
-                        ),
-                        InkWell(
-                          onTap: () {
-                            getCurrentLocation();
-                          },
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: Container(
-                              margin: EdgeInsets.all(10),
-                              height: deviceSize.height * 0.04,
-                              width: deviceSize.height * 0.04,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                              ),
-                              child:
-                                  Center(child: Icon(Icons.location_searching)),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   T R A C K I N G
-                  Timeline(
-                    children: <Widget>[
-                      OrderSingleStage(
-                        primaryText: "Order Placed",
-                        secondaryText: "We have received your order",
-                        passedIcon: FontAwesomeIcons.receipt,
-                        isDone: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_PLACED.toString()))
-                            ? true
-                            : false,
-                      ),
-                      OrderSingleStage(
-                        primaryText: "Order Processed",
-                        secondaryText: "We are prepearing your order",
-                        passedIcon: FontAwesomeIcons.gift,
-                        isDone: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_PROCESSED.toString()))
-                            ? true
-                            : false,
-                      ),
-                      OrderSingleStage(
-                        primaryText: "Order Dispatched",
-                        secondaryText:
-                            "Your order is dispatched and will be ready for pick up",
-                        passedIcon: FontAwesomeIcons.truckPickup,
-                        isDone: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_DISPATCHED.toString()))
-                            ? true
-                            : false,
-                      ),
-                      OrderSingleStage(
-                        primaryText: "Order Completed",
-                        secondaryText: "Order completed successfully",
-                        passedIcon: FontAwesomeIcons.thumbsUp,
-                        isDone: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_COMPLETED.toString()))
-                            ? true
-                            : false,
-                      ),
-                      OrderSingleStage(
-                        primaryText: "Order Failed",
-                        secondaryText:
-                            "Order is not not completed due to some reason",
-                        passedIcon: FontAwesomeIcons.thumbsUp,
-                        isDone: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_FAILED.toString()))
-                            ? true
-                            : false,
-                      ),
-                    ],
-                    indicators: <Widget>[
-                      Icon(
-                        FontAwesomeIcons.checkCircle,
-                        color: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_PLACED.toString()))
-                            ? Colors.blueAccent
-                            : Colors.redAccent.withOpacity(0.4),
-                      ),
-                      Icon(
-                        FontAwesomeIcons.checkCircle,
-                        color: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_PROCESSED.toString()))
-                            ? Colors.blueAccent
-                            : Colors.redAccent.withOpacity(0.4),
-                      ),
-                      Icon(
-                        FontAwesomeIcons.checkCircle,
-                        color: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_DISPATCHED.toString()))
-                            ? Colors.blueAccent
-                            : Colors.redAccent.withOpacity(0.4),
-                      ),
-                      Icon(
-                        FontAwesomeIcons.checkCircle,
-                        color: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_COMPLETED.toString()))
-                            ? Colors.blueAccent
-                            : Colors.redAccent.withOpacity(0.4),
-                      ),
-                      Icon(
-                        FontAwesomeIcons.cross,
-                        color: widget.orderStatus.contains(ConstantFtns()
-                                .getEnumValue(
-                                    Order_Status.ORDER_FAILED.toString()))
-                            ? Colors.blueAccent
-                            : Colors.redAccent.withOpacity(0.4),
-                      ),
-                    ],
-                  ),
-                  // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   D I S H E S
-                  StandardHeadingBlackMedium(passedText: "Products"),
-                  Divider(thickness: 2),
-                  SizedBox(height: 2),
+                      // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   D I S H E S
+                      StandardHeadingBlackMedium(passedText: "Products"),
+                      Divider(thickness: 2),
+                      SizedBox(height: 2),
 
-                  singleOrderInfo.items != null &&
-                          singleOrderInfo.items.length > 0
-                      ? ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: singleOrderInfo.items.length,
-                          itemBuilder: (context, index) {
-                            print("SINGLE ITEM ID: ");
-                            final _singleItemID =
-                                singleOrderInfo.items.keys.elementAt(index);
-                            print(
-                                "SINGLE ITEM ID: " + _singleItemID.toString());
-                            return StreamBuilder<Dish>(
-                              stream: DatabaseService()
-                                  .getSingleDishforordersummary(_singleItemID),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  Dish _singleItemInfo = snapshot.data;
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SoleDishView(
-                                            isFromCustView: true,
-                                            passedDish: _singleItemInfo,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Column(
-                                      children: [
-                                        ListTile(
-                                          leading: Image(
-                                            image: NetworkImage(
-                                              _singleItemInfo.dishPic,
-                                            ),
-                                            fit: BoxFit.cover,
-                                          ),
-                                          title: Text(_singleItemInfo.dishName
-                                              .toString()),
-                                          subtitle: Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  StandardText1(
-                                                    passedDescText: "Volume: ",
-                                                  ),
-                                                  Text(_singleItemInfo.dishKcal
-                                                      .toString()),
-                                                ],
+                      singleOrderInfo.items != null &&
+                              singleOrderInfo.items.length > 0
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: singleOrderInfo.items.length,
+                              itemBuilder: (context, index) {
+                                reviewd.add(false);
+                                print("SINGLE ITEM ID: ");
+                                final _singleItemID =
+                                    singleOrderInfo.items.keys.elementAt(index);
+                                print("SINGLE ITEM ID: " +
+                                    _singleItemID.toString());
+                                return StreamBuilder<Dish>(
+                                  stream: DatabaseService()
+                                      .getSingleDishforordersummary(
+                                          _singleItemID),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      Dish _singleItemInfo = snapshot.data;
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SoleDishView(
+                                                isFromCustView: true,
+                                                passedDish: _singleItemInfo,
                                               ),
-                                              Row(
+                                            ),
+                                          );
+                                        },
+                                        child: Column(
+                                          children: [
+                                            ListTile(
+                                              leading: Image(
+                                                image: NetworkImage(
+                                                  _singleItemInfo.dishPic,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
+                                              title: Text(_singleItemInfo
+                                                  .dishName
+                                                  .toString()),
+                                              subtitle: Column(
                                                 children: [
-                                                  StandardText1(
-                                                    passedDescText: "Price: ",
+                                                  Row(
+                                                    children: [
+                                                      StandardText1(
+                                                        passedDescText:
+                                                            "Volume: ",
+                                                      ),
+                                                      Text(_singleItemInfo
+                                                          .dishKcal
+                                                          .toString()),
+                                                    ],
                                                   ),
-                                                  Text(_singleItemInfo.dishPrice
-                                                          .toString() +
-                                                      " Rs"),
-                                                  Spacer(),
-                                                  Container(
-                                                    child: FlatButton(
-                                                      disabledColor:
-                                                          Colors.grey,
-                                                      onPressed: () async {
-                                                        if (singleOrderInfo
-                                                            .orderStatus
-                                                            .contains(
-                                                          ConstantFtns().getEnumValue(
-                                                              Order_Status
-                                                                  .ORDER_COMPLETED
-                                                                  .toString()),
-                                                        )) {
-                                                          var dialogResult =
-                                                              await _dialogService.showDialog(
+                                                  Row(
+                                                    children: [
+                                                      StandardText1(
+                                                        passedDescText:
+                                                            "Price: ",
+                                                      ),
+                                                      Text(_singleItemInfo
+                                                              .dishPrice
+                                                              .toString() +
+                                                          " Rs"),
+                                                      Spacer(),
+                                                      Container(
+                                                        child: FlatButton(
+                                                          disabledColor:
+                                                              Colors.grey,
+                                                          onPressed: () async {
+                                                            if (singleOrderInfo
+                                                                    .orderStatus
+                                                                    .contains(
+                                                                        ConstantFtns()
+                                                                            .getEnumValue(
+                                                                  Order_Status
+                                                                      .ORDER_COMPLETED
+                                                                      .toString(),
+                                                                )) &&
+                                                                !reviewd
+                                                                    .elementAt(
+                                                                        index)) {
+                                                              var dialogResult = await _dialogService.showDialog(
                                                                   title:
                                                                       "how was your Experience with the dish. ",
                                                                   description:
@@ -397,63 +418,71 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
                                                                   dialogType:
                                                                       Dialog_Types
                                                                           .Ratings);
-                                                          print(
-                                                              "--------------------> user ratings in app drawer is  " +
+                                                              print("--------------------> user ratings in app drawer is  " +
                                                                   dialogResult
                                                                       .userText);
 
-                                                          if (dialogResult
-                                                              .confirmed) {
-                                                            double rating =
-                                                                double.parse(
-                                                                    dialogResult
-                                                                        .userText);
-                                                            model
-                                                                .updateDishRatings(
-                                                              _singleItemInfo
-                                                                  .dishID,
-                                                              _singleItemInfo
-                                                                  .dishRatings,
-                                                              rating,
-                                                            );
-                                                          }
-                                                        }
-                                                      },
-                                                      child: Text(
-                                                        'Review',
-                                                        style: TextStyle(
-                                                          color: singleOrderInfo
-                                                                  .orderStatus
-                                                                  .contains(ConstantFtns().getEnumValue(
-                                                                      Order_Status
-                                                                          .ORDER_COMPLETED
-                                                                          .toString()))
-                                                              ? Colors.blue
-                                                              : Colors.grey,
+                                                              if (dialogResult
+                                                                  .confirmed) {
+                                                                double rating =
+                                                                    double.parse(
+                                                                        dialogResult
+                                                                            .userText);
+                                                                model
+                                                                    .updateDishRatings(
+                                                                  _singleItemInfo
+                                                                      .dishID,
+                                                                  _singleItemInfo
+                                                                      .dishRatings,
+                                                                  rating,
+                                                                  chefData
+                                                                      .chefRatings,
+                                                                  chefData
+                                                                      .chefID,
+                                                                );
+                                                                reviewd[index] =
+                                                                    true;
+                                                              }
+                                                            }
+                                                          },
+                                                          child: Text(
+                                                            'Review',
+                                                            style: TextStyle(
+                                                              color: !reviewd
+                                                                      .elementAt(
+                                                                          index)
+                                                                  ? Colors.blue
+                                                                  : Colors.grey,
+                                                            ),
+                                                          ),
                                                         ),
                                                       ),
-                                                    ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                            ],
-                                          ),
+                                            ),
+                                            SizedBox(height: 10),
+                                          ],
                                         ),
-                                        SizedBox(height: 10),
-                                      ],
-                                    ),
-                                  );
-                                } else {
-                                  return SizedBox();
-                                }
+                                      );
+                                    } else {
+                                      return SizedBox();
+                                    }
+                                  },
+                                );
                               },
-                            );
-                          },
-                        )
-                      : Text("No Products"),
-                ],
-              ),
-            ));
+                            )
+                          : Text("No Products"),
+                    ],
+                  ),
+                );
+              } else {
+                return Scaffold(
+                  body: Center(child: Text("No data for selected user")),
+                );
+              }
+            }));
   }
 }
 

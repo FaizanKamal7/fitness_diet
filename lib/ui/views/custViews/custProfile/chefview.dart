@@ -1,58 +1,45 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefProfileViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
-import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/ChefSliverAppBar.dart';
-import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefAppDrawer.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/chefDishesView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/chefInfo.dart';
-import 'package:fitness_diet/ui/widgets/Buttons/tabBarBtnStyle.dart';
+import 'package:fitness_diet/ui/views/custViews/custHome/Header/custAppDrawer.dart';
 import 'package:fitness_diet/ui/widgets/Texts/ProfileHeaderText.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ChefProfileView extends StatefulWidget {
+import '../../baseView.dart';
+
+class ChefView extends StatefulWidget {
+  String chefID;
+  ChefView({
+    @required this.chefID,
+  });
   @override
-  _ChefProfileViewState createState() => _ChefProfileViewState();
+  _ChefViewState createState() => _ChefViewState();
 }
 
-class _ChefProfileViewState extends State<ChefProfileView>
-    with SingleTickerProviderStateMixin {
+class _ChefViewState extends State<ChefView> {
   int pageViewIndex = 0;
   // PageController _pgController = PageController();
-  List pageContent = [
-    ChefDishes(
-      chefID: BaseViewModel().getUser,
-      isfromchef: true,
-    ),
-    ChefInfo()
-  ];
+  // List pageContent = [ChefDishes(), ChefInfo()];
   ScrollController _scrollController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   TabController _tabController;
   int widgetCountBeforeSliverOverlapAbsorber = 1;
   @override
-  void initState() {
-    super.initState();
-    _scrollController = new ScrollController();
-    _tabController = new TabController(vsync: this, length: 2);
-  }
-
-  @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final _dishData = Provider.of<List<Dish>>(context);
     Stream<List<ChefData>> _chefData;
-    print("----> __chefData inside chefProfileView : " + _chefData.toString());
     return BaseView<ChefProfileViewModel>(
       onModelReady: (model) async {
-        String currentChefID = model.getUser;
-
+        String currentChefID = widget.chefID;
         print("currentChefID: " + currentChefID.toString());
         _chefData = model.getSingleChefData(currentChefID);
         print("inOnModelReady : " + _chefData.first.toString());
@@ -67,7 +54,7 @@ class _ChefProfileViewState extends State<ChefProfileView>
                     ChefData chefData = snapshot.data[0];
                     return Scaffold(
                       key: _scaffoldKey,
-                      endDrawer: ChefAppDrawer(),
+                      endDrawer: CustAppDrawer(),
                       body: Stack(
                         fit: StackFit.loose,
                         children: [
@@ -86,7 +73,7 @@ class _ChefProfileViewState extends State<ChefProfileView>
                                     minExtent: deviceSize.height * 0.26,
                                     // chefName: chefData.chefName,
                                     // chefPic: chefData.chefPic,
-                                    chefData: chefData, isfromchef: true,
+                                    chefData: chefData, isfromchef: false,
                                   ),
                                   pinned: true,
                                   floating: false,
@@ -103,32 +90,33 @@ class _ChefProfileViewState extends State<ChefProfileView>
                                 // >>>>>>>>>>> Tabbars
                                 //
 
-                                SliverPersistentHeader(
-                                  delegate: tabsDelegate(
-                                    _tabController,
-                                    deviceSize.height * 0.051, // MaxExtent
-                                    deviceSize.height * 0.050, // MinExtent
-                                  ),
-                                  pinned: true,
-                                  floating: false,
-                                ),
+                                // SliverPersistentHeader(
+                                //   delegate: tabsDelegate(
+                                //     _tabController,
+                                //     deviceSize.height * 0.051, // MaxExtent
+                                //     deviceSize.height * 0.050, // MinExtent
+                                //   ),
+                                //   pinned: true,
+                                //   floating: false,
+                                // ),
                               ];
                             },
                             //
                             // >>>>>>>>>>> Tabbars display
                             //
-                            body: TabBarView(
-                              children: [
-                                _dishData == null && chefData == null
-                                    ? Loading()
-                                    : ChefDishes(
-                                        chefID: chefData.chefID,
-                                        isfromchef: true,
-                                      ),
-                                ChefInfo(),
-                              ],
-                              controller: _tabController,
+                            body: ChefDishes(
+                              chefID: widget.chefID,
+                              isfromchef: false,
                             ),
+                            //  TabBarView(
+                            //   children: [
+                            //     _dishData == null && chefData == null
+                            //         ? Loading()
+                            //         : ChefDishes(),
+                            //     ChefInfo(),
+                            //   ],
+                            //   controller: _tabController,
+                            // ),
                           ),
 
                           //  ----------------------------------------------------   D R A W E R
@@ -194,67 +182,4 @@ class _ChefProfileViewState extends State<ChefProfileView>
             ),
     );
   }
-}
-
-// ignore: camel_case_types
-class tabsDelegate extends SliverPersistentHeaderDelegate {
-  final double maxextent;
-  final double minextent;
-  double temp = 0;
-  tabsDelegate(this._tabController, this.maxextent, this.minextent);
-
-  TabController _tabController;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    // temp = maxExtent / 1.1 - shrinkOffset;
-    final deviceSize = MediaQuery.of(context).size;
-    return Container(
-      // decoration: BoxDecoration(
-      // color: Colors.white,
-      //   borderRadius: BorderRadius.circular(deviceSize.height * 0.4),
-      // ),
-      child: TabBar(
-        // indicatorWeight: 2,
-        //   indicatorColor: Colors.brown,
-        labelPadding:
-            EdgeInsets.symmetric(horizontal: deviceSize.width * 0.003),
-        //  unselectedLabelColor: Colors.redAccent,
-        //  indicatorSize: TabBarIndicatorSize.label,
-        //   dragStartBehavior: DragStartBehavior.start,
-        indicator: BoxDecoration(
-            // borderRadius: BorderRadius.circular(deviceSize.height * 0.1),
-            // //    color: Color(0xff4E7A0B),
-            // border: Border.all(
-            //   width: deviceSize.width * 0.005,
-            //   color: Color(0xff4E7A0B),
-            // ),
-            ),
-        labelStyle: TextStyle(
-          fontFamily: "Montserrat",
-          fontWeight: FontWeight.w700,
-          fontSize: deviceSize.height * 0.02,
-          // color: Color(0xff2a6427),
-        ),
-        labelColor: Color(0xff2a6427),
-        tabs: <Tab>[
-          Tab(child: TabBarBtnStyle(deviceSize: deviceSize, btnText: "Dishes")),
-          Tab(child: TabBarBtnStyle(deviceSize: deviceSize, btnText: "Info")),
-        ],
-        controller: _tabController,
-      ),
-    );
-  }
-
-  @override
-  bool shouldRebuild(tabsDelegate oldDelegate) {
-    return false;
-  }
-
-  @override
-  double get maxExtent => maxextent;
-
-  @override
-  double get minExtent => minextent;
 }

@@ -65,17 +65,17 @@ class BriefChefInfo extends StatelessWidget {
               Row(
                 children: [
                   RatingBarIndicator(
-                        rating: 3.5,
-                        itemCount: 5,
-                        itemSize: deviceSize.height * 0.015,
-                        physics: BouncingScrollPhysics(),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                      ),
+                    rating: passedChefData.chefRatings,
+                    itemCount: 5,
+                    itemSize: deviceSize.height * 0.015,
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                  ),
                   Text(
-                    "(3.5)",
+                    "(" + passedChefData.chefRatings.toString() + ")",
                     style: TextStyle(
                       fontSize: deviceSize.height * 0.015,
                     ),

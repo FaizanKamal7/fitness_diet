@@ -5,6 +5,7 @@ import 'package:fitness_diet/locator.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/custViews/custHome/foodMenuMain.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/navBarContent.dart';
 import 'package:fitness_diet/ui/widgets/subNavContent.dart';
@@ -74,7 +75,12 @@ class CustAppDrawer extends StatelessWidget {
                 height: deviceSize.height * 0.02,
               ),
               InkWell(
-                onTap: null,
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => FoodMenuMain()),
+                  );
+                },
                 child: NavBarContent(
                   deviceSize: deviceSize,
                   passedText: "Home",

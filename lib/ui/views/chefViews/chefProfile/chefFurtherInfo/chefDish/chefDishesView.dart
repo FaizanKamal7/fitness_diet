@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefDishViewModels/chefDishesViewModel.dart';
@@ -13,6 +14,9 @@ import 'package:provider/provider.dart';
 import 'addDish/addDishInfoView.dart';
 
 class ChefDishes extends StatefulWidget {
+  String chefID;
+  bool isfromchef;
+  ChefDishes({@required this.chefID, @required this.isfromchef});
   @override
   _ChefDishesState createState() => _ChefDishesState();
 }
@@ -29,7 +33,7 @@ class _ChefDishesState extends State<ChefDishes> {
 
     return BaseView<ChefDishesViewmodel>(
       onModelReady: (model) async {
-        String currentChefID = model.getUser;
+        String currentChefID = widget.chefID;
         print("currentChefID: " + currentChefID.toString());
       },
       builder: (context, model, child) => ResponsiveSafeArea(
@@ -37,18 +41,20 @@ class _ChefDishesState extends State<ChefDishes> {
           body: ListView(
             children: <Widget>[
               // ----------- A D D   D I S H   B T N
-              FlatButton(
-                onPressed: () {
-                  currentIngrList = [];
-                  return Navigator.push(
-                    (context),
-                    MaterialPageRoute(
-                      builder: (context) => AddDishInfo(),
-                    ),
-                  );
-                },
-                child: Text("Add new dish"),
-              ),
+              widget.isfromchef
+                  ? FlatButton(
+                      onPressed: () {
+                        currentIngrList = [];
+                        return Navigator.push(
+                          (context),
+                          MaterialPageRoute(
+                            builder: (context) => AddDishInfo(),
+                          ),
+                        );
+                      },
+                      child: Text("Add new dish"),
+                    )
+                  : SizedBox(),
               // ----------- A V A L A I B L E   D I S H E S   H E A D I N G
               Container(
                 padding: EdgeInsets.only(left: widgetSize.width * 0.025),
