@@ -1333,7 +1333,10 @@ class DatabaseService {
     // return userCollection.orderBy("LastMessagetime", "desc").snapshots().map(_usersdatafromsnapshop);
 
     print(" ---------> Inside the getAllUsersData in database ");
-    return userCollection.snapshots().map(_usersdatafromsnapshop);
+    return userCollection
+        .orderBy('LastMessagetime', descending: false)
+        .snapshots()
+        .map(_usersdatafromsnapshop);
   }
 
   List<ChatUser> _usersdatafromsnapshop(QuerySnapshot snapshot) {

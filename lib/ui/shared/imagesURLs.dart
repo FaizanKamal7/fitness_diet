@@ -9,4 +9,5 @@ const defaultUserImg = "assets/images/defaultUserImg.png";
 const defaultCustImg = "assets/images/defaultCustPic2.png";
 const defaultChefImg = "assets/images/defaultChefPic2.png";
 const carIcon = "assets/images/car_icon.png";
-
+// const animBrainSearch = "assets/images/animations/39962-funny-brain.json";
+const animBrainSearch = "assets/images/39962-funny-brain.json";

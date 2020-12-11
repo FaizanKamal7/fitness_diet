@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/searchBar.dart';
+import 'package:fitness_diet/ui/views/searchdishview.dart';
 import 'package:flutter/material.dart';
 
 class HomeAppBarDelegate extends SliverPersistentHeaderDelegate {
@@ -79,13 +80,24 @@ class HomeAppBarDelegate extends SliverPersistentHeaderDelegate {
             ),
           ),
           // ---------------------------------------------------- S E A R C H   B A R
-          Container(
-            margin:
-                EdgeInsets.only(top: animationVal < 3.9 ? 3.9 * 20 : temp - 15),
-            padding: EdgeInsets.symmetric(horizontal: deviceSize.width * 0.06),
+          FlatButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SearchDishView(),
+                ),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.only(
+                  top: animationVal < 3.9 ? 3.9 * 20 : temp - 15),
+              padding:
+                  EdgeInsets.symmetric(horizontal: deviceSize.width * 0.06),
 
-            //    color: Colors.amber,
-            child: SearchBar(),
+              //    color: Colors.amber,
+              child: SearchBar(),
+            ),
           ),
         ],
       ),

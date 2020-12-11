@@ -110,14 +110,14 @@ class CustAppDrawer extends StatelessWidget {
               ),
               InkWell(
                 onTap: () async {
-                  var dialogResult = await _dialogService.showDialog(
-                      title: "how was your Experience with the dish. ",
-                      description: "Your current Calories consumption is",
-                      buttonTitle: "Submit",
-                      dialogType: Dialog_Types.Ratings);
-                  print(
-                      "--------------------> user ratings in app drawer is  " +
-                          dialogResult.userText);
+                  // var dialogResult = await _dialogService.showDialog(
+                  //     title: "how was your Experience with the dish. ",
+                  //     description: "Your current Calories consumption is",
+                  //     buttonTitle: "Submit",
+                  //     dialogType: Dialog_Types.Ratings);
+                  // print(
+                  //     "--------------------> user ratings in app drawer is  " +
+                  //         dialogResult.userText);
                 },
                 child: NavBarContent(
                   deviceSize: deviceSize,

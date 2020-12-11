@@ -344,16 +344,16 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
                                       Dish _singleItemInfo = snapshot.data;
                                       return InkWell(
                                         onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SoleDishView(
-                                                isFromCustView: true,
-                                                passedDish: _singleItemInfo,
-                                              ),
-                                            ),
-                                          );
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //     builder: (context) =>
+                                          //         SoleDishView(
+                                          //       isFromCustView: true,
+                                          //       passedDish: _singleItemInfo,
+                                          //     ),
+                                          //   ),
+                                          // );
                                         },
                                         child: Column(
                                           children: [
@@ -373,7 +373,7 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
                                                     children: [
                                                       StandardText1(
                                                         passedDescText:
-                                                            "Volume: ",
+                                                            "Calories: ",
                                                       ),
                                                       Text(_singleItemInfo
                                                           .dishKcal

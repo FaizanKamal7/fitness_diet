@@ -100,7 +100,7 @@ class _ChefDishesState extends State<ChefDishes> {
                                 chefName: dish.chefName,
                                 kcal: dish.dishKcal,
                                 price: dish.dishPrice,
-                                ratings: 3.5,
+                                ratings: dish.dishRatings,
                                 dishPic: dish.dishPic,
                               ),
                             ],

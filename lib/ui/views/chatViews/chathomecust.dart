@@ -11,7 +11,6 @@ import 'package:fitness_diet/core/viewmodels/chatsviewmodels/chatviewmodel.dart'
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/chatViews/chat.dart';
 import 'package:fitness_diet/ui/views/chatViews/const.dart';
-import 'package:fitness_diet/ui/views/chatViews/settings.dart';
 import 'package:fitness_diet/ui/widgets/chateidgets/loading.dart';
 import 'package:flutter/material.dart';
 
@@ -39,16 +38,39 @@ class ChatHomeCustState extends State<ChatHomeCust> {
   // final GoogleSignIn googleSignIn = GoogleSignIn();
 
   bool isLoading = false;
-  List<Choice> choices = const <Choice>[
-    const Choice(title: 'Settings', icon: Icons.settings),
-    const Choice(title: 'Log out', icon: Icons.exit_to_app),
-  ];
+  // List<Choice> choices = const <Choice>[
+  //   const Choice(title: 'Settings', icon: Icons.settings),
+  //   const Choice(title: 'Log out', icon: Icons.exit_to_app),
+  // ];
 
   @override
   void initState() {
     super.initState();
     // registerNotification();
-    // configLocalNotification();
+    configLocalNotification();
+    //web notifications
+
+    // firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
+    //   print('onMessage: $message');
+    //   Platform.isAndroid
+    //       ? showNotification(message['notification'])
+    //       : showNotification(message['aps']['alert']);
+    //   final snackbar = SnackBar(
+    //     content: Text(message['notification']['title']),
+    //     action: SnackBarAction(
+    //       label: 'go',
+    //       onPressed: () => null,
+    //     ),
+    //   );
+    //   Scaffold.of(context).showSnackBar(snackbar);
+    //   return;
+    // }, onResume: (Map<String, dynamic> message) {
+    //   print('onResume: $message');
+    //   return;
+    // }, onLaunch: (Map<String, dynamic> message) {
+    //   print('onLaunch: $message');
+    //   return;
+    // });
   }
 
   void registerNotification() {
@@ -88,20 +110,20 @@ class ChatHomeCustState extends State<ChatHomeCust> {
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  void onItemMenuPress(Choice choice) {
-    if (choice.title == 'Log out') {
-      handleSignOut();
-    } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ChatSettings()));
-    }
-  }
+  // void onItemMenuPress(Choice choice) {
+  //   if (choice.title == 'Log out') {
+  //     handleSignOut();
+  //   } else {
+  //     Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => ChatSettings()));
+  //   }
+  // }
 
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
       Platform.isAndroid
-          ? 'com.dfa.flutterchatdemo'
-          : 'com.duytq.flutterchatdemo',
+          ? 'com.example.fitness_diet'
+          : 'com.example.fitness_diet',
       'Flutter chat demo',
       'your channel description',
       playSound: true,
@@ -113,17 +135,17 @@ class ChatHomeCustState extends State<ChatHomeCust> {
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
 
-    print(message);
-//    print(message['body'].toString());
-//    print(json.encode(message));
+    print('--------------------------------------->' + message);
+    print(message['body'].toString());
+    print(json.encode(message));
 
     await flutterLocalNotificationsPlugin.show(0, message['title'].toString(),
         message['body'].toString(), platformChannelSpecifics,
         payload: json.encode(message));
 
-//    await flutterLocalNotificationsPlugin.show(
-//        0, 'plain title', 'plain body', platformChannelSpecifics,
-//        payload: 'item x');
+    await flutterLocalNotificationsPlugin.show(
+        0, 'plain title', 'plain body', platformChannelSpecifics,
+        payload: 'item x');
   }
 
   Future<bool> onBackPress() {
@@ -270,36 +292,38 @@ class ChatHomeCustState extends State<ChatHomeCust> {
       },
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xffe4d7cb),
           title: Text(
-            'MAIN',
-            style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+            'CHATS',
+            style: TextStyle(
+                color: Color(0xff4e7a0b), fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           actions: <Widget>[
-            PopupMenuButton<Choice>(
-              onSelected: null,
-              itemBuilder: (BuildContext context) {
-                return choices.map((Choice choice) {
-                  return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            choice.icon,
-                            color: primaryColor,
-                          ),
-                          Container(
-                            width: 10.0,
-                          ),
-                          Text(
-                            choice.title,
-                            style: TextStyle(color: primaryColor),
-                          ),
-                        ],
-                      ));
-                }).toList();
-              },
-            ),
+            // PopupMenuButton<Choice>(
+            //   onSelected: null,
+            //   itemBuilder: (BuildContext context) {
+            //     return choices.map((Choice choice) {
+            //       return PopupMenuItem<Choice>(
+            //           value: choice,
+            //           child: Row(
+            //             children: <Widget>[
+            //               Icon(
+            //                 choice.icon,
+            //                 color: primaryColor,
+            //               ),
+            //               Container(
+            //                 width: 10.0,
+            //               ),
+            //               Text(
+            //                 choice.title,
+            //                 style: TextStyle(color: primaryColor),
+            //               ),
+            //             ],
+            //           ));
+            //     }).toList();
+            //   },
+            // ),
           ],
         ),
         body: WillPopScope(

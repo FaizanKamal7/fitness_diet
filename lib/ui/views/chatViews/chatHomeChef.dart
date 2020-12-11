@@ -45,8 +45,8 @@ class ChatHomeChefState extends State<ChatHomeChef> {
   @override
   void initState() {
     super.initState();
-    // registerNotification();
-    // configLocalNotification();
+    registerNotification();
+    configLocalNotification();
   }
 
   void registerNotification() {
@@ -86,14 +86,14 @@ class ChatHomeChefState extends State<ChatHomeChef> {
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  void onItemMenuPress(Choice choice) {
-    if (choice.title == 'Log out') {
-      handleSignOut();
-    } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => ChatSettings()));
-    }
-  }
+  // void onItemMenuPress(Choice choice) {
+  //   if (choice.title == 'Log out') {
+  //     handleSignOut();
+  //   } else {
+  //     Navigator.push(
+  //         context, MaterialPageRoute(builder: (context) => ChatSettings()));
+  //   }
+  // }
 
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
@@ -119,9 +119,9 @@ class ChatHomeChefState extends State<ChatHomeChef> {
         message['body'].toString(), platformChannelSpecifics,
         payload: json.encode(message));
 
-//    await flutterLocalNotificationsPlugin.show(
-//        0, 'plain title', 'plain body', platformChannelSpecifics,
-//        payload: 'item x');
+    await flutterLocalNotificationsPlugin.show(
+        0, 'plain title', 'plain body', platformChannelSpecifics,
+        payload: 'item x');
   }
 
   Future<bool> onBackPress() {
@@ -238,6 +238,7 @@ class ChatHomeChefState extends State<ChatHomeChef> {
     //     (Route<dynamic> route) => false);
   }
 
+  bool haschat = false;
   @override
   Widget build(BuildContext context) {
     final _usersData = Provider.of<List<ChatUser>>(context);
@@ -245,59 +246,42 @@ class ChatHomeChefState extends State<ChatHomeChef> {
     final _messagedocumentdata = Provider.of<List<String>>(context);
     bool _userresult = true;
 
-    // void checkUser(String uid) async {
-    //   print('------------------->inside check user in chat home chef  ');
-    //   String user = await DatabaseService().checkusertype(uid);
-    //   if (user == 'cust') {
-    //     print(' ----------------user is cust ');
-    //     _userresult = true;
-    //   } else {
-    //     print(' ----------------user is chef ');
-    //     _userresult = false;
-    //   }
-    // }
-
     return BaseView<ChatViewModel>(
-      onModelReady: (model) async {
-        // //   String currentChefID = model.getUser;
-        // //   print("currentChefID: " + currentChefID.toString());
-        // //   _chefData = model.getSingleChefData(currentChefID);
-        // //   print("inOnModelReady : " + _chefData.first.toString()
-        // );
-        // model.checkuser();
-      },
+      onModelReady: (model) async {},
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xffe4d7cb),
           title: Text(
             'CHATS',
-            style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Color(0xff4e7a0b), fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           actions: <Widget>[
-            PopupMenuButton<Choice>(
-              onSelected: null,
-              itemBuilder: (BuildContext context) {
-                return choices.map((Choice choice) {
-                  return PopupMenuItem<Choice>(
-                      value: choice,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            choice.icon,
-                            color: primaryColor,
-                          ),
-                          Container(
-                            width: 10.0,
-                          ),
-                          Text(
-                            choice.title,
-                            style: TextStyle(color: primaryColor),
-                          ),
-                        ],
-                      ));
-                }).toList();
-              },
-            ),
+            // PopupMenuButton<Choice>(
+            //   onSelected: null,
+            //   itemBuilder: (BuildContext context) {
+            //     return choices.map((Choice choice) {
+            //       return PopupMenuItem<Choice>(
+            //           value: choice,
+            //           child: Row(
+            //             children: <Widget>[
+            //               Icon(
+            //                 choice.icon,
+            //                 color: primaryColor,
+            //               ),
+            //               Container(
+            //                 width: 10.0,
+            //               ),
+            //               Text(
+            //                 choice.title,
+            //                 style: TextStyle(color: primaryColor),
+            //               ),
+            //             ],
+            //           ));
+            //     }).toList();
+            //   },
+            // ),
           ],
         ),
         body: WillPopScope(
@@ -310,7 +294,7 @@ class ChatHomeChefState extends State<ChatHomeChef> {
                   //     .collection('users')
                   //     .snapshots(),
                   builder: (context, snapshot) {
-                    if (_usersData == null) {
+                    if (!haschat) {
                       return Center(
                         child: CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(themeColor),
@@ -339,6 +323,9 @@ class ChatHomeChefState extends State<ChatHomeChef> {
                                 _chefData)) {
                               if (model.checkalreadychated(
                                   groupChatId, _messagedocumentdata)) {
+                                // setState(() {
+                                //   haschat = true;
+                                // });
                                 return buildItem(
                                     context, _usersData.elementAt(index));
                               } else {

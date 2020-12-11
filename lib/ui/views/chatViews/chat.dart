@@ -29,9 +29,11 @@ class Chat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xffe4d7cb),
         title: Text(
           '$peername',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+          style:
+              TextStyle(color: Color(0xff4e7a0b), fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -153,13 +155,13 @@ class ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void getSticker() {
-    // Hide keyboard when sticker appear
-    focusNode.unfocus();
-    setState(() {
-      isShowSticker = !isShowSticker;
-    });
-  }
+  // void getSticker() {
+  //   // Hide keyboard when sticker appear
+  //   focusNode.unfocus();
+  //   setState(() {
+  //     isShowSticker = !isShowSticker;
+  //   });
+  // }
 
   Future uploadFile() async {
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -645,17 +647,17 @@ class ChatScreenState extends State<ChatScreen> {
             ),
             color: Colors.white,
           ),
-          Material(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 1.0),
-              child: IconButton(
-                icon: Icon(Icons.face),
-                onPressed: getSticker,
-                color: primaryColor,
-              ),
-            ),
-            color: Colors.white,
-          ),
+          // Material(
+          //   child: Container(
+          //     margin: EdgeInsets.symmetric(horizontal: 1.0),
+          //     child: IconButton(
+          //       icon: Icon(Icons.face),
+          //       onPressed: getSticker,
+          //       color: primaryColor,
+          //     ),
+          //   ),
+          //   color: Colors.white,
+          // ),
 
           // Edit text
           Flexible(
