@@ -27,6 +27,7 @@ import 'package:fitness_diet/core/viewmodels/custViewModels/orderViewModel.dart'
 import 'package:fitness_diet/core/viewmodels/delivViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/homeViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/loginViewModel.dart';
+import 'package:fitness_diet/core/viewmodels/searchviewModel.dart';
 import 'package:fitness_diet/core/viewmodels/soleDishViewModel.dart';
 import 'package:get_it/get_it.dart';
 
@@ -48,6 +49,7 @@ void setupLocator() {
   locator.registerFactory(() => BaseViewModel());
   locator.registerFactory(() => SoleDishViewModel());
   locator.registerFactory(() => ChatViewModel());
+  locator.registerFactory(() => SearchviewModel());
   // Customer
   locator.registerFactory(() => CustRegViewModel());
   locator.registerFactory(() => CustReg2ViewModel());

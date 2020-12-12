@@ -13,3 +13,5 @@ const carIcon = "assets/images/car_icon.png";
 const animWarning = "assets/images/animations/6656-warning-sign.json";
 const animWarning2 = "assets/images/animations/8339-warning.json";
 const animWarning3 = "assets/images/animations/15426-warning-animation.json";
+// const animBrainSearch = "assets/images/animations/39962-funny-brain.json";
+const animBrainSearch = "assets/images/39962-funny-brain.json";

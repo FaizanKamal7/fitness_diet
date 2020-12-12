@@ -12,7 +12,7 @@ class _SearchBarState extends State<SearchBar> {
   var _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
-  //  final deviceSize = MediaQuery.of(context).size;
+    //  final deviceSize = MediaQuery.of(context).size;
 
     return ResponsiveSafeArea(
       builder: (context, deviceSize) => Theme(
@@ -34,6 +34,7 @@ class _SearchBarState extends State<SearchBar> {
             height: deviceSize
                 .height, // Ignore this, It is because parent is layout builder
             child: TextFormField(
+              enabled: false,
               style: TextStyle(color: Colors.black), // Text written color
               controller: _controller,
               cursorColor: Colors.black,

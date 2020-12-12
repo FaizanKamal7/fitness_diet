@@ -59,81 +59,28 @@ class SoleDishView extends StatelessWidget {
           passedDish,
         ));
       },
-      builder: (context, model, child) => Scaffold(
-        backgroundColor: colorContentBg,
-        body: model.state == ViewState.Busy
-            ? Loading()
-            : Column(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Stack(
-                      children: [
-                        // ----------------------------------- B A C K G R O U N D    I M A G E
-                        Container(
-                          margin: EdgeInsets.only(bottom: 50),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(150),
-                              bottomRight: Radius.circular(150),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                offset: Offset(2.00, 3.00),
-                                color: Colors.black45,
-                                blurRadius: 5,
-                              ),
-                            ],
-                            image: DecorationImage(
-                              image: NetworkImage(passedDish.dishPic),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        // ----------------------------------- A P P   B A R   I C O N S
-                        Container(
-                          margin: EdgeInsets.only(top: 50, left: 30, right: 30),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: CircularIcon(
-                                  passedIcon: FontAwesomeIcons.chevronLeft,
-                                  passedColor: Colors.black87,
-                                ),
-                              ),
-                              Spacer(),
-                              InkWell(
-                                child: CircularIcon(
-                                  passedIcon: FontAwesomeIcons.shareAlt,
-                                  passedColor: Colors.black87,
-                                ),
-                              ),
-                              SizedBox(width: 5),
-                              InkWell(
-                                child: CircularIcon(
-                                  passedIcon: FontAwesomeIcons.solidHeart,
-                                  passedColor: Colors.red,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // ----------------------------------- D I S H   H E A D I N G
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            height: 120,
-                            width: deviceSize.width,
-                            margin: EdgeInsets.symmetric(horizontal: 30),
-                            padding:
-                                EdgeInsets.only(left: 25, top: 20, right: 25),
+      builder: (context, model, child) => WillPopScope(
+        onWillPop: () {
+          Navigator.pop(context);
+        },
+        child: Scaffold(
+          backgroundColor: colorContentBg,
+          body: model.state == ViewState.Busy
+              ? Loading()
+              : Column(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Stack(
+                        children: [
+                          // ----------------------------------- B A C K G R O U N D    I M A G E
+                          Container(
+                            margin: EdgeInsets.only(bottom: 50),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.9),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(150),
+                                bottomRight: Radius.circular(150),
+                              ),
                               boxShadow: [
                                 BoxShadow(
                                   offset: Offset(2.00, 3.00),
@@ -141,236 +88,295 @@ class SoleDishView extends StatelessWidget {
                                   blurRadius: 5,
                                 ),
                               ],
+                              image: DecorationImage(
+                                image: NetworkImage(passedDish.dishPic),
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+                          // ----------------------------------- A P P   B A R   I C O N S
+                          Container(
+                            margin:
+                                EdgeInsets.only(top: 50, left: 30, right: 30),
+                            child: Row(
                               children: [
-                                Text(
-                                  passedDish.dishName.toString(),
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontFamily: fontMontserratBold,
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: CircularIcon(
+                                    passedIcon: FontAwesomeIcons.chevronLeft,
+                                    passedColor: Colors.black87,
                                   ),
                                 ),
-                                Text(
-                                  "Avalaible for order now",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontFamily: fontUniSans,
+                                Spacer(),
+                                InkWell(
+                                  child: CircularIcon(
+                                    passedIcon: FontAwesomeIcons.shareAlt,
+                                    passedColor: Colors.black87,
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    RatingBarIndicator(
-                                      rating: passedDish.dishRatings,
-                                      itemCount: 5,
-                                      itemSize: deviceSize.height * 0.015,
-                                      physics: BouncingScrollPhysics(),
-                                      itemBuilder: (context, _) => Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                    ),
-                                    Text(
-                                      "(" +
-                                          passedDish.dishRatings.toString() +
-                                          ")",
-                                      style: TextStyle(
-                                        fontSize: deviceSize.height * 0.015,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    "Rs " + passedDish.dishPrice.toString(),
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontFamily: fontLemonMilk,
-                                      color: Colors.brown,
-                                    ),
+                                SizedBox(width: 5),
+                                InkWell(
+                                  child: CircularIcon(
+                                    passedIcon: FontAwesomeIcons.solidHeart,
+                                    passedColor: Colors.red,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Stack(
-                      children: [
-                        ListView(
-                          children: [
-                            SizedBox(height: 10),
-                            Divider(
-                              thickness: 2,
-                              endIndent: 30,
-                              indent: 30,
-                            ),
-                            SizedBox(height: 10),
-                            // ----------------------------------- N U T R I T I O N A L   V A L U E
-                            DishNutriValues(passedDish: passedDish),
-                            SizedBox(height: 10),
-                            Divider(
-                              thickness: 2,
-                              endIndent: 30,
-                              indent: 30,
-                            ),
-
-                            _diseaseInfoNestedList.length != 0 &&
-                                    !_diseaseInfoNestedList[0][0]
-                                ? Container(
-                                    height: deviceSize.height * 0.1,
-                                    width: double.infinity,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Lottie.asset(
-                                            animWarning3,
-                                            repeat: true,
-                                            reverse: false,
-                                            animate: true,
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Expanded(
-                                          flex: 3,
-                                          child: Text(
-                                            "It is NOT healthy for you because it contains " +
-                                                _diseaseInfoNestedList[0][1]
-                                                    .toString() +
-                                                " which is unsafe for your health considering your issues with " +
-                                                _diseaseInfoNestedList[0][2]
-                                                    .toString(),
-                                            // overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontFamily: fontUniSans,
-                                              fontSize: 11,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                          // ----------------------------------- D I S H   H E A D I N G
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              height: 120,
+                              width: deviceSize.width,
+                              margin: EdgeInsets.symmetric(horizontal: 30),
+                              padding:
+                                  EdgeInsets.only(left: 25, top: 20, right: 25),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.9),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(2.00, 3.00),
+                                    color: Colors.black45,
+                                    blurRadius: 5,
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    passedDish.dishName.toString(),
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontFamily: fontMontserratBold,
                                     ),
-                                  )
-                                : SizedBox(),
-
-                            // ----------------------------------- C H E F   I N F O   V A L U E
-                            Container(
-                              margin: EdgeInsets.only(left: 35),
-                              child: StandardHeadingNoBgSmall(
-                                passedText: "Prepeared by:",
+                                  ),
+                                  Text(
+                                    "Avalaible for order now",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: fontUniSans,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      RatingBarIndicator(
+                                        rating: passedDish.dishRatings,
+                                        itemCount: 5,
+                                        itemSize: deviceSize.height * 0.015,
+                                        physics: BouncingScrollPhysics(),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                      ),
+                                      Text(
+                                        "(" +
+                                            passedDish.dishRatings.toString() +
+                                            ")",
+                                        style: TextStyle(
+                                          fontSize: deviceSize.height * 0.015,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                      "Rs " + passedDish.dishPrice.toString(),
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: fontLemonMilk,
+                                        color: Colors.brown,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            SizedBox(height: 15),
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChefView(
-                                      chefID: passedDish.chefID,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: BriefChefInfo(
-                                  passedChefData: model.extractedChefData(
-                                      _allChefsData, passedDish.chefID)),
-                            ),
-                          ],
-                        ),
-                        // ----------------------------------- A D D   T O   C A R T   B U T T O N
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: Stack(
+                        children: [
+                          ListView(
+                            children: [
+                              SizedBox(height: 10),
+                              Divider(
+                                thickness: 2,
+                                endIndent: 30,
+                                indent: 30,
+                              ),
+                              SizedBox(height: 10),
+                              // ----------------------------------- N U T R I T I O N A L   V A L U E
+                              DishNutriValues(passedDish: passedDish),
+                              SizedBox(height: 10),
+                              Divider(
+                                thickness: 2,
+                                endIndent: 30,
+                                indent: 30,
+                              ),
 
-                        isFromCustView
-                            ? Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  height: deviceSize.height * 0.05,
-                                  margin: EdgeInsets.all(15),
-                                  child: FlatButton(
-                                    onPressed: () async {
-                                      if (model.getUser == null) {
-                                        _dialogService.showDialog(
-                                            title: 'Alert',
-                                            description:
-                                                "Please Sign in to Continue ",
-                                            buttonTitle: "ok ",
-                                            dialogType:
-                                                Dialog_Types.PLAN_SUCCESS);
-                                      } else {
-                                        print(
-                                            '--------------------inside add to cart function in soleDish view ');
-
-                                        if (model.getServings(_cart.items,
-                                                passedDish.dishID) ==
-                                            0) {
-                                          bool added = model.additem(
-                                            passedDish,
-                                            _custData,
-                                            _cart,
-                                            _dishData,
-                                          );
-
-                                          if (!added) {
-                                            var dialogResult =
-                                                await _dialogService.showDialog(
-                                                    title: 'Alert',
-                                                    description:
-                                                        "your Previous Cart Will be Cleared If you procced With this cheff ",
-                                                    buttonTitle: "ok ",
-                                                    dialogType:
-                                                        Dialog_Types.New_Order);
-                                            if (dialogResult.confirmed) {
-                                              model.removeCartItems(
-                                                  _cart.cartid, _cart.items);
-
-                                              print(
-                                                  '--------------------------------added ' +
-                                                      added.toString());
-                                            }
-                                          }
-                                        } else {
-                                          print('nevigate to View Cart ');
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => CartView(),
+                              _diseaseInfoNestedList.length != 0 &&
+                                      !_diseaseInfoNestedList[0][0]
+                                  ? Container(
+                                      height: deviceSize.height * 0.1,
+                                      width: double.infinity,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Lottie.asset(
+                                              animWarning3,
+                                              repeat: true,
+                                              reverse: false,
+                                              animate: true,
                                             ),
-                                          );
-                                        }
-                                      }
-                                    },
-                                    child: BigLightGreenBtn(
-                                      passedText: model.getServings(_cart.items,
-                                                  passedDish.dishID) ==
-                                              0
-                                          ? "Add to cart"
-                                          : 'View Your Cart' +
-                                              ' (' +
-                                              _cart.items.length.toString() +
-                                              ') ',
-                                      isDisabled: false,
-                                    ),
-                                  ),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              "It is NOT healthy for you because it contains " +
+                                                  _diseaseInfoNestedList[0][1]
+                                                      .toString() +
+                                                  " which is unsafe for your health considering your issues with " +
+                                                  _diseaseInfoNestedList[0][2]
+                                                      .toString(),
+                                              // overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontFamily: fontUniSans,
+                                                fontSize: 11,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : SizedBox(),
+
+                              // ----------------------------------- C H E F   I N F O   V A L U E
+                              Container(
+                                margin: EdgeInsets.only(left: 35),
+                                child: StandardHeadingNoBgSmall(
+                                  passedText: "Prepeared by:",
                                 ),
-                              )
-                            : SizedBox(
-                                height: 0.0,
                               ),
-                      ],
+                              SizedBox(height: 15),
+                              FlatButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChefView(
+                                        chefID: passedDish.chefID,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: BriefChefInfo(
+                                    passedChefData: model.extractedChefData(
+                                        _allChefsData, passedDish.chefID)),
+                              ),
+                            ],
+                          ),
+                          // ----------------------------------- A D D   T O   C A R T   B U T T O N
+
+                          isFromCustView
+                              ? Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    height: deviceSize.height * 0.05,
+                                    margin: EdgeInsets.all(15),
+                                    child: FlatButton(
+                                      onPressed: () async {
+                                        if (model.getUser == null) {
+                                          _dialogService.showDialog(
+                                              title: 'Alert',
+                                              description:
+                                                  "Please Sign in to Continue ",
+                                              buttonTitle: "ok ",
+                                              dialogType:
+                                                  Dialog_Types.PLAN_SUCCESS);
+                                        } else {
+                                          print(
+                                              '--------------------inside add to cart function in soleDish view ');
+
+                                          if (model.getServings(_cart.items,
+                                                  passedDish.dishID) ==
+                                              0) {
+                                            bool added = model.additem(
+                                              passedDish,
+                                              _custData,
+                                              _cart,
+                                              _dishData,
+                                            );
+
+                                            if (!added) {
+                                              var dialogResult =
+                                                  await _dialogService.showDialog(
+                                                      title: 'Alert',
+                                                      description:
+                                                          "your Previous Cart Will be Cleared If you procced With this cheff ",
+                                                      buttonTitle: "ok ",
+                                                      dialogType: Dialog_Types
+                                                          .New_Order);
+                                              if (dialogResult.confirmed) {
+                                                model.removeCartItems(
+                                                    _cart.cartid, _cart.items);
+
+                                                print(
+                                                    '--------------------------------added ' +
+                                                        added.toString());
+                                              }
+                                            }
+                                          } else {
+                                            print('nevigate to View Cart ');
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CartView(),
+                                              ),
+                                            );
+                                          }
+                                        }
+                                      },
+                                      child: BigLightGreenBtn(
+                                        passedText: model.getServings(
+                                                    _cart.items,
+                                                    passedDish.dishID) ==
+                                                0
+                                            ? "Add to cart"
+                                            : 'View Your Cart' +
+                                                ' (' +
+                                                _cart.items.length.toString() +
+                                                ') ',
+                                        isDisabled: false,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+        ),
       ),
     );
   }
