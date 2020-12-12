@@ -53,11 +53,15 @@ class SoleDishView extends StatelessWidget {
       onModelReady: (model) {
         print(" Inside soleDishView onModelReady");
         // Checking if the customer have disease and if disease's notrecommended ingredients are in a dish
-        _diseaseInfoNestedList.add(model.getDiseaseInfoNestedList(
-          _plansData,
-          _diseasesData,
-          passedDish,
-        ));
+        if (_custData != null) {
+          if (_plansData != null) {
+            _diseaseInfoNestedList.add(model.getDiseaseInfoNestedList(
+              _plansData,
+              _diseasesData,
+              passedDish,
+            ));
+          }
+        }
       },
       builder: (context, model, child) => WillPopScope(
         onWillPop: () {
@@ -269,28 +273,34 @@ class SoleDishView extends StatelessWidget {
                                   : SizedBox(),
 
                               // ----------------------------------- C H E F   I N F O   V A L U E
-                              Container(
-                                margin: EdgeInsets.only(left: 35),
-                                child: StandardHeadingNoBgSmall(
-                                  passedText: "Prepeared by:",
-                                ),
-                              ),
-                              SizedBox(height: 15),
-                              FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ChefView(
-                                        chefID: passedDish.chefID,
+                              isFromCustView
+                                  ? Container(
+                                      margin: EdgeInsets.only(left: 35),
+                                      child: StandardHeadingNoBgSmall(
+                                        passedText: "Prepeared by:",
                                       ),
-                                    ),
-                                  );
-                                },
-                                child: BriefChefInfo(
-                                    passedChefData: model.extractedChefData(
-                                        _allChefsData, passedDish.chefID)),
-                              ),
+                                    )
+                                  : Container(),
+                              SizedBox(height: 15),
+                              isFromCustView
+                                  ? FlatButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ChefView(
+                                              chefID: passedDish.chefID,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: BriefChefInfo(
+                                          passedChefData:
+                                              model.extractedChefData(
+                                                  _allChefsData,
+                                                  passedDish.chefID)),
+                                    )
+                                  : Container(),
                             ],
                           ),
                           // ----------------------------------- A D D   T O   C A R T   B U T T O N

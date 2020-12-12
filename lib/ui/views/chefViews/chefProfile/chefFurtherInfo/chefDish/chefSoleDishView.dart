@@ -196,28 +196,32 @@ class ChefSoleDishView extends StatelessWidget {
                               indent: 30,
                             ),
                             // ----------------------------------- C H E F   I N F O   V A L U E
-                            Container(
-                              margin: EdgeInsets.only(left: 35),
-                              child: StandardHeadingNoBgSmall(
-                                passedText: "Prepeared by:",
-                              ),
-                            ),
-                            SizedBox(height: 15),
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChefView(
-                                      chefID: passedDish.chefID,
+                            isFromCustView
+                                ? Container(
+                                    margin: EdgeInsets.only(left: 35),
+                                    child: StandardHeadingNoBgSmall(
+                                      passedText: "Prepeared by:",
                                     ),
-                                  ),
-                                );
-                              },
-                              child: BriefChefInfo(
-                                  passedChefData: model.extractedChefData(
-                                      _allChefsData, passedDish.chefID)),
-                            ),
+                                  )
+                                : Container(),
+                            SizedBox(height: 15),
+                            isFromCustView
+                                ? FlatButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ChefView(
+                                            chefID: passedDish.chefID,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: BriefChefInfo(
+                                        passedChefData: model.extractedChefData(
+                                            _allChefsData, passedDish.chefID)),
+                                  )
+                                : Container(),
                           ],
                         ),
                       ],

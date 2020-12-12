@@ -12,7 +12,6 @@ import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/orderViewModel.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
-import 'package:fitness_diet/ui/views/soleDishView.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingBlackMedium.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardText1.dart';
 import 'package:fitness_diet/ui/widgets/orderSingleStage.dart';
@@ -448,11 +447,21 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
                                                           child: Text(
                                                             'Review',
                                                             style: TextStyle(
-                                                              color: !reviewd
-                                                                      .elementAt(
-                                                                          index)
+                                                              color: singleOrderInfo
+                                                                      .orderStatus
+                                                                      .contains(
+                                                                          ConstantFtns()
+                                                                              .getEnumValue(
+                                                                Order_Status
+                                                                    .ORDER_COMPLETED
+                                                                    .toString(),
+                                                              ))
                                                                   ? Colors.blue
+                                                                  // : reviewd.elementAt(
+                                                                  //         index)
                                                                   : Colors.grey,
+                                                              // : Colors
+                                                              //     .blue,
                                                             ),
                                                           ),
                                                         ),

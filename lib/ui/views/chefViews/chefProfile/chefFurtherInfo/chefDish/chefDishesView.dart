@@ -79,33 +79,35 @@ class _ChefDishesState extends State<ChefDishes> {
                         // count += 1;
 
                         // if (dish.chefID == _user.uid) {
-                        return InkWell(
-                          onTap: () {
-                            print(" dish: " + dish.dishID);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChefSoleDishView(
-                                  passedDish: dish,
-                                  isFromCustView: false,
+                        return dish.chefID == widget.chefID
+                            ? InkWell(
+                                onTap: () {
+                                  print(" dish: " + dish.dishID);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChefSoleDishView(
+                                        passedDish: dish,
+                                        isFromCustView: false,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 10),
+                                    DishViewSingleListItemDesign(
+                                      dishName: dish.dishName,
+                                      chefName: dish.chefName,
+                                      kcal: dish.dishKcal,
+                                      price: dish.dishPrice,
+                                      ratings: dish.dishRatings,
+                                      dishPic: dish.dishPic,
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            );
-                          },
-                          child: Column(
-                            children: [
-                              SizedBox(height: 10),
-                              DishViewSingleListItemDesign(
-                                dishName: dish.dishName,
-                                chefName: dish.chefName,
-                                kcal: dish.dishKcal,
-                                price: dish.dishPrice,
-                                ratings: dish.dishRatings,
-                                dishPic: dish.dishPic,
-                              ),
-                            ],
-                          ),
-                        );
+                              )
+                            : Container();
                         // } else {
                         //   return Container();
                         // }

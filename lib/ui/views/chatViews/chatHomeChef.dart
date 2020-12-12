@@ -27,6 +27,8 @@ class ChatHomeChef extends StatefulWidget {
   State createState() => ChatHomeChefState(currentUserId: currentUserId);
 }
 
+bool haschat = false;
+
 class ChatHomeChefState extends State<ChatHomeChef> {
   ChatHomeChefState({Key key, @required this.currentUserId});
 
@@ -238,7 +240,7 @@ class ChatHomeChefState extends State<ChatHomeChef> {
     //     (Route<dynamic> route) => false);
   }
 
-  bool haschat = false;
+  int totaluser = 0;
   @override
   Widget build(BuildContext context) {
     final _usersData = Provider.of<List<ChatUser>>(context);
@@ -247,7 +249,9 @@ class ChatHomeChefState extends State<ChatHomeChef> {
     bool _userresult = true;
 
     return BaseView<ChatViewModel>(
-      onModelReady: (model) async {},
+      onModelReady: (model) async {
+        totaluser = _usersData.length;
+      },
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xffe4d7cb),
@@ -294,11 +298,13 @@ class ChatHomeChefState extends State<ChatHomeChef> {
                   //     .collection('users')
                   //     .snapshots(),
                   builder: (context, snapshot) {
-                    if (!haschat) {
+                    // if (!haschat) {
+                    if (_usersData == null) {
                       return Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(themeColor),
-                        ),
+                        // child: CircularProgressIndicator(
+                        //   valueColor: AlwaysStoppedAnimation<Color>(themeColor),
+                        // ),
+                        child: Text('No chat Available'),
                       );
                     } else {
                       return ListView.builder(
@@ -306,7 +312,7 @@ class ChatHomeChefState extends State<ChatHomeChef> {
                           itemBuilder: (context, index) {
                             String peerId = _usersData.elementAt(index).idUser;
                             String groupChatId;
-
+                            totaluser = totaluser - 1;
                             if (currentUserId.hashCode <= peerId.hashCode) {
                               groupChatId = '$currentUserId-$peerId';
                             } else {
@@ -326,6 +332,8 @@ class ChatHomeChefState extends State<ChatHomeChef> {
                                 // setState(() {
                                 //   haschat = true;
                                 // });
+                                // haschat = true;
+                                haschat = true;
                                 return buildItem(
                                     context, _usersData.elementAt(index));
                               } else {

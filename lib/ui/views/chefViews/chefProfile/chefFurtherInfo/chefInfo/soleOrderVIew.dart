@@ -119,12 +119,13 @@ class _SoleOrderViewState extends State<SoleOrderView> {
                                 final _singleDishID = widget
                                     .singleOrder.items.keys
                                     .elementAt(index);
-                                return StreamBuilder<List<Dish>>(
+                                return StreamBuilder<Dish>(
                                   stream: DatabaseService()
-                                      .getSingleDish(_singleDishID),
+                                      .getSingleDishforordersummary(
+                                          _singleDishID),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
-                                      Dish _singleDishInfo = snapshot.data[0];
+                                      Dish _singleDishInfo = snapshot.data;
                                       return Container(
                                         child: Column(
                                           children: [

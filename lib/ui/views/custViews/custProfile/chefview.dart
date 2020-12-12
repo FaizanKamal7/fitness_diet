@@ -52,124 +52,129 @@ class _ChefViewState extends State<ChefView> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     ChefData chefData = snapshot.data[0];
-                    return Scaffold(
-                      key: _scaffoldKey,
-                      endDrawer: CustAppDrawer(),
-                      body: Stack(
-                        fit: StackFit.loose,
-                        children: [
-                          NestedScrollView(
-                            controller: _scrollController,
-                            headerSliverBuilder: (BuildContext context,
-                                bool innerBoxIsScrolled) {
-                              return [
-                                //
-                                // >>>>>>>>>>> Header content
-                                //
+                    return WillPopScope(
+                      onWillPop: () {
+                        Navigator.pop(context);
+                      },
+                      child: Scaffold(
+                        key: _scaffoldKey,
+                        endDrawer: CustAppDrawer(),
+                        body: Stack(
+                          fit: StackFit.loose,
+                          children: [
+                            NestedScrollView(
+                              controller: _scrollController,
+                              headerSliverBuilder: (BuildContext context,
+                                  bool innerBoxIsScrolled) {
+                                return [
+                                  //
+                                  // >>>>>>>>>>> Header content
+                                  //
 
-                                SliverPersistentHeader(
-                                  delegate: ChefSliverAppBar(
-                                    maxExtent: deviceSize.height * 0.3,
-                                    minExtent: deviceSize.height * 0.26,
-                                    // chefName: chefData.chefName,
-                                    // chefPic: chefData.chefPic,
-                                    chefData: chefData, isfromchef: false,
+                                  SliverPersistentHeader(
+                                    delegate: ChefSliverAppBar(
+                                      maxExtent: deviceSize.height * 0.3,
+                                      minExtent: deviceSize.height * 0.26,
+                                      // chefName: chefData.chefName,
+                                      // chefPic: chefData.chefPic,
+                                      chefData: chefData, isfromchef: false,
+                                    ),
+                                    pinned: true,
+                                    floating: false,
                                   ),
-                                  pinned: true,
-                                  floating: false,
-                                ),
-                                //
-                                // >>>>>>>>>>> Space between tabbar and header
-                                //
-                                SliverToBoxAdapter(
-                                  child: SizedBox(
-                                    height: deviceSize.height * 0.02,
+                                  //
+                                  // >>>>>>>>>>> Space between tabbar and header
+                                  //
+                                  SliverToBoxAdapter(
+                                    child: SizedBox(
+                                      height: deviceSize.height * 0.02,
+                                    ),
                                   ),
-                                ),
-                                //
-                                // >>>>>>>>>>> Tabbars
-                                //
+                                  //
+                                  // >>>>>>>>>>> Tabbars
+                                  //
 
-                                // SliverPersistentHeader(
-                                //   delegate: tabsDelegate(
-                                //     _tabController,
-                                //     deviceSize.height * 0.051, // MaxExtent
-                                //     deviceSize.height * 0.050, // MinExtent
-                                //   ),
-                                //   pinned: true,
-                                //   floating: false,
-                                // ),
-                              ];
-                            },
-                            //
-                            // >>>>>>>>>>> Tabbars display
-                            //
-                            body: ChefDishes(
-                              chefID: widget.chefID,
-                              isfromchef: false,
+                                  // SliverPersistentHeader(
+                                  //   delegate: tabsDelegate(
+                                  //     _tabController,
+                                  //     deviceSize.height * 0.051, // MaxExtent
+                                  //     deviceSize.height * 0.050, // MinExtent
+                                  //   ),
+                                  //   pinned: true,
+                                  //   floating: false,
+                                  // ),
+                                ];
+                              },
+                              //
+                              // >>>>>>>>>>> Tabbars display
+                              //
+                              body: ChefDishes(
+                                chefID: widget.chefID,
+                                isfromchef: false,
+                              ),
+                              //  TabBarView(
+                              //   children: [
+                              //     _dishData == null && chefData == null
+                              //         ? Loading()
+                              //         : ChefDishes(),
+                              //     ChefInfo(),
+                              //   ],
+                              //   controller: _tabController,
+                              // ),
                             ),
-                            //  TabBarView(
-                            //   children: [
-                            //     _dishData == null && chefData == null
-                            //         ? Loading()
-                            //         : ChefDishes(),
-                            //     ChefInfo(),
-                            //   ],
-                            //   controller: _tabController,
-                            // ),
-                          ),
 
-                          //  ----------------------------------------------------   D R A W E R
+                            //  ----------------------------------------------------   D R A W E R
 
-                          Container(
-                            margin: EdgeInsets.only(
-                                left: deviceSize.height * 0.03,
-                                top: deviceSize.height * 0.018),
-                            //   color: Colors.red,
-                            child: Row(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                //
-                                // >>>>>>>>> P R O F I L E   T E X T
-                                //
-                                ProfielHeaderText(),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: deviceSize.height * 0.03,
+                                  top: deviceSize.height * 0.018),
+                              //   color: Colors.red,
+                              child: Row(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  //
+                                  // >>>>>>>>> P R O F I L E   T E X T
+                                  //
+                                  ProfielHeaderText(),
 
-                                Spacer(),
+                                  Spacer(),
 
-                                IconButton(
-                                  // color: Colors.white,
-                                  icon: Icon(
-                                    Icons.menu,
-                                    size: widgetSize.height * 0.033,
-                                    color: Colors.white.withOpacity(0.7),
+                                  IconButton(
+                                    // color: Colors.white,
+                                    icon: Icon(
+                                      Icons.menu,
+                                      size: widgetSize.height * 0.033,
+                                      color: Colors.white.withOpacity(0.7),
+                                    ),
+                                    onPressed: () {
+                                      _scaffoldKey.currentState.openEndDrawer();
+                                    },
                                   ),
-                                  onPressed: () {
-                                    _scaffoldKey.currentState.openEndDrawer();
-                                  },
-                                ),
-                                // Container(
-                                //   //color: Colors.amber,
-                                //   alignment: Alignment.topRight,
-                                //   margin: EdgeInsets.only(
-                                //     top: widgetSize.height * 0.0001,
-                                //     left: widgetSize.width * 0.09,
-                                //     bottom: widgetSize.height * 0.93,
-                                //   ),
-                                //   child:
-                                // ),
-                              ],
+                                  // Container(
+                                  //   //color: Colors.amber,
+                                  //   alignment: Alignment.topRight,
+                                  //   margin: EdgeInsets.only(
+                                  //     top: widgetSize.height * 0.0001,
+                                  //     left: widgetSize.width * 0.09,
+                                  //     bottom: widgetSize.height * 0.93,
+                                  //   ),
+                                  //   child:
+                                  // ),
+                                ],
+                              ),
                             ),
-                          ),
-                          model.hasErrorMessage
-                              ? Container(
-                                  child: Text(model.errorMessage),
-                                )
-                              : Container(),
-                          model.state == ViewState.Busy
-                              ? Loading()
-                              : Container(),
-                        ],
+                            model.hasErrorMessage
+                                ? Container(
+                                    child: Text(model.errorMessage),
+                                  )
+                                : Container(),
+                            model.state == ViewState.Busy
+                                ? Loading()
+                                : Container(),
+                          ],
+                        ),
                       ),
                     );
                   } else {
