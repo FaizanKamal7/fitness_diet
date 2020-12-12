@@ -22,8 +22,15 @@ class CustPlanViewModel extends BaseViewModel {
   double _weightDifference;
 
   final NavigationService _navigationService = locator<NavigationService>();
-  startPlan(String gender, String custheight, String custWeight,
-      String custgoalWeight, DateTime dateOfBirth, double activityLevel) async {
+  startPlan(
+    String gender,
+    String custheight,
+    String custWeight,
+    String custgoalWeight,
+    DateTime dateOfBirth,
+    double activityLevel,
+    List _diseases,
+  ) async {
     print('function reached........................');
     print('gender........................' + gender);
     print('height........................' + custheight);
@@ -93,7 +100,8 @@ class CustPlanViewModel extends BaseViewModel {
       }
 
       // upload data function call
-      uploadData(gender, height, weight, goalWeight, tdee, reqmacroNutrients);
+      uploadData(gender, height, weight, goalWeight, tdee, reqmacroNutrients,
+          _diseases);
       //
       //
       String _custGoal;
@@ -128,13 +136,20 @@ class CustPlanViewModel extends BaseViewModel {
   }
 
 //**************************************** U  P  L   O  A  D --   D  A  T  A */
-  Future uploadData(String gender, double height, double weight,
-      double goalWeight, double reqkcal, List<double> regMacroNutrients) async {
+  Future uploadData(
+    String gender,
+    double height,
+    double weight,
+    double goalWeight,
+    double reqkcal,
+    List<double> regMacroNutrients,
+    List _diseases,
+  ) async {
     String userID = getUser;
 
     print('inside plan data upload function ****************************');
     setState(ViewState.Busy);
-
+    print("---> diseases in custPLanViewModel: " + _diseases.toString());
     DatabaseService(uid: userID).addPlanData(
       ({
         'custGender': gender,
@@ -148,6 +163,7 @@ class CustPlanViewModel extends BaseViewModel {
             double.parse(regMacroNutrients.elementAt(1).toStringAsFixed(3)),
         'custReqCarbs':
             double.parse(regMacroNutrients.elementAt(2).toStringAsFixed(3)),
+        "diseases": _diseases,
       }),
     );
 
@@ -160,10 +176,8 @@ class CustPlanViewModel extends BaseViewModel {
 //
 //
   int ageCalculator(DateTime dateOfBirth) {
-    int age;
-
-    // Find out your age
-    return age = Age.dateDifference(
+    print("dateOfBirth: " + dateOfBirth.toString());
+    return Age.dateDifference(
             fromDate: dateOfBirth, toDate: DateTime.now(), includeToDate: false)
         .years;
   }
@@ -583,5 +597,11 @@ class CustPlanViewModel extends BaseViewModel {
       totalEaten = totalEaten + double.parse(list.values.elementAt(i)[1]);
     }
     return totalEaten;
+  }
+
+  endPlan(String _passedPlanID) async {
+    setState(ViewState.Busy);
+    await DatabaseService().planCollection.doc(_passedPlanID).delete();
+    setState(ViewState.Idle);
   }
 }

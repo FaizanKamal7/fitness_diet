@@ -188,6 +188,12 @@ class NewAddDishViewModel extends BaseViewModel {
           double.parse(_totalDishNutrientsList[3].toStringAsFixed(2));
       print("---------------" + _dishProtein.toString());
 
+// --------------------------- G E T T I N G   I N G R E D I E N T S   N A M E S   L I S T
+      List<String> _ingredientNames = [];
+      for (int i = 0; i < _foodIngrList.length; i++) {
+        _ingredientNames.add(_foodIngrList[i].ingredients[0].text);
+      }
+
       await DatabaseService().addNewDishData({
         'dishName': dishName,
         'dishCatg': dishCatg,
@@ -202,7 +208,7 @@ class NewAddDishViewModel extends BaseViewModel {
         'dishFat': _dishFat,
         'dishCarb': _dishCarb,
         'dishKcal': _dishKcal,
-        // 'dishIngrIDs': getDishIngrIDs,
+        'dishIngrNames': _ingredientNames,
       });
 
       setState(ViewState.Idle);

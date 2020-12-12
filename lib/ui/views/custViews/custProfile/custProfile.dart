@@ -261,49 +261,6 @@ class _CustProfileState extends State<CustProfile>
                                       ),
                                     ],
                                   )
-                                  // Column(
-                                  //   crossAxisAlignment: CrossAxisAlignment.start,
-                                  //   children: <Widget>[
-                                  //     Container(
-                                  //       margin: EdgeInsets.only(
-                                  //           left: deviceSize.width * 0.03),
-                                  //       //
-
-                                  //       //_custData.custName,
-                                  //       child: Flexible(
-                                  // child: Text(
-                                  //   _custData.custName,
-                                  //   style: TextStyle(
-                                  //     fontFamily: "Montserrat",
-                                  //     fontSize: deviceSize.height * 0.029,
-                                  //     color: standardprofileNameColor,
-                                  //     shadows: [
-                                  //       Shadow(
-                                  //         offset: Offset(0.00, 6.00),
-                                  //         color: Color(0xff000000)
-                                  //             .withOpacity(0.16),
-                                  //         blurRadius: 5,
-                                  //       ),
-                                  //     ],
-                                  //   ),
-                                  // ),
-                                  //       ),
-                                  //     ),
-                                  // Container(
-                                  //     margin: EdgeInsets.only(
-                                  //         left: deviceSize.width * 0.03),
-                                  //     child: Flexible(
-                                  //       child: Text(
-                                  //         _custData.custLocation,
-                                  //         style: TextStyle(
-                                  //           fontFamily: "UniSansRegular",
-                                  //           fontSize: deviceSize.height * 0.025,
-                                  //           color: standardprofileLocationColor,
-                                  //         ),
-                                  //       ),
-                                  //     )),
-                                  //   ],
-                                  // ),
                                 ],
                               ),
                             ),
@@ -410,34 +367,12 @@ class _CustProfileState extends State<CustProfile>
                           labelColor: Color(0xff2a6427),
                           controller: _tabController,
                           tabs: <Tab>[
-                            // Tab(
-                            //   child: Container(
-                            //     height: deviceSize.height * 0.05,
-                            //     width: deviceSize.width,
-                            //     decoration: BoxDecoration(
-                            //       color: standardButtonBGColor,
-                            //       border: Border.all(
-                            //         // width: 1.00,
-                            //         color: Color(0xff2a6427),
-                            //       ),
-                            //       borderRadius:
-                            //           BorderRadius.circular(22.00),
-                            //     ),
-                            //     child: Center(
-                            //       child: Text(
-                            //         "Info",
-                            //         textAlign: TextAlign.center,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
                             Tab(
                               child: TabBarBtnStyle(
                                 deviceSize: deviceSize,
                                 btnText: "Info",
                               ),
                             ),
-
                             Tab(
                               child: TabBarBtnStyle(
                                 deviceSize: deviceSize,
@@ -461,9 +396,7 @@ class _CustProfileState extends State<CustProfile>
                                 CustInfo(),
                                 _custData != null
                                     ? _custData.planID != ''
-                                        ? CustPlan(
-                                            // maxDate: maxdate,
-                                            )
+                                        ? CustPlan()
                                         : CustNoPlan()
                                     : Loading(),
                               ],

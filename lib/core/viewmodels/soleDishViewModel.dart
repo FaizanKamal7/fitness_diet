@@ -1,5 +1,7 @@
 import 'package:fitness_diet/core/models/cart.dart';
+import 'package:fitness_diet/core/models/disease.dart';
 import 'package:fitness_diet/core/models/dish.dart';
+import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
@@ -119,5 +121,50 @@ class SoleDishViewModel extends BaseViewModel {
 
   void deleteItem(String cartID, String dishID) {
     DatabaseService().deleteCartItem(cartID, dishID);
+  }
+
+  // ------------------------------------- G E T   D I S E A S E   R E L A T E D   D A T A
+
+  List<dynamic> getDiseaseInfoNestedList(
+      Plan _plansData, List<Disease> _diseasesData, Dish passedDish) {
+    print(" INSIDE getDiseaseInfoNestedList SoleViewModel");
+    List<dynamic> _diseaseInfoNestedList = [];
+    bool isHealthy = true;
+    String unhealthyIngrName = "", diseaseToBeProtectedName = "";
+    List _custDiseasesID;
+
+    _custDiseasesID = _plansData.diseases;
+    print("======> 1) _custDiseasesID: " + _custDiseasesID.toString());
+    // comparing dish ingredients with not recomm in diseases table
+    for (int i = 0; i < _diseasesData.length; i++) {
+      if (_custDiseasesID.contains(_diseasesData[i].diseaseID)) {
+        print("======> 2) _custDiseasesID.contains diseaseID: ");
+        for (int j = 0; j < _diseasesData[i].notRecommended.length; j++) {
+          print("======> 3) _diseasesData[i].notRecommended[j]: " +
+              _diseasesData[i].notRecommended[j].toString());
+
+          for (int k = 0; k < passedDish.dishIngrNames.length; k++) {
+            print("======> 4) passedDish.dishIngrNames: " +
+                passedDish.dishIngrNames[k].toString());
+            if (passedDish.dishIngrNames[k]
+                .contains(_diseasesData[i].notRecommended[j])) {
+              print("======> 5) Inside IF: " +
+                  passedDish.dishIngrNames[k].toString());
+              isHealthy = false;
+              unhealthyIngrName = passedDish.dishIngrNames[j];
+              diseaseToBeProtectedName = _diseasesData[i].name;
+              print("Not    H E A L T H Y  because it contains " +
+                  unhealthyIngrName +
+                  " which is unsafe for your health considering your issues with " +
+                  diseaseToBeProtectedName);
+            }
+          }
+        }
+      }
+    }
+    _diseaseInfoNestedList.add(isHealthy);
+    _diseaseInfoNestedList.add(unhealthyIngrName);
+    _diseaseInfoNestedList.add(diseaseToBeProtectedName);
+    return (_diseaseInfoNestedList);
   }
 }

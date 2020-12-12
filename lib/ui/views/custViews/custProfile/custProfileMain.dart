@@ -1,3 +1,4 @@
+import 'package:fitness_diet/core/models/disease.dart';
 import 'package:fitness_diet/core/models/exercise.dart';
 import 'package:fitness_diet/core/models/orders.dart';
 import 'package:fitness_diet/core/models/plan.dart';
@@ -19,6 +20,7 @@ class CustProfileMain extends StatelessWidget {
     var chefDataStreamProvider;
     var exerciseStreamProvider;
     var messagedocumentprovider;
+    var diseaseStreamProvider;
 
     try {
       chefDataStreamProvider = StreamProvider<List<ChefData>>.value(
@@ -34,6 +36,8 @@ class CustProfileMain extends StatelessWidget {
           value: DatabaseService().getAllExercises());
       usersDatastreamProvider = StreamProvider<List<ChatUser>>.value(
           value: DatabaseService().getAllUserData);
+      diseaseStreamProvider = StreamProvider<List<Disease>>.value(
+          value: DatabaseService().getAllDiseasesData());
       messagedocumentprovider = StreamProvider<List<String>>.value(
           value: DatabaseService().getallmessagedocument);
     } catch (e) {
@@ -48,6 +52,7 @@ class CustProfileMain extends StatelessWidget {
         chefDataStreamProvider,
         usersDatastreamProvider,
         messagedocumentprovider,
+        diseaseStreamProvider,
       ],
       child: MaterialApp(
         home: CustProfile(),

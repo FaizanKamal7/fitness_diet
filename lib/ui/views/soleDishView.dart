@@ -1,25 +1,31 @@
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/cart.dart';
+import 'package:fitness_diet/core/models/disease.dart';
 import 'package:fitness_diet/core/models/dish.dart';
+import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/soleDishViewModel.dart';
 import 'package:fitness_diet/locator.dart';
 import 'package:fitness_diet/ui/shared/colors.dart';
 import 'package:fitness_diet/ui/shared/fonts.dart';
+import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/custViews/cartView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/chefview.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/bigLightGreenBtn.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadinNoBgSmall.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardText1.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardText2.dart';
 import 'package:fitness_diet/ui/widgets/briefChefInfo.dart';
 import 'package:fitness_diet/ui/widgets/circularIcon.dart';
 import 'package:fitness_diet/ui/widgets/dishNutriValues.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
@@ -28,18 +34,31 @@ class SoleDishView extends StatelessWidget {
   bool isFromCustView = false;
   SoleDishView({@required this.passedDish, @required this.isFromCustView});
   // ChefData _chefData;
+
   @override
   Widget build(BuildContext context) {
+    print(" Inside soleDishView B U I L D");
     final deviceSize = MediaQuery.of(context).size;
     final _allChefsData = Provider.of<List<ChefData>>(context);
     final _dishData = Provider.of<List<Dish>>(context);
+    final _plansData = Provider.of<Plan>(context);
+    final _diseasesData = Provider.of<List<Disease>>(context);
     final _cart = Provider.of<Cart>(context);
     final _custData = Provider.of<CustData>(context);
-
+    print(" Inside soleDishView  B U I L D  after");
     DialogService _dialogService = locator<DialogService>();
 
+    List<dynamic> _diseaseInfoNestedList = [];
     return BaseView<SoleDishViewModel>(
-      onModelReady: (model) async {},
+      onModelReady: (model) {
+        print(" Inside soleDishView onModelReady");
+        // Checking if the customer have disease and if disease's notrecommended ingredients are in a dish
+        _diseaseInfoNestedList.add(model.getDiseaseInfoNestedList(
+          _plansData,
+          _diseasesData,
+          passedDish,
+        ));
+      },
       builder: (context, model, child) => Scaffold(
         backgroundColor: colorContentBg,
         body: model.state == ViewState.Busy
@@ -201,6 +220,49 @@ class SoleDishView extends StatelessWidget {
                               endIndent: 30,
                               indent: 30,
                             ),
+
+                            _diseaseInfoNestedList.length != 0 &&
+                                    !_diseaseInfoNestedList[0][0]
+                                ? Container(
+                                    height: deviceSize.height * 0.1,
+                                    width: double.infinity,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Lottie.asset(
+                                            animWarning3,
+                                            repeat: true,
+                                            reverse: false,
+                                            animate: true,
+                                          ),
+                                        ),
+                                        SizedBox(width: 5),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                            "It is NOT healthy for you because it contains " +
+                                                _diseaseInfoNestedList[0][1]
+                                                    .toString() +
+                                                " which is unsafe for your health considering your issues with " +
+                                                _diseaseInfoNestedList[0][2]
+                                                    .toString(),
+                                            // overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontFamily: fontUniSans,
+                                              fontSize: 11,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : SizedBox(),
+
                             // ----------------------------------- C H E F   I N F O   V A L U E
                             Container(
                               margin: EdgeInsets.only(left: 35),
@@ -228,58 +290,6 @@ class SoleDishView extends StatelessWidget {
                         ),
                         // ----------------------------------- A D D   T O   C A R T   B U T T O N
 
-                        // InkWell(
-                        // onTap: () async {
-                        // if (model.getUser == null) {
-                        //   _dialogService.showDialog(
-                        //       title: 'Alert',
-                        //       description:
-                        //           "Please Sign in to Continue ",
-                        //       buttonTitle: "ok ",
-                        //       dialogType: Dialog_Types.PLAN_SUCCESS);
-                        // } else {
-                        //   print(
-                        //       '--------------------inside add to cart function in soleDish view ');
-
-                        //   if (model.getServings(
-                        //           _cart.items, passedDish.dishID) ==
-                        //       0) {
-                        //     bool added = model.additem(
-                        //       passedDish,
-                        //       _custData,
-                        //       _cart,
-                        //       _dishData,
-                        //     );
-
-                        //     if (!added) {
-                        //       var dialogResult =
-                        //           await _dialogService.showDialog(
-                        //               title: 'Alert',
-                        //               description:
-                        //                   "your Previous Cart Will be Cleared If you procced With this cheff ",
-                        //               buttonTitle: "ok ",
-                        //               dialogType:
-                        //                   Dialog_Types.New_Order);
-                        //       if (dialogResult.confirmed) {
-                        //         model.removeCartItems(
-                        //             _cart.cartid, _cart.items);
-
-                        //         print(
-                        //             '--------------------------------added ' +
-                        //                 added.toString());
-                        //       }
-                        //     }
-                        //   } else {
-                        //     print('nevigate to View Cart ');
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) => CartView(),
-                        //       ),
-                        //     );
-                        //   }
-                        // }
-                        // },
                         isFromCustView
                             ? Align(
                                 alignment: Alignment.bottomCenter,

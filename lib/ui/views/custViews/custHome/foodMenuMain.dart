@@ -1,4 +1,5 @@
 import 'package:fitness_diet/core/models/cart.dart';
+import 'package:fitness_diet/core/models/disease.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/orders.dart';
 import 'package:fitness_diet/core/models/user.dart';
@@ -19,6 +20,7 @@ class FoodMenuMain extends StatelessWidget {
         cartProvider,
         planStreamProvider,
         custStreamProvider;
+    var diseaseStreamProvider;
     StreamProvider ordersStreamProvider;
     try {
       // - Dish data stream
@@ -40,6 +42,9 @@ class FoodMenuMain extends StatelessWidget {
         value: DatabaseService(uid: _custData != null ? _custData.uid : null)
             .getCustOrderData(),
       );
+
+      diseaseStreamProvider = StreamProvider<List<Disease>>.value(
+          value: DatabaseService().getAllDiseasesData());
     } catch (error) {
       print("-----> Error in ChefProfileMain : " + error.toString());
     }
@@ -50,7 +55,8 @@ class FoodMenuMain extends StatelessWidget {
         cartProvider,
         custStreamProvider,
         planStreamProvider,
-        ordersStreamProvider
+        ordersStreamProvider,
+        diseaseStreamProvider
       ],
       child: MaterialApp(home: FoodMenuView()),
     );

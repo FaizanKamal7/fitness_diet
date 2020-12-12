@@ -1,8 +1,11 @@
 import 'dart:ui';
 
+import 'package:checkbox_grouped/checkbox_grouped.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/disease.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
+import 'package:fitness_diet/ui/shared/fonts.dart';
 
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/shared/ui_helpers.dart';
@@ -27,11 +30,78 @@ class _CustStartPlanState extends State<CustStartPlan> {
   TextEditingController _weightControler = TextEditingController();
   TextEditingController _goalWeightControler = TextEditingController();
 
+// >>>>>>>>>>>>>>>>>>>>>>>> Disease related variables
+  GlobalKey<SimpleGroupedChipsState<int>> chipKey =
+      GlobalKey<SimpleGroupedChipsState<int>>();
+  List _updatedDiseaseList = [];
+  List<int> _statusListValues = [];
+  List<String> _statusListText = [];
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final _custData = Provider.of<CustData>(context);
+    final _diseasesData = Provider.of<List<Disease>>(context);
+
+    Widget _smallLightSubHeading(String _passedText) {
+      return Text(
+        _passedText,
+        style: TextStyle(
+          fontFamily: fontMontserrat,
+          fontSize: screenSize.height * 0.014,
+          color: Color(0xff2a6427).withOpacity(0.50),
+        ),
+      );
+    }
+
+    Widget _smallBlackHeading(String _passedText) {
+      return Text(
+        _passedText,
+        style: TextStyle(
+          fontFamily: "Montserrat",
+          fontSize: screenSize.height * 0.018,
+          color: Color(0xff000500),
+        ),
+      );
+    }
+
+    Widget _brownkHeading(
+        String _passedPrimaryText, String _passedSecondaryText) {
+      return Row(
+        children: [
+          Expanded(
+            child: Text(
+              _passedPrimaryText,
+              style: TextStyle(
+                fontFamily: "UniSansW01-Regular",
+                fontSize: screenSize.height * 0.02,
+                color: Color(0xff2a6427),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              _passedSecondaryText,
+              style: TextStyle(
+                fontFamily: "UniSansW01-Regular",
+                fontSize: screenSize.height * 0.01,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+      );
+    }
+
     return BaseView<CustPlanViewModel>(
+      onModelReady: (model) {
+        // if (_diseasesData != null) {
+        for (int i = 0; i < _diseasesData.length; i++) {
+          _statusListValues.add(i);
+          _statusListText.add(_diseasesData[i].name);
+        }
+        // }
+      },
       builder: (context, model, child) => SafeArea(
         child: model.state == ViewState.Busy
             ? Loading()
@@ -71,34 +141,6 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                       ),
                                     ),
                                     Spacer(),
-                                    // ClipRRect(
-                                    //   borderRadius: BorderRadius.only(
-                                    //     bottomLeft: Radius.circular(50),
-                                    //     bottomRight: Radius.circular(50),
-                                    //   ),
-                                    //   child: Container(
-                                    //     height: screenSize.height * 0.26,
-                                    //     decoration: BoxDecoration(
-                                    //       //color: Colors.yellow,
-                                    //       image: DecorationImage(
-                                    //         image: _custData.custPic != ""
-                                    //             ? NetworkImage(_custData.custPic)
-                                    //             : AssetImage(custBGImage_1),
-                                    //         fit: BoxFit.cover,
-                                    //       ),
-                                    //     ),
-                                    //     child: BackdropFilter(
-                                    //       filter: ImageFilter.blur(
-                                    //           sigmaX: 9.0, sigmaY: 9.0),
-                                    //       child: Container(
-                                    //         color: Colors.black.withOpacity(0.5),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // SizedBox(
-                                    //   width: screenSize.width * 0.02,
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -133,7 +175,9 @@ class _CustStartPlanState extends State<CustStartPlan> {
                             // container for viewing form  list view
                             child: Padding(
                               padding: EdgeInsets.only(
-                                  top: screenSize.height * 0.06),
+                                top: screenSize.height * 0.06,
+                                left: 15,
+                              ),
                               child: Form(
                                 child: ListView(
                                   children: <Widget>[
@@ -150,15 +194,8 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           //******************************* G  E  N  D  E  R -- C  O  N  T  A  I  N  E  R */
-                                          new Text(
-                                            "Gender",
-                                            style: TextStyle(
-                                              fontFamily: "UniSansW01-Regular",
-                                              fontSize:
-                                                  screenSize.height * 0.031,
-                                              color: Color(0xff2a6427),
-                                            ),
-                                          ),
+                                          _brownkHeading("Gender", ""),
+
                                           Container(
                                               child: Row(
                                             children: <Widget>[
@@ -171,18 +208,10 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                                   });
                                                 },
                                               ),
-                                              Text(
-                                                "Female",
-                                                style: TextStyle(
-                                                  fontFamily: "Montserrat",
-                                                  fontSize:
-                                                      screenSize.height * 0.026,
-                                                  color: Color(0xff000500),
-                                                ),
-                                              ),
+                                              _smallBlackHeading("Female"),
                                               SizedBox(
-                                                width: screenSize.width * 0.09,
-                                              ),
+                                                  width:
+                                                      screenSize.width * 0.09),
                                               Radio(
                                                 value: 'Male',
                                                 groupValue: _gender,
@@ -192,48 +221,15 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                                   });
                                                 },
                                               ),
-                                              new Text(
-                                                "Male",
-                                                style: TextStyle(
-                                                  fontFamily: "Montserrat",
-                                                  fontSize:
-                                                      screenSize.height * 0.026,
-                                                  color: Color(0xff000500),
-                                                ),
-                                              )
+                                              _smallBlackHeading("Male"),
                                             ],
                                           )),
 
-                                          //  ******************************************* H  E  I  G  H  T***************************
-
-                                          RichText(
-                                            text: TextSpan(
-                                                text: 'Height',
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                      "UniSansW01-Regular",
-                                                  fontSize:
-                                                      screenSize.height * 0.031,
-                                                  color: Color(0xff2a6427),
-                                                ),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                    text: '(cm)',
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          "UniSansW01-Regular",
-                                                      fontSize:
-                                                          screenSize.height *
-                                                              0.02,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ]),
-                                          ),
+                                          //  <<<<<<<<<<<<<<<<<<<<<<<<  H  E  I  G  H  T >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                                          _brownkHeading('Height', ' (cm)'),
 
                                           SizedBox(
-                                            height: screenSize.height * 0.02,
-                                          ),
+                                              height: screenSize.height * 0.02),
                                           TextFieldWithWhiteBGSmall(
                                               controller: _heightControler,
                                               isTypeInt: true,
@@ -244,34 +240,10 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                             height: screenSize.height * 0.04,
                                           ),
                                           //<<<<<<<<<<<<<<<<<<<<<<<< W E I G H T >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                                          _brownkHeading('Weight', ' (kg)'),
 
-                                          RichText(
-                                            text: TextSpan(
-                                                text: 'Weight',
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                      "UniSansW01-Regular",
-                                                  fontSize:
-                                                      screenSize.height * 0.031,
-                                                  color: Color(0xff2a6427),
-                                                ),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                    text: '(kg)',
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          "UniSansW01-Regular",
-                                                      fontSize:
-                                                          screenSize.height *
-                                                              0.02,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ]),
-                                          ),
                                           SizedBox(
-                                            height: screenSize.height * 0.02,
-                                          ),
+                                              height: screenSize.height * 0.02),
                                           TextFieldWithWhiteBGSmall(
                                               controller: _weightControler,
                                               isTypeInt: true,
@@ -281,63 +253,26 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                             height: screenSize.height * 0.04,
                                           ),
                                           //<<<<<<<<<<<<<<<<<<<<<<<< G O A L - W E I G H T >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                                          _brownkHeading(
+                                              'Goal Weight', ' (kg)'),
 
-                                          RichText(
-                                            text: TextSpan(
-                                                text: 'Goal Weight',
-                                                style: TextStyle(
-                                                  fontFamily:
-                                                      "UniSansW01-Regular",
-                                                  fontSize:
-                                                      screenSize.height * 0.031,
-                                                  color: Color(0xff2a6427),
-                                                ),
-                                                children: <TextSpan>[
-                                                  TextSpan(
-                                                    text: '(kg)',
-                                                    style: TextStyle(
-                                                      fontFamily:
-                                                          "UniSansW01-Regular",
-                                                      fontSize:
-                                                          screenSize.height *
-                                                              0.02,
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                ]),
-                                          ),
                                           SizedBox(
-                                            height: screenSize.height * 0.02,
-                                          ),
+                                              height: screenSize.height * 0.02),
                                           TextFieldWithWhiteBGSmall(
-                                              controller: _goalWeightControler,
-                                              isTypeInt: true,
-                                              hintText: '',
-                                              isObscureText: false),
+                                            controller: _goalWeightControler,
+                                            isTypeInt: true,
+                                            hintText: '',
+                                            isObscureText: false,
+                                          ),
 
                                           SizedBox(
-                                            height: screenSize.height * 0.04,
-                                          ),
-                                          Text(
-                                            "Level of activity during the day\nEXCL. WORKOUTS",
-                                            style: TextStyle(
-                                              fontFamily: "UniSansW01-Regular",
-                                              fontSize:
-                                                  screenSize.height * 0.031,
-                                              color: Color(0xff2a6427),
-                                            ),
-                                          ),
-                                          Text(
-                                            "(at work, school, home)  ",
-                                            style: TextStyle(
-                                              fontFamily: "Montserrat",
-                                              fontSize:
-                                                  screenSize.height * 0.020,
-                                              color: Color(0xff2a6427)
-                                                  .withOpacity(0.50),
-                                            ),
-                                          ),
-                                          //<<<<<<<<<<<<<<<<<<<<<<< C O L U M N ---E  N  D >>>>>>>>>>>>>>>>>>>>>>>
+                                              height: screenSize.height * 0.04),
+                                          _brownkHeading(
+                                              "Level of activity during the day\nEXCL. WORKOUTS",
+                                              ""),
+
+                                          _smallLightSubHeading(
+                                              "(at work, school, home)"),
                                         ],
                                       ),
                                     ),
@@ -369,25 +304,10 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                                 });
                                               },
                                             ),
-                                            title: Text(
-                                              "Very low",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.023,
-                                                color: Color(0xff000500),
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              "little or No Exercise ",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.018,
-                                                color: Color(0xff2a6427)
-                                                    .withOpacity(0.50),
-                                              ),
-                                            ),
+                                            title:
+                                                _smallBlackHeading("Very low"),
+                                            subtitle: _smallLightSubHeading(
+                                                "little or No Exercise "),
                                           ),
                                           //activity level  low
                                           ListTile(
@@ -400,25 +320,9 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                                 });
                                               },
                                             ),
-                                            title: Text(
-                                              "Low",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.023,
-                                                color: Color(0xff000500),
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              "Light exercise/sports 1-3 days/week",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.018,
-                                                color: Color(0xff2a6427)
-                                                    .withOpacity(0.50),
-                                              ),
-                                            ),
+                                            title: _smallBlackHeading("Low"),
+                                            subtitle: _smallLightSubHeading(
+                                                "Light exercise/sports 1-3 days/week"),
                                           ),
                                           //activity level  high
                                           ListTile(
@@ -431,25 +335,10 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                                 });
                                               },
                                             ),
-                                            title: Text(
-                                              "Average",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.023,
-                                                color: Color(0xff000500),
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              "Moderate exercise/sports 3-5 days/week ",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.018,
-                                                color: Color(0xff2a6427)
-                                                    .withOpacity(0.50),
-                                              ),
-                                            ),
+                                            title:
+                                                _smallBlackHeading("Average"),
+                                            subtitle: _smallLightSubHeading(
+                                                "Moderate exercise/sports 3-5 days/week "),
                                           ),
                                           //activity level  high
                                           ListTile(
@@ -462,25 +351,9 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                                 });
                                               },
                                             ),
-                                            title: Text(
-                                              "High",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.023,
-                                                color: Color(0xff000500),
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              "Hard exercise /sports 6-7 days a week ",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.018,
-                                                color: Color(0xff2a6427)
-                                                    .withOpacity(0.50),
-                                              ),
-                                            ),
+                                            title: _smallBlackHeading("High"),
+                                            subtitle: _smallLightSubHeading(
+                                                "Hard exercise /sports 6-7 days a week "),
                                           ),
                                           //activity level very  high
                                           ListTile(
@@ -493,164 +366,54 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                                 });
                                               },
                                             ),
-                                            title: Text(
-                                              "Very High",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.023,
-                                                color: Color(0xff000500),
-                                              ),
-                                            ),
-                                            subtitle: Text(
-                                              "Very hard exercise/sports and physical job or 2X training",
-                                              style: TextStyle(
-                                                fontFamily: "Montserrat",
-                                                fontSize:
-                                                    screenSize.height * 0.018,
-                                                color: Color(0xff2a6427)
-                                                    .withOpacity(0.50),
-                                              ),
-                                            ),
+                                            title:
+                                                _smallBlackHeading("Very High"),
+                                            subtitle: _smallLightSubHeading(
+                                                "Very hard exercise/sports and physical job or 2X training"),
+                                          ),
+                                          SizedBox(
+                                            height: screenSize.height * 0.04,
                                           ),
                                         ],
+                                      ),
+                                    ),
+
+                                    SizedBox(
+                                      height: screenSize.height * 0.04,
+                                    ),
+                                    // //>>>>>>>>>>>>>>>>>>>>>>>>> W O R K O U T --- A C T I V I T Y -- L E V E L >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                                    // ---------------------------- A L L E R G I E S / D I S E A S E S
+                                    _brownkHeading("Diseases", ""),
+                                    _smallLightSubHeading(
+                                        " (Let us know if you suffer from any of the following diseases frequntly or occasionally. We'll reccomend what's best for your health)"),
+                                    SizedBox(height: 7),
+                                    Center(
+                                      child: SimpleGroupedChips<int>(
+                                        isMultiple: true,
+                                        preSelection: [],
+                                        key: chipKey,
+                                        isScrolling: false,
+                                        values: _statusListValues,
+                                        itemTitle: _statusListText,
+                                        backgroundColorItem: Colors.black26,
+                                        onItemSelected: (selected) {
+                                          print("selected " +
+                                              selected.toString());
+                                          setState(() {
+                                            _updatedDiseaseList = selected;
+                                          });
+                                          // _updatedDiseaseList.add(selected);
+
+                                          print(
+                                              "---> _updatedDiseaseList inside checkBox: " +
+                                                  _updatedDiseaseList
+                                                      .toString());
+                                        },
                                       ),
                                     ),
                                     SizedBox(
                                       height: screenSize.height * 0.04,
                                     ),
-                                    // //>>>>>>>>>>>>>>>>>>>>>>>>> W O R K O U T --- A C T I V I T Y -- L E V E L >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-                                    // Container(
-                                    //   margin:
-                                    //       EdgeInsets.only(left: screenSize.width * 0.04),
-                                    //   child: Text(
-                                    //     "WORKOUT ACTIVITY LEVEL :",
-                                    //     style: TextStyle(
-                                    //       fontFamily: "UniSansW01-Regular",
-                                    //       fontSize: screenSize.height * 0.031,
-                                    //       color: Color(0xff2a6427),
-                                    //     ),
-                                    //   ),
-                                    // ),
-
-                                    // // LIST TILE STARTS WORKOUT
-                                    // ListTile(
-                                    //   dense: true,
-                                    //   leading: Radio(
-                                    //     value: 'Very Low',
-                                    //     groupValue: _activitylevelWORKOUT,
-                                    //     onChanged: (String value) {
-                                    //       setState(() {
-                                    //         _activitylevelWORKOUT = value;
-                                    //       });
-                                    //     },
-                                    //   ),
-                                    //   title: Text(
-                                    //     "Very Low",
-                                    //     style: TextStyle(
-                                    //       fontFamily: "Montserrat",
-                                    //       fontSize: screenSize.height * 0.023,
-                                    //       color: Color(0xff000500),
-                                    //     ),
-                                    //   ),
-                                    //   subtitle: Text(
-                                    //     "No Workouts",
-                                    //     style: TextStyle(
-                                    //       fontFamily: "Montserrat",
-                                    //       fontSize: screenSize.height * 0.018,
-                                    //       color: Color(0xff2a6427).withOpacity(0.50),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // ListTile(
-                                    //   dense: true,
-                                    //   leading: Radio(
-                                    //     value: 'Low',
-                                    //     groupValue: _activitylevelWORKOUT,
-                                    //     onChanged: (String value) {
-                                    //       setState(() {
-                                    //         _activitylevelWORKOUT = value;
-                                    //       });
-                                    //     },
-                                    //   ),
-                                    //   title: Text(
-                                    //     "Low",
-                                    //     style: TextStyle(
-                                    //       fontFamily: "Montserrat",
-                                    //       fontSize: screenSize.height * 0.023,
-                                    //       color: Color(0xff000500),
-                                    //     ),
-                                    //   ),
-                                    //   subtitle: Text(
-                                    //     "Workouts 1-3 days a week",
-                                    //     style: TextStyle(
-                                    //       fontFamily: "Montserrat",
-                                    //       fontSize: screenSize.height * 0.018,
-                                    //       color: Color(0xff2a6427).withOpacity(0.50),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // ListTile(
-                                    //   dense: true,
-                                    //   leading: Radio(
-                                    //     value: 'Average',
-                                    //     groupValue: _activitylevelWORKOUT,
-                                    //     onChanged: (String value) {
-                                    //       setState(() {
-                                    //         _activitylevelWORKOUT = value;
-                                    //       });
-                                    //     },
-                                    //   ),
-                                    //   title: Text(
-                                    //     "Average",
-                                    //     style: TextStyle(
-                                    //       fontFamily: "Montserrat",
-                                    //       fontSize: screenSize.height * 0.023,
-                                    //       color: Color(0xff000500),
-                                    //     ),
-                                    //   ),
-                                    //   subtitle: Text(
-                                    //     "Workout 4-5 days a week",
-                                    //     style: TextStyle(
-                                    //       fontFamily: "Montserrat",
-                                    //       fontSize: screenSize.height * 0.018,
-                                    //       color: Color(0xff2a6427).withOpacity(0.50),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // ListTile(
-                                    //   dense: true,
-                                    //   leading: Radio(
-                                    //     value: 'High',
-                                    //     groupValue: _activitylevelWORKOUT,
-                                    //     onChanged: (String value) {
-                                    //       setState(() {
-                                    //         _activitylevelWORKOUT = value;
-                                    //       });
-                                    //     },
-                                    //   ),
-                                    //   title: Text(
-                                    //     "High",
-                                    //     style: TextStyle(
-                                    //       fontFamily: "Montserrat",
-                                    //       fontSize: screenSize.height * 0.023,
-                                    //       color: Color(0xff000500),
-                                    //     ),
-                                    //   ),
-                                    //   subtitle: Text(
-                                    //     "Workouts everyday",
-                                    //     style: TextStyle(
-                                    //       fontFamily: "Montserrat",
-                                    //       fontSize: screenSize.height * 0.018,
-                                    //       color: Color(0xff2a6427).withOpacity(0.50),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // SizedBox(
-                                    //   height: screenSize.height * 0.02,
-                                    // ),
-                                    // start activity button
                                     Container(
                                       height: screenSize.height * 0.05,
                                       margin: EdgeInsets.only(
@@ -663,24 +426,26 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                             BorderRadius.circular(50.00),
                                       ),
                                       child: FlatButton(
-                                        onPressed: () => {
-                                          print('gender value ' + _gender),
-                                          print('Height  value ' +
-                                              _heightControler.text.toString()),
-                                          print('weight  value ' +
-                                              _weightControler.text.toString()),
-                                          print('goalweight  value ' +
-                                              _goalWeightControler.text
-                                                  .toString()),
-                                          print('activity level ' +
-                                              _activitylevel.toString()),
+                                        onPressed: () {
+                                          List _diseasesID = [];
+                                            // Adding disease ID
+                                          for (int i = 0;
+                                              i < _updatedDiseaseList.length;
+                                              i++) {
+                                            _diseasesID.add(_diseasesData[
+                                                    _updatedDiseaseList[i]]
+                                                .diseaseID);
+                                          }
                                           model.startPlan(
-                                              _gender,
-                                              _heightControler.text,
-                                              _weightControler.text,
-                                              _goalWeightControler.text,
-                                              _custData.custDateOfBirth,
-                                              _activitylevel),
+                                            _gender,
+                                            _heightControler.text,
+                                            _weightControler.text,
+                                            _goalWeightControler.text,
+                                            _custData.custDateOfBirth,
+                                            _activitylevel,
+                                            _diseasesID,
+                                          );
+
                                           model.hasErrorMessage
                                               ? WidgetsBinding.instance
                                                   .addPostFrameCallback(
@@ -689,7 +454,7 @@ class _CustStartPlanState extends State<CustStartPlan> {
                                                     model.errorMessage,
                                                   ),
                                                 )
-                                              : Container(),
+                                              : Container();
                                         },
                                         // DatabaseService()
                                         //     .addPlanData(({'planid': 'dsad'})),

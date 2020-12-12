@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_diet/core/models/cart.dart';
+import 'package:fitness_diet/core/models/disease.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/exercise.dart';
 import 'package:fitness_diet/core/models/orders.dart';
@@ -36,6 +37,9 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('users');
   final CollectionReference messageCollection =
       FirebaseFirestore.instance.collection('messages');
+  final CollectionReference diseasesCollection =
+      FirebaseFirestore.instance.collection('diseases');
+
   final String uid;
   DatabaseService({this.uid});
 // ============================================================================================================
@@ -138,8 +142,8 @@ class DatabaseService {
       custId: uid,
       custPhNo: snapshot.data()['custPhNo'] ?? "load",
       custName: snapshot.data()['custName'] ?? "load",
-      // custDateOfBirth:
-      //     (snapshot.data()['custDateOfBirth'] as Timestamp).toDate() ?? "",
+      custDateOfBirth:
+          (snapshot.data()['custDateOfBirth'] as Timestamp).toDate() ?? "",
       // custfavs: snapshot.data()['custfavs'] ?? "",
 
       custaddress: snapshot.data()['custAddress'] ?? '',
@@ -371,7 +375,8 @@ class DatabaseService {
         dishID: snapshot.docs[i].data()['dishID'] ?? "",
         dishName: snapshot.docs[i].data()['dishName'] ?? "",
         dishPrice: snapshot.docs[i].data()['dishPrice'] ?? 0,
-        dishRatings: snapshot.docs[i].data()['dishRatings'].toDouble() ?? 0.0,
+        dishRatings:
+            (snapshot.docs[i].data()['dishRatings'] as num).toDouble() ?? 0.0,
         dishPic: snapshot.docs[i].data()['dishPic'] ?? "",
         dishAval: snapshot.docs[i].data()['dishAval'] ?? false,
         dishPrepTime: snapshot.docs[i].data()['dishPrepTime'] ?? 0,
@@ -385,6 +390,7 @@ class DatabaseService {
         dishProtein: snapshot.docs[i].data()['dishProtein'] ?? 0.0,
         dishFat: snapshot.docs[i].data()['dishFat'] ?? 0.0,
         dishKcal: snapshot.docs[i].data()['dishKcal'] ?? 0.0,
+        dishIngrNames: snapshot.docs[i].data()['dishIngrNames'] ?? [],
       ));
       // print("ALL THE DISHES: " + chefDishes.elementAt(i).dishName.toString());
     }
@@ -398,7 +404,8 @@ class DatabaseService {
       dishID: snapshot.docs[0].data()['dishID'] ?? "",
       dishName: snapshot.docs[0].data()['dishName'] ?? "",
       dishPrice: snapshot.docs[0].data()['dishPrice'] ?? 0,
-      dishRatings: snapshot.docs[0].data()['dishRatings'].toDouble() ?? 0.0,
+      dishRatings:
+          (snapshot.docs[0].data()['dishRatings'] as num).toDouble() ?? 0.0,
       dishPic: snapshot.docs[0].data()['dishPic'] ?? "",
       dishAval: snapshot.docs[0].data()['dishAval'] ?? false,
       dishPrepTime: snapshot.docs[0].data()['dishPrepTime'] ?? 0,
@@ -412,6 +419,7 @@ class DatabaseService {
       dishProtein: snapshot.docs[0].data()['dishProtein'] ?? 0.0,
       dishFat: snapshot.docs[0].data()['dishFat'] ?? 0.0,
       dishKcal: snapshot.docs[0].data()['dishKcal'] ?? 0.0,
+      dishIngrNames: snapshot.docs[0].data()['dishIngrNames'] ?? [],
     );
     // print("ALL THE DISHES: " + chefDishes.elementAt(i).dishName.toString());
   }
@@ -600,6 +608,7 @@ class DatabaseService {
       custEatenCarbs: snapshot.docs[0].data()['custEatenCarbs'] ?? 0.0,
       //  custGender: snapshot.data()['custGender'] ?? "",
       // custHeight: snapshot.data()['custID'] ?? "",
+      diseases: snapshot.docs[0].data()['diseases'] ?? 0.0,
     );
   }
 
@@ -984,12 +993,10 @@ class DatabaseService {
           orderDate:
               (snapshot.docs[i].data()['orderDate'] as Timestamp).toDate() ??
                   "",
-          // shippedDate:
-          //     (snapshot.docs[i].data()['shippedDate'] as Timestamp).toDate() ??
-          //         "",
+
           // shippingAddress: snapshot.docs[i].data()['shippingAddress'] ?? "",
           items: snapshot.docs[i].data()['items'] ?? "",
-          total: snapshot.docs[i].data()['total'].toDouble() ?? "",
+          total: snapshot.docs[i].data()['total'] ?? "",
           custName: snapshot.docs[i].data()['custName'] ?? "",
           location: snapshot.docs[i].data()['location'] ?? []));
     }
@@ -1019,35 +1026,9 @@ class DatabaseService {
     return orderCollection.snapshots().map(_orderDataFromSnapshot);
   }
   //
-  //------------------------------ E  X  E  R  C  I  S  E //
+  // ------------------------------ E  X  E  R  C  I  S  E
+  //
 
-  // List<Order> _orderDataFromSnapshot(QuerySnapshot snapshot) {
-  //   print(
-  //       ">>>>>>>>>>> _orderDataFromSnapshot inside database INVOKED and snapshot legth is : " +
-  //           snapshot.docs.length.toString());
-  //   // Map<Dish,dynamic> chefDishes;
-  //   List<Order> ordersList = List<Order>();
-
-  //   for (int i = 0; i < snapshot.docs.length; i++) {
-  //     ordersList.add(Order(
-  //       orderID: snapshot.docs[i].data()['orderID'] ?? "",
-  //       custID: snapshot.docs[i].data()['custID'] ?? "",
-  //       orderStatus: snapshot.docs[i].data()['orderStatus'] ?? "",
-  //       phoneNo: snapshot.docs[i].data()['contactNo'] ?? "",
-  //       chefID: snapshot.docs[i].data()['chefID'] ?? "",
-  //       orderDate:
-  //           (snapshot.docs[i].data()['orderDate'] as Timestamp).toDate() ?? "",
-  //       // shippedDate:
-  //       //     (snapshot.docs[i].data()['shippedDate'] as Timestamp).toDate() ??
-  //       //         "",
-  //       shippingAddress: snapshot.docs[i].data()['shippingAddress'] ?? "",
-  //       items: snapshot.docs[i].data()['items'] ?? "",
-  //       total: snapshot.docs[i].data()['total'] ?? "",
-  //       custName: snapshot.docs[i].data()['custName'] ?? "",
-  //     ));
-  //   }
-  //   return ordersList;
-  // }
   List<Exercise> _exerciseDataFromSnapShop(QuerySnapshot snapshot) {
     print('-------------------------- inside map function of exercise ' +
         snapshot.docs.length.toString());
@@ -1116,7 +1097,7 @@ class DatabaseService {
   // }
 
 // ============================================================================================================
-// ------------------------------- U P D A T I O N   A N D   R E T R I V A L   O F   C U S T O M E R   D A T A
+// ------------------------------- U P D A T I O N   A N D   R E T R I V A L   O F   D E L I V E R Y    D A T A
 // ============================================================================================================
   //
   // >>>>>>>>>>>>>>>> S E T T I N G   D A T A
@@ -1219,11 +1200,53 @@ class DatabaseService {
     return delivCollection.doc(uid).snapshots().map(_delivDataFromSnapshot);
   }
 
-  //---------------------------- C H A T F U N C T I O N S------------
-  ///
-  ///
-  ///
+// ============================================================================================================
+// ------------------------------- U P D A T I O N   A N D   R E T R I V A L   O F   D E L I V E R Y    D A T A
+// ============================================================================================================
 
+  List<Disease> _diseaseDataFromSnapshot(QuerySnapshot snapshot) {
+    print(
+        ">>>>>>>>>>> _diseaseDataFromSnapshot inside database INVOKED and snapshot legth is : " +
+            snapshot.docs.length.toString());
+    // Map<Dish,dynamic> chefDishes;
+    List<Disease> diseasesList = List<Disease>();
+
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      diseasesList.add(
+        Disease(
+          diseaseID: snapshot.docs[i].data()['diseaseID'] ?? "",
+          name: snapshot.docs[i].data()['name'] ?? "",
+          notRecommended: snapshot.docs[i].data()['notRecommended'] ?? [],
+          recommended: snapshot.docs[i].data()['recommended'] ?? [],
+        ),
+      );
+      print("snapshot.docs[i].data()['name']: " +
+          snapshot.docs[i].data()['name'].toString());
+      print("snapshot.docs[i].data()['diseaseID']: " +
+          snapshot.docs[i].data()['diseaseID'].toString());
+      print("snapshot.docs[i].data()['notRecommended']: " +
+          snapshot.docs[i].data()['notRecommended'].toString());
+      print("snapshot.docs[i].data()['recommended']: " +
+          snapshot.docs[i].data()['recommended'].toString());
+      print("++++++++++");
+    }
+    return diseasesList;
+  }
+
+  Stream<List<Disease>> getSinglediseaseData(String _passeddiseaseID) {
+    return diseasesCollection
+        .where("diseaseID", isEqualTo: _passeddiseaseID)
+        .snapshots()
+        .map(_diseaseDataFromSnapshot);
+  }
+
+  Stream<List<Disease>> getAllDiseasesData() {
+    return diseasesCollection.snapshots().map(_diseaseDataFromSnapshot);
+  }
+
+// ============================================================================================================
+// ------------------------------- C H A T    F U N C T I O N S
+// ============================================================================================================
   Future<bool> addnewuser(String name) async {
     await userCollection.doc(uid).set(
       {

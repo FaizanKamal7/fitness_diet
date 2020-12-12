@@ -25,6 +25,8 @@ class Plan {
   Map<String, dynamic> custExercise;
   Map<String, dynamic> custMeals;
 
+  List diseases;
+
   Plan({
     this.planID,
     this.custId,
@@ -46,5 +48,6 @@ class Plan {
     this.custBurntCarbs,
     this.custExercise,
     this.custMeals,
+    this.diseases,
   });
 }

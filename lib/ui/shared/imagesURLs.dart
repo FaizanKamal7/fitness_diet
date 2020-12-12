@@ -10,3 +10,6 @@ const defaultCustImg = "assets/images/defaultCustPic2.png";
 const defaultChefImg = "assets/images/defaultChefPic2.png";
 const carIcon = "assets/images/car_icon.png";
 
+const animWarning = "assets/images/animations/6656-warning-sign.json";
+const animWarning2 = "assets/images/animations/8339-warning.json";
+const animWarning3 = "assets/images/animations/15426-warning-animation.json";
