@@ -49,11 +49,16 @@ class DelivViewModel extends BaseViewModel {
     }
   }
 
+// --------------------------- R E G I S T E R   D E L I V E R Y   G U Y   I N F O
   Future register(String phoneNo) async {
-    print("---------> DelivViewModel reached");
     var updatedPhoneNo = phoneNo.replaceFirst(RegExp(r'0'), '+92');
-    String userID = getUser;
     setState(ViewState.Busy);
+
+    String userID = getUser;
+    print(
+      "-----------> CustReg2ViewModel reached ========= register, userID: " +
+          userID.toString(),
+    );
     String phoneNoAlreadyRegistered =
         await DatabaseService().isPhoneNoAlreadyRegistered(phoneNo);
     //
@@ -67,9 +72,7 @@ class DelivViewModel extends BaseViewModel {
     // >>>>>>>>>>>>> Check if user already registered
     //
 
-    else if (await DatabaseService()
-            .isPhoneNoAlreadyRegistered(updatedPhoneNo) !=
-        null) {
+    else if (phoneNoAlreadyRegistered != null) {
       setErrorMessage(
           '  This phone no is already registered. \n  Try again with new number');
       setState(ViewState.Idle);
@@ -78,26 +81,26 @@ class DelivViewModel extends BaseViewModel {
       //
       // >>>>>>>>>>>>> Upon successful authentication
       //
-      if (phoneNoAlreadyRegistered == null) {
-        verifiedUserID = await AuthService().verifyPhone(updatedPhoneNo);
-        await DatabaseService(uid: userID).addNewDelivData({
+      verifiedUserID = await AuthService().verifyPhone(updatedPhoneNo);
+      if (verifiedUserID != null) {
+        await DatabaseService(uid: verifiedUserID).addNewDelivData({
           'phoneNo': updatedPhoneNo,
         });
-        _navigationService.navigateTo(routes.DelivReg2Route);
-
-        setState(ViewState.Idle);
-      } else {
-        setErrorMessage(
-            "   Phone no is already registered\n   Please try again with new number");
-        setState(ViewState.Idle);
       }
+
+      _navigationService.navigateTo(routes.DelivReg2Route);
+
+      setState(ViewState.Idle);
     }
   }
 // --------------------------- A D D   D E L I V E R Y   G U Y   I N F O
 
   Future addDelivData(String delivName, DateTime dateOfBirth) async {
-    print("-----------> CustReg2ViewModel reached");
     String userID = getUser;
+    print(
+      "-----------> CustReg2ViewModel reached ========= addDelivData, userID: " +
+          userID.toString(),
+    );
     bool dataValidated;
     setState(ViewState.Busy);
     Validators().verifyNameInputFeild(delivName) && dateOfBirth != null
@@ -109,6 +112,7 @@ class DelivViewModel extends BaseViewModel {
         'delivName': delivName,
         'delivDateOfBirth': dateOfBirth,
       });
+
       print("Data entered in the DataBase from CustReg2ViewModel status:" +
           check.toString());
       if (check) {

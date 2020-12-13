@@ -6,7 +6,6 @@ import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/authHeader.dart';
-import 'package:fitness_diet/ui/widgets/custAuthBg.dart';
 import 'package:fitness_diet/ui/widgets/dateOfBirthSelector.dart';
 import 'package:fitness_diet/ui/widgets/Texts/stepHeaderWithBg.dart';
 import 'package:fitness_diet/ui/widgets/TextFeilds/textFeildWithPrefix.dart';

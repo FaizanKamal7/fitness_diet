@@ -1,7 +1,6 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
-import 'package:fitness_diet/core/viewmodels/custViewModels/auth/custSignInViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/delivViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';

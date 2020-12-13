@@ -166,7 +166,7 @@ class DatabaseService {
     List<CustData> productsList = List<CustData>();
     for (int i = 0; i < snapshot.docs.length; i++) {
       productsList.add(CustData(
-        custId: snapshot.docs[i].data()['custID'] ?? "",
+        custId: snapshot.docs[i].data()['custI'] ?? "",
         custPhNo: snapshot.docs[i].data()['custPhNo'] ?? "",
         custName: snapshot.docs[i].data()['custName'] ?? "",
         custDateOfBirth:
@@ -788,7 +788,7 @@ class DatabaseService {
         await custCollection.where("custPhNo", isEqualTo: _phoneNo).get();
 
     var delivResult =
-        await custCollection.where("delivPhNo", isEqualTo: _phoneNo).get();
+        await delivCollection.where("phoneNo", isEqualTo: _phoneNo).get();
 
     if (chefResult.docs.length > 0) {
       print("Chef Case is true___________");
@@ -1137,7 +1137,7 @@ class DatabaseService {
         uid.toString());
     // - Setting ID first in a doc
 
-    await delivCollection.doc(uid).set(
+    await delivCollection.doc(uid).set(  
       {
         'delivID': uid,
         'delivAddDate': DateTime.now(),

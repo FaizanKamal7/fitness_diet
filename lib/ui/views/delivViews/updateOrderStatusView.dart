@@ -64,7 +64,7 @@ class _UpdateOrderStatusViewState extends State<UpdateOrderStatusView> {
     return byteData.buffer.asUint8List();
   }
 
-// >>>>>>>>>> U P D A T E   R E A L  - T I M E   M A R K E R   L O C A T I O N
+// >>>>>>>>>> U P D A T E   R E A L  - T I M E   M A R AK E R   L O C A T I O N
 
   void updateMarkerAndCircle(
       LocationData newLocalData, Uint8List imageData) async {

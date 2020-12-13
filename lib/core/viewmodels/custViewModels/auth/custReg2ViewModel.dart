@@ -12,7 +12,7 @@ class CustReg2ViewModel extends BaseViewModel {
   Future addCustData(String custName, DateTime dateOfBirth) async {
     // String userUID = await getUser;
     print("-----------> CustReg2ViewModel reached");
-    String userID = await getUser;
+    String userID = getUser;
     bool dataValidated;
     setState(ViewState.Busy);
     Validators().verifyNameInputFeild(custName) && dateOfBirth != null

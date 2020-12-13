@@ -65,9 +65,6 @@ class CustRegViewModel extends BaseViewModel {
 
           setState(ViewState.Idle);
         } else {
-          print(
-              "Updated the data in databse - ELSE ___________________________________" +
-                  verifiedUserID.toString());
           setErrorMessage(
               "   Something went wrong while\n   verification. Please try again");
           setState(ViewState.Idle);
@@ -79,98 +76,4 @@ class CustRegViewModel extends BaseViewModel {
       }
     }
   }
-
-  // Future<dynamic> verifyPhone(phoneNo) async {
-  //   final DialogService _dialogService = locator<DialogService>();
-  //   var completer = Completer<dynamic>();
-  //   print("‎ Verify Phone reached __________________");
-  //   String smsCode;
-  //   dynamic newUserResult;
-
-  //   Future<String> getOTPresult() async {
-  //     print("Dialog shown");
-  //     setState(ViewState.Idle);
-  //     var dialogResult =
-  //         await _dialogService.showDialog(dialogType: Dialog_Types.OTP);
-
-  //     return dialogResult.userText;
-  //   }
-
-  //   //
-  //   //  >>>>>>>>>>>>> On verification complete
-  //   //
-  //   final PhoneVerificationCompleted verificationComplete =
-  //       (AuthCredential authCred) async {
-  //     newUserResult = await AuthService().signInWithPhoneNumber(authCred);
-
-  //     print("Why the fuck are you running?");
-  //     if (newUserResult != null) {
-  //       print("Phone no is : " + phoneNo);
-  //       print("__Result: " + newUserResult.toString());
-  //       print("AuthCredential : _______ " + authCred.toString());
-
-  //       // --- Proceeding to screen 2 of chef registration
-  //     }
-  //     completer.complete(newUserResult);
-  //   };
-  //   //
-  //   ///  >>>>>>>>>>>>> On Timeout
-  //   //
-  //   final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verID) {
-  //     print("\n2. Auto retrieval time out");
-  //     completer.complete(newUserResult);
-  //   };
-
-  //   // >>>>>>>>>>>>>  On manual code verification
-
-  //   final PhoneCodeSent smsCodeSent =
-  //       (String verID, [int forceCodeResend]) async {
-  //     print(" --------------> Code sent reached ");
-
-  //     // ignore: non_constant_identifier_names
-  //     var OTPDialogResult = await getOTPresult();
-
-  //     print("OTP entered by user: " + OTPDialogResult.toString());
-  //     AuthCredential authCred = PhoneAuthProvider.getCredential(
-  //         verificationId: verID, smsCode: OTPDialogResult);
-  //     print("SMS code sent reached OTP is : " + OTPDialogResult.toString());
-
-  //     newUserResult = AuthService().signInWithPhoneNumber(authCred);
-  //     completer.complete(newUserResult);
-  //   };
-
-  //   final PhoneVerificationFailed verificationFailed =
-  //       (AuthException authException) {
-  //     print('${AuthException(smsCode, "message")}');
-
-  //     if (authException.message.contains('not authorized'))
-  //       print('   App not authroized');
-  //     // UIHelper().showErrorButtomSheet(context, '   App not authroized');
-  //     else if (authException.message.contains('Network'))
-  //       print('   Please check your internet \n    connection and try again ');
-  //     else
-  //       print('Something has gone wrong, please try later ' +
-  //           authException.message);
-  //     setState(ViewState.Idle);
-  //     completer.complete(newUserResult);
-  //   };
-
-  //   await FirebaseAuth.instance
-  //       .verifyPhoneNumber(
-  //         phoneNumber: phoneNo,
-  //         timeout: Duration(seconds: 50),
-  //         verificationCompleted: verificationComplete,
-  //         verificationFailed: verificationFailed,
-  //         codeSent: smsCodeSent,
-  //         codeAutoRetrievalTimeout: autoRetrieve,
-  //       )
-  //       .then((value) =>
-  //           print("then newuser Reslut: " + newUserResult.toString()))
-  //       .catchError((error) {
-  //     print(error.toString());
-  //   });
-  //   print("New user result at the end : " + newUserResult.toString());
-  //   return completer.future;
-  // }
-
 }
