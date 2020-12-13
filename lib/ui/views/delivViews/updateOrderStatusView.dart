@@ -96,7 +96,10 @@ class _UpdateOrderStatusViewState extends State<UpdateOrderStatusView> {
     Uint8List _img2 = byteData.buffer.asUint8List();
     _markers.add(Marker(
       markerId: MarkerId("2"),
-      position: LatLng(34.218878, 73.244566),
+      position: LatLng(
+        widget.passedOrder.location[0],
+        widget.passedOrder.location[1],
+      ),
       infoWindow: InfoWindow(
         title: "Order destination",
       ),

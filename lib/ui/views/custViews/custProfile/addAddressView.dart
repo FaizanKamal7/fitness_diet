@@ -8,6 +8,7 @@ import 'package:fitness_diet/ui/widgets/TextFeilds/textFieldWithPrefixDisabled.d
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class AddAddressView extends StatefulWidget {
   String addressTitle;
 

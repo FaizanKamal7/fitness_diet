@@ -10,7 +10,7 @@ class standardHeadingWithBGAndRoundCorner extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
-      height: deviceSize.height * 0.045,
+      height: deviceSize.height * 0.035,
       width: deviceSize.width,
       decoration: BoxDecoration(
         color: standardButtonBGColor,
@@ -26,7 +26,7 @@ class standardHeadingWithBGAndRoundCorner extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontFamily: "Montserrat",
-            fontSize: deviceSize.height * 0.025,
+            fontSize: deviceSize.height * 0.02,
             color: Color(0xff2a6427),
           ),
         ),

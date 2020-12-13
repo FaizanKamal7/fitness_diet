@@ -151,7 +151,7 @@ class SoleDishViewModel extends BaseViewModel {
               print("======> 5) Inside IF: " +
                   passedDish.dishIngrNames[k].toString());
               isHealthy = false;
-              unhealthyIngrName = passedDish.dishIngrNames[j];
+              unhealthyIngrName = passedDish.dishIngrNames[k];
               diseaseToBeProtectedName = _diseasesData[i].name;
               print("Not    H E A L T H Y  because it contains " +
                   unhealthyIngrName +
@@ -165,6 +165,8 @@ class SoleDishViewModel extends BaseViewModel {
     _diseaseInfoNestedList.add(isHealthy);
     _diseaseInfoNestedList.add(unhealthyIngrName);
     _diseaseInfoNestedList.add(diseaseToBeProtectedName);
+    print("======> 5) _diseaseInfoNestedList before returning: " +
+        _diseaseInfoNestedList.toString());
     return (_diseaseInfoNestedList);
   }
 }

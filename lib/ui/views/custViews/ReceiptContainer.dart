@@ -1,4 +1,5 @@
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
+import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/orderStatus.dart';
 import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
@@ -160,7 +161,12 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
                                   double _total = subtotal + deliveryFee;
 
                                   if (widget.shippingAddr != null &&
+                                      widget.shippingAddr.keys.first != null &&
+                                      widget.shippingAddr.values.first !=
+                                          null &&
                                       _custData.custContactNo != null) {
+                                    print(" A D D R E S S : " +
+                                        widget.shippingAddr.toString());
                                     String orderID = await model.createOrder(
                                       _custData.custId,
                                       _custData.custName,
@@ -192,13 +198,13 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
                                       ),
                                     );
                                   } else {
-                                    if (widget.shippingAddr == null) {
-                                      // _showAlert(context, 'Address ',
-                                      // 'Address not found Kindly enter a valid address');
-                                    } else {
-                                      // _showAlert(context, 'Contact Number',
-                                      //     'contact number not found ,Enter a valid contact number ');
-                                    }
+                                    await _dialogService.showDialog(
+                                      title: 'Alert',
+                                      description:
+                                          "Address or contact number not found. Kindly enter a valid info before starting an order",
+                                      buttonTitle: "OK",
+                                      dialogType: Dialog_Types.SMALL_ERROR,
+                                    );
                                   }
                                 },
                                 child: BigLightGreenBtn(

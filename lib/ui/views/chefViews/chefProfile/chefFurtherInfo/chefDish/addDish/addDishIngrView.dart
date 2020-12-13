@@ -191,6 +191,7 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
                       ),
                     ),
                   ),
+                  model.state == ViewState.Busy ? Loading() : SizedBox(),
                 ],
               ),
             ),

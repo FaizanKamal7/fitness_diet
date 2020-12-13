@@ -52,18 +52,6 @@ class CustInfo extends StatelessWidget {
         builder: (context, widgetSize) => Container(
           child: ListView(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: widgetSize.width * 0.02),
-                child: Text(
-                  "Following  0  chefs",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: "UniSansSemiBold",
-                    fontSize: widgetSize.height * 0.04,
-                    color: Color(0xff2a6427).withOpacity(0.75),
-                  ),
-                ),
-              ),
               SizedBox(
                 height: widgetSize.height * 0.03,
               ),
@@ -136,15 +124,16 @@ class CustInfo extends StatelessWidget {
                         _showAddressBottomSheet(context);
                       },
                       child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Add address",
-                            style: TextStyle(
-                              fontFamily: "Montserrat",
-                              fontSize: 15,
-                              color: Color(0xff3caa43),
-                            ),
-                          )),
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Add address",
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: 15,
+                            color: Color(0xff3caa43),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -161,6 +150,7 @@ class CustInfo extends StatelessWidget {
               _custOrders != null
                   ? ListView.builder(
                       shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       itemCount: _custOrders != null ? _custOrders.length : 0,
                       itemBuilder: (context, index) {

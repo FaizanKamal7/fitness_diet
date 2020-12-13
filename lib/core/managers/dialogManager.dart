@@ -4,6 +4,7 @@ import 'package:fitness_diet/core/datamodel/alert_response.dart';
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/locator.dart';
+import 'package:fitness_diet/ui/shared/fonts.dart';
 import 'package:fitness_diet/ui/shared/ui_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -262,6 +263,60 @@ class _DialogManagerState extends State<DialogManager> {
           },
         )..show();
 
+        break;
+      case Dialog_Types.SMALL_ERROR:
+        AwesomeDialog(
+          context: context,
+          animType: AnimType.LEFTSLIDE,
+          dialogType: DialogType.ERROR,
+          dismissOnBackKeyPress: true,
+          dismissOnTouchOutside: true,
+          body: Center(
+            child: Column(
+              children: [
+                // >>>>>>>>>>>>>>>>>>>>>>> O T P   H E A D E R
+                // Text(
+                //   request.title,
+                //   textAlign: TextAlign.center,
+                //   style: TextStyle(
+                //       fontFamily: "Lemon-Milk",
+                //       fontSize: deviceSize.height * 0.021),
+                // ),
+                // Center(
+                //   child: Lottie.asset(
+                //     animEmptyList,
+                //     repeat: true,
+                //     reverse: false,
+                //     animate: true,
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: deviceSize.height * 0.0185,
+                // ),
+
+                // >>>>>>>>>>>>>>>>>>>>>>> O T P   T E X T   F E I L D
+                Text(
+                  request.description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: fontMontserrat,
+                    fontSize: deviceSize.height * 0.014,
+                  ),
+                ),
+                // >>>>>>>>>>>>>>>>>>>>>>> R E S E N D    A N D   T I M E R
+                SizedBox(
+                  height: deviceSize.height * 0.015,
+                ),
+              ],
+            ),
+          ),
+          btnOkText: request.buttonTitle,
+          btnOkOnPress: () async {
+            _dialogService.dialogComplete(AlertResponse(
+              confirmed: true,
+            ));
+          },
+        )..show();
         break;
       case Dialog_Types.New_Order:
         AwesomeDialog(

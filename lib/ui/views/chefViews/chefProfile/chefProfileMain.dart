@@ -15,7 +15,8 @@ class ChefProfileMain extends StatelessWidget {
         dishCatgStreamProvider,
         usersDatastreamProvider,
         messagedocumentprovider,
-        dishAttrStreamProvider;
+        dishAttrStreamProvider,
+        custDataStreamProvider;
 
     try {
       // - Chef data stream
@@ -34,6 +35,8 @@ class ChefProfileMain extends StatelessWidget {
           value: DatabaseService().getAllUserData);
       messagedocumentprovider = StreamProvider<List<String>>.value(
           value: DatabaseService().getallmessagedocument);
+      custDataStreamProvider = StreamProvider<List<CustData>>.value(
+          value: DatabaseService().getAllCustData);
 
       // print("========= chefDataStreamProvider : " +
       //     dishStreamProvider.toString());
@@ -48,6 +51,7 @@ class ChefProfileMain extends StatelessWidget {
         dishAttrStreamProvider,
         usersDatastreamProvider,
         messagedocumentprovider,
+        custDataStreamProvider
       ],
       child: MaterialApp(home: ChefProfileView()),
     );

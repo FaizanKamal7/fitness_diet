@@ -1,4 +1,6 @@
+import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
+import 'package:fitness_diet/core/models/disease.dart';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/viewmodels/custViewModels/custProfileViewModel/custPlanViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
@@ -40,14 +42,16 @@ class _CustPlanState extends State<CustPlan> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final _planData = Provider.of<Plan>(context);
-    int _focusedIndex = 0;
+    final _diseasesData = Provider.of<List<Disease>>(context);
+
     String previousdate;
     String previousdateMeals;
-    void _onItemFocus(int index) {
-      setState(() {
-        _focusedIndex = index;
-      });
-    }
+    List<String> _diseaseNamesList = [];
+    // void _onItemFocus(int index) {
+    //   setState(() {
+    //     _focusedIndex = index;
+    //   });
+    // }
 
     bool isPlanCancelled = false;
     return BaseView<CustPlanViewModel>(
@@ -108,11 +112,32 @@ class _CustPlanState extends State<CustPlan> {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: widgetSize.height * 0.02,
-                            ),
+                            SizedBox(height: widgetSize.height * 0.02),
                             // S  U  M  M  A  R   Y  ----- C  A  R  D  //
                             SummaryCard(widgetSize),
+                             SizedBox(height: widgetSize.height * 0.03),
+                            // ---------------------------------------------- A L L E R R G Y  /  D I S E A S E S
+                            standardHeadingWithBGAndRoundCorner(
+                              passedText: 'Health related issue',
+                            ),
+                             SizedBox(height: widgetSize.height * 0.02),
+                            _diseasesData != null
+                                ? standardInfDisplaywithBullets(
+                                    'Diseases/Allergies : ',
+                                    ConstantFtns().removeStringTypeListBrackets(
+                                      model
+                                          .getCustDiseasesList(
+                                              _planData, _diseasesData)
+                                          .toString(),
+                                    ),
+                                    deviceSize,
+                                  )
+                                : standardInfDisplaywithBullets(
+                                    'Diseases/Allergies :',
+                                    "",
+                                    deviceSize,
+                                  ),
+
                             //
                             //
                             // B  O  D  Y ----- M  E  A  S  U  R  E  M  E  N  T ------------------------------
@@ -120,7 +145,8 @@ class _CustPlanState extends State<CustPlan> {
                             //
                             SizedBox(height: widgetSize.height * 0.03),
                             standardHeadingWithBGAndRoundCorner(
-                                passedText: 'Body Measurement'),
+                              passedText: 'Body Measurement',
+                            ),
                             SizedBox(
                               height: widgetSize.height * 0.03,
                             ),
@@ -129,9 +155,10 @@ class _CustPlanState extends State<CustPlan> {
                               child: Column(
                                 children: <Widget>[
                                   standardInfDisplaywithBullets(
-                                      'Weight :',
-                                      _planData.custWeight.toString() + "  Kg",
-                                      deviceSize),
+                                    'Weight :',
+                                    _planData.custWeight.toString() + "  Kg",
+                                    deviceSize,
+                                  ),
                                   standardInfDisplaywithBullets(
                                       'Height :',
                                       _planData.custHeight.toString() +

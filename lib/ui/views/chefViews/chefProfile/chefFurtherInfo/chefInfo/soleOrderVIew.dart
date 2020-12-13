@@ -4,17 +4,13 @@ import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/orders.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/viewmodels/chefViewModels/chefOrdersViewmodel.dart';
-import 'package:fitness_diet/ui/shared/fonts.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeading.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardLinkText.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardText1.dart';
-import 'package:fitness_diet/ui/widgets/circularIcon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SoleOrderView extends StatefulWidget {
   Order singleOrder;
@@ -27,13 +23,21 @@ class SoleOrderView extends StatefulWidget {
 class _SoleOrderViewState extends State<SoleOrderView> {
   // Stream<List<Order>> _orderInfoStream;
   List _updatedStatusList;
-  List<int> _statusListValues = [1, 2, 3, 4, 5, 6];
+  // List<int> _statusListValues = [1, 2];
+  List<int> _statusListValues = [1, 2, 3];
+
+  // List<String> _statusListText = [
+  // "Order Placed   ",
+  // "Order Processed   ",
+  // "Order Dispatched   ",
+  // "Order Completed   ",
+  // "Order Cancelled   ",
+  // "Order Failed   ",
+  // ];
   List<String> _statusListText = [
     "Order Placed   ",
     "Order Processed   ",
-    "Order Dispatched   ",
-    "Order Completed   ",
-    "Order Failed   ",
+    "Order Cancelled   ",
   ];
   GlobalKey<SimpleGroupedChipsState<int>> chipKey =
       GlobalKey<SimpleGroupedChipsState<int>>();
@@ -41,9 +45,6 @@ class _SoleOrderViewState extends State<SoleOrderView> {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return BaseView<ChefOrdersViewModel>(
-      // onModelReady: (model) async {
-      //   _orderInfoStream = model.getSingleOrderInfo(widget.singleOrderID);
-      // },
       builder: (context, model, child) => model.state == ViewState.Busy
           ? Loading()
           : Scaffold(
@@ -88,21 +89,6 @@ class _SoleOrderViewState extends State<SoleOrderView> {
                           passedDescText: "Address: ",
                           fontWeight: FontWeight.bold,
                         ),
-                        // StandardText1(
-                        //   passedDescText: widget.singleOrder
-                        //               .shippingAddress.length ==
-                        //           0
-                        //       ? ' '
-                        //       : widget.singleOrder.shippingAddress["home"]
-                        //               [0] +
-                        //           ", " +
-                        //           widget.singleOrder
-                        //               .shippingAddress["home"][1] +
-                        //           ", " +
-                        //           widget.singleOrder
-                        //               .shippingAddress["home"][2]
-                        //               .toString(),
-                        // ),
                       ],
                     ),
                     SizedBox(height: 10),

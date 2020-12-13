@@ -1,5 +1,6 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/orders.dart';
+import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 
@@ -44,10 +45,13 @@ class ChefOrdersViewModel extends BaseViewModel {
       if (_order.orderStatus[i] == "ORDER_COMPLETED")
         _orderStatusPreSelectedList.add(4);
 
-      if (_order.orderStatus[i] == "ORDER_FAILED")
+      if (_order.orderStatus[i] == "ORDER_CANCELLED")
         _orderStatusPreSelectedList.add(5);
-    }
 
+      if (_order.orderStatus[i] == "ORDER_FAILED")
+        _orderStatusPreSelectedList.add(6);
+    }
+    print("--- PRE-SELECTED : " + _orderStatusPreSelectedList.toString());
     return _orderStatusPreSelectedList;
   }
 
@@ -73,6 +77,9 @@ class ChefOrdersViewModel extends BaseViewModel {
         _orderStatusPreSelectedList.add("ORDER_COMPLETED");
 
       if (_updatedStatusList[i] == 5)
+        _orderStatusPreSelectedList.add("ORDER_CANCELLED");
+
+      if (_updatedStatusList[i] == 6)
         _orderStatusPreSelectedList.add("ORDER_FAILED");
     }
 
@@ -82,5 +89,15 @@ class ChefOrdersViewModel extends BaseViewModel {
     setState(ViewState.Idle);
 
     return _updateResult;
+  }
+
+  CustData getSingleCustInfo(List<CustData> _custData, String passedCustID) {
+    CustData _singleCustData;
+    for (int i = 0; i < _custData.length; i++) {
+      if (_custData[i].custId == passedCustID) {
+        _singleCustData = _custData[i];
+      }
+    }
+    return _singleCustData;
   }
 }

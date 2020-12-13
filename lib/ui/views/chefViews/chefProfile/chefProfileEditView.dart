@@ -75,18 +75,7 @@ class _ChefProfileEditViewState extends State<ChefProfileEditView> {
                       ),
                     ),
                   ),
-                  // : Container(
-                  //     height: deviceSize.height * 0.12,
-                  //     width: deviceSize.height * 0.12,
-                  //     decoration: BoxDecoration(
-                  //       shape: BoxShape.circle,
-                  //       image: DecorationImage(
-                  //         image: AssetImage(chefBGImage_1),
-                  //         //   image: AssetImage(custBGImage_1),
-                  //         fit: BoxFit.cover,
-                  //       ),
-                  //     ),
-                  //   ),
+
                   Container(
                     margin: EdgeInsets.only(
                         top: deviceSize.height * 0.09,
@@ -100,31 +89,14 @@ class _ChefProfileEditViewState extends State<ChefProfileEditView> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              // ListTile(
-                              //   title: Text("Pick from Gallery"),
-                              // onTap: () async {
-                              //   File custPic = await ConstantFtns().getImgFile(
-                              //       ImageSource.gallery, deviceSize);
-                              //   print("------- custPic inside AddDishVIew:" +
-                              //       custPic.toString());
-                              //   setState(() {
-                              //     _chefPic = custPic;
-                              //     print("------- _dishPic AddDishVIew:" +
-                              //         custPic.toString());
-                              //   });
-                              // },
-                              // ),
                               FlatButton(
                                 onPressed: () async {
                                   File custPic = await ConstantFtns()
                                       .getImgFile(
                                           ImageSource.gallery, deviceSize);
-                                  print("------- custPic inside AddDishVIew:" +
-                                      custPic.toString());
+
                                   setState(() {
                                     _chefPic = custPic;
-                                    print("------- _dishPic AddDishVIew:" +
-                                        custPic.toString());
                                   });
                                 },
                                 child: Text("Pick from Gallery"),
@@ -257,37 +229,6 @@ class _ChefProfileEditViewState extends State<ChefProfileEditView> {
                     _chefResdController.text, _dateOfBirth, _chefPic),
                 child: AuthBtnStyle(deviceSize: deviceSize, passedText: "Done"),
               ),
-
-              // FlatButton(
-              //   onPressed: () async {
-              //     // if (_formKey.currentState.validate()) {
-              //     //   await DatabaseService(uid: user.uid).updateCustData({
-              //     //     'custName': _chefNameController ?? _chefData[0].custName,
-              //     //     //      _chefResdController ?? _chefData.residence,
-              //     //     //  _dateOfBirth ?? _chefData.dateOfBirth,
-              //     //   });
-              //     //   Navigator.pop(context);
-              //     // }
-              //   },
-              //   child: Container(
-              //     width: deviceSize.width * 0.3,
-              //     padding: EdgeInsets.all(10),
-              //     decoration: BoxDecoration(
-              //       color: Colors.green.withOpacity(0.8),
-              //       borderRadius: BorderRadius.all(
-              //         Radius.circular(30),
-              //       ),
-              //     ),
-              //     child: Center(
-              //       child: Text(
-              //         "Done",
-              //         style: TextStyle(
-              //             color: Constants().headerTextColor1,
-              //             fontFamily: 'Montserrat'),
-              //       ),
-              //     ),
-              //   ),
-              // )
             ],
           ),
         ),

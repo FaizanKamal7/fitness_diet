@@ -154,9 +154,11 @@ class _OrderViewState extends State<OrderView> {
                             child: RadioItemCustom(
                               addrTitle:
                                   _custdata.custaddress.keys.elementAt(index),
-                              addrText: _custdata.custaddress.values
-                                  .elementAt(index)
-                                  .toString(),
+                              addrText: ConstantFtns()
+                                  .removeStringTypeListBrackets(_custdata
+                                      .custaddress.values
+                                      .elementAt(index)
+                                      .toString()),
                               isSelected: _addrSelectedTitle ==
                                       _custdata.custaddress.keys
                                           .elementAt(index)
@@ -166,17 +168,6 @@ class _OrderViewState extends State<OrderView> {
                           ),
                         ),
 
-                        // SizedBox(height: 10),
-                        // Text(
-                        //   "Edit existing",
-                        //   textAlign: TextAlign.center,
-                        //   style: TextStyle(
-                        //     fontFamily: fontUniSans,
-                        //     fontSize: 12,
-                        //     color: Color(0xff0e8fff),
-                        //     decoration: TextDecoration.underline,
-                        //   ),
-                        // ),
                         SizedBox(height: 5),
                         InkWell(
                           onTap: () {
@@ -194,21 +185,6 @@ class _OrderViewState extends State<OrderView> {
                             ),
                           ),
                         ),
-                        // >>>>>>>>>>>>>>>>>>>>> Payment details
-                        // SizedBox(height: 15),
-                        // StandardHeadingSmall(passedText: "PAYMENT DETAILS"),
-                        // Divider(
-                        //   thickness: 1,
-                        //   color: Color(0xff69AA6C),
-                        //   endIndent: 30,
-                        // ),
-                        // SizedBox(height: 5),
-                        // StandardText2(
-                        //   passedDescText:
-                        //       "Payment will be received via cash on delivery",
-                        //   fontWeight: FontWeight.normal,
-                        // ),
-                        // SizedBox(height: 15),
 
                         //>>>>>>>>>>>>>>>>>>>>>>>>>>>>  O R D E R I T E M
 

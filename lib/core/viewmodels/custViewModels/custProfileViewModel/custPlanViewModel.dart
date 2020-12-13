@@ -5,6 +5,7 @@ import 'package:fitness_diet/core/datamodel/alert_response.dart';
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/API_MODELS/FoodCentralJSONModel.dart';
+import 'package:fitness_diet/core/models/disease.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/exercise.dart';
 import 'package:fitness_diet/core/models/plan.dart';
@@ -603,5 +604,18 @@ class CustPlanViewModel extends BaseViewModel {
     setState(ViewState.Busy);
     await DatabaseService().planCollection.doc(_passedPlanID).delete();
     setState(ViewState.Idle);
+  }
+
+  // ------------------- G E T   D I S E A S E   L I S T
+  List<String> getCustDiseasesList(
+      Plan _planData, List<Disease> _diseasesData) {
+    List<String> _diseaseNamesList = [];
+    for (int i = 0; i < _diseasesData.length; i++) {
+      if (_planData.diseases.contains(_diseasesData[i].diseaseID)) {
+        _diseaseNamesList.add(_diseasesData[i].name);
+        print("I N   I T ");
+      }
+    }
+    return _diseaseNamesList;
   }
 }

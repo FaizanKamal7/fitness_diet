@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 Widget standardInfDisplaywithBullets(
     String text1, String text2, Size deviceSize) {
   return Row(
-    crossAxisAlignment: CrossAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: MainAxisAlignment.start,
     children: <Widget>[
       Container(
@@ -23,7 +23,7 @@ Widget standardInfDisplaywithBullets(
         text1,
         style: TextStyle(
           fontFamily: "Montserrat",
-          fontSize: 17,
+          fontSize: 12,
           color: Color(0xff4D3814),
           shadows: [
             Shadow(
@@ -40,7 +40,7 @@ Widget standardInfDisplaywithBullets(
             text2,
             style: TextStyle(
               fontFamily: "Montserrat",
-              fontSize: 17,
+              fontSize: 12,
               color: Color(0xff2A6427),
               shadows: [
                 Shadow(

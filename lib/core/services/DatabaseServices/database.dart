@@ -161,6 +161,36 @@ class DatabaseService {
     print(" UiD DB TEST function reached in getcust data******************** ");
     return custCollection.doc(uid).snapshots().map(_custDataFromSnapshot);
   }
+
+  List<CustData> _allCustDataFromSnapshot(QuerySnapshot snapshot) {
+    List<CustData> productsList = List<CustData>();
+    for (int i = 0; i < snapshot.docs.length; i++) {
+      productsList.add(CustData(
+        custId: snapshot.docs[i].data()['custID'] ?? "",
+        custPhNo: snapshot.docs[i].data()['custPhNo'] ?? "",
+        custName: snapshot.docs[i].data()['custName'] ?? "",
+        custDateOfBirth:
+            (snapshot.docs[i].data()['custDateOfBirth'] as Timestamp)
+                    .toDate() ??
+                "",
+        // custfavs: snapshot.docs[i].data()['custfavs'] ?? "",
+
+        custaddress: snapshot.docs[i].data()['custAddress'] ?? '',
+        custContactNo: snapshot.docs[i].data()['custContactNo'] ?? '',
+        // custFollowing: snapshot.docs[i].data()['custFollowing'] ?? "",
+        planID: snapshot.docs[i].data()['planID'] ?? "",
+        custPic: snapshot.docs[i].data()['custPic'] ?? "",
+        cartID: snapshot.docs[i].data()['cartID'] ?? "",
+      ));
+    }
+
+    return productsList;
+  }
+
+// Get user doc stream
+  Stream<List<CustData>> get getAllCustData =>
+      custCollection.snapshots().map(_allCustDataFromSnapshot);
+
 // ===========================================================================================================
 // ------------------------------- U P D A T I O N   A N D   R E T R I V A L   O F   C H E F  D A T A
 // ===========================================================================================================

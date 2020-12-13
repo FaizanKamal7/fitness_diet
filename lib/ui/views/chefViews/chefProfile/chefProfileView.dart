@@ -137,9 +137,8 @@ class _ChefProfileViewState extends State<ChefProfileView>
                             margin: EdgeInsets.only(
                                 left: deviceSize.height * 0.03,
                                 top: deviceSize.height * 0.018),
-                            //   color: Colors.red,
                             child: Row(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
+                          
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 //
@@ -150,7 +149,6 @@ class _ChefProfileViewState extends State<ChefProfileView>
                                 Spacer(),
 
                                 IconButton(
-                                  // color: Colors.white,
                                   icon: Icon(
                                     Icons.menu,
                                     size: widgetSize.height * 0.033,
@@ -160,16 +158,7 @@ class _ChefProfileViewState extends State<ChefProfileView>
                                     _scaffoldKey.currentState.openEndDrawer();
                                   },
                                 ),
-                                // Container(
-                                //   //color: Colors.amber,
-                                //   alignment: Alignment.topRight,
-                                //   margin: EdgeInsets.only(
-                                //     top: widgetSize.height * 0.0001,
-                                //     left: widgetSize.width * 0.09,
-                                //     bottom: widgetSize.height * 0.93,
-                                //   ),
-                                //   child:
-                                // ),
+                              
                               ],
                             ),
                           ),

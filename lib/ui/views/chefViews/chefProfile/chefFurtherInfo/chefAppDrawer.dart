@@ -2,6 +2,7 @@ import 'package:fitness_diet/core/viewmodels/chefProfileViewModels/chefAppDrawer
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/chefOrdersView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/authBtnStyle.dart';
 import 'package:fitness_diet/ui/widgets/navBarContent.dart';
 import 'package:fitness_diet/ui/widgets/subNavContent.dart';
@@ -88,7 +89,14 @@ class ChefAppDrawer extends StatelessWidget {
                 color: Colors.black12,
               ),
               InkWell(
-                onTap: () => model.goToChefOrdersView(),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChefOrdersView(),
+                    ),
+                  );
+                },
                 child: NavBarContent(
                   deviceSize: deviceSize,
                   passedText: "Orders",
