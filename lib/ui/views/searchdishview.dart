@@ -4,7 +4,6 @@ import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/core/viewmodels/searchviewModel.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
@@ -54,7 +53,8 @@ class _SearchDishViewState extends State<SearchDishView> {
       setState(() {
         for (int i = 0; i < _dishData.length; i++) {
           Dish data = _dishData[i];
-          if (data.dishName.toLowerCase().contains(searchText.toLowerCase())) {
+          if (data.dishName.toLowerCase().contains(searchText.toLowerCase()) ||
+              data.chefName.toLowerCase().contains(searchText.toLowerCase())) {
             searchresult.add(data);
           }
         }
@@ -65,253 +65,258 @@ class _SearchDishViewState extends State<SearchDishView> {
       onModelReady: (model) async {
         // connectionStatus = await model.checkConn();
       },
-      builder: (context, model, child) => Scaffold(
-        resizeToAvoidBottomPadding: false,
-        body: Stack(
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: deviceSize.height * 0.135),
-              child: searchresult.length != 0 ||
-                      _searchedProductText.text.isNotEmpty
-                  ? ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: searchresult.length,
-                      itemBuilder: (context, index) =>
-                          model.state == ViewState.Busy
-                              ? Loading()
-                              : InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SoleDishView(
-                                          isFromCustView: true,
-                                          passedDish: _dishData[index],
-                                        ),
+      builder: (context, model, child) => WillPopScope(
+        onWillPop: () {
+          Navigator.pop(context);
+        },
+        child: Scaffold(
+          resizeToAvoidBottomPadding: false,
+          body: Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: deviceSize.height * 0.135),
+                child: searchresult.length != 0 ||
+                        _searchedProductText.text.isNotEmpty
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: searchresult.length,
+                        itemBuilder: (context, index) => model.state ==
+                                ViewState.Busy
+                            ? Loading()
+                            : InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SoleDishView(
+                                        isFromCustView: true,
+                                        passedDish: _dishData[index],
                                       ),
-                                    );
-                                  },
-                                  child: Container(
-                                    height: 100.0,
-                                    child: DishViewSingleListItemDesign(
-                                      chefName: _dishData[index].chefName,
-                                      dishName: _dishData[index].dishName,
-                                      dishPic: _dishData[index].dishPic,
-                                      kcal: _dishData[index].dishKcal,
-                                      price: _dishData[index].dishPrice,
-                                      ratings: _dishData[index].dishRatings,
                                     ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 100.0,
+                                  child: DishViewSingleListItemDesign(
+                                    chefName: searchresult[index].chefName,
+                                    dishName: searchresult[index].dishName,
+                                    dishPic: searchresult[index].dishPic,
+                                    kcal: searchresult[index].dishKcal,
+                                    price: searchresult[index].dishPrice,
+                                    ratings: searchresult[index].dishRatings,
                                   ),
                                 ),
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _dishData.length,
-                      itemBuilder: (context, index) =>
-                          model.state == ViewState.Busy
-                              ? Loading()
-                              : InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SoleDishView(
-                                          isFromCustView: true,
-                                          passedDish: _dishData[index],
+                              ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _dishData.length,
+                        itemBuilder: (context, index) =>
+                            model.state == ViewState.Busy
+                                ? Loading()
+                                : InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SoleDishView(
+                                            isFromCustView: true,
+                                            passedDish: _dishData[index],
+                                          ),
                                         ),
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 100.0,
+                                      child: DishViewSingleListItemDesign(
+                                        chefName: _dishData[index].chefName,
+                                        dishName: _dishData[index].dishName,
+                                        dishPic: _dishData[index].dishPic,
+                                        kcal: _dishData[index].dishKcal,
+                                        price: _dishData[index].dishPrice,
+                                        ratings: _dishData[index].dishRatings,
                                       ),
-                                    );
-                                  },
-                                  child: Container(
-                                    height: 100.0,
-                                    child: DishViewSingleListItemDesign(
-                                      chefName: _dishData[index].chefName,
-                                      dishName: _dishData[index].dishName,
-                                      dishPic: _dishData[index].dishPic,
-                                      kcal: _dishData[index].dishKcal,
-                                      price: _dishData[index].dishPrice,
-                                      ratings: _dishData[index].dishRatings,
                                     ),
                                   ),
-                                ),
+                      ),
+              ),
+              // ------------------------- H E A D E R
+              Container(
+                height: deviceSize.height * 0.16,
+                width: double.infinity,
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 30,
+                ),
+                // margin: EdgeInsets.only(bottom: 10.0),
+                decoration: BoxDecoration(
+                  // Color(0xffe4d7cb), //
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
-            ),
-            // ------------------------- H E A D E R
-            Container(
-              height: deviceSize.height * 0.16,
-              width: double.infinity,
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 30,
-              ),
-              // margin: EdgeInsets.only(bottom: 10.0),
-              decoration: BoxDecoration(
-                // Color(0xffe4d7cb), //
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // >>>>>>>>>>>>>>>>>>>>>>>>> H E A D I N G
-                  StandardHeadingNoBgUniSans(passedText: "Search Products: "),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // >>>>>>>>>>>>>>>>>>>>>>>>> H E A D I N G
+                    StandardHeadingNoBgUniSans(passedText: "Search Dish: "),
 
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 8,
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: deviceSize.width * 0.02),
-                            height: deviceSize.height * 0.036,
-                            width: deviceSize.width * 0.9,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(deviceSize.height * 0.11)),
-                              child: Center(
-                                child: TextFormField(
-                                  style: TextStyle(
-                                      fontSize: deviceSize.height * 0.015),
-                                  controller: _searchedProductText,
-                                  cursorColor: Colors.brown,
-                                  onChanged: searchOperation,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(left: 20),
-                                    hintText: "Enter product name here",
-                                    hintStyle: TextStyle(
-                                      color: Colors.brown.withOpacity(0.8),
-                                      fontSize: deviceSize.height * 0.015,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          deviceSize.height * 0.15),
-                                      // borderSide: BorderSide(color: Colors.brown, width: 0.2),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          deviceSize.height * 0.15),
-                                      //   borderSide: BorderSide(color: Colors.brown, width: 0.3),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 8,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: deviceSize.width * 0.02),
+                              height: deviceSize.height * 0.036,
+                              width: deviceSize.width * 0.9,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(deviceSize.height * 0.11)),
+                                child: Center(
+                                  child: TextFormField(
+                                    style: TextStyle(
+                                        fontSize: deviceSize.height * 0.015),
+                                    controller: _searchedProductText,
+                                    cursorColor: Colors.brown,
+                                    onChanged: searchOperation,
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(left: 20),
+                                      hintText: "Enter product name here",
+                                      hintStyle: TextStyle(
+                                        color: Colors.brown.withOpacity(0.8),
+                                        fontSize: deviceSize.height * 0.015,
+                                      ),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            deviceSize.height * 0.15),
+                                        // borderSide: BorderSide(color: Colors.brown, width: 0.2),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            deviceSize.height * 0.15),
+                                        //   borderSide: BorderSide(color: Colors.brown, width: 0.3),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        // >>>>>>>>>>>>>>>>>>>>>>>>> S E A R C H
-                        Expanded(
-                          flex: 2,
-                          child: Lottie.asset(
-                            animBrainSearch,
-                            repeat: true,
-                            reverse: false,
-                            animate: true,
-                          ),
-                          // IconButton(
-                          //   color: Colors.black.withOpacity(0.5),
-                          //   icon: Icon(
-                          //     Icons.search,
-                          //     size: 25.0,
-                          //     color: Colors.brown.withOpacity(0.7),
-                          //   ),
-                          //   onPressed: () {},
-                          // ),
-                        ),
-                        // >>>>>>>>>>>>>>>>>>>>>>>>> C A R T
-                        Expanded(
-                          flex: 1,
-                          child: Badge(
-                            badgeColor: Colors.green,
-                            shape: BadgeShape.circle,
-                            badgeContent: Text(
-                              ConstantFtns()
-                                  .getCartLength(_custData, _userCart)
-                                  .toString(),
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 8.5),
+                          // >>>>>>>>>>>>>>>>>>>>>>>>> S E A R C H
+                          Expanded(
+                            flex: 2,
+                            child: Lottie.asset(
+                              animBrainSearch,
+                              repeat: true,
+                              reverse: false,
+                              animate: true,
                             ),
-                            child: IconButton(
-                              icon: Icon(Icons.shopping_cart),
-                              iconSize: 25.0,
-                              color: Colors.green,
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CartView(),
-                                  ),
-                                );
-                              },
+                            // IconButton(
+                            //   color: Colors.black.withOpacity(0.5),
+                            //   icon: Icon(
+                            //     Icons.search,
+                            //     size: 25.0,
+                            //     color: Colors.brown.withOpacity(0.7),
+                            //   ),
+                            //   onPressed: () {},
+                            // ),
+                          ),
+                          // >>>>>>>>>>>>>>>>>>>>>>>>> C A R T
+                          Expanded(
+                            flex: 1,
+                            child: Badge(
+                              badgeColor: Colors.green,
+                              shape: BadgeShape.circle,
+                              badgeContent: Text(
+                                ConstantFtns()
+                                    .getCartLength(_custData, _userCart)
+                                    .toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 8.5),
+                              ),
+                              child: IconButton(
+                                icon: Icon(Icons.shopping_cart),
+                                iconSize: 25.0,
+                                color: Colors.green,
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CartView(),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
-                  // ------------------------- R E Q U E S T
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: Container(
-                  //     margin: EdgeInsets.only(left: 15),
-                  //     color: Colors.white,
-                  //     child: InkWell(
-                  //       onTap: () {
-                  //         print("HIT");
-                  //         return Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //             builder: (context) => NewProductRequestView(),
-                  //           ),
-                  //         );
-                  //       },
-                  //       child: Row(
-                  //         children: [
-                  //           Expanded(
-                  //             flex: 5,
-                  //             child: Text(
-                  //               "Your product is not listed? Request new product now",
-                  //               overflow: TextOverflow.ellipsis,
-                  //               maxLines: 2,
-                  //               style: TextStyle(
-                  //                   fontFamily: fontMontserrat,
-                  //                   fontSize: deviceSize.height * 0.012,
-                  //                   fontWeight: FontWeight.normal,
-                  //                   color: Colors.black54),
-                  //             ),
-                  //           ),
-                  //           Expanded(
-                  //             flex: 2,
-                  //             child: Center(
-                  //               child: Lottie.asset(
-                  //                 animThumbsUp,
-                  //                 repeat: true,
-                  //                 reverse: true,
-                  //                 animate: true,
-                  //                 fit: BoxFit.cover,
-                  //               ),
-                  //             ),
-                  //           )
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  SizedBox(height: 5),
-                ],
+                    // ------------------------- R E Q U E S T
+                    // Expanded(
+                    //   flex: 1,
+                    //   child: Container(
+                    //     margin: EdgeInsets.only(left: 15),
+                    //     color: Colors.white,
+                    //     child: InkWell(
+                    //       onTap: () {
+                    //         print("HIT");
+                    //         return Navigator.push(
+                    //           context,
+                    //           MaterialPageRoute(
+                    //             builder: (context) => NewProductRequestView(),
+                    //           ),
+                    //         );
+                    //       },
+                    //       child: Row(
+                    //         children: [
+                    //           Expanded(
+                    //             flex: 5,
+                    //             child: Text(
+                    //               "Your product is not listed? Request new product now",
+                    //               overflow: TextOverflow.ellipsis,
+                    //               maxLines: 2,
+                    //               style: TextStyle(
+                    //                   fontFamily: fontMontserrat,
+                    //                   fontSize: deviceSize.height * 0.012,
+                    //                   fontWeight: FontWeight.normal,
+                    //                   color: Colors.black54),
+                    //             ),
+                    //           ),
+                    //           Expanded(
+                    //             flex: 2,
+                    //             child: Center(
+                    //               child: Lottie.asset(
+                    //                 animThumbsUp,
+                    //                 repeat: true,
+                    //                 reverse: true,
+                    //                 animate: true,
+                    //                 fit: BoxFit.cover,
+                    //               ),
+                    //             ),
+                    //           )
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(height: 5),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

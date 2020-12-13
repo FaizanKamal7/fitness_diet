@@ -47,7 +47,7 @@ class ChatHomeCustState extends State<ChatHomeCust> {
   void initState() {
     super.initState();
     // registerNotification();
-    configLocalNotification();
+    // configLocalNotification();
     //web notifications
 
     // firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
@@ -357,8 +357,8 @@ class ChatHomeCustState extends State<ChatHomeCust> {
 
                           print(
                               '---------------- >group id is :' + groupChatId);
-                          print('message data ' +
-                              _messagedocumentdata.elementAt(0).toString());
+                          // print('message data ' +
+                          //     _messagedocumentdata.elementAt(0).toString());
 
                           if (model.checkUserinChef(
                               _usersData.elementAt(index).idUser, _chefData)) {

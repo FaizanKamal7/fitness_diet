@@ -47,8 +47,8 @@ class ChatHomeChefState extends State<ChatHomeChef> {
   @override
   void initState() {
     super.initState();
-    registerNotification();
-    configLocalNotification();
+    // registerNotification();
+    // configLocalNotification();
   }
 
   void registerNotification() {
@@ -321,8 +321,8 @@ class ChatHomeChefState extends State<ChatHomeChef> {
 
                             print('---------------- >group id is :' +
                                 groupChatId);
-                            print('message data ' +
-                                _messagedocumentdata.elementAt(0).toString());
+                            // print('message data ' +
+                            //     _messagedocumentdata.elementAt(0).toString());
 
                             if (!model.checkUserinChef(
                                 _usersData.elementAt(index).idUser,

@@ -1,10 +1,13 @@
+import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:flutter/material.dart';
 
 class FoodSliderItem extends StatelessWidget {
-  FoodSliderItem(this.foodCtgItem);
-  final Map
-      foodCtgItem; // List of item categories. I used "Map" instead of "List" becuase I have category list in the form of map
+  final Dish _passedDish;
+  FoodSliderItem(this._passedDish);
+
+  // final Map
+  //     foodCtgItem; // List of item categories. I used "Map" instead of "List" becuase I have category list in the form of map
   @override
   Widget build(BuildContext context) {
     return ResponsiveSafeArea(
@@ -28,78 +31,84 @@ class FoodSliderItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 // >>>>>>>>>>> Recent food picture
-                Container(
-                  //  color: Colors.red,
-                  margin: EdgeInsets.only(
-                    top: deviceSize.height * 0.24,
-                    left: deviceSize.width * 0.05,
-                  ),
-                  height: deviceSize.height * 0.4,
-                  width: deviceSize.height * 0.4,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(foodCtgItem['Pic']),
-                        fit: BoxFit.cover),
-                    border: Border.all(
-                      width: 2.00,
-                      color: Color(0xff707070).withOpacity(0.5),
+                Expanded(
+                  child: Container(
+                    //  color: Colors.red,
+                    margin: EdgeInsets.only(
+                      top: deviceSize.height * 0.24,
+                      left: deviceSize.width * 0.05,
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0.00, 3.00),
-                        color: Color(0xff000000).withOpacity(0.16),
-                        blurRadius: 6,
+                    height: deviceSize.height * 0.4,
+                    width: deviceSize.height * 0.4,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(_passedDish.dishPic),
+                          fit: BoxFit.cover),
+                      border: Border.all(
+                        width: 2.00,
+                        color: Color(0xff707070).withOpacity(0.5),
                       ),
-                    ],
-                    shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          offset: Offset(0.00, 3.00),
+                          color: Color(0xff000000).withOpacity(0.16),
+                          blurRadius: 6,
+                        ),
+                      ],
+                      shape: BoxShape.circle,
+                    ),
                   ),
                 ),
 
-                Container(
-                  margin: EdgeInsets.only(left: deviceSize.width * 0.06),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // >>>>>>>>>>> Recent food Name
-                      Text(
-                        foodCtgItem['Name'],
-                        style: TextStyle(
-                          fontFamily: "Montserrat",
-                          fontSize: deviceSize.height * 0.2,
-                          color: Color(0xff4e7a0b),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    margin: EdgeInsets.only(left: deviceSize.width * 0.06),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // >>>>>>>>>>> Recent food Name
+                        Text(
+                          _passedDish.dishName,
+                          style: TextStyle(
+                            fontFamily: "Montserrat",
+                            fontSize: deviceSize.height * 0.2,
+                            color: Color(0xff4e7a0b),
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      // >>>>>>>>>>> Recent food chef
-                      Text(
-                        "By Ali Khan",
-                        style: TextStyle(
-                          fontFamily: "UniSansRegular",
-                          fontSize: deviceSize.height * 0.12,
-                          color: Color(0xff000000),
+                        // >>>>>>>>>>> Recent food chef
+                        Text(
+                          _passedDish.chefName,
+                          style: TextStyle(
+                            fontFamily: "UniSansRegular",
+                            fontSize: deviceSize.height * 0.12,
+                            color: Color(0xff000000),
+                          ),
                         ),
-                      ),
-                      // >>>>>>>>>>> Recent food ratings
-                      Container(
-                        height: deviceSize.height * 0.12,
-                        width: deviceSize.width * 0.5,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.star_half,
-                              color: Colors.green,
-                              size: deviceSize.height * 0.1,
-                            ),
-                            Text(
-                              " (4.3)",
-                              style: TextStyle(
-                                fontSize: deviceSize.height * 0.1,
-                                color: Colors.brown,
+                        // >>>>>>>>>>> Recent food ratings
+                        Container(
+                          height: deviceSize.height * 0.12,
+                          width: deviceSize.width * 0.5,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.star_half,
+                                color: Colors.green,
+                                size: deviceSize.height * 0.1,
                               ),
-                            ),
-                          ],
+                              Text(
+                                _passedDish.dishRatings.toStringAsFixed(1),
+                                style: TextStyle(
+                                  fontSize: deviceSize.height * 0.1,
+                                  color: Colors.brown,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ],
