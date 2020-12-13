@@ -70,7 +70,7 @@ class _RecentFoodSliderState extends State<RecentFoodSlider> {
                           if (snapshot.hasData) {
                             Dish _singleiteminfo = snapshot.data;
                             return Container(
-                              width: widgetSize.width * 0.4,
+                              width: widgetSize.width * 0.53,
                               margin: index == 0
                                   ? EdgeInsets.only(
                                       left: widgetSize.width * 0.025)

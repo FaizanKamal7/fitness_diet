@@ -17,8 +17,6 @@ import 'package:fitness_diet/ui/views/custViews/cartView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/chefview.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/bigLightGreenBtn.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadinNoBgSmall.dart';
-import 'package:fitness_diet/ui/widgets/Texts/standardText1.dart';
-import 'package:fitness_diet/ui/widgets/Texts/standardText2.dart';
 import 'package:fitness_diet/ui/widgets/briefChefInfo.dart';
 import 'package:fitness_diet/ui/widgets/circularIcon.dart';
 import 'package:fitness_diet/ui/widgets/dishNutriValues.dart';

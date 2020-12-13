@@ -72,7 +72,7 @@ class FoodSliderItem extends StatelessWidget {
                           _passedDish.dishName,
                           style: TextStyle(
                             fontFamily: "Montserrat",
-                            fontSize: deviceSize.height * 0.2,
+                            fontSize: deviceSize.height * 0.12,
                             color: Color(0xff4e7a0b),
                           ),
                           overflow: TextOverflow.ellipsis,
@@ -82,7 +82,7 @@ class FoodSliderItem extends StatelessWidget {
                           _passedDish.chefName,
                           style: TextStyle(
                             fontFamily: "UniSansRegular",
-                            fontSize: deviceSize.height * 0.12,
+                            fontSize: deviceSize.height * 0.1,
                             color: Color(0xff000000),
                           ),
                         ),
@@ -154,7 +154,7 @@ class FoodSliderItem extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: "Lemon-Milk",
-                      fontSize: deviceSize.height * 0.15,
+                      fontSize: deviceSize.height * 0.13,
                       color: Color(0xff030300),
                     ),
                   ),

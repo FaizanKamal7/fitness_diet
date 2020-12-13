@@ -55,12 +55,7 @@ class _OrderViewState extends State<OrderView> {
     final _custdata = Provider.of<CustData>(context);
     final _cart = Provider.of<Cart>(context);
     final _dishData = Provider.of<List<Dish>>(context);
-    // final _productData = Provider.of<List<Product>>(context);
-    // final _cart = Provider.of<Cart>(context);
 
-    // double subtotal = ConstantFtns().getTotal(_custdata, _cart, _dishData);
-
-    // int deliveryFee = 60;
     print("---> _custdata inside OrderView :" + _custdata.toString());
     print('---------------------------address length ' +
         _custdata.custaddress.length.toString());

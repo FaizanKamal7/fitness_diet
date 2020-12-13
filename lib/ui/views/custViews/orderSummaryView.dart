@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:typed_data';
 
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
@@ -182,42 +181,42 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
                           ),
                         ),
                       ),
-                      Container(
-                        height: deviceSize.height * 0.4,
-                        child: Stack(
-                          children: [
-                            GoogleMap(
-                              mapType: MapType.hybrid,
-                              initialCameraPosition: initialLocation,
-                              markers: Set.of((marker != null) ? [marker] : []),
-                              circles: Set.of((circle != null) ? [circle] : []),
-                              onMapCreated: (GoogleMapController controller) {
-                                _controller = controller;
-                              },
-                            ),
-                            InkWell(
-                              onTap: () {
-                                getCurrentLocation();
-                              },
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  height: deviceSize.height * 0.04,
-                                  width: deviceSize.height * 0.04,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Center(
-                                      child: Icon(Icons.location_searching)),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   T R A C K I N G
+                      // Container(
+                      //   height: deviceSize.height * 0.4,
+                      //   child: Stack(
+                      //     children: [
+                      //       GoogleMap(
+                      //         mapType: MapType.hybrid,
+                      //         initialCameraPosition: initialLocation,
+                      //         markers: Set.of((marker != null) ? [marker] : []),
+                      //         circles: Set.of((circle != null) ? [circle] : []),
+                      //         onMapCreated: (GoogleMapController controller) {
+                      //           _controller = controller;
+                      //         },
+                      //       ),
+                      //       InkWell(
+                      //         onTap: () {
+                      //           getCurrentLocation();
+                      //         },
+                      //         child: Align(
+                      //           alignment: Alignment.topRight,
+                      //           child: Container(
+                      //             margin: EdgeInsets.all(10),
+                      //             height: deviceSize.height * 0.04,
+                      //             width: deviceSize.height * 0.04,
+                      //             decoration: BoxDecoration(
+                      //               color: Colors.white,
+                      //               shape: BoxShape.circle,
+                      //             ),
+                      //             child: Center(
+                      //                 child: Icon(Icons.location_searching)),
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      // // >>>>>>>>>>>>>>>>>>>>>>>>>>>> O R D E R   T R A C K I N G
                       Timeline(
                         children: <Widget>[
                           OrderSingleStage(
