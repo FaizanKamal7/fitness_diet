@@ -54,7 +54,7 @@ class _ChefViewState extends State<ChefView> {
                     ChefData chefData = snapshot.data[0];
                     return WillPopScope(
                       onWillPop: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context, 'Yep!');
                       },
                       child: Scaffold(
                         key: _scaffoldKey,

@@ -72,6 +72,7 @@ class ChefData {
   String chefLocation;
   double chefRatings;
   List chefFollowers;
+
   List chefDishes;
   String chefPic;
   String chefBio;

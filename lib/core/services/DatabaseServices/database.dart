@@ -205,7 +205,8 @@ class DatabaseService {
         'chefID': uid,
         'chefAddDate': DateTime.now(),
         'chefRatings': 0.0,
-        'hasDish': false, // Jugar
+        // 'followers': 0,
+        'hasDish': false,
       },
       SetOptions(merge: true),
     );
@@ -306,7 +307,7 @@ class DatabaseService {
         // //  chefAddDate: (snapshot.docs[i].data()['chefAddDate'] as Timestamp).toDate() ??,
         chefLocation: snapshot.docs[i].data()['chefLocation'] ?? "",
         chefRatings: snapshot.docs[i].data()['chefRatings'].toDouble() ?? 0,
-        chefFollowers: snapshot.docs[i].data()['chefFollowers'] ?? [],
+        chefFollowers: snapshot.docs[i].data()['followers'] ?? [],
         chefDishes: snapshot.docs[i].data()['chefDishes'] ?? [],
         chefPic: snapshot.docs[i].data()['chefPic'] ?? "",
         chefBio: snapshot.docs[i].data()['chefBio'] ?? "",
@@ -1137,7 +1138,7 @@ class DatabaseService {
         uid.toString());
     // - Setting ID first in a doc
 
-    await delivCollection.doc(uid).set(  
+    await delivCollection.doc(uid).set(
       {
         'delivID': uid,
         'delivAddDate': DateTime.now(),

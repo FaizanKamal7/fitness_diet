@@ -2,6 +2,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/models/user.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
@@ -171,7 +172,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                 // >>>>>>>>> C H E F   F O L L O W E R S
                 //
                 Text(
-                  "10K Followers",
+                  "" + chefData.chefFollowers.length.toString() + " Followers",
                   style: TextStyle(
                     color: Color(0xffAAB825),
                     fontSize: animationVal > 7.2
@@ -195,7 +196,29 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                           onPressed: () => _showEditBottomSheet(context),
                           child: StandardBtnWhitishRound(
                               passedText: "Edit Profile"))
-                      : SizedBox(),
+                      : FlatButton(
+                          onPressed: () {
+                            List followerlist = chefData.chefFollowers;
+                            if (!followerlist
+                                .contains(BaseViewModel().getUser)) {
+                              followerlist.add(BaseViewModel().getUser);
+                            } else {
+                              followerlist.remove(BaseViewModel().getUser);
+                            }
+
+                            // BaseViewModel().getUser();
+                            DatabaseService().updateChefData(
+                                {'followers': followerlist}, chefData.chefID);
+                          },
+                          child: !chefData.chefFollowers
+                                  .contains(BaseViewModel().getUser)
+                              ? StandardBtnWhitishRound(
+                                  passedText: 'Follow',
+                                )
+                              : StandardBtnWhitishRound(
+                                  passedText: 'un Follow',
+                                ),
+                        ),
                   Spacer(),
                   //
                   // >>>>>>>>> M E S S A G E   I C O N

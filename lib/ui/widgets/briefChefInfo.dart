@@ -83,7 +83,9 @@ class BriefChefInfo extends StatelessWidget {
                 ],
               ),
               Text(
-                "Dishes (12)\nFollowers (100)",
+                "Followers (" +
+                    passedChefData.chefFollowers.length.toString() +
+                    ")",
                 style: TextStyle(
                   fontFamily: fontUniSans,
                   fontSize: 12,
