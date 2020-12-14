@@ -213,8 +213,6 @@ class _AddDishInfoState extends State<AddDishInfo> {
                         activeColor: Colors.black,
                         activeSize: Size(50, 10),
                         size: Size(40, 8),
-                        // size: widgetSize.height * 0.012,
-                        // activeSize: widgetSize.height * 0.015,
                       ),
                     ),
                     itemCount: 2,

@@ -174,6 +174,7 @@ class _AddDishIngrViewState extends State<AddDishIngrView> {
                             widget.dishCatg,
                             widget.attrContr.text,
                             currentIngrList,
+                            
                           );
                           model.hasErrorMessage
                               ? WidgetsBinding.instance.addPostFrameCallback(

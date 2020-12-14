@@ -134,13 +134,6 @@ class _ReceiptContainerState extends State<ReceiptContainer> {
                 SizedBox(
                   height: 5.0,
                 ),
-                // Divider(
-                //   height: 10.0,
-                //   indent: 3.0,
-                //   endIndent: 20.0,
-                //   thickness: 2.0,
-                //   color: Colors.grey[300],
-                // ),
                 SizedBox(height: 3.0),
                 _custData != null
                     ? _cart.items.length != 0

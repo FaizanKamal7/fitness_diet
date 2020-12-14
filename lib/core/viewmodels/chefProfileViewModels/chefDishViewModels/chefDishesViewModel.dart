@@ -17,6 +17,18 @@ class ChefDishesViewmodel extends BaseViewModel {
     return _chefName;
   }
 
+  String getChefNameManually(
+      String passedChefID, List<ChefData> passedChefData) {
+    String _chefName = "";
+    for (int i = 0; i < passedChefData.length; i++) {
+      if (passedChefData[i].chefID == passedChefID) {
+        _chefName = passedChefData[i].chefName;
+        break;
+      }
+    }
+    return _chefName;
+  }
+
   Future isDishAvalaible() async {
     setState(ViewState.Busy);
     _currentUser = getUser;

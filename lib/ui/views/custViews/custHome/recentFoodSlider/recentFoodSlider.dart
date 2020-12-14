@@ -11,20 +11,6 @@ import 'package:provider/provider.dart';
 import '../../../baseView.dart';
 import '../../../soleDishView.dart';
 
-// class RecentFoodSlider extends StatelessWidget {
-//   // List for testing
-//   // ignore: non_constant_identifier_names
-//   static List FoodCatgSectionItemList = [
-//     {'Name': "Biryani", "Pic": "assets/images/biryani.jpg"},
-//     {'Name': "Nihari", "Pic": "assets/images/nihari.jpg"},
-//     {'Name': "Kebab", "Pic": "assets/images/kebab.jpg"},
-//     {'Name': "Chicken", "Pic": "assets/images/cover.jpg"},
-//   ];
-
-//   @override
-
-// }
-
 class RecentFoodSlider extends StatefulWidget {
   @override
   _RecentFoodSliderState createState() => _RecentFoodSliderState();

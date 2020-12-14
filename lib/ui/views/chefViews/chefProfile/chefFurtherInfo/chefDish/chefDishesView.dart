@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'addDish/addDishInfoView.dart';
 
+// ignore: must_be_immutable
 class ChefDishes extends StatefulWidget {
   String chefID;
   bool isfromchef;
@@ -34,6 +35,7 @@ class _ChefDishesState extends State<ChefDishes> {
     return BaseView<ChefDishesViewmodel>(
       onModelReady: (model) async {
         String currentChefID = widget.chefID;
+
         print("currentChefID: " + currentChefID.toString());
       },
       builder: (context, model, child) => ResponsiveSafeArea(
@@ -81,7 +83,7 @@ class _ChefDishesState extends State<ChefDishes> {
                         // if (dish.chefID == _user.uid) {
                         return dish.chefID == widget.chefID
                             ? InkWell(
-                                onTap: () {
+                                onTap: () async {
                                   print(" dish: " + dish.dishID);
                                   Navigator.push(
                                     context,
@@ -103,7 +105,8 @@ class _ChefDishesState extends State<ChefDishes> {
                                     SizedBox(height: 10),
                                     DishViewSingleListItemDesign(
                                       dishName: dish.dishName,
-                                      chefName: dish.chefName,
+                                      chefName: model.getChefNameManually(
+                                          dish.chefID, _chefData),
                                       kcal: dish.dishKcal,
                                       price: dish.dishPrice,
                                       ratings: dish.dishRatings,

@@ -1,5 +1,4 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
-import 'package:fitness_diet/core/models/cart.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
