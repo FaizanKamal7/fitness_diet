@@ -138,7 +138,6 @@ class _ChefProfileViewState extends State<ChefProfileView>
                                 left: deviceSize.height * 0.03,
                                 top: deviceSize.height * 0.018),
                             child: Row(
-                          
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 //
@@ -158,7 +157,6 @@ class _ChefProfileViewState extends State<ChefProfileView>
                                     _scaffoldKey.currentState.openEndDrawer();
                                   },
                                 ),
-                              
                               ],
                             ),
                           ),
@@ -209,17 +207,8 @@ class tabsDelegate extends SliverPersistentHeaderDelegate {
         //   indicatorColor: Colors.brown,
         labelPadding:
             EdgeInsets.symmetric(horizontal: deviceSize.width * 0.003),
-        //  unselectedLabelColor: Colors.redAccent,
-        //  indicatorSize: TabBarIndicatorSize.label,
-        //   dragStartBehavior: DragStartBehavior.start,
-        indicator: BoxDecoration(
-            // borderRadius: BorderRadius.circular(deviceSize.height * 0.1),
-            // //    color: Color(0xff4E7A0B),
-            // border: Border.all(
-            //   width: deviceSize.width * 0.005,
-            //   color: Color(0xff4E7A0B),
-            // ),
-            ),
+
+        indicator: BoxDecoration(),
         labelStyle: TextStyle(
           fontFamily: "Montserrat",
           fontWeight: FontWeight.w700,

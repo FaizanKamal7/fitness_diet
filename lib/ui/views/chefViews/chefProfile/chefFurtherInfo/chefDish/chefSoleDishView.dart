@@ -1,15 +1,17 @@
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/models/user.dart';
-import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/soleDishViewModel.dart';
-import 'package:fitness_diet/locator.dart';
 import 'package:fitness_diet/ui/shared/colors.dart';
 import 'package:fitness_diet/ui/shared/fonts.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/addDish/editDishInfoView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/chefview.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadinNoBgSmall.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBgUniSan.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardText1.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardText2.dart';
 import 'package:fitness_diet/ui/widgets/briefChefInfo.dart';
 import 'package:fitness_diet/ui/widgets/circularIcon.dart';
 import 'package:fitness_diet/ui/widgets/dishNutriValues.dart';
@@ -28,11 +30,6 @@ class ChefSoleDishView extends StatelessWidget {
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     final _allChefsData = Provider.of<List<ChefData>>(context);
-    // final _dishData = Provider.of<List<Dish>>(context);
-    // final _cart = Provider.of<Cart>(context);
-    // final _custData = Provider.of<CustData>(context);
-
-    // DialogService _dialogService = locator<DialogService>();
 
     return BaseView<SoleDishViewModel>(
       onModelReady: (model) async {},
@@ -181,6 +178,32 @@ class ChefSoleDishView extends StatelessWidget {
                         ListView(
                           children: [
                             SizedBox(height: 10),
+                            InkWell(
+                              onTap: () {
+                                print("Tapped");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditDishInfo(
+                                      passedDish: passedDish,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  StandardText1(passedDescText: "Edit Dish"),
+                                  Icon(
+                                    Icons.edit,
+                                    color: Colors.brown,
+                                    size: 20,
+                                  ),
+                                  SizedBox(width: 20),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 10),
                             Divider(
                               thickness: 2,
                               endIndent: 30,
@@ -194,6 +217,29 @@ class ChefSoleDishView extends StatelessWidget {
                               thickness: 2,
                               endIndent: 30,
                               indent: 30,
+                            ),
+                            // ----------------------------------- Ingredients
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              child: StandardHeadingNoBgUniSans(
+                                  passedText: "Ingredients:"),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: passedDish.dishIngrNames.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return StandardText2(
+                                      passedDescText: passedDish
+                                          .dishIngrNames[index]
+                                          .toString(),
+                                      fontWeight: FontWeight.normal,
+                                    );
+                                  }),
                             ),
                             // ----------------------------------- C H E F   I N F O   V A L U E
                             isFromCustView

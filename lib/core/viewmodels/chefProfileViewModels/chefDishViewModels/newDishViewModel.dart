@@ -3,6 +3,7 @@ import 'package:fitness_diet/core/constants/route_paths.dart';
 import 'package:fitness_diet/core/enums/viewstate.dart';
 import 'package:fitness_diet/core/constants/ConstantFtns.dart';
 import 'package:fitness_diet/core/models/API_MODELS/edamamJSONModel.dart';
+import 'package:fitness_diet/core/models/dish.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/dbHelperFtns.dart';
 import 'package:fitness_diet/core/services/navigationService.dart';
@@ -210,6 +211,128 @@ class NewAddDishViewModel extends BaseViewModel {
         'dishKcal': _dishKcal,
         'dishIngrNames': _ingredientNames,
       });
+
+      setState(ViewState.Idle);
+      _navigationService.navigateTo(ChefProfileRoute);
+    }
+  }
+
+// ---------------------------------------- E D I T I N G    D I S H
+  Future editDishInfo(
+    String dishName,
+    String dishPrice,
+    int totalPrepTime,
+    var dishPic,
+    String dishCatg,
+    String dishAttr,
+    List<IngredientInfo> _foodIngrList,
+    Dish passedDish,
+  ) async {
+    setState(ViewState.Busy);
+    print("--------> edit dish Function reached.");
+
+    if (!Validators().verifyNameInputFeild(dishName)) {
+      setErrorMessage("    Dishname can't be empty");
+      setState(ViewState.Idle);
+    } else if (!Validators().verifyNameInputFeild(dishCatg)) {
+      setErrorMessage("    Dish Category can't be empty");
+      setState(ViewState.Idle);
+    } else if (!Validators().verifyNameInputFeild(dishPrice)) {
+      setErrorMessage("    Price can't be empty");
+      setState(ViewState.Idle);
+    } else if (!Validators().verifyNumInputFeild(totalPrepTime)) {
+      setErrorMessage("    Total prepration time can't \nbe empty");
+      setState(ViewState.Idle);
+    } else if (!Validators().verifyNameInputFeild(dishCatg)) {
+      setErrorMessage("    Dish Category can't be empty");
+      setState(ViewState.Idle);
+    } else if (_foodIngrList == null) {
+      setErrorMessage("    Ingredients can't be null");
+      setState(ViewState.Idle);
+    } else if (dishPic == null) {
+      setErrorMessage("    Picture can't be empty");
+      setState(ViewState.Idle);
+    } else {
+      String userId = getUser;
+// ---------- Check if attribute name already exists then add accordingly
+      if (dishAttr != null) {
+        bool attrNameAlreadyExist = await DBHelperFtns().feildExistInCollection(
+            DatabaseService().dishAttrCollection, 'attrID', dishAttr);
+        if (attrNameAlreadyExist) await DatabaseService().addAttrData(dishAttr);
+      }
+
+// ---------- Converting attrName to ID
+      String attrID = await DBHelperFtns().documentNameToID(
+        DatabaseService().dishAttrCollection,
+        "attrName",
+        "attrID",
+        dishAttr,
+      );
+// ---------- Converting ctgName to ID
+      String ctgID = await DBHelperFtns().documentNameToID(
+        DatabaseService().dishCtgCollection,
+        "ctgName",
+        "ctgID",
+        dishCatg,
+      );
+
+      String _chefName = await DBHelperFtns().documentIDToName(
+        DatabaseService().chefCollection,
+        "chefID",
+        "chefName",
+        userId,
+      );
+      print(
+          "---------> ChefID and extracted ChefName inside NewAddDishViewModel : " +
+              userId.toString() +
+              " " +
+              _chefName);
+
+      print("---------> attrID inside NewAddDishViewModel : " +
+          attrID.toString());
+
+      String _uploadedImgURL = await ConstantFtns().uploadFile(dishPic);
+      print(" INSIDE UPLOAD DISH AND    N U T R I E N T S    ARE: " +
+          _foodIngrList.toString());
+
+      List<double> _totalDishNutrientsList =
+          getTotalDishNutrients(_foodIngrList);
+
+      double _dishProtein =
+          double.parse((_totalDishNutrientsList[0]).toStringAsFixed(2));
+      double _dishFat =
+          double.parse(_totalDishNutrientsList[1].toStringAsFixed(2));
+      double _dishCarb =
+          double.parse(_totalDishNutrientsList[2].toStringAsFixed(2));
+      double _dishKcal =
+          double.parse(_totalDishNutrientsList[3].toStringAsFixed(2));
+      print("---------------" + _dishProtein.toString());
+
+// --------------------------- G E T T I N G   I N G R E D I E N T S   N A M E S   L I S T
+      List<String> _ingredientNames = [];
+      for (int i = 0; i < _foodIngrList.length; i++) {
+        _ingredientNames.add(_foodIngrList[i].ingredients[0].text);
+      }
+
+      await DatabaseService().updateDishData(
+        {
+          'dishName': dishName,
+          'dishCatg': dishCatg,
+          'chefID': userId,
+          'dishPrepTime': totalPrepTime,
+          'dishPic': _uploadedImgURL.toString(),
+          'dishPrice': int.parse(dishPrice),
+          'attrID': attrID,
+          'chefName': _chefName,
+          'ctgID': ctgID,
+          'dishProtein': _dishProtein,
+          'dishFat': _dishFat,
+          'dishCarb': _dishCarb,
+          'dishKcal': _dishKcal,
+          'dishIngrNames': _ingredientNames,
+        },
+        passedDish.dishID,
+      );
 
       setState(ViewState.Idle);
       _navigationService.navigateTo(ChefProfileRoute);

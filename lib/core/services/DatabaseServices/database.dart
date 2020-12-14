@@ -374,15 +374,21 @@ class DatabaseService {
   }
 
 // >>>>>>>>>>  Upon updating existing dish
-  Future updateDishData(Map<String, dynamic> dataMap, String dishID) async {
+  Future updateDishData(
+      Map<String, dynamic> dataMap, String passedDishID) async {
     print(
         "---------> UpdateDishData function reached in DatabaseServies class");
-
+    await dishCollection.doc(passedDishID).set(
+      {
+        'dishUpdateDate': DateTime.now(),
+      },
+      SetOptions(merge: true),
+    );
     //- Dynamically adding data in the db
     dataMap.forEach(
       (key, value) async {
         print("Adding dynamic dish data - DatabaseService");
-        await dishCollection.doc(dishID).set(
+        await dishCollection.doc(passedDishID).set(
           {
             key: value,
           },
@@ -422,6 +428,7 @@ class DatabaseService {
         dishFat: snapshot.docs[i].data()['dishFat'] ?? 0.0,
         dishKcal: snapshot.docs[i].data()['dishKcal'] ?? 0.0,
         dishIngrNames: snapshot.docs[i].data()['dishIngrNames'] ?? [],
+        dishCatg: snapshot.docs[i].data()['dishCatg'] ?? 0.0,
       ));
       // print("ALL THE DISHES: " + chefDishes.elementAt(i).dishName.toString());
     }
@@ -451,6 +458,7 @@ class DatabaseService {
       dishFat: snapshot.docs[0].data()['dishFat'] ?? 0.0,
       dishKcal: snapshot.docs[0].data()['dishKcal'] ?? 0.0,
       dishIngrNames: snapshot.docs[0].data()['dishIngrNames'] ?? [],
+      dishCatg: snapshot.docs[0].data()['dishCatg'] ?? 0.0,
     );
     // print("ALL THE DISHES: " + chefDishes.elementAt(i).dishName.toString());
   }

@@ -14,6 +14,7 @@ class Dish {
   double dishFat;
   var dishAddDate;
   var dishUpdateDate;
+  String dishCatg;
   List<dynamic> dishIngrNames;
   String chefName; // Jugar
   String chefID; // - Foreign Key
@@ -39,6 +40,7 @@ class Dish {
     this.attrID,
     this.ctgID,
     this.dishIngrNames,
+    this.dishCatg,
   });
 }
 

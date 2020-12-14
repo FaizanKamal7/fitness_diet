@@ -13,10 +13,14 @@ import 'package:fitness_diet/ui/shared/fonts.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/addDish/editDishInfoView.dart';
 import 'package:fitness_diet/ui/views/custViews/cartView.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/chefview.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/bigLightGreenBtn.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadinNoBgSmall.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBgUniSan.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardText1.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardText2.dart';
 import 'package:fitness_diet/ui/widgets/briefChefInfo.dart';
 import 'package:fitness_diet/ui/widgets/circularIcon.dart';
 import 'package:fitness_diet/ui/widgets/dishNutriValues.dart';
@@ -214,6 +218,7 @@ class SoleDishView extends StatelessWidget {
                           ListView(
                             children: [
                               SizedBox(height: 10),
+
                               Divider(
                                 thickness: 2,
                                 endIndent: 30,
@@ -300,6 +305,32 @@ class SoleDishView extends StatelessWidget {
                                                   passedDish.chefID)),
                                     )
                                   : Container(),
+                              SizedBox(height: 20),
+                              // ----------------------------------- Ingredients
+                              Container(
+                                margin: EdgeInsets.only(left: 35),
+                                child: StandardHeadingNoBgSmall(
+                                  passedText: "Ingredients:",
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              Container(
+                                margin: EdgeInsets.only(left: 35),
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: passedDish.dishIngrNames.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return StandardText2(
+                                        passedDescText: passedDish
+                                            .dishIngrNames[index]
+                                            .toString(),
+                                        fontWeight: FontWeight.normal,
+                                      );
+                                    }),
+                              ),
+                              SizedBox(height: 50),
                             ],
                           ),
                           // ----------------------------------- A D D   T O   C A R T   B U T T O N
@@ -309,7 +340,8 @@ class SoleDishView extends StatelessWidget {
                                   alignment: Alignment.bottomCenter,
                                   child: Container(
                                     height: deviceSize.height * 0.05,
-                                    margin: EdgeInsets.all(15),
+                                    // margin: EdgeInsets.all(15),
+                                    color: Colors.white,
                                     child: FlatButton(
                                       onPressed: () async {
                                         if (model.getUser == null) {

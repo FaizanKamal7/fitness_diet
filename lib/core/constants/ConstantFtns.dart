@@ -185,4 +185,7 @@ class ConstantFtns extends BaseViewModel {
 
   String removeStringTypeListBrackets(String _passedList) =>
       _passedList.toString().replaceAll('[', '').replaceAll(']', '');
+
+  String removeStringTypeListCurlyBrackets(String _passedList) =>
+      _passedList.toString().replaceAll('{', '').replaceAll('}', '');
 }

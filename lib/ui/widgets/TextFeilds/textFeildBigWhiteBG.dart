@@ -31,12 +31,14 @@ class _TextFeildBigWhiteBGState extends State<TextFeildBigWhiteBG> {
         height: _deviceSize.height * 0.04,
         width: _deviceSize.width * 0.9,
         color: Colors.white.withOpacity(0.7),
-       
-        child: TextField(
+        child: TextFormField(
           controller: widget.controller,
           cursorColor: Colors.brown,
           obscuringCharacter: '*',
-          decoration: InputDecoration(border: InputBorder.none),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: widget.hintText,
+          ),
           keyboardType: widget.isTypeInt == true
               ? TextInputType.number
               : TextInputType.text,

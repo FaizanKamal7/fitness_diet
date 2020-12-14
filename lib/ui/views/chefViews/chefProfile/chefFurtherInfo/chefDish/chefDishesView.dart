@@ -5,8 +5,10 @@ import 'package:fitness_diet/globals.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/addDish/editDishInfoView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/chefSoleDishView.dart';
 import 'package:fitness_diet/ui/views/soleDishView.dart';
+import 'package:fitness_diet/ui/widgets/Texts/standardText1.dart';
 import 'package:fitness_diet/ui/widgets/dishViewSingleListItemDesign.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBg.dart';
 import 'package:flutter/material.dart';
@@ -101,6 +103,7 @@ class _ChefDishesState extends State<ChefDishes> {
                                   );
                                 },
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     SizedBox(height: 10),
                                     DishViewSingleListItemDesign(

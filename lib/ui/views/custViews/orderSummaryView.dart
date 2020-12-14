@@ -119,7 +119,7 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
   Widget build(BuildContext context) {
     final _allOrdersInfo = Provider.of<List<Order>>(context);
     final deviceSize = MediaQuery.of(context).size;
-    Stream<List<ChefData>> _chefData;
+
     print("orderStatus : " + widget.orderStatus.toString());
     return BaseView<OrderViewModel>(
         onModelReady: (model) {
@@ -129,11 +129,9 @@ class _OrderSummaryViewState extends State<OrderSummaryView> {
               singleOrderInfo = _allOrdersInfo[i];
             }
           }
-          _chefData =
-              model.getSingleChefData(_allOrdersInfo.elementAt(0).chefID);
         },
         builder: (context, model, child) => StreamBuilder<List<ChefData>>(
-            stream: _chefData,
+            stream: model.getSingleChefData(_allOrdersInfo.elementAt(0).chefID),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 ChefData chefData = snapshot.data[0];

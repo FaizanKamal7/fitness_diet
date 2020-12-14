@@ -219,47 +219,45 @@ class _CustProfileState extends State<CustProfile>
                                   //   ),
                                   // ),
                                   // >>>>>>>>> U S E R   N A M E --A N D -- L O C A T I O N
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        _custData.custName,
-                                        style: TextStyle(
-                                          fontFamily: "Montserrat",
-                                          fontSize: deviceSize.height * 0.029,
-                                          color: standardprofileNameColor,
-                                          shadows: [
-                                            Shadow(
-                                              offset: Offset(0.00, 6.00),
-                                              color: Color(0xff000000)
-                                                  .withOpacity(0.16),
-                                              blurRadius: 5,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            left: deviceSize.width * 0.03),
-                                        child: Flexible(
-                                          child: Text(
-                                            _custData.custaddress.length == 0
-                                                ? ' '
-                                                : _custData.custaddress.values
-                                                    .elementAt(0)[2]
-                                                    .toString(),
-                                            style: TextStyle(
-                                              fontFamily: "UniSansRegular",
-                                              fontSize:
-                                                  deviceSize.height * 0.025,
-                                              color:
-                                                  standardprofileLocationColor,
-                                            ),
+                                  Flexible(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          _custData.custName,
+                                          style: TextStyle(
+                                            fontFamily: "Montserrat",
+                                            fontSize: deviceSize.height * 0.029,
+                                            color: standardprofileNameColor,
+                                            shadows: [
+                                              Shadow(
+                                                offset: Offset(0.00, 6.00),
+                                                color: Color(0xff000000)
+                                                    .withOpacity(0.16),
+                                                blurRadius: 5,
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                        Text(
+                                          _custData.custaddress.length == 0
+                                              ? ' '
+                                              : _custData.custaddress.values
+                                                      .elementAt(0)[1]
+                                                      .toString() +
+                                                  ", " +
+                                                  _custData.custaddress.values
+                                                      .elementAt(0)[2]
+                                                      .toString(),
+                                          style: TextStyle(
+                                            fontFamily: "UniSansRegular",
+                                            fontSize: deviceSize.height * 0.02,
+                                            color: standardprofileLocationColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   )
                                 ],
                               ),
@@ -285,7 +283,7 @@ class _CustProfileState extends State<CustProfile>
                                     // ),
                                     onPressed: _showEditBottomSheet,
                                     child: Container(
-                                      height: deviceSize.height * 0.045,
+                                      height: deviceSize.height * 0.04,
                                       width: deviceSize.width * 0.35,
                                       decoration: BoxDecoration(
                                         color: Color(0xffe4d7cb),
@@ -298,7 +296,7 @@ class _CustProfileState extends State<CustProfile>
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                             fontFamily: "UniSansRegular",
-                                            fontSize: deviceSize.height * 0.025,
+                                            fontSize: deviceSize.height * 0.02,
                                             color: standarDishDisplayBGColor,
                                           ),
                                         ),
@@ -354,15 +352,11 @@ class _CustProfileState extends State<CustProfile>
                         TabBar(
                           labelPadding: EdgeInsets.symmetric(
                               horizontal: deviceSize.width * 0.003),
-                          //  unselectedLabelColor: Colors.redAccent,
-                          //  indicatorSize: TabBarIndicatorSize.label,
-                          //   dragStartBehavior: DragStartBehavior.start,
-
+                          indicator: BoxDecoration(),
                           labelStyle: TextStyle(
                             fontFamily: "Montserrat",
                             fontWeight: FontWeight.w700,
-                            fontSize: deviceSize.height * 0.03,
-                            // color: Color(0xff2a6427),
+                            fontSize: deviceSize.height * 0.02,
                           ),
                           labelColor: Color(0xff2a6427),
                           controller: _tabController,
