@@ -250,7 +250,7 @@ class ChatHomeChefState extends State<ChatHomeChef> {
 
     return BaseView<ChatViewModel>(
       onModelReady: (model) async {
-        totaluser = _usersData.length;
+        // totaluser = _usersData.length;
       },
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
@@ -312,7 +312,7 @@ class ChatHomeChefState extends State<ChatHomeChef> {
                           itemBuilder: (context, index) {
                             String peerId = _usersData.elementAt(index).idUser;
                             String groupChatId;
-                            totaluser = totaluser - 1;
+                            // totaluser = totaluser - 1;
                             if (currentUserId.hashCode <= peerId.hashCode) {
                               groupChatId = '$currentUserId-$peerId';
                             } else {
@@ -355,7 +355,10 @@ class ChatHomeChefState extends State<ChatHomeChef> {
               )
             ],
           ),
-          onWillPop: onBackPress,
+          // ignore: missing_return
+          onWillPop: () {
+            Navigator.of(context).pop();
+          },
         ),
       ),
     );

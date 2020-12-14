@@ -53,6 +53,7 @@ class _ChefViewState extends State<ChefView> {
                   if (snapshot.hasData) {
                     ChefData chefData = snapshot.data[0];
                     return WillPopScope(
+                      // ignore: missing_return
                       onWillPop: () {
                         Navigator.pop(context, 'Yep!');
                       },

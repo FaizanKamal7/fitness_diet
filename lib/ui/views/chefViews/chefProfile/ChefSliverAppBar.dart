@@ -1,22 +1,29 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fitness_diet/core/enums/dialogTypes.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/database.dart';
+import 'package:fitness_diet/core/services/DatabaseServices/dbHelperFtns.dart';
 import 'package:fitness_diet/core/services/dialogService.dart';
 import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/imagesURLs.dart';
 import 'package:fitness_diet/ui/views/chatViews/chat.dart';
 import 'package:fitness_diet/ui/views/chatViews/chatHomeChef.dart';
+import 'package:fitness_diet/ui/views/chatViews/const.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileEditView.dart';
 import 'package:fitness_diet/ui/widgets/Buttons/standardBtnWhitishRound.dart';
 import 'package:fleva_icons/fleva_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../locator.dart';
 
 class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
+  final CollectionReference custCollection =
+      FirebaseFirestore.instance.collection('customer');
   final double maxExtent;
   final double minExtent;
   double animationVal = 0;
@@ -47,7 +54,7 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     final deviceSize = MediaQuery.of(context).size;
-
+    final _custData = Provider.of<List<CustData>>(context);
     DialogService _dialogService = locator<DialogService>();
     // final _chefData = Provider.of<ChefData>(context);
     // print("----> _chefData inside ChefSliverAppBar : " + chefData.toString());
@@ -171,16 +178,196 @@ class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
                 //
                 // >>>>>>>>> C H E F   F O L L O W E R S
                 //
-                Text(
-                  "" + chefData.chefFollowers.length.toString() + " Followers",
-                  style: TextStyle(
-                    color: Color(0xffAAB825),
-                    fontSize: animationVal > 7.2
-                        ? widgetSize.height * 0.018 * sqrt(animationVal)
-                        : widgetSize.height * 0.018 * sqrt(13.2),
-                    fontFamily: "Uni-Sans",
-                  ),
-                ),
+                isfromchef
+                    ? InkWell(
+                        onTap: () {
+                          Dialog errorDialog = Dialog(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                    12.0)), //this right here
+                            child: Container(
+                              height: deviceSize.height * 0.6,
+                              width: deviceSize.width * 0.8,
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: ListView.builder(
+                                  itemCount: chefData.chefFollowers.length,
+                                  // ignore: missing_return
+                                  itemBuilder: (context, index) {
+                                    String id =
+                                        chefData.chefFollowers.elementAt(index);
+                                    print(
+                                        '---------------------> cust id in follower ' +
+                                            id);
+                                    // DBHelperFtns().documentIDToName(
+                                    //     custCollection,
+                                    //     'custID',
+                                    //     'custName',
+                                    //     id);
+                                    CustData _currentcust;
+                                    for (int i = 0; i < _custData.length; i++) {
+                                      _currentcust = _custData.elementAt(i);
+                                      print(
+                                          '---------------------> cust id in cust table ' +
+                                              _currentcust.custId);
+
+                                      if (_currentcust.custId == id) {
+                                        return Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 5.0, vertical: 5.0),
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey[300],
+                                              borderRadius:
+                                                  BorderRadius.circular(30.0)),
+                                          child: Row(
+                                            children: <Widget>[
+                                              Material(
+                                                child: _currentcust.custPic !=
+                                                        ''
+                                                    ? CachedNetworkImage(
+                                                        placeholder:
+                                                            (context, url) =>
+                                                                Container(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            strokeWidth: 1.0,
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                        Color>(
+                                                                    themeColor),
+                                                          ),
+                                                          width: 50.0,
+                                                          height: 50.0,
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  15.0),
+                                                        ),
+                                                        imageUrl: _currentcust
+                                                            .custPic,
+                                                        width: 50.0,
+                                                        height: 50.0,
+                                                        fit: BoxFit.cover,
+                                                      )
+                                                    : Icon(
+                                                        Icons.account_circle,
+                                                        size: 50.0,
+                                                        color: greyColor,
+                                                      ),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(25.0)),
+                                                clipBehavior: Clip.hardEdge,
+                                              ),
+                                              Flexible(
+                                                child: Container(
+                                                  child: Column(
+                                                    children: <Widget>[
+                                                      Container(
+                                                        child: Text(
+                                                          '${_currentcust.custName}',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  primaryColor),
+                                                        ),
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        margin:
+                                                            EdgeInsets.fromLTRB(
+                                                                10.0,
+                                                                0.0,
+                                                                0.0,
+                                                                5.0),
+                                                      ),
+                                                      // Container(
+                                                      //   child: Text(
+                                                      //     'About me: ${document.data()['aboutMe'] ?? 'Not available'}',
+                                                      //     style: TextStyle(color: primaryColor),
+                                                      //   ),
+                                                      //   alignment: Alignment.centerLeft,
+                                                      //   margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                                                      // )
+                                                    ],
+                                                  ),
+                                                  margin: EdgeInsets.only(
+                                                      left: 20.0),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      } else {}
+                                    }
+
+                                    // return StreamBuilder(
+                                    //     stream: FirebaseFirestore.instance
+                                    //         .collection('customer')
+                                    //         .doc(chefData.chefFollowers
+                                    //             .elementAt(index))
+                                    //         .snapshots(),
+                                    //     builder: (context, snapshot) {
+                                    //       return Text(
+                                    //           snapshot.data()['custName']);
+                                    //     });
+                                  }),
+                              // Column(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   children: <Widget>[
+                              //     Padding(
+                              //       padding: EdgeInsets.all(15.0),
+                              //       child: Text(
+                              //         'Cool',
+                              //         style: TextStyle(color: Colors.red),
+                              //       ),
+                              //     ),
+                              //     Padding(
+                              //       padding: EdgeInsets.all(15.0),
+                              //       child: Text(
+                              //         'Awesome',
+                              //         style: TextStyle(color: Colors.red),
+                              //       ),
+                              //     ),
+                              //     Padding(padding: EdgeInsets.only(top: 50.0)),
+                              //     FlatButton(
+                              //         onPressed: () {
+                              //           Navigator.of(context).pop();
+                              //         },
+                              //         child: Text(
+                              //           'Got It!',
+                              //           style: TextStyle(
+                              //               color: Colors.purple,
+                              //               fontSize: 18.0),
+                              //         ))
+                              //   ],
+                              // ),
+                            ),
+                          );
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => errorDialog);
+                        },
+                        child: Text(
+                          "" +
+                              chefData.chefFollowers.length.toString() +
+                              " Followers",
+                          style: TextStyle(
+                            color: Color(0xffAAB825),
+                            fontSize: animationVal > 7.2
+                                ? widgetSize.height * 0.018 * sqrt(animationVal)
+                                : widgetSize.height * 0.018 * sqrt(13.2),
+                            fontFamily: "Uni-Sans",
+                          ),
+                        ),
+                      )
+                    : Text(
+                        "" +
+                            chefData.chefFollowers.length.toString() +
+                            " Followers",
+                        style: TextStyle(
+                          color: Color(0xffAAB825),
+                          fontSize: animationVal > 7.2
+                              ? widgetSize.height * 0.018 * sqrt(animationVal)
+                              : widgetSize.height * 0.018 * sqrt(13.2),
+                          fontFamily: "Uni-Sans",
+                        ),
+                      ),
               ],
             ),
 // ---------------------------------------------------- E D I T   A N D   C H A T

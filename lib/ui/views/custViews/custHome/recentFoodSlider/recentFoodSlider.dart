@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../baseView.dart';
+import '../../../soleDishView.dart';
 
 // class RecentFoodSlider extends StatelessWidget {
 //   // List for testing

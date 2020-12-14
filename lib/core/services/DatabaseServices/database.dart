@@ -166,7 +166,7 @@ class DatabaseService {
     List<CustData> productsList = List<CustData>();
     for (int i = 0; i < snapshot.docs.length; i++) {
       productsList.add(CustData(
-        custId: snapshot.docs[i].data()['custI'] ?? "",
+        custId: snapshot.docs[i].data()['custID'] ?? "",
         custPhNo: snapshot.docs[i].data()['custPhNo'] ?? "",
         custName: snapshot.docs[i].data()['custName'] ?? "",
         custDateOfBirth:

@@ -62,6 +62,7 @@ class SoleDishView extends StatelessWidget {
         }
       },
       builder: (context, model, child) => WillPopScope(
+        // ignore: missing_return
         onWillPop: () {
           Navigator.pop(context);
         },

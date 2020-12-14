@@ -357,8 +357,8 @@ class ChatHomeCustState extends State<ChatHomeCust> {
 
                           print(
                               '---------------- >group id is :' + groupChatId);
-                          // print('message data ' +
-                          //     _messagedocumentdata.elementAt(0).toString());
+                          print('message data ' +
+                              _messagedocumentdata.elementAt(0).toString());
 
                           if (model.checkUserinChef(
                               _usersData.elementAt(index).idUser, _chefData)) {
@@ -386,7 +386,10 @@ class ChatHomeCustState extends State<ChatHomeCust> {
               )
             ],
           ),
-          onWillPop: onBackPress,
+          // ignore: missing_return
+          onWillPop: () {
+            Navigator.of(context).pop();
+          },
         ),
       ),
     );
