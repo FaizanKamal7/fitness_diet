@@ -6,7 +6,6 @@ import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/chefSingleListOrderView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/soleOrderVIew.dart';
-import 'package:fitness_diet/ui/widgets/Texts/standardText2.dart';
 import 'package:flutter/material.dart';
 
 class ChefOrdersView extends StatefulWidget {
@@ -16,13 +15,12 @@ class ChefOrdersView extends StatefulWidget {
 
 class _ChefOrdersViewState extends State<ChefOrdersView> {
   Stream<List<Order>> _allOrderStream;
-  String _currentChefID;
+
   @override
   Widget build(BuildContext context) {
     return BaseView<ChefOrdersViewModel>(
       onModelReady: (model) {
         _allOrderStream = model.getAllOrders();
-        _currentChefID = model.getUser;
       },
       builder: (context, model, child) => StreamBuilder<List<Order>>(
         stream: _allOrderStream,
@@ -41,30 +39,23 @@ class _ChefOrdersViewState extends State<ChefOrdersView> {
                 ),
                 body: Container(
                   child: ListView.builder(
-                    itemCount: _singleOrder.length,
+                    itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
-                      return _currentChefID == _singleOrder[index].orderID
-                          ? InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SoleOrderView(
-                                      singleOrder: _singleOrder[index],
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: ChefSingleListOrderView(
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SoleOrderView(
                                 singleOrder: _singleOrder[index],
                               ),
-                            )
-                          : Center(
-                              child: StandardText2(
-                                passedDescText: "No orders Yet",
-                                fontWeight: FontWeight.normal,
-                              ),
-                            );
+                            ),
+                          );
+                        },
+                        child: ChefSingleListOrderView(
+                          singleOrder: _singleOrder[index],
+                        ),
+                      );
                     },
                   ),
                   // Center(

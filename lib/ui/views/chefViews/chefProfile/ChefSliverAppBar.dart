@@ -22,8 +22,8 @@ import 'package:provider/provider.dart';
 import '../../../../locator.dart';
 
 class ChefSliverAppBar extends SliverPersistentHeaderDelegate {
-  final CollectionReference custCollection =
-      FirebaseFirestore.instance.collection('customer');
+  // final CollectionReference custCollection =
+  //     FirebaseFirestore.instance.collection('customer');
   final double maxExtent;
   final double minExtent;
   double animationVal = 0;
