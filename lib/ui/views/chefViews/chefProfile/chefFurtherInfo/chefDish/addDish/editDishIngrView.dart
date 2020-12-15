@@ -205,11 +205,12 @@ class _EditDishIngrViewState extends State<EditDishIngrView> {
                         },
                         child: AuthBtnStyle(
                           deviceSize: deviceSize,
-                          passedText: "Upload",
+                          passedText: "Update",
                         ),
                       ),
                     ),
                   ),
+
                   model.state == ViewState.Busy ? Loading() : SizedBox(),
                 ],
               ),

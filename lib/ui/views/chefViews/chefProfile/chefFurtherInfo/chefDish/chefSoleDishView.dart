@@ -7,6 +7,7 @@ import 'package:fitness_diet/ui/shared/fonts.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/baseView.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/addDish/editDishInfoView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefProfileMain.dart';
 import 'package:fitness_diet/ui/views/custViews/custProfile/chefview.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadinNoBgSmall.dart';
 import 'package:fitness_diet/ui/widgets/Texts/standardHeadingNoBgUniSan.dart';
@@ -136,7 +137,7 @@ class ChefSoleDishView extends StatelessWidget {
                                 Row(
                                   children: [
                                     RatingBarIndicator(
-                                      rating: 3.5,
+                                      rating: passedDish.dishRatings,
                                       itemCount: 5,
                                       itemSize: deviceSize.height * 0.015,
                                       physics: BouncingScrollPhysics(),
@@ -145,8 +146,9 @@ class ChefSoleDishView extends StatelessWidget {
                                         color: Colors.amber,
                                       ),
                                     ),
+                                    SizedBox(width: 5),
                                     Text(
-                                      "(3.5)",
+                                      passedDish.dishRatings.toString(),
                                       style: TextStyle(
                                         fontSize: deviceSize.height * 0.015,
                                       ),
@@ -171,6 +173,7 @@ class ChefSoleDishView extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // -------------------------------------- E D I T   D E L E T E
                   Expanded(
                     flex: 5,
                     child: Stack(
@@ -178,30 +181,48 @@ class ChefSoleDishView extends StatelessWidget {
                         ListView(
                           children: [
                             SizedBox(height: 10),
-                            InkWell(
-                              onTap: () {
-                                print("Tapped");
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EditDishInfo(
-                                      passedDish: passedDish,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  StandardText1(passedDescText: "Edit Dish"),
-                                  Icon(
-                                    Icons.edit,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(width: 30),
+                                Icon(
+                                  Icons.edit,
+                                  color: Colors.brown,
+                                  size: 20,
+                                ),
+                                InkWell(
+                                    onTap: () {
+                                      print("Tapped");
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => EditDishInfo(
+                                            passedDish: passedDish,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: StandardText1(
+                                        passedDescText: "  Edit Dish ")),
+                                Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    model.deleteDish(passedDish.dishID);
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ChefProfileMain(),
+                                      ),
+                                    );
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
                                     color: Colors.brown,
                                     size: 20,
                                   ),
-                                  SizedBox(width: 20),
-                                ],
-                              ),
+                                ),
+                                SizedBox(width: 30),
+                              ],
                             ),
                             SizedBox(height: 10),
                             Divider(

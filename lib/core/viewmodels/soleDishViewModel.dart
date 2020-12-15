@@ -123,6 +123,12 @@ class SoleDishViewModel extends BaseViewModel {
     DatabaseService().deleteCartItem(cartID, dishID);
   }
 
+  bool deleteDish(String dishID) {
+    bool returnedResult = DatabaseService()
+        .deleteDocument(DatabaseService().dishCollection, dishID);
+    return returnedResult;
+  }
+
   // ------------------------------------- G E T   D I S E A S E   R E L A T E D   D A T A
 
   List<dynamic> getDiseaseInfoNestedList(

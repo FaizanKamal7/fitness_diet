@@ -910,6 +910,15 @@ class DatabaseService {
     );
   }
 
+  bool deleteDocument(
+      CollectionReference passedCollection, String passedDishID) {
+    bool deleteResult = false;
+    passedCollection.doc(passedDishID).delete().then(
+          (value) => deleteResult = true,
+        );
+    return deleteResult;
+  }
+
   Future deleteallCartItems(String cartID, Map<String, dynamic> items) {
     print('**** inside delete all cart item in database');
 
