@@ -9,7 +9,6 @@ import 'package:fitness_diet/core/models/orders.dart';
 import 'package:fitness_diet/core/models/plan.dart';
 import 'package:fitness_diet/core/models/user.dart';
 import 'package:fitness_diet/core/services/DatabaseServices/dbHelperFtns.dart';
-import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 
 class DatabaseService {
   // collection reference is just reference for certain collection
@@ -59,7 +58,7 @@ class DatabaseService {
       {
         'custID': uid,
         'custAddDate': DateTime.now(),
-        // 'custAddress': address,
+        'custAddress': address,
       },
       SetOptions(merge: true),
     );
@@ -589,26 +588,23 @@ class DatabaseService {
 // ====================================================================================================================
 
   Future addPlanData(Map<String, dynamic> dataMap) async {
-    print('inside function add plan data in database');
+    print('inside function add plan data iin database');
 
     int x = await DBHelperFtns().lastDocumentIdNumber(planCollection, 'planID');
     String planID = "plan" + (x + 1).toString();
-    updateCustData({'planID': planID}, BaseViewModel().getUser);
+    addNewCustData({'planID': planID});
 
     print("-------> add dish function reached in database calass...");
     print("DataMap : " + dataMap.toString());
 
     Map<String, List<String>> custExercise = {};
     Map<String, List<String>> custMeals = {};
-    await planCollection.doc(planID).set(
-      {
-        'planID': planID,
-        'custID': uid,
-        'custExercise': custExercise,
-        'custMeals': custMeals,
-      },
-      SetOptions(merge: true),
-    );
+    await planCollection.doc(planID).set({
+      'planID': planID,
+      'custID': uid,
+      'custExercise': custExercise,
+      'custMeals': custMeals,
+    }, SetOptions(merge: true));
 
     dataMap.forEach(
       (key, value) async {
@@ -1045,6 +1041,8 @@ class DatabaseService {
           orderDate:
               (snapshot.docs[i].data()['orderDate'] as Timestamp).toDate() ??
                   "",
+
+          // shippingAddress: snapshot.docs[i].data()['shippingAddress'] ?? "",
           items: snapshot.docs[i].data()['items'] ?? "",
           total: snapshot.docs[i].data()['total'] ?? "",
           custName: snapshot.docs[i].data()['custName'] ?? "",
