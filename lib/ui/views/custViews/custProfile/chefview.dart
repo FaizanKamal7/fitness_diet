@@ -6,6 +6,7 @@ import 'package:fitness_diet/ui/responsive/responsiveSafeArea.dart';
 import 'package:fitness_diet/ui/shared/loading.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/ChefSliverAppBar.dart';
 import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefDish/chefDishesView.dart';
+import 'package:fitness_diet/ui/views/chefViews/chefProfile/chefFurtherInfo/chefInfo/chefInfo.dart';
 import 'package:fitness_diet/ui/views/custViews/custHome/Header/custAppDrawer.dart';
 import 'package:fitness_diet/ui/widgets/Texts/ProfileHeaderText.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import 'package:provider/provider.dart';
 
 import '../../baseView.dart';
 
-// ignore: must_be_immutable
 class ChefView extends StatefulWidget {
   String chefID;
   ChefView({
@@ -42,7 +42,7 @@ class _ChefViewState extends State<ChefView> {
         String currentChefID = widget.chefID;
         print("currentChefID: " + currentChefID.toString());
         _chefData = model.getSingleChefData(currentChefID);
-        print("inOnModelReady : " + _chefData.toString());
+        print("inOnModelReady : " + _chefData.first.toString());
       },
       builder: (context, model, child) => model.state == ViewState.Busy
           ? Loading()

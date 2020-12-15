@@ -19,9 +19,7 @@ class FoodMenuMain extends StatelessWidget {
         chefDataStreamProvider,
         cartProvider,
         planStreamProvider,
-        custStreamProvider,
-        allCustStreamProvider;
-
+        custStreamProvider;
     var diseaseStreamProvider;
     StreamProvider ordersStreamProvider;
     try {
@@ -34,8 +32,6 @@ class FoodMenuMain extends StatelessWidget {
       custStreamProvider = StreamProvider<CustData>.value(
           value: DatabaseService(uid: _custData != null ? _custData.uid : null)
               .getCustData);
-      allCustStreamProvider = StreamProvider<List<CustData>>.value(
-          value: DatabaseService().getAllCustData);
       planStreamProvider = StreamProvider<Plan>.value(
           value: DatabaseService(uid: _custData != null ? _custData.uid : null)
               .getPlanData);
@@ -58,7 +54,6 @@ class FoodMenuMain extends StatelessWidget {
         chefDataStreamProvider,
         cartProvider,
         custStreamProvider,
-        allCustStreamProvider,
         planStreamProvider,
         ordersStreamProvider,
         diseaseStreamProvider

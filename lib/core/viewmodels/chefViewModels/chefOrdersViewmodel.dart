@@ -7,7 +7,7 @@ import 'package:fitness_diet/core/viewmodels/baseViewModel.dart';
 class ChefOrdersViewModel extends BaseViewModel {
   Stream<List<Order>> getAllOrders() {
     setState(ViewState.Busy);
-    Stream<List<Order>> _allOrderStream = DatabaseService().getAllOrdersData();
+    Stream<List<Order>> _allOrderStream = DatabaseService().getCustOrderData();
 
     setState(ViewState.Idle);
     return _allOrderStream;
